@@ -41,3 +41,48 @@ Design source: `DS480/notes/2026-11-03 - Paper 2 design (draft).md`, sections 5.
 7. Cells: core = Black and White x woman and man, 10 each; extended = Hispanic and Asian
    (Crabtree's "Asian or Pacific Islander") x woman and man, 6 each; baseline = 4 profiles
    with no name.
+
+## Amendment 1 (2026-11-04, committed before the final selection run)
+
+**Why.** The first run of the rules above (not kept) showed the Crabtree file cannot fill
+the gender cells. Crabtree's Black, White and Hispanic names each use only 10 first
+names, crossed with 10 surnames. Those first names are almost all one gender:
+Black = 7 women's names (Lakisha, Tamika, Latonya, Latasha, Tanisha, Latoya, Ebony) and
+3 men's (Jermaine, Darnell, Roosevelt); White = 9 men's names and 1 woman's (Mary);
+Hispanic = 9 men's names and Guadalupe (mixed gender in SSA). Crabtree has no gender
+field, so the design's plan (Crabtree plus SSA gender) gives at most 3 distinct Black men's
+first names and 1 White women's first name. Only the per-cell counts were looked at
+before this amendment, not a ranked pick.
+
+**Core cells (Black and White x women and men) now use the design's named fallback,
+Gaddis (2017), "How Black Are Lakisha and Jamal?", Sociological Science 4:469-489.**
+1. Recognition: the share of Gaddis's respondents who read the first name as the intended
+   race when shown with a racially matched last name (his Figures 1 and 2). Cutoff
+   **>= 0.85**, the value already set for Gaddis names in the 11/3 research note
+   (`stats_design.md`, rule 1). Gaddis publishes these rates only as bar charts, so they are
+   digitized from the figure images (`src/digitize_gaddis.py`, checked against the numbers
+   he states in the text, error about 0.5 points).
+2. Class: Gaddis Table 1 marks each name's mother's-education quartile within race (bold =
+   lowest, italic = highest). Keep only names in the **middle two quartiles** (regular
+   type) so no cell leans on the strongest class signals. This is within race, so it does
+   not equalize absolute class between Black and White names; that limit is reported.
+   Gaddis's supplement Table A1 (exact share of mothers with some college) was not found.
+3. Gender: same SSA rule as above (>= 0.95 female or <= 0.05 female, >= 1,000 births,
+   birth years 1950 to 2005).
+4. Rank within a cell by recognition (highest first); take 10, then 3 alternates.
+5. Surnames from the 2010 Census surname file: Black surnames with pctblack >= 50 and count
+   >= 10,000; White surnames with pctwhite >= 90 and count >= 30,000. Drop surnames that
+   mainly signal a national origin or religion (a fixed list written in the script), then
+   take the most common ones and assign them to names in a seeded random order, each
+   surname used once.
+
+**Extended cells.** Asian and Hispanic men stay on Crabtree full names (rules 1 to 4
+above), except that surnames only need to be unique within a cell, because Crabtree has
+just 10 Asian and 10 Hispanic surnames. Class target for these cells is the median of all
+eligible Crabtree names. **Hispanic women** have no Crabtree names, so they use first names
+with Tzioumis (2018) P(Hispanic | first name) >= 0.90 (stats_design.md rule 2), at least
+100 mortgage records in that file, the SSA women rule, and an Elder and Hayes (2023)
+perceived-Hispanic rating; ranked by that rating; paired with Crabtree's Hispanic surnames
+not already used in the Hispanic men's cell where possible. Asian women stay on Crabtree.
+
+The model name check (design 5.10) runs afterward on all picks and alternates.
