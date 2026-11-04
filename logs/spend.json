@@ -4,55 +4,55 @@
     "anthropic": {
       "by_model": {
         "haiku": {
-          "calls": 8,
-          "spent_usd": 0.0020045
+          "calls": 2669,
+          "spent_usd": 0.3475449
         }
       },
-      "calls": 8,
+      "calls": 2669,
       "cap_usd": 15.0,
       "halted": false,
       "halted_reason": null,
-      "input_tokens": 23322,
-      "notional_usd": 0.0020045,
-      "output_tokens": 754,
+      "input_tokens": 5110825,
+      "notional_usd": 0.3475449,
+      "output_tokens": 239648,
       "reservations": {},
-      "spent_usd": 0.0020045
+      "spent_usd": 0.3475449
     },
     "google": {
       "by_model": {
         "flashlite": {
-          "calls": 4,
+          "calls": 498,
           "spent_usd": 0.0
         }
       },
-      "calls": 4,
+      "calls": 498,
       "cap_usd": 0.0,
       "halted": false,
       "halted_reason": null,
-      "input_tokens": 6303,
-      "notional_usd": 0.0022684,
-      "output_tokens": 151,
+      "input_tokens": 315627,
+      "notional_usd": 0.1348281,
+      "output_tokens": 16056,
       "reservations": {},
       "spent_usd": 0.0
     },
     "openai": {
       "by_model": {
         "luna": {
-          "calls": 4,
-          "spent_usd": 0.0006717
+          "calls": 44,
+          "spent_usd": 0.0019187
         }
       },
-      "calls": 4,
+      "calls": 44,
       "cap_usd": 10.0,
-      "halted": true,
-      "halted_at": "2026-11-04T14:31:16-0500",
-      "halted_reason": "billing/credit error: Error code: 400 - Billing hard limit has been reached",
-      "input_tokens": 6097,
-      "notional_usd": 0.0006717,
-      "output_tokens": 124,
+      "halted": false,
+      "halted_at": "2026-11-04T15:10:33-0500",
+      "halted_reason": null,
+      "input_tokens": 14267,
+      "notional_usd": 0.0019187,
+      "output_tokens": 984,
       "reservations": {},
-      "spent_usd": 0.0006717
+      "spent_usd": 0.0019187
     }
   },
-  "updated": "2026-11-04T14:39:00-0500"
+  "updated": "2026-11-04T15:59:07-0500"
 }

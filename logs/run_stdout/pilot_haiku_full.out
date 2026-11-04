@@ -1,0 +1,13 @@
+submitted 1 batch(es): msgbatch_01JqxBnpzMhEjQ3EM4TTAzc5
+submitted 1 batch(es): msgbatch_01N6ZoF3a58xwvqddzFz6Wha
+submitted 1 batch(es): msgbatch_01S2hNCdPNDdNhbSTatj6ptf
+{
+  "run": "pilot_haiku",
+  "episodes": 1152,
+  "done": 1152,
+  "error_final": 0,
+  "asked": 390,
+  "pending_turns": 0,
+  "open_batches": [],
+  "stop_reason": null
+}

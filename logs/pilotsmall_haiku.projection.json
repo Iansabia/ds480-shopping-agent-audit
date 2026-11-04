@@ -1,0 +1,11 @@
+{
+  "t": "2026-11-04T15:20:36.106-05:00",
+  "calls_so_far": 200,
+  "mean_billed_per_call": 0.0001632135,
+  "ask_rate_turn0": 0.38125,
+  "remaining_calls_est": 21.0,
+  "projected_remaining_usd": 0.0034274835,
+  "provider_spent_usd": 0.0975307,
+  "cap_usd": 15.0,
+  "ok": true
+}

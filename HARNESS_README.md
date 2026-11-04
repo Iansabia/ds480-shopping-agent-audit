@@ -27,6 +27,7 @@ Arm codes are S0, S1, V, PB (planted bias), PC and PQ (arm P), M1S0 and M1V. The
 | reduced | 7,040 | same shape as m1 but on S0 and V; meant for Gemini |
 | olmo | 5,280 | 44 profiles x 40 tasks x {S0, S1, V} x 1 slot |
 | pilot | 1,152 | 24 profiles (5 per core cell + 4 baseline) x 16 tasks x {S0, S1, V} x 1 slot |
+| pilotsmall | 160 | the 24 pilot profiles x 6 fixed cells (S0, S1, V x 2 tasks, one slot each) + PB on the 2 S0 cells for the 5 planted names (and S0 for those outside the pilot set). Added 11/4, see PILOT_REPORT.md |
 
 In every preset, each name sees both hidden needs equally often (the tests check this). Episodes are shuffled with a fixed seed, so names, arms and tasks mix within every batch and over time.
 
@@ -57,6 +58,12 @@ In every preset, each name sees both hidden needs equally often (the tests check
 - **Resuming:** rerun the same `run` command. Turns that already succeeded are skipped. Open batches are collected first. Errored turns are retried up to 3 times, then counted as errors.
 - **Batch mode:** `--no-wait` submits or collects once and exits. Without it, the run polls until everything, including follow-up turns, is done.
 - **`--limit N`:** runs only the first N episodes of the shuffled grid. The run name gets an `_nN` suffix.
+
+## Access limits found 11/4 (PILOT_REPORT.md)
+
+- OpenAI free access on gpt-6-luna: 10 requests per minute, 50 per day; Batch refused (billing hard limit). Sync calls are paced at 6.5 s.
+- Gemini free tier on gemini-3.5-flash-lite: 500 requests per day; Batch refused.
+- Name check: `src/name_check.py run --model haiku|luna|flashlite [--alternates] [--rg-only]`, then `src/name_check.py score [--models ...]`.
 
 ## Logs
 

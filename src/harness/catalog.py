@@ -267,6 +267,22 @@ class Catalog:
                     s = self._one_slot(pid, rank)
                     for arm in ("S0", "S1", "V"):
                         eps.append(self.make_episode(arm, pid, t, s))
+        elif preset == "pilotsmall":
+            # About 160 episodes per model (11/4 pilot, PILOT_REPORT.md). The 24 pilot
+            # profiles each run 6 fixed task/arm/slot cells, so every cell holds all
+            # 20 core names and the cell-mean removal in analyze.py keeps real
+            # variation. Plus PB for the 5 planted names on the two S0 cells, and S0 on
+            # those cells for planted names outside the pilot set (so PB - S0 pairs).
+            _, profs = self.pilot_selection()
+            for pid in profs:
+                for arm, t, s in PILOTSMALL_CELLS:
+                    eps.append(self.make_episode(arm, pid, t, s))
+            s0_cells = [(t, s) for arm, t, s in PILOTSMALL_CELLS if arm == "S0"]
+            for pid in self.planted_profiles():
+                for t, s in s0_cells:
+                    eps.append(self.make_episode("PB", pid, t, s))
+                    if pid not in profs:
+                        eps.append(self.make_episode("S0", pid, t, s))
         else:
             raise ValueError(f"unknown preset {preset!r}")
         return eps
@@ -280,4 +296,17 @@ class Catalog:
         return out
 
 
-PRESETS = ["main", "planted", "validity", "m1", "reduced", "olmo", "pilot"]
+PRESETS = ["main", "planted", "validity", "m1", "reduced", "olmo", "pilot", "pilotsmall"]
+
+# pilotsmall: (arm, task, slot). One slot per task, all 4 wording x order slots used.
+# S0: one hair task and one neutral task (H1, H2). S1: one hair and one skin task
+# (with the S0 hair task, H3). V: one hair and one skin task (H4); the hidden need
+# follows name parity, so half the names in each cell get each need.
+PILOTSMALL_CELLS = [
+    ("S0", "hair_shampoo_coily_4c", "w1_fwd"),
+    ("S0", "neutral_mouse", "w2_rev"),
+    ("S1", "hair_mask_fine_straight", "w1_rev"),
+    ("S1", "skin_tint_deep_shade", "w2_fwd"),
+    ("V", "hair_mask_coily_4c", "w2_rev"),
+    ("V", "skin_concealer_deep_shade", "w1_rev"),
+]

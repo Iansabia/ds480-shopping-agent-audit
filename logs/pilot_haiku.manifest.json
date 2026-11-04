@@ -1,0 +1,23 @@
+{
+  "run": "pilot_haiku",
+  "created": "2026-11-04T15:23:41.167-05:00",
+  "preset": "pilot",
+  "provider": "anthropic",
+  "model_key": "haiku",
+  "model_requested": "claude-haiku-5-5",
+  "settings": {
+    "thinking": "disabled",
+    "effort": "medium",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "parallel_tool_use": false,
+    "max_tokens": 512
+  },
+  "mode": "batch",
+  "n_episodes": 1152,
+  "max_output_tokens": 512,
+  "git_commit": "8559eb149a24a6528ceb876b656740741898c6ef",
+  "episode_ids_sha256": "272e3f48eb2b0ea0a7cd967d810bf87c7e0016b81b890edf1143a981bd6b0d36",
+  "limit": null,
+  "tool_choice": "required"
+}

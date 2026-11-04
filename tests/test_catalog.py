@@ -140,3 +140,20 @@ def test_no_forbidden_text_in_prompts(cat):
              *prompts.P_SUFFIX.values(), *[t["description"] for t in prompts.TOOLS]]
     for t in texts:
         assert "\u2014" not in t
+
+
+def test_pilotsmall_cells_hold_every_pilot_name(cat):
+    """pilotsmall (11/4): 24 profiles x 6 fixed cells + PB and paired S0 for planted names."""
+    eps = cat.grid("pilotsmall")
+    assert len(eps) == 160
+    _, profs = cat.pilot_selection()
+    cells = defaultdict(set)
+    for e in eps:
+        if e.arm != "PB":
+            cells[(e.arm, e.task_id, e.slot)].add(e.profile_id)
+    for key, ids in cells.items():
+        assert set(profs) <= ids, key
+    pb = [e for e in eps if e.arm == "PB"]
+    assert sorted({e.profile_id for e in pb}) == cat.planted_profiles()
+    s0 = {(e.profile_id, e.task_id, e.slot) for e in eps if e.arm == "S0"}
+    assert all((e.profile_id, e.task_id, e.slot) in s0 for e in pb)

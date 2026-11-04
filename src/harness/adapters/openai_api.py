@@ -13,6 +13,9 @@ from __future__ import annotations
 import io
 import json
 import os
+import re
+import threading
+import time
 from typing import Any
 
 from .. import prompts
@@ -34,6 +37,20 @@ class OpenAIAdapter(Adapter):
         super().__init__(*a, **kw)
         self.service_tier = service_tier  # None or "flex"
         self._client = None
+        # Client-side pacing for sync calls. The account's free access is 10 requests
+        # per minute on gpt-6-luna (429 message, 11/4), so 6.5 s between calls.
+        self.min_interval_s = float(self.settings.get("min_interval_s", 0.0))
+        self._last = 0.0
+        self._pace_lock = threading.Lock()
+
+    def _pace(self):
+        if self.min_interval_s <= 0:
+            return
+        with self._pace_lock:
+            wait = self.min_interval_s - (time.monotonic() - self._last)
+            if wait > 0:
+                time.sleep(wait)
+            self._last = time.monotonic()
 
     @property
     def client(self):
@@ -76,8 +93,16 @@ class OpenAIAdapter(Adapter):
         import openai
         msg = str(e)
         code = getattr(e, "code", None) or ""
-        if looks_like_billing(msg) or code in ("insufficient_quota", "billing_hard_limit_reached",
-                                                "billing_not_active"):
+        if code in ("insufficient_quota", "billing_hard_limit_reached", "billing_not_active"):
+            return BillingError(msg)
+        # A plain 429 rate limit message also says "add a payment method ... /account/billing",
+        # so check for a rate limit before the billing word match (fixed 11/4 after the name check
+        # halted OpenAI on a 10 RPM free-tier rate limit).
+        if isinstance(e, openai.RateLimitError) and "quota" not in msg.lower() and "hard limit" not in msg.lower():
+            m = re.search(r"try again in ([\d.]+)(ms|s)", msg)
+            ra = (float(m.group(1)) / (1000 if m.group(2) == "ms" else 1)) + 1 if m else None
+            return RateLimitError(msg, ra)
+        if looks_like_billing(msg):
             return BillingError(msg)
         if isinstance(e, openai.RateLimitError):
             return RateLimitError(msg)
@@ -92,6 +117,7 @@ class OpenAIAdapter(Adapter):
         return TransientError(msg)
 
     def call(self, payload: dict) -> dict:
+        self._pace()
         try:
             r = self.client.responses.create(**payload)
         except Exception as e:  # noqa: BLE001

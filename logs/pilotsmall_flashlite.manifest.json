@@ -1,0 +1,23 @@
+{
+  "run": "pilotsmall_flashlite",
+  "created": "2026-11-04T15:35:05.033-05:00",
+  "preset": "pilotsmall",
+  "provider": "google",
+  "model_key": "flashlite",
+  "model_requested": "gemini-3.5-flash-lite",
+  "settings": {
+    "thinking": "model default",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "automatic_function_calling": "disabled",
+    "max_output_tokens": 512,
+    "tier": "free"
+  },
+  "mode": "sync",
+  "n_episodes": 160,
+  "max_output_tokens": 512,
+  "git_commit": "8559eb149a24a6528ceb876b656740741898c6ef",
+  "episode_ids_sha256": "27c4a19248d96e38e3d04c89cad5b91e1283c257d11ee2b4fbf4360ebd05df6f",
+  "limit": null,
+  "tool_choice": "required"
+}

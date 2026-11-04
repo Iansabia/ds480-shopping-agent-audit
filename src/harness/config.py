@@ -38,6 +38,8 @@ MODELS = {
         "batch": (0.05, 0.25),  # Batch and Flex
         "token_factor": 1.0,
         "batch_api": True,
+        # Sync pacing: free access is limited to 10 requests per minute (11/4).
+        "min_interval_s": 6.5,
     },
     "flashlite": {
         "provider": "google",

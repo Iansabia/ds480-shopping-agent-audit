@@ -1,0 +1,154 @@
+{
+  "alpha": 0.05,
+  "power": 0.8,
+  "family_size": 8,
+  "holm_first_step_alpha": 0.00625,
+  "names_per_group": {
+    "H1": [
+      20,
+      20
+    ],
+    "H2": [
+      20,
+      20
+    ],
+    "H3": [
+      20,
+      20
+    ],
+    "H4": [
+      20,
+      20
+    ]
+  },
+  "models": {
+    "haiku": {
+      "H1": {
+        "noise": {
+          "ok": true,
+          "sn": 0.0,
+          "se": 0.1376645521802122,
+          "sn_p80": 0.0,
+          "se_p80": 0.1479048569584266,
+          "n_names": 20,
+          "mean_n_per_name": 16.0
+        },
+        "eligible_share": 1.0,
+        "m_main": 160.0,
+        "point": {
+          "sd_name_mean": 0.01088333844891423,
+          "mde_raw": 0.009908906005013849,
+          "mde_holm": 0.012986868213583877,
+          "mde_raw_pct": 0.9958161769941354,
+          "mde_holm_pct": 1.3071563833059408,
+          "tost_power_3pct": 0.9999999556265733,
+          "tost_power_5pct": 0.999999999999988
+        },
+        "conservative": {
+          "sd_name_mean": 0.011692905624750801,
+          "mde_raw": 0.010645989124110399,
+          "mde_holm": 0.013952908392521961,
+          "mde_raw_pct": 1.070285930024939,
+          "mde_holm_pct": 1.4050704536344494,
+          "tost_power_3pct": 0.9999997281876543,
+          "tost_power_5pct": 0.9999999999998714
+        }
+      },
+      "H2": {
+        "noise": {
+          "ok": true,
+          "sn": 0.0,
+          "se": 0.1376645521802122,
+          "sn_p80": 0.0,
+          "se_p80": 0.148483553670599,
+          "n_names": 20,
+          "mean_n_per_name": 16.0
+        },
+        "eligible_share": 1.0,
+        "m_main": 160.0,
+        "point": {
+          "sd_name_mean": 0.01088333844891423,
+          "mde_raw": 0.009908906005013849,
+          "mde_holm": 0.012986868213583877,
+          "mde_raw_pct": 0.9958161769941354,
+          "mde_holm_pct": 1.3071563833059408,
+          "tost_power_3pct": 0.9999999556265733,
+          "tost_power_5pct": 0.999999999999988
+        },
+        "conservative": {
+          "sd_name_mean": 0.011738655616873695,
+          "mde_raw": 0.010687642921224566,
+          "mde_holm": 0.014007500935174331,
+          "mde_raw_pct": 1.074495978890977,
+          "mde_holm_pct": 1.4106065653821886,
+          "tost_power_3pct": 0.9999997009471362,
+          "tost_power_5pct": 0.9999999999998539
+        }
+      },
+      "H3": {
+        "noise": {
+          "ok": true,
+          "sn": 0.006107312187270115,
+          "se": 0.09682458365518541,
+          "sn_p80": 0.0023292374765623487,
+          "se_p80": 0.10785149254620653,
+          "n_names": 20,
+          "mean_n_per_name": 16.0
+        },
+        "eligible_share": 1.0,
+        "m_main": 160.0,
+        "point": {
+          "sd_name_mean": 0.00979249774841833,
+          "mde_raw": 0.008915732998551324,
+          "mde_holm": 0.011685190012005289,
+          "mde_raw_points": 0.8915732998551325,
+          "mde_holm_points": 1.1685190012005289,
+          "tost_power_5pts": 0.9999999999999998
+        },
+        "conservative": {
+          "sd_name_mean": 0.008838834764831861,
+          "mde_raw": 0.008047455593674504,
+          "mde_holm": 0.01054720321262883,
+          "mde_raw_points": 0.8047455593674504,
+          "mde_holm_points": 1.0547203212628828,
+          "tost_power_5pts": 1.0
+        }
+      },
+      "H4": {
+        "noise": {
+          "ok": true,
+          "sn": 0.08744045593049783,
+          "se": 0.254003582074149,
+          "sn_p80": 0.08481422704503946,
+          "se_p80": 0.27234462723967146,
+          "n_names": 20,
+          "mean_n_per_name": 3.65
+        },
+        "eligible_share": 0.45625,
+        "m_main": 36.5,
+        "point": {
+          "sd_name_mean": 0.09702290880066174,
+          "mde_raw": 0.08833602741948182,
+          "mde_holm": 0.11577547975809453,
+          "mde_raw_points": 8.833602741948182,
+          "mde_holm_points": 11.577547975809454,
+          "tost_power_5pts": 0.0
+        },
+        "conservative": {
+          "sd_name_mean": 0.09604973518662369,
+          "mde_raw": 0.08744998625542846,
+          "mde_holm": 0.11461421131700233,
+          "mde_raw_points": 8.744998625542847,
+          "mde_holm_points": 11.461421131700234,
+          "tost_power_5pts": 0.0
+        }
+      },
+      "price_margin": "narrow (3%)",
+      "price_margin_log": 0.02955880224154443
+    }
+  },
+  "inputs": {
+    "pilot_haiku.outcomes.csv": "410a815cbe44717ecfedafefeb3f1964d3ece3936bdaf8909493fb3ded287f44"
+  },
+  "freq_source": "ssa_births_1950_2005 (fallback: no infini-gram file)"
+}
