@@ -86,3 +86,13 @@ perceived-Hispanic rating; ranked by that rating; paired with Crabtree's Hispani
 not already used in the Hispanic men's cell where possible. Asian women stay on Crabtree.
 
 The model name check (design 5.10) runs afterward on all picks and alternates.
+
+## Amendment 2 (2026-11-04, before the final run)
+
+The Amendment 1 run filled every cell except Hispanic women: only 4 first names pass
+Tzioumis >= 0.90, >= 100 records, the SSA women rule and an Elder and Hayes rating, and
+only 5 pass without the rating. For Hispanic women only: lower the Tzioumis record floor
+to 30, keep P(Hispanic) >= 0.90 and the SSA rule, rank names that have an Elder and Hayes
+perceived-Hispanic rating first (by that rating), then unrated names by Tzioumis record
+count. Unrated names are flagged in names.csv and rely on the model name check.
+Also: surnames starting with "Mc" are written with a capital third letter (McNeal).
