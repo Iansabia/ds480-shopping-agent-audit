@@ -1,0 +1,31 @@
+{
+  "written": "2026-11-04",
+  "method": "Measured tokens from logs/*.turns.jsonl (no new paid calls) x official batch list prices. low = measured; expected = measured + V second-ask fix (29% of V episodes get one more scripted turn, ~3,050 in / 45 out) on Haiku and Luna; high = expected tokens x 1.5 plus 10% retries (x 1.65).",
+  "episode_sets": {
+    "haiku": "presets main 32,640 + planted 800 + validity 640 + m1 7,040 = 41,120",
+    "luna": "same as haiku = 41,120 (extras: pilot 1,152 and 290 name-check calls listed separately)",
+    "flashlite": "preset reduced 7,040 (S0 3,520 + V 3,520)"
+  },
+  "measured_per_episode": {
+    "haiku_pilot_1152": {"S0": {"in": 3668, "out": 112.6, "calls": 1.331}, "S1": {"in": 3111, "out": 72.8, "calls": 1.141}, "V": {"in": 4227, "out": 179.0, "calls": 1.544}, "errors": 0, "retries": 0, "refusals": 0},
+    "flashlite_pilotsmall_145": {"S0": {"in": 1510, "out": 24.0, "calls": 1.0}, "S1": {"in": 1347, "out": 22.3, "calls": 1.0}, "V": {"in": 1720, "out": 51.8, "calls": 1.188}, "thinking_tokens": 0, "errors": 0, "retries": 0, "refusals": 0},
+    "luna_smoke_4_calls": {"in_per_call": 1524, "out_per_call": 31, "thinking_tokens": 0},
+    "luna_tokenizer_ratio_same_prompts": {"vs_flashlite_in": 0.997, "vs_flashlite_out": 0.636, "vs_haiku_in": 0.727, "vs_haiku_out": 0.674, "n_paired_namecheck_calls": 30, "smoke_vs_haiku_in": 0.53}
+  },
+  "per_model": {
+    "haiku": {"price_batch_per_mtok": [0.05, 0.25], "price_std_per_mtok": [0.10, 0.50], "calls_expected": 59893, "avg_in_per_episode": 4068, "avg_out_per_episode": 129.9, "batch_low": 9.01, "batch_expected": 9.70, "batch_high": 16.00, "std_expected": 19.40, "already_spent": 0.35, "cap": 15.0},
+    "luna": {"price_batch_per_mtok": [0.05, 0.25], "price_std_per_mtok": [0.10, 0.50], "calls_expected": 59893, "avg_in_per_episode": 2297, "avg_out_per_episode": 47.2, "batch_low": 3.54, "batch_expected": 5.21, "batch_high": 8.59, "std_expected": 10.42, "extras_expected": 0.16, "cap": 10.0, "basis": "weak: 4 smoke calls + 30 paired name-check calls; per-call tokens from Gemini pilot, calls per episode from Gemini (low) or Haiku (expected)"},
+    "flashlite": {"price_batch_per_mtok": [0.15, 1.25], "price_std_per_mtok": [0.30, 2.50], "calls_expected": 7702, "avg_in_per_episode": 1615, "avg_out_per_episode": 37.9, "batch_low": 2.04, "batch_expected": 2.04, "batch_high": 3.36, "std_expected": 4.08, "cap": 0.0}
+  },
+  "recommended_credit_usd": {"anthropic": "0 if Max plan API credits of at least $15 show in Console, else 15", "openai": 10, "google": 5},
+  "sources": [
+    "https://platform.claude.com/docs/en/about-claude/pricing",
+    "https://platform.claude.com/docs/en/api/rate-limits",
+    "https://developers.openai.com/api/docs/pricing",
+    "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "https://developers.openai.com/api/docs/guides/rate-limits",
+    "https://aistudio.google.com/docs/pricing",
+    "https://aistudio.google.com/docs/rate-limits",
+    "https://aistudio.google.com/docs/billing"
+  ]
+}
