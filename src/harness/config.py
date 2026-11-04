@@ -17,8 +17,8 @@ SPEND_FILE = LOGS / "spend.json"
 
 SEED = 480
 
-# Hard caps in US dollars, per provider (Ian's rules, 11/4).
-CAPS_USD = {"anthropic": 15.0, "openai": 10.0, "google": 0.0, "ollama": 0.0}
+# Hard caps in US dollars, per provider (Ian's rules, 11/4; google set to 2.40 on 11/4 evening to fit his $2.47 prepaid balance).
+CAPS_USD = {"anthropic": 15.0, "openai": 10.0, "google": 2.40, "ollama": 0.0}
 
 # key -> provider settings. "std" and "batch" are (input, output) $/MTok.
 MODELS = {
