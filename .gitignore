@@ -3,3 +3,8 @@ __pycache__/
 *.pyc
 data/raw/
 .venv/
+.pytest_cache/
+logs/*.lock
+logs/*.tmp
+logs/*.stdout
+logs/ollama_*.log
