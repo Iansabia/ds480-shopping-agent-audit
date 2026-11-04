@@ -1,0 +1,83 @@
+name_id,role,tier,race,gender,full_name,first,last,first_name_source,recognition_measure,recognition_value,gaddis_mother_edu_quartile,crabtree_perceived_income,crabtree_perceived_education,crabtree_match_distance,tzioumis_pct_hispanic,surname_census_pct_group,ssa_births_1950_2005,ssa_female_share
+BW01,main,core,Black,woman,Tanisha Mosley,Tanisha,Mosley,Gaddis 2017,gaddis_congruent_matched_surname,0.975,middle two,,,,,53.16,18159,0.9988
+BW02,main,core,Black,woman,Keyana Bolden,Keyana,Bolden,Gaddis 2017,gaddis_congruent_matched_surname,0.928,middle two,,,,,72.27,2994,1.0
+BW03,main,core,Black,woman,Tionna Banks,Tionna,Banks,Gaddis 2017,gaddis_congruent_matched_surname,0.926,middle two,,,,,54.51,1902,1.0
+BW04,main,core,Black,woman,Shanice Gaines,Shanice,Gaines,Gaddis 2017,gaddis_congruent_matched_surname,0.915,middle two,,,,,50.72,8951,0.9994
+BW05,main,core,Black,woman,Ebony Samuels,Ebony,Samuels,Gaddis 2017,gaddis_congruent_matched_surname,0.906,middle two,,,,,53.38,37763,0.9881
+BW06,main,core,Black,woman,Tyra Jefferson,Tyra,Jefferson,Gaddis 2017,gaddis_congruent_matched_surname,0.906,middle two,,,,,74.24,12593,0.99
+BW07,main,core,Black,woman,Denisha Peoples,Denisha,Peoples,Gaddis 2017,gaddis_congruent_matched_surname,0.902,middle two,,,,,55.86,4037,1.0
+BW08,main,core,Black,woman,Taniya Boykin,Taniya,Boykin,Gaddis 2017,gaddis_congruent_matched_surname,0.901,middle two,,,,,50.47,2508,1.0
+BW09,main,core,Black,woman,Heaven Winston,Heaven,Winston,Gaddis 2017,gaddis_congruent_matched_surname,0.9,middle two,,,,,62.66,12083,0.9896
+BW10,main,core,Black,woman,Keisha Washington,Keisha,Washington,Gaddis 2017,gaddis_congruent_matched_surname,0.89,middle two,,,,,87.53,21165,0.9979
+BW11,alternate,core,Black,woman,Aisha Paige,Aisha,Paige,Gaddis 2017,gaddis_congruent_matched_surname,0.886,middle two,,,,,52.06,15455,0.9983
+BW12,alternate,core,Black,woman,Tamia Alston,Tamia,Alston,Gaddis 2017,gaddis_congruent_matched_surname,0.885,middle two,,,,,79.83,7748,1.0
+BW13,alternate,core,Black,woman,Precious Booker,Precious,Booker,Gaddis 2017,gaddis_congruent_matched_surname,0.876,middle two,,,,,65.22,15120,0.9952
+BM01,main,core,Black,man,Tremayne Samuel,Tremayne,Samuel,Gaddis 2017,gaddis_congruent_matched_surname,0.97,middle two,,,,,53.6,3330,0.0117
+BM02,main,core,Black,man,Jamal Mims,Jamal,Mims,Gaddis 2017,gaddis_congruent_matched_surname,0.968,middle two,,,,,51.94,27093,0.0098
+BM03,main,core,Black,man,Tyrone Starks,Tyrone,Starks,Gaddis 2017,gaddis_congruent_matched_surname,0.941,middle two,,,,,61.78,69815,0.0101
+BM04,main,core,Black,man,Denzel Heard,Denzel,Heard,Gaddis 2017,gaddis_congruent_matched_surname,0.935,middle two,,,,,54.52,7252,0.0015
+BM05,main,core,Black,man,Keyshawn Rivers,Keyshawn,Rivers,Gaddis 2017,gaddis_congruent_matched_surname,0.935,middle two,,,,,50.93,2706,0.0089
+BM06,main,core,Black,man,Jayvon Jackson,Jayvon,Jackson,Gaddis 2017,gaddis_congruent_matched_surname,0.932,middle two,,,,,53.04,1651,0.0
+BM07,main,core,Black,man,Terrell McNeal,Terrell,McNeal,Gaddis 2017,gaddis_congruent_matched_surname,0.921,middle two,,,,,51.03,29422,0.0461
+BM08,main,core,Black,man,Rasheed Dukes,Rasheed,Dukes,Gaddis 2017,gaddis_congruent_matched_surname,0.915,middle two,,,,,50.72,3840,0.0091
+BM09,main,core,Black,man,Kareem Battle,Kareem,Battle,Gaddis 2017,gaddis_congruent_matched_surname,0.904,middle two,,,,,77.31,11294,0.0171
+BM10,main,core,Black,man,Jaleel McCray,Jaleel,McCray,Gaddis 2017,gaddis_congruent_matched_surname,0.892,middle two,,,,,67.43,2725,0.0088
+BM11,alternate,core,Black,man,Lamar Dorsey,Lamar,Dorsey,Gaddis 2017,gaddis_congruent_matched_surname,0.881,middle two,,,,,52.16,21598,0.0214
+BM12,alternate,core,Black,man,Terell Epps,Terell,Epps,Gaddis 2017,gaddis_congruent_matched_surname,0.879,middle two,,,,,61.87,2242,0.0169
+BM13,alternate,core,Black,man,Marquise McClendon,Marquise,McClendon,Gaddis 2017,gaddis_congruent_matched_surname,0.865,middle two,,,,,55.98,8237,0.0476
+WW01,main,core,White,woman,Laurie Schmidt,Laurie,Schmidt,Gaddis 2017,gaddis_congruent_matched_surname,0.966,middle two,,,,,95.15,159132,0.9955
+WW02,main,core,White,woman,Stephanie Wagner,Stephanie,Wagner,Gaddis 2017,gaddis_congruent_matched_surname,0.966,middle two,,,,,92.47,694838,0.9963
+WW03,main,core,White,woman,Kristen Olson,Kristen,Olson,Gaddis 2017,gaddis_congruent_matched_surname,0.961,middle two,,,,,94.76,213022,0.9908
+WW04,main,core,White,woman,Hilary Beck,Hilary,Beck,Gaddis 2017,gaddis_congruent_matched_surname,0.954,middle two,,,,,90.27,23092,0.9671
+WW05,main,core,White,woman,Amy Becker,Amy,Becker,Gaddis 2017,gaddis_congruent_matched_surname,0.946,middle two,,,,,94.89,638133,0.9972
+WW06,main,core,White,woman,Heidi Zimmerman,Heidi,Zimmerman,Gaddis 2017,gaddis_congruent_matched_surname,0.945,middle two,,,,,93.84,129305,0.9972
+WW07,main,core,White,woman,Susan Snyder,Susan,Snyder,Gaddis 2017,gaddis_congruent_matched_surname,0.944,middle two,,,,,94.07,860654,0.9978
+WW08,main,core,White,woman,Barbara Ryan,Barbara,Ryan,Gaddis 2017,gaddis_congruent_matched_surname,0.94,middle two,,,,,91.65,580059,0.9974
+WW09,main,core,White,woman,Cassie Jensen,Cassie,Jensen,Gaddis 2017,gaddis_congruent_matched_surname,0.93,middle two,,,,,93.97,35803,0.9947
+WW10,main,core,White,woman,Erica Walsh,Erica,Walsh,Gaddis 2017,gaddis_congruent_matched_surname,0.929,middle two,,,,,94.48,221278,0.9954
+WW11,alternate,core,White,woman,Lisa Wolfe,Lisa,Wolfe,Gaddis 2017,gaddis_congruent_matched_surname,0.92,middle two,,,,,90.77,959293,0.9971
+WW12,alternate,core,White,woman,Marlene Hoffman,Marlene,Hoffman,Gaddis 2017,gaddis_congruent_matched_surname,0.919,middle two,,,,,94.08,57781,0.9974
+WW13,alternate,core,White,woman,Katie Hanson,Katie,Hanson,Gaddis 2017,gaddis_congruent_matched_surname,0.916,middle two,,,,,92.11,170228,0.9979
+WM01,main,core,White,man,Seth Johnston,Seth,Johnston,Gaddis 2017,gaddis_congruent_matched_surname,0.972,middle two,,,,,91.62,130104,0.0035
+WM02,main,core,White,man,Todd Weber,Todd,Weber,Gaddis 2017,gaddis_congruent_matched_surname,0.971,middle two,,,,,94.29,276548,0.0038
+WM03,main,core,White,man,Scott Schultz,Scott,Schultz,Gaddis 2017,gaddis_congruent_matched_surname,0.959,middle two,,,,,94.81,744559,0.0034
+WM04,main,core,White,man,Dustin Schneider,Dustin,Schneider,Gaddis 2017,gaddis_congruent_matched_surname,0.951,middle two,,,,,95.35,195733,0.007
+WM05,main,core,White,man,Steven Keller,Steven,Keller,Gaddis 2017,gaddis_congruent_matched_surname,0.942,middle two,,,,,91.4,1151655,0.0037
+WM06,main,core,White,man,Luke Carlson,Luke,Carlson,Gaddis 2017,gaddis_congruent_matched_surname,0.941,middle two,,,,,94.83,141315,0.0029
+WM07,main,core,White,man,Cody Christensen,Cody,Christensen,Gaddis 2017,gaddis_congruent_matched_surname,0.931,middle two,,,,,94.42,258026,0.0179
+WM08,main,core,White,man,Brad Hansen,Brad,Hansen,Gaddis 2017,gaddis_congruent_matched_surname,0.93,middle two,,,,,94.22,80054,0.0029
+WM09,main,core,White,man,Greg Erickson,Greg,Erickson,Gaddis 2017,gaddis_congruent_matched_surname,0.925,middle two,,,,,95.05,71693,0.002
+WM10,main,core,White,man,Brian McCarthy,Brian,McCarthy,Gaddis 2017,gaddis_congruent_matched_surname,0.924,middle two,,,,,92.29,1098131,0.004
+WM11,alternate,core,White,man,Jay Larson,Jay,Larson,Gaddis 2017,gaddis_congruent_matched_surname,0.921,middle two,,,,,94.79,136697,0.0106
+WM12,alternate,core,White,man,Robert Swanson,Robert,Swanson,Gaddis 2017,gaddis_congruent_matched_surname,0.908,middle two,,,,,90.41,2486580,0.0042
+WM13,alternate,core,White,man,Daniel Meyer,Daniel,Meyer,Gaddis 2017,gaddis_congruent_matched_surname,0.899,middle two,,,,,94.84,1482036,0.0047
+HM01,main,extended,Hispanic,man,Javier Garcia,Javier,Garcia,Crabtree et al. 2023,crabtree_race_agreement,0.7667,,1.867,2.033,0.479,,,71952,0.0066
+HM02,main,extended,Hispanic,man,Juan Lopez,Juan,Lopez,Crabtree et al. 2023,crabtree_race_agreement,0.7925,,1.925,1.925,0.571,,,257290,0.0082
+HM03,main,extended,Hispanic,man,Alejandro Hernandez,Alejandro,Hernandez,Crabtree et al. 2023,crabtree_race_agreement,0.7925,,1.868,1.887,0.842,,,91892,0.0085
+HM04,main,extended,Hispanic,man,Hector Ramirez,Hector,Ramirez,Crabtree et al. 2023,crabtree_race_agreement,0.8364,,1.855,1.891,0.875,,,76191,0.0062
+HM05,main,extended,Hispanic,man,Miguel Rodriguez,Miguel,Rodriguez,Crabtree et al. 2023,crabtree_race_agreement,0.7368,,1.789,1.947,1.04,,,127417,0.0072
+HM06,main,extended,Hispanic,man,Jesus Martinez,Jesus,Martinez,Crabtree et al. 2023,crabtree_race_agreement,0.8276,,1.81,1.793,1.345,,,153864,0.0116
+HM07,alternate,extended,Hispanic,man,Julio Torres,Julio,Torres,Crabtree et al. 2023,crabtree_race_agreement,0.7941,,1.761,1.838,1.422,,,45018,0.0085
+HM08,alternate,extended,Hispanic,man,Salvador Sanchez,Salvador,Sanchez,Crabtree et al. 2023,crabtree_race_agreement,0.7321,,1.786,1.778,1.485,,,32095,0.0055
+HM09,alternate,extended,Hispanic,man,Jorge Perez,Jorge,Perez,Crabtree et al. 2023,crabtree_race_agreement,0.7885,,1.769,1.75,1.634,,,101017,0.0067
+AW01,main,extended,Asian,woman,May Kim,May,Kim,Crabtree et al. 2023,crabtree_race_agreement,0.7424,,2.0,2.092,0.361,,,6476,0.977
+AW02,main,extended,Asian,woman,Cindy Li,Cindy,Li,Crabtree et al. 2023,crabtree_race_agreement,0.8033,,2.033,2.153,0.646,,,245160,0.9969
+AW03,main,extended,Asian,woman,Vivian Wang,Vivian,Wang,Crabtree et al. 2023,crabtree_race_agreement,0.7302,,1.968,2.317,1.008,,,63955,0.9927
+AW04,main,extended,Asian,woman,Cecilia Yang,Cecilia,Yang,Crabtree et al. 2023,crabtree_race_agreement,0.7059,,2.024,2.294,1.028,,,47661,0.9968
+AW05,main,extended,Asian,woman,Grace Chen,Grace,Chen,Crabtree et al. 2023,crabtree_race_agreement,0.8242,,2.022,2.297,1.032,,,157834,0.998
+AW06,main,extended,Asian,woman,Jane Le,Jane,Le,Crabtree et al. 2023,crabtree_race_agreement,0.7391,,2.014,2.362,1.251,,,154328,0.9972
+AM01,main,extended,Asian,man,Andrew Wang,Andrew,Wang,Crabtree et al. 2023,crabtree_race_agreement,0.7619,,1.984,2.206,0.61,,,985708,0.004
+AM02,main,extended,Asian,man,Eric Kim,Eric,Kim,Crabtree et al. 2023,crabtree_race_agreement,0.75,,1.947,2.224,0.625,,,807941,0.0052
+AM03,main,extended,Asian,man,Sam Li,Sam,Li,Crabtree et al. 2023,crabtree_race_agreement,0.7123,,1.972,2.25,0.75,,,36530,0.0128
+AM04,main,extended,Asian,man,Alex Chen,Alex,Chen,Crabtree et al. 2023,crabtree_race_agreement,0.7101,,1.925,2.294,0.91,,,190468,0.0338
+AM05,main,extended,Asian,man,Dan Nguyen,Dan,Nguyen,Crabtree et al. 2023,crabtree_race_agreement,0.7286,,2.014,2.343,1.179,,,60098,0.0043
+AM06,main,extended,Asian,man,Albert Yang,Albert,Yang,Crabtree et al. 2023,crabtree_race_agreement,0.7286,,2.086,2.343,1.396,,,150474,0.0057
+HW01,main,extended,Hispanic,woman,Rocio Gonzalez,Rocio,Gonzalez,Tzioumis 2018 + Elder & Hayes 2023,eh_perceived_hispanic_1to5,3.9545,,,,,94.231,,11420,0.9627
+HW02,main,extended,Hispanic,woman,Marisela Garcia,Marisela,Garcia,Tzioumis 2018 + Elder & Hayes 2023,eh_perceived_hispanic_1to5,3.5611,,,,,93.137,,9116,0.9968
+HW03,main,extended,Hispanic,woman,Yesenia Hernandez,Yesenia,Hernandez,Tzioumis 2018 + Elder & Hayes 2023,eh_perceived_hispanic_1to5,3.4532,,,,,91.597,,34295,0.9908
+HW04,main,extended,Hispanic,woman,Blanca Lopez,Blanca,Lopez,Tzioumis 2018 + Elder & Hayes 2023,eh_perceived_hispanic_1to5,3.3597,,,,,91.207,,21653,0.9942
+HW05,main,extended,Hispanic,woman,Guillermina Martinez,Guillermina,Martinez,Tzioumis 2018 (no perception rating),tzioumis_pct_hispanic,0.931,,,,,93.103,,1483,1.0
+HW06,main,extended,Hispanic,woman,Rosalba Perez,Rosalba,Perez,Tzioumis 2018 (no perception rating),tzioumis_pct_hispanic,0.9022,,,,,90.217,,2477,1.0
+HW07,alternate,extended,Hispanic,woman,Hortencia Ramirez,Hortencia,Ramirez,Tzioumis 2018 (no perception rating),tzioumis_pct_hispanic,0.9394,,,,,93.939,,1696,1.0
+HW08,alternate,extended,Hispanic,woman,Aracely Rodriguez,Aracely,Rodriguez,Tzioumis 2018 (no perception rating),tzioumis_pct_hispanic,0.9388,,,,,93.878,,6030,0.9982
+HW09,alternate,extended,Hispanic,woman,Oralia Sanchez,Oralia,Sanchez,Tzioumis 2018 (no perception rating),tzioumis_pct_hispanic,0.9388,,,,,93.878,,3150,1.0

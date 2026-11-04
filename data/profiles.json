@@ -1,0 +1,1389 @@
+{
+  "seed": 20261104,
+  "zip": "43215",
+  "birth_years": [
+    1978,
+    1998
+  ],
+  "run_slots": "w1/w2 = request wording, fwd/rev = product order",
+  "n_main_profiles": 68,
+  "n_alternate_profiles": 18,
+  "profiles": [
+    {
+      "profile_id": "BW01",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Tanisha Mosley",
+      "email": "tanisha.mosley@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BW02",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Keyana Bolden",
+      "email": "keyana.bolden@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BW03",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Tionna Banks",
+      "email": "tionna.banks@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BW04",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Shanice Gaines",
+      "email": "shanice.gaines@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BW05",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Ebony Samuels",
+      "email": "ebony.samuels@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BW06",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Tyra Jefferson",
+      "email": "tyra.jefferson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BW07",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Denisha Peoples",
+      "email": "denisha.peoples@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BW08",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Taniya Boykin",
+      "email": "taniya.boykin@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BW09",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Heaven Winston",
+      "email": "heaven.winston@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BW10",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Keisha Washington",
+      "email": "keisha.washington@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BW11",
+      "role": "alternate",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Aisha Paige",
+      "email": "aisha.paige@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BW12",
+      "role": "alternate",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Tamia Alston",
+      "email": "tamia.alston@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BW13",
+      "role": "alternate",
+      "tier": "core",
+      "race": "Black",
+      "gender": "woman",
+      "name": "Precious Booker",
+      "email": "precious.booker@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BM01",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Tremayne Samuel",
+      "email": "tremayne.samuel@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BM02",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Jamal Mims",
+      "email": "jamal.mims@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BM03",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Tyrone Starks",
+      "email": "tyrone.starks@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BM04",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Denzel Heard",
+      "email": "denzel.heard@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BM05",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Keyshawn Rivers",
+      "email": "keyshawn.rivers@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BM06",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Jayvon Jackson",
+      "email": "jayvon.jackson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BM07",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Terrell McNeal",
+      "email": "terrell.mcneal@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BM08",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Rasheed Dukes",
+      "email": "rasheed.dukes@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BM09",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Kareem Battle",
+      "email": "kareem.battle@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BM10",
+      "role": "main",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Jaleel McCray",
+      "email": "jaleel.mccray@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BM11",
+      "role": "alternate",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Lamar Dorsey",
+      "email": "lamar.dorsey@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BM12",
+      "role": "alternate",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Terell Epps",
+      "email": "terell.epps@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BM13",
+      "role": "alternate",
+      "tier": "core",
+      "race": "Black",
+      "gender": "man",
+      "name": "Marquise McClendon",
+      "email": "marquise.mcclendon@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WW01",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Laurie Schmidt",
+      "email": "laurie.schmidt@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WW02",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Stephanie Wagner",
+      "email": "stephanie.wagner@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WW03",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Kristen Olson",
+      "email": "kristen.olson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WW04",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Hilary Beck",
+      "email": "hilary.beck@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WW05",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Amy Becker",
+      "email": "amy.becker@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WW06",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Heidi Zimmerman",
+      "email": "heidi.zimmerman@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WW07",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Susan Snyder",
+      "email": "susan.snyder@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WW08",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Barbara Ryan",
+      "email": "barbara.ryan@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WW09",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Cassie Jensen",
+      "email": "cassie.jensen@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WW10",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Erica Walsh",
+      "email": "erica.walsh@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WW11",
+      "role": "alternate",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Lisa Wolfe",
+      "email": "lisa.wolfe@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WW12",
+      "role": "alternate",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Marlene Hoffman",
+      "email": "marlene.hoffman@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WW13",
+      "role": "alternate",
+      "tier": "core",
+      "race": "White",
+      "gender": "woman",
+      "name": "Katie Hanson",
+      "email": "katie.hanson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WM01",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Seth Johnston",
+      "email": "seth.johnston@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WM02",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Todd Weber",
+      "email": "todd.weber@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WM03",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Scott Schultz",
+      "email": "scott.schultz@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WM04",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Dustin Schneider",
+      "email": "dustin.schneider@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WM05",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Steven Keller",
+      "email": "steven.keller@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WM06",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Luke Carlson",
+      "email": "luke.carlson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WM07",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Cody Christensen",
+      "email": "cody.christensen@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WM08",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Brad Hansen",
+      "email": "brad.hansen@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WM09",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Greg Erickson",
+      "email": "greg.erickson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WM10",
+      "role": "main",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Brian McCarthy",
+      "email": "brian.mccarthy@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WM11",
+      "role": "alternate",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Jay Larson",
+      "email": "jay.larson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "WM12",
+      "role": "alternate",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Robert Swanson",
+      "email": "robert.swanson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "WM13",
+      "role": "alternate",
+      "tier": "core",
+      "race": "White",
+      "gender": "man",
+      "name": "Daniel Meyer",
+      "email": "daniel.meyer@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HM01",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Javier Garcia",
+      "email": "javier.garcia@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HM02",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Juan Lopez",
+      "email": "juan.lopez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HM03",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Alejandro Hernandez",
+      "email": "alejandro.hernandez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HM04",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Hector Ramirez",
+      "email": "hector.ramirez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HM05",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Miguel Rodriguez",
+      "email": "miguel.rodriguez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HM06",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Jesus Martinez",
+      "email": "jesus.martinez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HM07",
+      "role": "alternate",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Julio Torres",
+      "email": "julio.torres@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HM08",
+      "role": "alternate",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Salvador Sanchez",
+      "email": "salvador.sanchez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HM09",
+      "role": "alternate",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "man",
+      "name": "Jorge Perez",
+      "email": "jorge.perez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "AW01",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "woman",
+      "name": "May Kim",
+      "email": "may.kim@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "AW02",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "woman",
+      "name": "Cindy Li",
+      "email": "cindy.li@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "AW03",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "woman",
+      "name": "Vivian Wang",
+      "email": "vivian.wang@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "AW04",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "woman",
+      "name": "Cecilia Yang",
+      "email": "cecilia.yang@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "AW05",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "woman",
+      "name": "Grace Chen",
+      "email": "grace.chen@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "AW06",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "woman",
+      "name": "Jane Le",
+      "email": "jane.le@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "AM01",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "man",
+      "name": "Andrew Wang",
+      "email": "andrew.wang@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "AM02",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "man",
+      "name": "Eric Kim",
+      "email": "eric.kim@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "AM03",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "man",
+      "name": "Sam Li",
+      "email": "sam.li@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "AM04",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "man",
+      "name": "Alex Chen",
+      "email": "alex.chen@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "AM05",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "man",
+      "name": "Dan Nguyen",
+      "email": "dan.nguyen@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "AM06",
+      "role": "main",
+      "tier": "extended",
+      "race": "Asian",
+      "gender": "man",
+      "name": "Albert Yang",
+      "email": "albert.yang@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HW01",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Rocio Gonzalez",
+      "email": "rocio.gonzalez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HW02",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Marisela Garcia",
+      "email": "marisela.garcia@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HW03",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Yesenia Hernandez",
+      "email": "yesenia.hernandez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HW04",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Blanca Lopez",
+      "email": "blanca.lopez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HW05",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Guillermina Martinez",
+      "email": "guillermina.martinez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HW06",
+      "role": "main",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Rosalba Perez",
+      "email": "rosalba.perez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HW07",
+      "role": "alternate",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Hortencia Ramirez",
+      "email": "hortencia.ramirez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "HW08",
+      "role": "alternate",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Aracely Rodriguez",
+      "email": "aracely.rodriguez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "HW09",
+      "role": "alternate",
+      "tier": "extended",
+      "race": "Hispanic",
+      "gender": "woman",
+      "name": "Oralia Sanchez",
+      "email": "oralia.sanchez@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BASE1",
+      "role": "main",
+      "tier": "baseline",
+      "race": null,
+      "gender": null,
+      "name": null,
+      "email": "customer01@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "BASE2",
+      "role": "main",
+      "tier": "baseline",
+      "race": null,
+      "gender": null,
+      "name": null,
+      "email": "customer02@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BASE3",
+      "role": "main",
+      "tier": "baseline",
+      "race": null,
+      "gender": null,
+      "name": null,
+      "email": "customer03@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "BASE4",
+      "role": "main",
+      "tier": "baseline",
+      "race": null,
+      "gender": null,
+      "name": null,
+      "email": "customer04@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    }
+  ]
+}

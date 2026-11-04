@@ -1,0 +1,10 @@
+tier,race,gender,recognition_measure,n,recognition_mean,recognition_min,ssa_female_share_mean
+core,Black,man,gaddis_congruent_matched_surname,10,0.931,0.892,0.012
+core,Black,woman,gaddis_congruent_matched_surname,10,0.915,0.89,0.996
+core,White,man,gaddis_congruent_matched_surname,10,0.945,0.924,0.005
+core,White,woman,gaddis_congruent_matched_surname,10,0.948,0.929,0.993
+extended,Asian,man,crabtree_race_agreement,6,0.732,0.71,0.011
+extended,Asian,woman,crabtree_race_agreement,6,0.758,0.706,0.993
+extended,Hispanic,man,crabtree_race_agreement,6,0.792,0.737,0.008
+extended,Hispanic,woman,eh_perceived_hispanic_1to5,4,3.582,3.36,0.986
+extended,Hispanic,woman,tzioumis_pct_hispanic,2,0.917,0.902,1.0
