@@ -4,19 +4,19 @@
     "anthropic": {
       "by_model": {
         "haiku": {
-          "calls": 2669,
-          "spent_usd": 0.3475449
+          "calls": 2981,
+          "spent_usd": 0.4488918
         }
       },
-      "calls": 2669,
+      "calls": 2981,
       "cap_usd": 15.0,
       "halted": false,
       "halted_reason": null,
-      "input_tokens": 5110825,
-      "notional_usd": 0.3475449,
-      "output_tokens": 239648,
+      "input_tokens": 5944534,
+      "notional_usd": 0.4488918,
+      "output_tokens": 275600,
       "reservations": {},
-      "spent_usd": 0.3475449
+      "spent_usd": 0.4488918
     },
     "google": {
       "by_model": {
@@ -54,5 +54,5 @@
       "spent_usd": 0.0019187
     }
   },
-  "updated": "2026-11-04T15:59:07-0500"
+  "updated": "2026-11-04T16:43:08-0500"
 }

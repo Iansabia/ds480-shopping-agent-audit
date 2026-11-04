@@ -67,6 +67,10 @@ class Rendered:
     order: list[str]                 # product ids in shown order (position 1..8)
     scripted_reply: str              # what ask_user returns
     meta: dict = field(default_factory=dict)
+    # V and M1V only: the reply to a second ask (depends on task and hidden need
+    # only, never on the name). None in other arms, where a second ask ends the
+    # episode as no purchase.
+    followup_reply: str | None = None
 
 
 class Catalog:
@@ -165,13 +169,21 @@ class Catalog:
             blocks.append(prompts.render_product(pos, prod))
         user = prompts.USER_TEMPLATE.format(request=request, n=len(order), page="\n\n".join(blocks))
 
+        followup = None
         if ep.base_arm == "V":
             reply = task["hidden_needs"][ep.hidden_need]
+            followup = self.followup_reply(task, ep.hidden_need)
         else:
             reply = self.meta["arm_replies"]["S1" if ep.base_arm == "S1" else "S0"]
 
         return Rendered(system=system, user=user, order=list(order), scripted_reply=reply,
-                        meta={"birth_year": birth_year, "request": request})
+                        meta={"birth_year": birth_year, "request": request}, followup_reply=followup)
+
+    def followup_reply(self, task: dict, hidden_need: str) -> str:
+        """Reply to a second ask in V (deviation 11/4, PLAN.md). Takes only the
+        task and the hidden need, so it cannot depend on the name."""
+        tmpl = self.meta["v_followup_reply"]["template"]
+        return tmpl.replace("{hidden_need_reply}", task["hidden_needs"][hidden_need])
 
     # ---------------- grids ----------------
     def _rng(self, purpose: str) -> random.Random:
@@ -283,6 +295,16 @@ class Catalog:
                     eps.append(self.make_episode("PB", pid, t, s))
                     if pid not in profs:
                         eps.append(self.make_episode("S0", pid, t, s))
+        elif preset == "vfollowup":
+            # Check of the V follow-up reply (deviation 11/4, PLAN.md): the exact V
+            # episodes of the pilot preset (same names, tasks, slots and needs) on
+            # the 6 pilot tasks with the most second asks, so before and after
+            # compare episode by episode. 24 profiles x 6 tasks = 144 episodes.
+            tasks, profs = self.pilot_selection()
+            for pid in profs:
+                for rank, t in enumerate(tasks):
+                    if t in VFOLLOWUP_TASKS:
+                        eps.append(self.make_episode("V", pid, t, self._one_slot(pid, rank)))
         else:
             raise ValueError(f"unknown preset {preset!r}")
         return eps
@@ -296,7 +318,12 @@ class Catalog:
         return out
 
 
-PRESETS = ["main", "planted", "validity", "m1", "reduced", "olmo", "pilot", "pilotsmall"]
+PRESETS = ["main", "planted", "validity", "m1", "reduced", "olmo", "pilot", "pilotsmall", "vfollowup"]
+
+# vfollowup: the 6 pilot V tasks with the most second asks in pilot_haiku
+# (11/4), chosen to stress the fix. Not a confirmatory design.
+VFOLLOWUP_TASKS = ("hair_mask_coily_4c", "skin_concealer_deep_shade", "skin_tint_deep_shade",
+                   "twin_razor", "twin_body_wash", "neutral_toaster")
 
 # pilotsmall: (arm, task, slot). One slot per task, all 4 wording x order slots used.
 # S0: one hair task and one neutral task (H1, H2). S1: one hair and one skin task

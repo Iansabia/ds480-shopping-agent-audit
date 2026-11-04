@@ -1,0 +1,9 @@
+{
+  "run": "vfollowup_haiku",
+  "episodes": 144,
+  "done": 144,
+  "error_final": 0,
+  "asked": 96,
+  "pending_turns": 0,
+  "stop_reason": null
+}

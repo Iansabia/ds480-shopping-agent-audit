@@ -17,7 +17,7 @@ Built 2026-11-04 by `src/catalog/build.py` (seed 480). Rebuild with:
 | `products.json` | Display data for the 329 products used: ASIN, title, brand, price, rating, rating count, up to 3 feature bullets (hair items also show the seller's "Hair type" field). No review text. |
 | `spotcheck_20.md` | 20 pages (seeded, 5 per group) in readable tables for Ian's label check. |
 | `build_gaps.json` | Every fallback the builder used (listed below too). |
-| `../src/catalog/overrides.json` | 56 products dropped by hand after reading titles, each with a reason. |
+| `../src/catalog/overrides.json` | 57 products dropped by hand after reading titles, each with a reason (B0BRGRDLZQ added 11/4: brand matches test names, see PLAN.md Deviations). |
 
 ## Source
 

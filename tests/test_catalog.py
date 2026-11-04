@@ -157,3 +157,37 @@ def test_pilotsmall_cells_hold_every_pilot_name(cat):
     assert sorted({e.profile_id for e in pb}) == cat.planted_profiles()
     s0 = {(e.profile_id, e.task_id, e.slot) for e in eps if e.arm == "S0"}
     assert all((e.profile_id, e.task_id, e.slot) in s0 for e in pb)
+
+
+def test_pages_have_8_items_and_exact_reverse_order(cat):
+    for pid, p in cat.pages.items():
+        ids = [it["product_id"] for it in p["items"]]
+        assert len(ids) == 8 and len(set(ids)) == 8, pid
+        assert sorted(p["order_forward"]) == sorted(ids), pid
+        assert p["order_reversed"] == list(reversed(p["order_forward"])), pid
+        for i in ids:
+            assert i in cat.products, (pid, i)
+
+
+def test_no_brand_shares_a_word_with_a_test_name(cat):
+    """Deviation 11/4: the keyboard near miss "May Chen" collided with test names."""
+    import re
+    tokens = {w.lower() for p in cat.profiles_all if p.get("name") for w in p["name"].split()}
+    pids = {it["product_id"] for p in cat.pages.values() for it in p["items"]}
+    for pid in pids:
+        brand_words = {w.lower() for w in re.findall(r"[A-Za-z]+", cat.products[pid].get("brand") or "")}
+        assert not (brand_words & tokens), (pid, cat.products[pid]["brand"])
+    assert "B0BRGRDLZQ" not in pids
+
+
+def test_vfollowup_matches_pilot_v_episodes_and_is_balanced(cat):
+    eps = cat.grid("vfollowup")
+    assert len(eps) == 144 and {e.arm for e in eps} == {"V"}
+    pilot_ids = {e.episode_id for e in cat.grid("pilot")}
+    assert all(e.episode_id in pilot_ids for e in eps)
+    per_name = Counter(e.profile_id for e in eps)
+    assert len(per_name) == 24 and set(per_name.values()) == {6}
+    for t in {e.task_id for e in eps}:
+        needs = Counter(e.hidden_need for e in eps if e.task_id == t)
+        # both needs on every task (the split per task follows the pilot design, e.g. 16/8)
+        assert len(needs) == 2, (t, needs)

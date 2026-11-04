@@ -2,9 +2,13 @@
 
 Reads logs/<run>.turns.jsonl, writes logs/<run>.outcomes.jsonl and .csv with
 one row per episode. Outcome types:
-  bought            valid buy (on turn 0, or on turn 1 after an ask)
+  bought            valid buy (on turn 0, or on a later turn after an ask)
   invalid_product   buy with an id that is not on the page
-  no_purchase       asked, then asked again or did nothing on the last turn
+  no_purchase       still asking on the last turn (turn 1; turn 2 in V and M1V
+                    under ask protocol v_followup_1, deviation 11/4)
+Ask fields: asked (asked at least once), n_asks (asks made, including an
+unanswered last one), asked_again (asked a second time), ask_question and
+ask_question_2.
   no_tool_call      text only, no tool call
   refusal           provider-level refusal
   truncated         hit max tokens with no tool call
@@ -21,10 +25,12 @@ from pathlib import Path
 
 from .catalog import Catalog
 from .config import LOGS
+from .runner import manifest_protocol, max_answered_asks
 
 FIELDS = ["episode_id", "arm", "base_arm", "profile_id", "tier", "race", "gender", "birth_year",
           "task_id", "task_group", "product_type", "slot", "wording", "order", "hidden_need",
-          "stated_need", "model_requested", "model_returned", "outcome", "asked", "ask_question",
+          "stated_need", "model_requested", "model_returned", "outcome", "asked", "n_asks", "asked_again",
+          "ask_question", "ask_question_2",
           "final_turn", "product_id", "position", "price", "log_price_ratio", "cheapest_fit_price",
           "fit", "slot_label", "need_line", "price_tier", "identity_linked_product", "opposite_need_pick",
           "gendered_line", "womens_line_pick", "over_budget", "rating", "rating_count", "t_first_request",
@@ -41,6 +47,7 @@ def score_run(run: str, log_dir: Path = LOGS, catalog: Catalog | None = None, ma
               write: bool = True) -> list[dict]:
     cat = catalog or Catalog()
     path = Path(log_dir) / f"{run}.turns.jsonl"
+    protocol = manifest_protocol(Path(log_dir) / f"{run}.manifest.json")
     recs: dict[tuple[str, int], dict] = {}
     errs: dict[tuple[str, int], int] = {}
     episodes: dict[str, dict] = {}
@@ -66,7 +73,7 @@ def score_run(run: str, log_dir: Path = LOGS, catalog: Catalog | None = None, ma
         task = cat.task_by_id[ep["task_id"]]
         page = cat.pages[ep["page_id"]]
         items = {it["product_id"]: it for it in page["items"]}
-        r0, r1 = recs.get((eid, 0)), recs.get((eid, 1))
+        r0 = recs.get((eid, 0))
         row = {k: None for k in FIELDS}
         row.update({
             "episode_id": eid, "arm": ep["arm"], "base_arm": ep["base_arm"], "profile_id": ep["profile_id"],
@@ -87,25 +94,39 @@ def score_run(run: str, log_dir: Path = LOGS, catalog: Catalog | None = None, ma
         row["t_first_request"] = r0.get("t_request")
         row["model_returned"] = r0.get("model_returned")
         a0 = r0["action"]
-        final, final_turn = a0, 0
-        row["billed_usd_est"] = r0.get("billed_usd_est", 0) + (r1.get("billed_usd_est", 0) if r1 else 0)
-        if a0["type"] == "ask":
-            row["asked"] = True
-            row["ask_question"] = a0.get("question")
-            if r1 is None:
-                row["outcome"] = "error" if errs.get((eid, 1), 0) >= max_attempts else "incomplete"
-                rows.append(row)
-                continue
-            final, final_turn = r1["action"], 1
-        else:
-            row["asked"] = False
+        max_t = max_answered_asks(ep["base_arm"], protocol)
+        final, final_turn, rec = a0, 0, r0
+        billed = r0.get("billed_usd_est", 0)
+        n_asks, questions, unfinished = 0, [], None
+        t = 0
+        while final["type"] == "ask":
+            n_asks += 1
+            questions.append(final.get("question"))
+            if t == max_t:
+                break
+            nxt = recs.get((eid, t + 1))
+            if nxt is None:
+                unfinished = "error" if errs.get((eid, t + 1), 0) >= max_attempts else "incomplete"
+                break
+            t += 1
+            billed += nxt.get("billed_usd_est", 0)
+            final, final_turn, rec = nxt["action"], t, nxt
+        row["billed_usd_est"] = billed
+        row["asked"] = n_asks > 0
+        row["n_asks"] = n_asks
+        row["asked_again"] = n_asks >= 2
+        row["ask_question"] = questions[0] if questions else None
+        row["ask_question_2"] = questions[1] if len(questions) > 1 else None
+        if unfinished:
+            row["outcome"] = unfinished
+            rows.append(row)
+            continue
         row["final_turn"] = final_turn
         t = final["type"]
         if t == "buy" and final.get("valid"):
             pid = final["product_id"]
             it = items[pid]
             prod = cat.products[pid]
-            rec = r1 if final_turn == 1 else r0
             row.update({
                 "outcome": "bought", "product_id": pid, "position": rec["positions"][pid], "price": it["price"],
                 "fit": _fits(it, ep["base_arm"], ep.get("hidden_need")), "slot_label": it.get("slot"),

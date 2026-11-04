@@ -9,8 +9,11 @@ Files per run (run_name), all under logs/:
 Episode flow (design 5.4): turn 0 shows the system prompt (account profile)
 and the request plus store page. If the agent calls buy, the episode ends. If
 it calls ask_user, the scripted reply is returned as the tool result and the
-agent gets exactly one more turn (turn 1). Whatever happens on turn 1 ends the
-episode (a second ask counts as no purchase). Refusals, text-only replies,
+agent gets one more turn (turn 1). In S0, S1 and the arms built on them,
+whatever happens on turn 1 ends the episode (a second ask counts as no
+purchase). In V and M1V (deviation 11/4, PLAN.md), a second ask on turn 1 gets
+one more scripted reply (Catalog.followup_reply, same for every name) and a
+final turn 2; an ask on turn 2 counts as no purchase. Refusals, text-only replies,
 invalid product ids, truncation and errors are outcomes, never dropped.
 
 Resume: on start the runner reads <run>.turns.jsonl and <run>.batches.jsonl,
@@ -38,6 +41,27 @@ from .spend import ProviderHalted, SpendCapExceeded, SpendGuard, price_call, wor
 
 class StopRun(Exception):
     pass
+
+
+# Ask protocol version, written to the manifest. Runs logged before 11/4 have no
+# such key and keep the old rule (one answered ask in every arm), so resuming or
+# rescoring an old pilot never adds turns or changes its outcomes.
+ASK_PROTOCOL = "v_followup_1"
+
+
+def max_answered_asks(base_arm: str, protocol: str | None) -> int:
+    if protocol == ASK_PROTOCOL:
+        return 2 if base_arm == "V" else 1
+    return 1
+
+
+def manifest_protocol(manifest_path: Path) -> str | None:
+    if not manifest_path.exists():
+        return ASK_PROTOCOL
+    try:
+        return json.loads(manifest_path.read_text()).get("ask_protocol")
+    except (json.JSONDecodeError, OSError):
+        return None
 
 
 def now_iso() -> str:
@@ -92,6 +116,7 @@ class Runner:
         self.stop_reason: str | None = None
         self._render_cache: dict[str, object] = {}
         self._projection_done = self.projection_path.exists()
+        self.ask_protocol = manifest_protocol(self.manifest_path)
         self._repair_tail(self.turns_path)
         self._repair_tail(self.batches_path)
 
@@ -140,7 +165,7 @@ class Runner:
                  "mode": self.mode, "n_episodes": len(self.episodes),
                  "max_output_tokens": MAX_OUTPUT_TOKENS, "git_commit": git_commit(self.cat.data_dir.parent),
                  "episode_ids_sha256": hashlib.sha256("\n".join(sorted(self.episodes)).encode()).hexdigest(),
-                 **self.manifest_extra}
+                 "ask_protocol": self.ask_protocol, **self.manifest_extra}
         self.manifest_path.write_text(json.dumps(m, indent=2))
 
     # ------------------------------------------------------------ state
@@ -166,31 +191,40 @@ class Runner:
     def conversation(self, ep: Episode, turn: int, state: dict) -> dict:
         r = self.rendered(ep)
         conv = {"system": r.system, "user": r.user, "history": []}
-        if turn == 1:
-            r0 = state[(ep.episode_id, 0)]["ok"]
-            a0 = r0["action"]
+        replies = [r.scripted_reply, r.followup_reply]
+        for t in range(turn):
+            rt = state[(ep.episode_id, t)]["ok"]
+            at = rt["action"]
             conv["history"].append({
-                "assistant_native": r0["assistant_native"],
-                "tool_call": {"id": a0.get("call_id"), "name": "ask_user",
-                              "args": {"question": a0.get("question", "")}},
-                "tool_reply": r.scripted_reply,
+                "assistant_native": rt["assistant_native"],
+                "tool_call": {"id": at.get("call_id"), "name": "ask_user",
+                              "args": {"question": at.get("question", "")}},
+                "tool_reply": replies[t],
             })
         return conv
+
+    def _next_turn(self, ep: Episode, state: dict) -> tuple[int | None, bool]:
+        """(next turn to send or None, episode finished). Walks the turns: an
+        ask with a reply left leads to the next turn."""
+        max_t = max_answered_asks(ep.base_arm, self.ask_protocol)
+        for t in range(max_t + 1):
+            s = state.get((ep.episode_id, t), {"ok": None, "errors": 0})
+            if s["ok"] is None:
+                if s["errors"] >= self.max_attempts:
+                    return None, True
+                return t, False
+            if s["ok"]["action"]["type"] != "ask" or t == max_t:
+                return None, True
+        return None, True
 
     def pending(self, state: dict, exclude: set[tuple[str, int]] | None = None) -> list[tuple[Episode, int]]:
         exclude = exclude or set()
         out = []
         for eid in self.order:
             ep = self.episodes[eid]
-            s0 = state.get((eid, 0), {"ok": None, "errors": 0})
-            if s0["ok"] is None:
-                if s0["errors"] < self.max_attempts and (eid, 0) not in exclude:
-                    out.append((ep, 0))
-                continue
-            if s0["ok"]["action"]["type"] == "ask":
-                s1 = state.get((eid, 1), {"ok": None, "errors": 0})
-                if s1["ok"] is None and s1["errors"] < self.max_attempts and (eid, 1) not in exclude:
-                    out.append((ep, 1))
+            t, _ = self._next_turn(ep, state)
+            if t is not None and (eid, t) not in exclude:
+                out.append((ep, t))
         return out
 
     def status(self) -> dict:
@@ -204,10 +238,7 @@ class Runner:
                 continue
             if s0["ok"]["action"]["type"] == "ask":
                 asked += 1
-                s1 = st.get((eid, 1))
-                if s1 and (s1["ok"] is not None or s1["errors"] >= self.max_attempts):
-                    done += 1
-            else:
+            if self._next_turn(self.episodes[eid], st)[1]:
                 done += 1
         return {"episodes": len(self.order), "done": done, "error_final": errored, "asked": asked,
                 "pending_turns": len(self.pending(st))}
@@ -222,7 +253,7 @@ class Runner:
             "episode": ep.to_dict(), "order": r.order,
             "positions": {pid: i for i, pid in enumerate(r.order, start=1)},
             "prompt_sha256": hashlib.sha256((r.system + "\x00" + r.user).encode()).hexdigest(),
-            "scripted_reply": r.scripted_reply if turn == 1 else None,
+            "scripted_reply": r.scripted_reply if turn == 1 else (r.followup_reply if turn == 2 else None),
             "birth_year": r.meta["birth_year"],
         }
 
@@ -272,7 +303,7 @@ class Runner:
         ask_rate = sum(1 for r in oks if r["turn"] == 0 and r["action"]["type"] == "ask") / max(
             1, sum(1 for r in oks if r["turn"] == 0))
         remaining_t0 = sum(1 for ep, t in self.pending(state) if t == 0)
-        remaining_calls = remaining_t0 * (1 + ask_rate) + sum(1 for ep, t in self.pending(state) if t == 1)
+        remaining_calls = remaining_t0 * (1 + ask_rate) + sum(1 for ep, t in self.pending(state) if t >= 1)
         projected_run = mean_billed * remaining_calls
         snap = self.guard.snapshot()["providers"].get(self.ad.provider, {})
         spent = snap.get("spent_usd", 0.0)

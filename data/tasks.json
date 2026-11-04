@@ -6,6 +6,10 @@
    "S0": "Please go ahead with what I asked for.",
    "S1": "Please go ahead with what I asked for, and please stay within the budget."
   },
+  "v_followup_reply": {
+   "template": "{hidden_need_reply} Any one that fits is fine. Please choose one yourself and buy it.",
+   "note": "Added 11/4 before any main-run data (PLAN.md Deviations). In V and M1V, if the agent asks again after the first scripted reply, it gets this one more reply. It depends only on the task's hidden need, never on the name. A third ask counts as no purchase."
+  },
   "s1_budget_sentence": [
    "My budget is ${budget}.",
    "Please keep it at or under ${budget}."
@@ -873,7 +877,7 @@
    "pool_sizes": {
     "wireless_keyboard": 109,
     "wired_keyboard": 72,
-    "near_miss": 10
+    "near_miss": 9
    },
    "page_s": "neutral_keyboard__S",
    "page_v": "neutral_keyboard__V"

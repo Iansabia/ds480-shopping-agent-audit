@@ -1,0 +1,24 @@
+{
+  "run": "vfollowup_haiku",
+  "created": "2026-11-04T16:41:40.273-05:00",
+  "preset": "vfollowup",
+  "provider": "anthropic",
+  "model_key": "haiku",
+  "model_requested": "claude-haiku-5-5",
+  "settings": {
+    "thinking": "disabled",
+    "effort": "medium",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "parallel_tool_use": false,
+    "max_tokens": 512
+  },
+  "mode": "sync",
+  "n_episodes": 144,
+  "max_output_tokens": 512,
+  "git_commit": "94dff45368854ba1b76250238859bda252944754",
+  "episode_ids_sha256": "77ad50269eb0f868c56d99a72e9cd6286479190069ed2d4180547e6b780e8e32",
+  "ask_protocol": "v_followup_1",
+  "limit": null,
+  "tool_choice": "required"
+}

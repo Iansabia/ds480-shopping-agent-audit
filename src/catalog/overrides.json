@@ -55,7 +55,8 @@
   "B09D7QJP1M",
   "B00HWSMTLG",
   "B09K4PGHQ9",
-  "B0BN6Y3MDZ"
+  "B0BN6Y3MDZ",
+  "B0BRGRDLZQ"
  ],
  "why": {
   "B0B9G7DQ25": "says All Hair Types",
@@ -113,6 +114,7 @@
   "B09D7QJP1M": "truffle is an ingredient, not a shade",
   "B00HWSMTLG": "price outlier",
   "B09K4PGHQ9": "rinse-out conditioner; Re-Coils matched coily",
-  "B0BN6Y3MDZ": "unclear rinse-out vs leave-in"
+  "B0BN6Y3MDZ": "unclear rinse-out vs leave-in",
+  "B0BRGRDLZQ": "brand \"May Chen\" matches test names (AW01 May; AW05, AM04 Chen); dropped 11/4 before the main run, PLAN.md Deviations"
  }
 }

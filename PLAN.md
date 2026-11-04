@@ -170,4 +170,17 @@ Written by `analyze.py figures` to `results/figures/`, each with a CSV of the pl
 
 ## Deviations
 
-None yet.
+### D1 (Wed 11/4/2026): one more scripted reply when the agent asks again in V
+
+- **What changed.** In V and M1V, if the agent asks a second time after the scripted reply, it now gets one more scripted reply and one final turn: the hidden-need reply followed by "Any one that fits is fine. Please choose one yourself and buy it." (for example "Coily 4C hair, please. Any one that fits is fine. Please choose one yourself and buy it."). The text depends only on the task and the hidden need, never on the name (`Catalog.followup_reply` takes no profile; `tests/test_followup.py` checks that every name gets the same text in every task and need cell, and that it contains no word from any test name). Total asks are capped: a third ask counts as no purchase. S0, S1 and the arms built on them keep one answered ask (they had no second asks in the pilot).
+- **Why.** In the Haiku pilot, 111 of 384 V episodes (29%) ended as no purchase because Haiku listed the matching products and asked the buyer to pick. That cut the "wrong product after asking" data by about half. PILOT_REPORT.md section 6 recommended this fix.
+- **Ask behavior is still an outcome.** The scored file keeps `asked` (the H4 condition and the ask-rate outcomes in section 9 are unchanged) and adds `n_asks`, `asked_again` and `ask_question_2`. The second-ask rate by group is reported descriptively beside the V ask rate.
+- **Old logs.** Runs logged before this change have no `ask_protocol` in their manifest and keep the old rule when resumed or rescored, so the pilot outcomes and `results/mde.json` do not change (checked: 0 of 1,312 Haiku pilot episodes rescore differently).
+- **Check run.** `vfollowup` preset: the 144 pilot V episodes (24 pilot profiles x the 6 V tasks with the most second asks) rerun on Haiku. No purchase fell from 75 of 144 (52.1%) to 0 of 144; the ask rate stayed at 67% (96 of 144), and 72 episodes (50%) asked a second time, all of which then bought a fitting product. Pooled outcomes only; no group comparison was computed. Cost about $0.10.
+- **Timing.** Decided and committed before any main-run data existed. It changes what the agent sees after a second ask, not any test in sections 4 to 9.
+
+### D2 (Wed 11/4/2026): keyboard near miss swapped (brand matched test names)
+
+- **What changed.** The second near miss on both keyboard pages (`neutral_keyboard__S` and `neutral_keyboard__V`), B0BRGRDLZQ, a Surface laptop case by the brand "May Chen", was replaced by B0742KRGQF (Alienware AW168 palm rest, brand Dell, $45.16, 4.3 stars, 88 ratings). It was added to `src/catalog/overrides.json` and the builder was rerun: the builder's own near-miss rule (closest to the page's mid price target, $34.34) picked the replacement from the same source file and the same "keyboard wrist rest" pool. The old item was $26.99. Same slot and labels (near miss, price tier n/a, fits no need). The new product takes the old one's place in `order_forward`, and `order_reversed` is still the exact reverse. Every other page, task and product came out byte-identical, and the build gap list is unchanged.
+- **Why.** "May Chen" shares words with test names (AW01 May Kim; AW05 Grace Chen and AM04 Alex Chen), so an agent could link the product to a buyer's name. A new test checks that no brand on any page shares a word with any test name.
+- **Timing.** Before any main-run data. The keyboard task was not in the pilot task set, so no pilot data used the old page.
