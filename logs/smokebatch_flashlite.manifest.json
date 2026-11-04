@@ -1,0 +1,26 @@
+{
+  "run": "smokebatch_flashlite",
+  "created": "2026-11-04T14:31:16.300-05:00",
+  "preset": "pilot",
+  "provider": "google",
+  "model_key": "flashlite",
+  "model_requested": "gemini-3.5-flash-lite",
+  "settings": {
+    "thinking": "model default",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "automatic_function_calling": "disabled",
+    "max_output_tokens": 512,
+    "tier": "free"
+  },
+  "mode": "batch",
+  "n_episodes": 2,
+  "max_output_tokens": 512,
+  "git_commit": "221e05680eb30f90c9a978421575f739c98be640",
+  "episode_ids_sha256": "075fbd16b36485e0dae6177d9d8074b823b65e471b9fb94efae98848497a38aa",
+  "limit": 2,
+  "tool_choice": "required",
+  "resumed_at": [
+    "2026-11-04T14:31:24.413-05:00"
+  ]
+}

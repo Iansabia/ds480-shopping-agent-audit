@@ -1,0 +1,24 @@
+{
+  "run": "smokebatch_luna",
+  "created": "2026-11-04T14:31:14.010-05:00",
+  "preset": "pilot",
+  "provider": "openai",
+  "model_key": "luna",
+  "model_requested": "gpt-6-luna",
+  "settings": {
+    "reasoning_effort": "none",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "parallel_tool_calls": false,
+    "store": false,
+    "service_tier": null,
+    "max_output_tokens": 512
+  },
+  "mode": "batch",
+  "n_episodes": 2,
+  "max_output_tokens": 512,
+  "git_commit": "221e05680eb30f90c9a978421575f739c98be640",
+  "episode_ids_sha256": "075fbd16b36485e0dae6177d9d8074b823b65e471b9fb94efae98848497a38aa",
+  "limit": 2,
+  "tool_choice": "required"
+}

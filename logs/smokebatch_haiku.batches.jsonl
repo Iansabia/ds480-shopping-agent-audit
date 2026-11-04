@@ -1,0 +1,4 @@
+{"event": "submitted", "batch_id": "msgbatch_018wPU8uCQvGfapyyfdLWsBW", "t_submit": "2026-11-04T14:31:13.867-05:00", "n": 2, "reservation": "218c48ceecc7", "reserved_usd": 0.0005272, "items": [["V_BM03_15_w2_rev__t0a1", "V_BM03_15_w2_rev", 0, 1], ["S1_BW03_37_w1_fwd__t0a1", "S1_BW03_37_w1_fwd", 0, 1]]}
+{"event": "collected", "batch_id": "msgbatch_018wPU8uCQvGfapyyfdLWsBW", "status": "ended", "t": "2026-11-04T14:33:38.241-05:00", "n_results": 2, "billed_usd_est": 0.00037535}
+{"event": "submitted", "batch_id": "msgbatch_01VPufqzAdBBW8gRuJPVPwPn", "t_submit": "2026-11-04T14:33:38.987-05:00", "n": 2, "reservation": "044e554be593", "reserved_usd": 0.0005553000000000001, "items": [["V_BM03_15_w2_rev__t1a1", "V_BM03_15_w2_rev", 1, 1], ["S1_BW03_37_w1_fwd__t1a1", "S1_BW03_37_w1_fwd", 1, 1]]}
+{"event": "collected", "batch_id": "msgbatch_01VPufqzAdBBW8gRuJPVPwPn", "status": "ended", "t": "2026-11-04T14:35:10.462-05:00", "n_results": 2, "billed_usd_est": 0.00032935}
