@@ -128,6 +128,12 @@ def f_usd_plain(x, nd=2):
     return "n/a" if x is None or not np.isfinite(x) else f"${x:,.{nd}f}"
 
 
+def f_gap_usd(x):
+    """A dollar gap per purchase: to a tenth of a cent under 10 cents, so -$0.025 sits next to -$25 per 1,000
+    instead of rounding to -$0.02."""
+    return f_usd(x, 3 if finite(x) and abs(x) < 0.1 else 2)
+
+
 def f_p(p):
     if p is None or not np.isfinite(p):
         return "n/a"
@@ -199,17 +205,17 @@ def per_million(pct):
 
 
 def verdict_plain(v, pilot=False):
-    """analyze.py verdict -> plain words for a non-statistician reader."""
+    """analyze.py verdict -> the exact PLAN 7 wording, which FIGURES_SPEC asks for in every figure and table."""
     if pilot:
         return "pilot preview: no verdict"
     if v.startswith("gap detected, smaller"):
-        return "gap found, but inside the equivalence margin"
+        return "gap detected, smaller than the margin"
     if v.startswith("gap detected"):
-        return "gap found (significant after correction)"
+        return "gap detected"
     if v.startswith("no gap larger"):
-        return "no gap larger than the margin"
+        return "no gap larger than the margin (equivalence shown)"
     if v.startswith("inconclusive"):
-        return "inconclusive: no gap found, a small one not ruled out"
+        return "inconclusive: no evidence of a gap, but equivalence not shown"
     return v
 
 
@@ -223,6 +229,17 @@ def verdict_short(v, pilot=False):
     if v.startswith("no gap larger"):
         return "no gap larger than margin"
     return "inconclusive"
+
+
+def verdict_lines(v, width):
+    """A verdict over at most two lines, broken where it reads well: before the parenthesis or after the comma."""
+    if len(v) <= width:
+        return [v]
+    for sep, keep in ((" (", "("), (", but ", "but ")):
+        if sep in v:
+            a, b = v.split(sep, 1)
+            return [a + ("," if keep == "but " else ""), keep + b]
+    return S.wrap(v, width).split("<br>")
 
 
 SHORT = {"H1": ("Black vs White names", "names associated with Black buyers", "names associated with White buyers"),
@@ -641,13 +658,12 @@ def fig_dollars(out: Out, df, models, conf, pr, pending=(), key="fig3", stem="fi
         d0 = A.subset(df, m, ["S0"], tiers=("core", "baseline"))
         d0 = d0[d0["price"].notna() & (d0["bought"] == 1)]
         gcol = np.where(d0["tier"] == "baseline", "No name", d0["race"].fillna("") + " " + d0["gender"].fillna(""))
-        ns = {g: f"{d0[gcol == g]['profile_id'].nunique()} names, {int((gcol == g).sum())} purchases" for g in GROUPS}
+        ns = {g: f"{d0[gcol == g]['profile_id'].nunique()} {'accounts' if g == 'No name' else 'names'}, "
+                 f"{int((gcol == g).sum()):,} purchases" for g in GROUPS}
         group_yaxis(fig, GROUPS, 1, k, labels=(k == 1), ns=ns)
-        p_ = pr[(pr.model == m) & (pr.hypothesis == "H1")] if not out.pilot else pr.iloc[0:0]
-        gap_line = (f"<br><span style='font-weight:normal;color:{S.MUTED}'>Black minus White: "
-                    f"{f_usd(p_.iloc[0]['usd_per_purchase'])} ({f_pct(p_.iloc[0]['gap_pct'])})</span>"
-                    if not p_.empty else "")
-        panel_title(fig, 1, k, f"{S.label(m)}{gap_line}")
+        # model name only: the tested gap is on log price (Figure 4, Table 1), and its dollar translation need not
+        # match the difference between these cell-adjusted dollar dots (see the caption)
+        panel_title(fig, 1, k, S.label(m))
         fig.add_annotation(x=1.0, y=1.0, xref=f"x{'' if k == 1 else k} domain", yref=f"y{'' if k == 1 else k} domain",
                            xanchor="left", xshift=14, yanchor="bottom", yshift=2, showarrow=False, text="adjusted",
                            font=dict(size=S.BASE - 4, color=S.MUTED))
@@ -655,17 +671,9 @@ def fig_dollars(out: Out, df, models, conf, pr, pending=(), key="fig3", stem="fi
         fig.update_yaxes(range=[len(GROUPS) - 0.45, -1.05], row=1, col=k)
     ex = "" if all(m in conf for m in ms) else " Exploratory model shown because no confirmatory model has data."
     pend = [S.label(m) for m in pending if m in A.CONFIRM_MODELS_DEFAULT]
-    if out.pilot:
-        title = "What each name group paid for the same clear request"
-    elif key != "fig3":
-        title = "Dollar levels by name group and gender, same clear request"
-    else:
-        pp = [pr[(pr.model == m) & (pr.hypothesis == "H1")] for m in ms]
-        pp = [(m, q.iloc[0]) for m, q in zip(ms, pp) if not q.empty]
-        title = ("Black vs White names paid "
-                 + " and ".join(f"{f_usd_plain(q['focal_usd'])} vs {f_usd_plain(q['ref_usd'])} ({SHORTM.get(m, m)})"
-                                for m, q in pp) + " for the same request"
-                 if pp else "What each name group paid for the same clear request")
+    # descriptive dollar levels only: no title states a group gap (the tests are on log price, Figure 4)
+    title = ("What each name group paid for the same clear request" if out.pilot else
+             "Dollar levels by name group and gender, same clear request")
     cheap_txt = (f" Cheapest fitting product on these tasks: ${list(cheap.values())[0]:.2f} on average."
                  if len({round(v, 2) for v in cheap.values()}) == 1 else
                  " Cheapest fitting product on these tasks: " + ", ".join(f"${v:.2f} ({SHORTM.get(m, m)})"
@@ -674,24 +682,45 @@ def fig_dollars(out: Out, df, models, conf, pr, pending=(), key="fig3", stem="fi
            "across names, gray tick = raw average." + cheap_txt)
     foot = ("Adjusted: dollar price with task, wording and product-order effects removed, so every group is compared on "
             "the same mix of tasks. Raw average: before that adjustment.<br>The tests use percent gaps on log "
-            "price (Figure 4); this chart shows the dollar levels behind them." + ex
+            "price (Figure 4); this chart shows the dollar levels behind them and is not a test." + ex
             + (f" {', '.join(pend)}: pending (no scored runs yet)." if pend else ""))
-    S.layout(fig, title, sub, out.pilot, 190 + 60 * len(GROUPS) + S.footer_margin(foot), bottom=S.footer_margin(foot),
-             left=LEFT_GROUPS, right=84, gap=62)
+    # panel titles are one line (the model), so the plot sits 18 px closer to the subtitle at the same plot height
+    S.layout(fig, title, sub, out.pilot, 172 + 60 * len(GROUPS) + S.footer_margin(foot), bottom=S.footer_margin(foot),
+             left=LEFT_GROUPS, right=84, gap=44)
     S.footer(fig, foot)
     num = "Figure 3" if key == "fig3" else "Figure A8"
-    cap = (f"{num}. Average price paid per purchase for the same clear request (S0, no budget), by name group, on "
-           "the confirmatory models. Dots: mean over names of the dollar price after removing task, wording and order "
-           "effects (so every group is compared on the same task mix); gray ticks: the raw average before that "
-           "adjustment; bars: 95% CI across names "
-           f"({', '.join(f'{S.label(m)}: {int(t[t.model == m].names.min())} to {int(t[t.model == m].names.max())} names per group' for m in ms)}). "
+
+    def n_names(m):
+        nm = t[(t.model == m) & (t.group != "No name")]["names"]
+        nb = t[(t.model == m) & (t.group == "No name")]["names"]
+        txt_ = (f"{int(nm.min())} names per group" if nm.min() == nm.max() else
+                f"{int(nm.min())} to {int(nm.max())} names per group")
+        return txt_ + (f" and {int(nb.iloc[0])} no-name accounts" if len(nb) else "")
+    cap = (f"{num}. Average price paid per purchase for the same clear request (S0, no budget), by name group and "
+           "gender cell, on the confirmatory models. Dots: mean over names of the dollar price after removing task, "
+           "wording and order effects (so every group is compared on the same task mix); gray ticks: the raw average "
+           "before that adjustment; bars: 95% CI across names "
+           f"({'; '.join(f'{S.label(m)}: {n_names(m)}' for m in ms)}). "
            "The cheapest product that fit the request is given in the subtitle, as an average over the same tasks. "
-           "The tests of these differences use percent gaps on log price and are in Figure 4."
-           + ("" if out.pilot else " Panel titles: names associated with Black buyers minus names associated with "
-              "White buyers, in dollars per purchase."))
-    if key != "fig3":
-        cap += (" Dots are group means of the cell-adjusted dollar price; the headline dollar gap (Table 1, Figure 3) "
-                "is the tested percent gap applied to the White names' average, so the two can differ by a few cents.")
+           "These dollar levels are descriptive; the tests of these differences use percent gaps on log price and "
+           "are in Figure 4.")
+    if key != "fig3" and not out.pilot:
+        # the dots' Black minus White difference vs the tested gap translated at the White names' average (Table 1)
+        bits = []
+        for m in ms:
+            a = t[t.model == m].set_index("group")["adj_usd"]
+            q = pr[(pr.model == m) & (pr.hypothesis == "H1")] if not pr.empty else pr
+            if q.empty or not all(g in a for g in ("Black woman", "Black man", "White woman", "White man")):
+                continue
+            d = (a["Black woman"] + a["Black man"]) / 2 - (a["White woman"] + a["White man"]) / 2
+            q = q.iloc[0]
+            bits.append(f"on {S.label(m)}, the dots put names associated with Black buyers ${abs(d):.2f} "
+                        f"{'above' if d > 0 else 'below'} names associated with White buyers, while the tested gap "
+                        f"is {f_pct(q['gap_pct'])} ({f_gap_usd(q['usd_per_purchase'])} per purchase)")
+        cap += (" The dollar gap in Table 1 is the tested percent gap applied to the White names' cell-adjusted "
+                "average. Because the test is on log price, the difference between these dots need not match it and "
+                "can even point the other way"
+                + (": " + "; ".join(bits) if bits else "") + ".")
     out.fig(key, fig, stem, cap, t)
 
 
@@ -774,22 +803,25 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
     fig = make_subplots(rows=1, cols=1)
     fig.update_xaxes(domain=[0.0, 0.58])
     TX = 0.62                                       # left edge of the dollar text column (paper x)
-    margins = sorted({round(100 * (math.exp(mg) - 1), 2) for mg in pr["margin_log"].dropna()}) if "margin_log" in pr else []
+    # the equivalence test is symmetric in log price, so a margin m sits at exp(m) - 1 above 0 and at exp(-m) - 1
+    # below (+3.0% and -2.9% for log 1.03)
+    mlogs = sorted({round(float(mg), 9) for mg in pr["margin_log"] if finite(mg)}) if "margin_log" in pr else []
+    mlines = sorted(100 * (math.exp(s * mg) - 1) for mg in mlogs for s in (-1, 1))
+    margins = [100 * (math.exp(mg) - 1) for mg in mlogs]          # upper ends, for the text
     mdes = [mde_for(mde_info, m, h, "mde_holm_pct") or 0 for h, m in order]
-    lim = max([abs(c) for cc in pr["ci_pct"] for c in cc] + margins + mdes + [2.0]) * 1.22
+    lim = max([abs(c) for cc in pr["ci_pct"] for c in cc] + [abs(x) for x in mlines] + mdes + [2.0]) * 1.22
     # which model each margin belongs to (the frozen "quiet names" rule can give the models different margins)
-    who = {}
-    if "margin_log" in pr:
-        for m_, mg_ in zip(pr["model"], pr["margin_log"]):
-            if finite(mg_):
-                who.setdefault(round(100 * (math.exp(mg_) - 1), 2), [])
-                if SHORTM.get(m_, m_) not in who[round(100 * (math.exp(mg_) - 1), 2)]:
-                    who[round(100 * (math.exp(mg_) - 1), 2)].append(SHORTM.get(m_, m_))
-    for mg in margins:
+    wk = {mg: list(dict.fromkeys(m_ for m_, g_ in zip(pr["model"], pr["margin_log"])
+                                 if finite(g_) and round(float(g_), 9) == mg)) for mg in mlogs}
+    who = {mg: [SHORTM.get(m_, m_) for m_ in ms_] for mg, ms_ in wk.items()}
+    who_l = {mg: [S.label(m_) for m_ in ms_] for mg, ms_ in wk.items()}
+    for mg in mlogs:
         for sgn in (-1, 1):
-            S.vline(fig, sgn * mg, color=S.MUTED, width=1.2, dash="dot")
-            wl = f"<br>({', '.join(who.get(mg, []))})" if len(margins) > 1 and who.get(mg) else ""
-            fig.add_annotation(x=sgn * mg, y=-0.62, text=f"margin {'+' if sgn > 0 else '-'}{mg:g}%{wl}", showarrow=False,
+            x = 100 * (math.exp(sgn * mg) - 1)
+            S.vline(fig, x, color=S.MUTED, width=1.2, dash="dot")
+            # the value is on the axis tick under the line; the label names the model when margins differ
+            wl = f"<br>({', '.join(who[mg])})" if len(mlogs) > 1 and who.get(mg) else ""
+            fig.add_annotation(x=x, y=-0.62, text=f"margin{wl}", showarrow=False,
                                xanchor="center", yanchor="bottom", bgcolor="white", borderpad=2,
                                font=dict(size=S.BASE - 4, color=S.MUTED))
     S.vline(fig, 0, color=S.INK, width=1.3)
@@ -801,9 +833,9 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
         mde = mde_for(mde_info, m, h, "mde_holm_pct")
         hov = (hover_prefix(out.pilot) + f"<b>{h}: {SHORT[h][0]}</b><br>{S.label(m)}<br>gap (focal minus comparison): "
                f"{f_pct(r['gap_pct'], 2)}<br>95% CI (unadjusted): {f_range(lo, hi, 'pct')}<br>"
-               f"comparison group average paid: {f_usd_plain(r['ref_usd'])}; focal: {f_usd_plain(r['focal_usd'])}"
+               f"comparison group's average paid (task effects removed): {f_usd_plain(r['ref_usd'])}"
                + ("" if out.pilot else
-                  f"<br>per purchase: {f_usd(r['usd_per_purchase'])} ({f_range(*r['usd_ci'], 'usd')})"
+                  f"<br>per purchase: {f_gap_usd(r['usd_per_purchase'])} ({f_range(*r['usd_ci'], 'usd')})"
                   f"<br>per 1,000 purchases: {f_usd(r['usd_per_1000'], 0)}<br>per $1M of agent spend: "
                   f"{f_usd(r['usd_per_1m'], 0)}<br>Holm p: {f_p(r['p_holm'])}; verdict: {verdict_plain(r['verdict'])}")
                + f"<br>names: {int(r['names_focal'])} focal, {int(r['names_ref'])} comparison"
@@ -822,9 +854,9 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
                      ("(a design number, not a result)", S.MUTED)]
             lines = [x for x in lines if x[0]]
         else:
-            lines = [(f"<b>{f_usd(r['usd_per_purchase'])}</b> per purchase · {f_usd(r['usd_per_1000'], 0)} per 1,000", S.INK),
-                     (f"{f_usd(r['usd_per_1m'], 0)} per $1M of agent spend", S.INK),
-                     (verdict_plain(r["verdict"]), S.MUTED)]
+            lines = [(f"<b>{f_gap_usd(r['usd_per_purchase'])}</b> per purchase · {f_usd(r['usd_per_1000'], 0)} per 1,000",
+                      S.INK), (f"{f_usd(r['usd_per_1m'], 0)} per $1M of agent spend", S.INK)]
+            lines += [(ln, S.MUTED) for ln in verdict_lines(verdict_plain(r["verdict"]), 42)]
         blocks.setdefault(m, []).append((ys[i], lines))
     for m, bl in blocks.items():
         if out.pilot and len(bl) > 1 and all(b[1] == bl[0][1] for b in bl):
@@ -841,34 +873,41 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
     fig.add_annotation(xref="paper", yref="y", x=TX, y=-0.62, yanchor="bottom", showarrow=False, xanchor="left",
                        text=("<b>Detectable gap in dollars</b>" if out.pilot else
                              "<b>The same gap in dollars</b> (not a test)"), font=dict(size=S.BASE - 2))
-    r0 = pr[(pr.hypothesis == order[0][0]) & (pr.model == order[0][1])].iloc[0]
+    def h1_note(q):
+        """One model's H1 line above the plot: a direction only for a gap the test detected."""
+        est = f"estimate {f_pct(q['gap_pct'])}, 95% CI {f_range(*q['ci_pct'], 'pct')}"
+        if q["verdict"].startswith("gap detected"):
+            return (f"{S.label(q['model'])}: {SHORT['H1'][1]} paid {abs(q['gap_pct']):.1f}% "
+                    f"{'less' if q['gap_pct'] < 0 else 'more'} (95% CI {f_range(*q['ci_pct'], 'pct')}), "
+                    "significant after Holm")
+        if q["verdict"].startswith("no gap") and finite(q.get("margin_log")):
+            return (f"{S.label(q['model'])}: no evidence of a gap, inside the "
+                    f"{round(100 * (math.exp(q['margin_log']) - 1), 1):g}% equivalence margin ({est})")
+        return f"{S.label(q['model'])}: no evidence of a gap, equivalence not shown ({est})"
     note = (f"<b>●</b> dot = pilot estimate    <b>—</b> bar = unadjusted 95% interval    "
             f"<span style='color:{S.ACCENT}'><b>|</b></span> blue ticks = detectable gap"
             if out.pilot else
-            f"<b>Estimate (H1)</b>: {SHORT['H1'][1]} paid "
-            + "; ".join(f"{abs(q['gap_pct']):.1f}% {'less' if q['gap_pct'] < 0 else 'more'} ({S.label(q['model'])}, "
-                        f"{'significant' if q['verdict'].startswith('gap detected') else 'not significant'})"
-                        for _, q in pr[pr.hypothesis == "H1"].iterrows()))
-    tv = ([k * margins[0] for k in range(-int(lim // margins[0]), int(lim // margins[0]) + 1)] if margins
-          else pct_ticks(lim)[0])
-    # no gridlines: the ticks sit on the margin lines, and a gridline there would hide the dotted margin
+            "<b>H1, Black vs White names.</b> "
+            + "<br>".join(h1_note(q) for _, q in pr[pr.hypothesis == "H1"].iterrows()))
+    # ticks on 0 and on each dotted margin line (no gridlines, which would hide the dotted lines)
+    tv = sorted([0.0] + mlines) if mlines else pct_ticks(lim)[0]
     fig.update_xaxes(range=[-lim, lim], title_text="Gap in price paid for the same request "
-                     "(focal minus comparison)", zeroline=False, showgrid=not margins, tickmode="array", tickvals=tv,
-                     ticktext=[("0%" if abs(x) < 1e-12 else f"{x:+g}%") for x in tv])
+                     "(focal minus comparison)", zeroline=False, showgrid=not mlines, tickmode="array", tickvals=tv,
+                     ticktext=[("0%" if abs(x) < 1e-12 else f"{x:+.1f}%" if mlines else f"{x:+g}%") for x in tv])
     fig.update_yaxes(tickmode="array", tickvals=ys,
                      ticktext=[f"<b>{h}</b> {SHORT[h][0]}<br><span style='color:{S.MUTED}'>{S.label(m)}</span>"
                                for h, m in rows_all], range=[ybot, -1.0])
     if out.pilot:
         title = "Price gap by name group, next to the smallest gap the test can detect"
     else:
-        sig = [verdict_plain(pr[(pr.hypothesis == h) & (pr.model == m)].iloc[0]["verdict"]) for h, m in order]
-        found = [m for (h, m), x in zip(order, sig) if x.startswith("gap found")]
-        found = list(dict.fromkeys(found))
-        inside = all(x.startswith("gap found, but inside") for x in sig if x.startswith("gap found"))
-        title = (f"A price gap by name was found for {' and '.join(S.label(m) for m in found)}"
-                 + (", inside the equivalence margin" if inside else "") if found else
-                 "No price gap by name larger than the margin" if all(x.startswith("no gap") for x in sig) else
-                 "No price gap by name was found, but small gaps could not be ruled out")
+        sig = [pr[(pr.hypothesis == h) & (pr.model == m)].iloc[0]["verdict"] for h, m in order]
+        found = list(dict.fromkeys(m for (h, m), v in zip(order, sig) if v.startswith("gap detected")))
+        inside = all(v.startswith("gap detected, smaller") for v in sig if v.startswith("gap detected"))
+        title = (f"A price gap by name was detected for {' and '.join(S.label(m) for m in found)}"
+                 + (", smaller than the equivalence margin" if inside else "") if found else
+                 "No price gap by name larger than the margin (equivalence shown)" if all(v.startswith("no gap")
+                                                                                         for v in sig) else
+                 "No evidence of a price gap by name, but equivalence was not shown for every test")
     no_mde = [S.label(m) for m in dict.fromkeys(m for _, m in order) if not mde_for(mde_info, m, "H1", "mde_holm_pct")]
     sub = ("Price paid for the same clear request: names associated with Black vs White buyers (H1) and women vs men "
            f"(H2). Blue ticks: detectable gap after Holm at m = {HOLM_M} (Haiku + Luna)"
@@ -881,12 +920,15 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
             f"Blue ticks: a true gap this size is flagged at least 80% of the time (fixed before the main run).<br>"
             + (f"Bars are wider than the ticks because they come from the pilot ({PILOT_N}).{caveat}"
                if out.pilot else caveat.strip())
+            + ("<br>Dotted lines: equivalence margins (symmetric on log price: "
+               + ", ".join(f"+{u:.1f}% pairs with {100 * (math.exp(-mg) - 1):.1f}%" for u, mg in zip(margins, mlogs))
+               + ")." if mlogs else "")
             + ("<br>Dollar column: the detectable gap applied to $1M of spend and to 1,000 purchases at the catalog's "
                "average cheapest fitting price. Not a pilot gap." if out.pilot else
                "<br>Dollar columns translate the percent gap at the comparison group's average price paid (per $1M uses "
                "the percent only). Not separate tests."))
     S.layout(fig, title, sub, out.pilot, int(250 + 105 * (ybot + 1.0)) + S.footer_margin(foot),
-             bottom=S.footer_margin(foot), left=180, right=10, gap=44)
+             bottom=S.footer_margin(foot), left=180, right=10, gap=44 + 16 * note.count("<br>"))
     fig.add_annotation(xref="paper", yref="paper", x=-(180 - S.MARGIN_X) / (S.WIDTH - 190), y=1.0, yanchor="bottom",
                        yshift=10, xanchor="left", showarrow=False, align="left", text=note,
                        font=dict(size=S.BASE - 3, color=S.INK))
@@ -899,7 +941,10 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
            "(H1) and women minus men (H2), name-level OLS with HC2 errors; bars: unadjusted 95% CI (a gap counts only "
            "if its Holm-adjusted p < 0.05). Blue ticks: the detectable gap fixed before the main run, after Holm at "
            f"m = {HOLM_M} (the planned Haiku + Luna family)" + (f", {band:.2f}% for H1 on Haiku" if band else "")
-           + ": a true gap this size would be flagged at least 80% of the time. Dotted lines: equivalence margin. "
+           + ": a true gap this size would be flagged at least 80% of the time. Dotted lines: equivalence margins"
+           + (" (" + " and ".join(f"{u:.0f}% for {' and '.join(who_l[mg])}" for u, mg in zip(margins, mlogs))
+              + "), symmetric on log price, so the lower lines sit at "
+              + " and ".join(f"{100 * (math.exp(-mg) - 1):.1f}%" for mg in mlogs) + ". " if mlogs else ". ")
            + (f"The pilot intervals are wider than the ticks because the pilot is small ({PILOT_N}).{caveat} "
               "Right: the detectable gap in dollars per $1 million of agent spend and per 1,000 purchases at the "
               "catalog's average cheapest fitting price; a design number, not a pilot result. GPT-6 Luna rows are "
@@ -1386,12 +1431,19 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
             + ". n under each panel title: names per group x runs per name. " + COLOR_NOTE
             + ("<br>" + "<br>".join(notes) if notes else ""))
     foot = with_key(foot, ms, open_note=bool(expl))
-    if out.pilot:
-        title = "Hair and skin tasks: asking first, wrong products and their cost"
-    else:
-        r4 = conf_row(bundle, ms[0], "H4") if ms else None
-        title = ("Guessing the need from the name (H4): " + verdict_plain(r4["verdict"]) if r4 else
-                 "Hair and skin tasks: asking first, wrong products and their cost")
+    title = "Hair and skin tasks: asking first, wrong products and their cost"
+    if not out.pilot:
+        # every confirmatory model's H4 verdict, detected gaps first (a point estimate only where a gap was detected)
+        r4 = [(m, conf_row(bundle, m, "H4")) for m in ms if m in conf]
+        r4 = sorted([(m, r) for m, r in r4 if r], key=lambda x: not x[1]["verdict"].startswith("gap detected"))
+
+        def h4_bit(m, r):
+            v = r["verdict"]
+            if v.startswith("gap detected"):
+                return f"{verdict_plain(v)} for {S.label(m)} ({f_pts(r['gap_points'])})"
+            return f"{'no gap larger than the margin' if v.startswith('no gap') else 'inconclusive'} for {S.label(m)}"
+        if r4:
+            title = "Guessing the need from the name (H4): " + "; ".join(h4_bit(m, r) for m, r in r4)
     sub = ("Top: vague requests; the ask rate (A), then wrong picks when the agent bought without asking (B, C). Bottom: "
            "clear requests that stated the need (D, E) and the money spent on wrong products (F)."
            + (f" H4's detectable Black minus White gap after Holm (m = {HOLM_M}): {h4m:.1f} points." if h4m else ""))
@@ -1573,81 +1625,174 @@ def fig_m1(out: Out, df, models, bundle):
 # ----------------------------------------------------------------------------- Figure 1: summary card
 
 def six_group_line() -> str:
-    """Headline line for the summary card: the six-group omnibus result per model (exploratory, D12)."""
+    """Headline line for the summary card: the six-group omnibus result per model (exploratory, D12), with p
+    printed as in Figure 3 (race_headline._p)."""
     om = RH.load_omnibus()
-    bits = [f"{SHORTM.get(m, m)} p = {f_p(o['p_perm'])}" for m, o in om.items() if isinstance(o, dict) and "F" in o]
+    bits = [f"{SHORTM.get(m, m)} p = {RH._p(o['p_perm'])}" for m, o in om.items() if isinstance(o, dict) and "F" in o]
     if not bits:
         return "Six name groups: see Figure 3"
-    return ("<b>Six name groups</b> (Fig. 3; exploratory): does price<br>differ across any group? "
-            + ", ".join(bits))
+    return "<b>Six name groups</b> (Fig. 3, exploratory): does price<br>differ by group? " + ", ".join(bits)
 
 
-def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
+REDUCED_PRESETS = ("reduced", "olmo")   # exploratory models' smaller grids (PLAN 3): no PB or P arm
+CARD_MIN = 229      # px: height of the top cards in the pilot preview layout (the main card grows to fit its text)
+ACT_H = 155         # px: height of the actions card
+
+
+def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models, statuses=()):
+    """Figure 1, the summary card. Positions are in px (y counts up from the bottom of the plot area), so each
+    text block sits under the one above it by its real line height and the top cards grow to fit their text."""
     fig = go.Figure()
-    canvas(fig)
     eps = design.get("main", {}).get("episodes", 32640)
+    h1 = pr[(pr.hypothesis == "H1") & (pr.status == "confirmatory")] if not pr.empty else pr
+    main = not (out.pilot or h1.empty)
+    fam = bundle["confirmatory"].get("family_size", HOLM_M)
+    title = "Same request, same result? A paired-name audit of AI shopping agents"
+    sub = "What was tested, what was found, the smallest gap the test can see, and what a card network can do."
+    # top cards: (left edge, right edge) in % of the width; the middle card is wider because it holds the most text
+    span = {"left": (0, 29), "mid": (31, 71), "right": (73, 100)}
+    cw = {k: (x1 - x0) / 100 * (S.WIDTH - 20) - 24 for k, (x0, x1) in span.items()}   # px of text width
+    tx = {k: x0 + 1.4 for k, (x0, _) in span.items()}
+    cards = {k: [] for k in span}
+
+    def wr(s, size, card, bold=False):
+        return S.wrap(s, int(cw[card] / ((0.56 if bold else 0.52) * size)))
+
+    def nb(s):   # keep an interval or a label on one line when the text wraps
+        return s.replace(" ", "\u00a0")
+
+    def vl(v, size, card):   # a verdict in bold, broken where it reads well
+        return "<br>".join(verdict_lines(v, int(cw[card] / (0.56 * size))))
+
+    def stack(card, x, blocks, depth=34.0):
+        """Queue text blocks (text, size, color, bold, px after) top down in a card; returns the depth reached."""
+        for s, size, color, bold, after in blocks:
+            if bold:
+                s = "<br>".join(f"<b>{ln}</b>" for ln in s.split("<br>"))
+            cards[card].append((x, depth, s, size, color))
+            depth += S.LINE * size * (s.count("<br>") + 1) + after
+        return depth
+
+    # left: what was tested (the exploratory models and their run counts come from the runs given)
+    if main:
+        expl = [m for m in models if m not in conf]
+        pre = {s.get("model_key"): s.get("preset") for s in statuses if s.get("preset") in ("main", "reduced", "olmo")}
+        mg = bundle["checks"].get("main_grid", {})
+        ex = [f"{S.label(m)} ({mg.get(m, {}).get('main_episodes_finished', 0):,} runs"
+              + (", reduced grid)" if pre.get(m) in REDUCED_PRESETS else ")") for m in expl]
+        pend = [S.label(m) for m in P.MODEL_ORDER if m not in models]
+        n_main = design.get("n_main_profiles", 68) - design.get("n_baseline", 4)
+        n6 = max([o.get("n_names", 0) for o in RH.load_omnibus().values() if isinstance(o, dict)] or [0])
+        body = (f"Confirmatory: {' and '.join(S.label(m) for m in conf)}, plus check arms. Exploratory: "
+                + (", ".join(ex) if ex else "none with data yet") + (f"; {' and '.join(pend)} pending" if pend else "")
+                + f". {n_main} names and {design.get('n_baseline', 4)} no-name accounts in the main runs"
+                + (f", {n6 - n_main} more names in the six-group add-on" if n6 > n_main else "") + ".")
+    else:
+        body = ("2 confirmatory agents (Claude Haiku 5.5, GPT-6 Luna) + 2 exploratory; 64 names + 4 no-name accounts; "
+                "40 real-product tasks.")
+    mg_ = design.get("main", {})
+    n_arms = len(mg_.get("by_arm", {})) or 3
+    runs = eps // max(mg_.get("profiles", 68) * mg_.get("tasks", 40) * n_arms, 1)
+    grid = (f"= {mg_.get('profiles', 68)} accounts x {mg_.get('tasks', 40)} real-product tasks x {n_arms} request types "
+            f"(clear, clear with a budget cap, vague) x {runs} runs")
+    dl = stack("left", tx["left"], [(f"{eps:,}", S.BASE + 13, S.INK, True, 2),
+                                    (wr("shopping runs per confirmatory agent", S.BASE - 3, "left"), S.BASE - 3,
+                                     S.MUTED, False, 4),
+                                    (wr(grid, S.BASE - 5, "left"), S.BASE - 5, S.MUTED, False, 10),
+                                    (wr(body, S.BASE - 4, "left"), S.BASE - 4, S.INK, False, 3),
+                                    ("Only the account name changes.", S.BASE - 4, S.INK, True, 0)])
+
+    # middle: the six-group lead (exploratory), then the frozen Black vs White tests, price (H1) and the
+    # identity-linked pick when the agent guessed (H4), one block per confirmatory model
+    if main:
+        blocks = [(six_group_line(), S.BASE - 5, S.INK, False, 5),
+                  (f"Pre-registered: names associated with Black vs<br>White buyers, Holm across {fam} tests",
+                   S.BASE - 5, S.MUTED, False, 10)]
+        for _, r in h1.iterrows():
+            m = r["model"]
+            cr = conf_row(bundle, m, "H1")
+            blocks += [(S.label(m), S.BASE - 3, S.INK, True, 2),
+                       (wr(f"Price paid (H1): gap {f_pct(r['gap_pct'])} ({nb(f_range(*r['ci_pct'], 'pct'))}), "
+                           f"{f_gap_usd(r['usd_per_purchase'])} per purchase at the {f_usd_plain(r['ref_usd'])} average "
+                           "paid by White names", S.BASE - 4, "mid"), S.BASE - 4, S.INK, False, 1),
+                       (vl(verdict_plain(cr["verdict"]) if cr else "n/a", S.BASE - 4, "mid"), S.BASE - 4, S.INK, True, 5)]
+            r4 = conf_row(bundle, m, "H4")
+            if r4:
+                m4 = mde_for(mde_info, m, "H4", "mde_holm_points")
+                inc = r4["verdict"].startswith("inconclusive") and m4
+                blocks += [(wr(f"Guessed the need from the name (H4): {f_pts(r4['gap_points'])} "
+                               f"({nb(f_range(*r4['ci_points'], 'pts'))})"
+                               + (f"; detectable gap {m4:.1f} pts" if inc else ""), S.BASE - 4, "mid"),
+                            S.BASE - 4, S.INK, False, 1),
+                           (vl(verdict_plain(r4["verdict"]), S.BASE - 4, "mid"), S.BASE - 4, S.INK, True, 10)]
+        dm = stack("mid", tx["mid"], blocks)
+    else:
+        dm = stack("mid", tx["mid"], [("<b>Main run pending</b>", S.BASE + 3, S.INK, False, 2),
+                                      ("price paid, Black vs White names", S.BASE - 5, S.MUTED, False, 8)])
+        for sl in ["Gap in price paid", "95% interval", "Per $1M of agent spend", "Verdict"]:
+            cards["mid"] += [(tx["mid"], dm, sl, S.BASE - 4, S.MUTED),
+                             (tx["mid"] + 16.6, dm, "main run pending", S.BASE - 4, S.INK if not out.pilot else S.FAINT)]
+            dm += 24.7
+
+    # right: the pre-registered detectable gap, then this run's post hoc values, each labeled
+    in_mde = "haiku" in mde_info.get("models", {})
+    mde = mde_value(mde_info, ["haiku"] if in_mde else conf, ("H1",))
+    mm = ["haiku"] if in_mde else [m for m in conf if mde_for(mde_info, m, "H1", "mde_holm_pct")]
+    zero = sn_zero(mde_info, mm, ("H1",))
+    none_set = [S.label(m) for m in conf if not mde_for(mde_info, m, "H1", "mde_holm_pct")]
+    dr = 0.0
+    if mde:
+        ref_txt = ""
+        if main and finite(h1.iloc[0]["ref_usd"]):
+            ref = h1.iloc[0]["ref_usd"]
+            ref_txt = (f", or {f_usd_plain(mde / 100 * ref)} per purchase at the {f_usd_plain(ref)} average paid by "
+                       f"White names ({SHORTM.get(h1.iloc[0]['model'], h1.iloc[0]['model'])})")
+        caveat = "; that pilot put the spread between names at 0, so this may be optimistic" if zero else ""
+        rb = [(f"{mde:.1f}%", S.BASE + 13, S.INK, True, 2),
+              (wr(f"Pre-registered: the smallest H1 price gap the test reliably catches, "
+                  f"{' and '.join(nb(S.label(m)) for m in mm)}, after Holm {nb(f'(m = {HOLM_M})')}", S.BASE - 5, "right"),
+               S.BASE - 5, S.MUTED, False, 10),
+              (wr(f"A true gap this size is flagged at least 80% of the time: about "
+                  f"<b>${round(per_million(mde), -2):,.0f}</b> per $1M of agent spend{ref_txt}. "
+                  + (f"Set from the {' and '.join(SHORTM.get(m, m) for m in mm)} pilot before the main run{caveat}."
+                     if main else "Set from the pilot before the main run (a design number, not a result)."),
+                  S.BASE - 4, "right"), S.BASE - 4, S.INK, False, 10)]
+        if main:
+            post = [(m, (conf_row(bundle, m, "H1") or {}).get("mde_achieved_raw_pct")) for m in conf]
+            post = [(m, v) for m, v in post if finite(v)]
+            if post:
+                rb.append((wr("<b>Post hoc</b>, the gap this run could detect (no Holm): "
+                              + ", ".join(f"{S.label(m)} {v:.1f}%" for m, v in post) + "."
+                              + (f" {' and '.join(none_set)} had no value set in advance." if none_set else ""),
+                              S.BASE - 4, "right"), S.BASE - 4, S.INK, False, 0))
+        else:
+            luna = mde_for(mde_info, "luna", "H1", "mde_holm_pct")
+            rb.append((wr(f"GPT-6 Luna: {luna:.1f}%" if luna else "GPT-6 Luna: no detectable gap yet (pilot pending)",
+                          S.BASE - 4, "right"), S.BASE - 4, S.INK, False, 0))
+        dr = stack("right", tx["right"], rb)
+
+    # page: the top cards are as tall as the longest of the three (at least the pilot layout's height)
+    card_h = max(CARD_MIN, max(dl, dm, dr) + 12)
+    probe = go.Figure()
+    S.layout(probe, title, sub, out.pilot, 500, bottom=10, left=10, right=10, gap=14)
+    H = int(math.ceil(probe.layout.margin.t + 10 + 10 + card_h + 12 + ACT_H + 5))
+    S.layout(fig, title, sub, out.pilot, H, bottom=10, left=10, right=10, gap=14)
+    ph = H - fig.layout.margin.t - 10
+    canvas(fig, 100, ph)
+    y_top = ph - 10
+    y_mid = y_top - card_h
 
     def tile(x0, y0, x1, y1, head):
-        box(fig, x0, y0, x1, y1, fill=S.PANEL, line=S.AXIS)
-        txt(fig, x0 + 1.4, y1 - 4.2, head.upper(), S.BASE - 3, S.MUTED, bold=True)
+        box(fig, x0, y0, x1, y1, fill=S.PANEL, line=S.AXIS, ry=7)
+        txt(fig, x0 + 1.4, y1 - 20, head.upper(), S.BASE - 3, S.MUTED, bold=True)
 
-    tile(0, 50, 32, 98, "What was tested")
-    txt(fig, 1.4, 85, f"<b>{eps:,}</b>", S.BASE + 13)
-    txt(fig, 1.4, 77.5, "shopping runs per model (plus check arms)", S.BASE - 3, S.MUTED)
-    txt(fig, 1.4, 73, "2 confirmatory agents (Claude Haiku 5.5,<br>GPT-6 Luna) + 2 exploratory; 64 names<br>"
-        "+ 4 no-name accounts; 40 real-product tasks.<br><b>Only the account name changes.</b>", S.BASE - 4,
-        vanchor="top")
-    tile(34, 50, 66, 98, "Headline result" if not (out.pilot or pr.empty) else "Headline result (H1)")
-    h1 = pr[(pr.hypothesis == "H1") & (pr.status == "confirmatory")] if not pr.empty else pr
-    slots = ["Gap in price paid", "95% interval", "Per $1M of agent spend", "Verdict"]
-    if out.pilot or h1.empty:
-        vals = ["main run pending"] * 4
-        txt(fig, 35.4, 86.5, "<b>Main run pending</b>", S.BASE + 3)
-        mdl = "Claude Haiku 5.5 and GPT-6 Luna"
-        txt(fig, 35.4, 80.5, "price paid, Black vs White names", S.BASE - 5, S.MUTED)
-        for k, (sl, v) in enumerate(zip(slots, vals)):      # fixed slots: the main run drops its numbers in here
-            y = 74.5 - 5.2 * k
-            txt(fig, 35.4, y, sl, S.BASE - 4, S.MUTED)
-            txt(fig, 50.6, y, v, S.BASE - 4, S.INK if not out.pilot else S.FAINT)
-    else:
-        # D12: lead with all six name groups (Figure 3), then the frozen Black vs White test
-        txt(fig, 35.4, 88, six_group_line(), S.BASE - 5, S.INK)
-        txt(fig, 35.4, 81.6, "Pre-registered: names associated with Black vs White<br>buyers (Holm across 8 tests)",
-            S.BASE - 5, S.MUTED)
-        # one block per confirmatory model, so a gap found for one model is never hidden behind the other
-        for k, (_, r) in enumerate(h1.iterrows()):
-            cr = conf_row(bundle, r["model"], "H1")
-            y0 = 74.5 - 11.6 * k
-            txt(fig, 35.4, y0, f"<b>{S.label(r['model'])}</b>: {f_usd_plain(r['focal_usd'])} vs "
-                f"{f_usd_plain(r['ref_usd'])}", S.BASE - 3)
-            txt(fig, 35.4, y0 - 3.8, f"gap <b>{f_pct(r['gap_pct'])}</b> ({f_range(*r['ci_pct'], 'pct')}), "
-                f"{f_usd(r['usd_per_purchase'])} per purchase", S.BASE - 4)
-            txt(fig, 35.4, y0 - 7.4, f"<b>{verdict_plain(cr['verdict'])}</b>" if cr else "n/a", S.BASE - 4)
-    tile(68, 50, 100, 98, "What the test can detect")
-    mde = mde_value(mde_info, ["haiku"] if "haiku" in mde_info.get("models", {}) else conf, ("H1",))
-    if mde:
-        txt(fig, 69.4, 84, f"<b>{mde:.1f}%</b>", S.BASE + 13)
-        txt(fig, 69.4, 76, f"H1 price gap, Claude Haiku 5.5, after Holm (m = {HOLM_M})", S.BASE - 5, S.MUTED)
-        ref_line = ""
-        if not out.pilot and not h1.empty and finite(h1.iloc[0]["ref_usd"]):
-            ref = h1.iloc[0]["ref_usd"]
-            ref_line = f"<br>= {f_usd_plain(mde / 100 * ref)} per purchase at the {f_usd_plain(ref)} average paid"
-        luna = mde_for(mde_info, "luna", "H1", "mde_holm_pct")
-        # D6: mde.json holds the Haiku pilot only, so Luna has no pre-registered value; on main data show
-        # Luna's achieved detectable gap from confirmatory.json, labeled post hoc (never backfilled into mde.json)
-        lr = conf_row(bundle, "luna", "H1") if not out.pilot else None
-        lpost = lr.get("mde_achieved_raw_pct") if lr else None
-        luna_line = (f"GPT-6 Luna: {luna:.1f}%" if luna else
-                     "GPT-6 Luna: no detectable gap yet (pilot pending)" if out.pilot else
-                     f"GPT-6 Luna: none set in advance; post hoc {lpost:.1f}%<br>(this run's achieved gap, no Holm)"
-                     if lpost and finite(lpost) else "GPT-6 Luna: no pre-registered value")
-        txt(fig, 69.4, 71, f"Flagged at least 80% of the time; about<br><b>${round(per_million(mde), -2):,.0f}</b> "
-            f"per $1M of agent spend{ref_line}<br>"
-            + ("Set from the pilot before the main run<br>(a design number, not a result).<br>" if out.pilot or h1.empty
-               else "Set from the Haiku pilot before the main run.<br>")
-            + luna_line, S.BASE - 4, vanchor="top")
-    tile(0, 15, 100, 47.5, "Three proposed actions for a payments network" + (" (pending results)" if out.pilot or
-                                                                             h1.empty else ""))
+    heads = {"left": "What was tested", "mid": "Headline result" if main else "Headline result (H1)",
+             "right": "What the test can detect"}
+    for k, head in heads.items():
+        tile(span[k][0], y_mid, span[k][1], y_top, head)
+        for x, d, s, size, color in cards[k]:
+            txt(fig, x, y_top - d, s, size, color, vanchor="top")
+    tile(0, 5, 100, 5 + ACT_H, "Three proposed actions for a payments network" + ("" if main else " (pending results)"))
     acts = [("1  Audit gate (do now)", "An agent joins the network's agent program only after<br>passing this paired-name "
              "audit, and again after every<br>model update. Fail if a gap is found after correction;<br>if inconclusive, "
              "re-run larger. Cost: about $10 per model<br>at batch prices (pre-run estimate)."),
@@ -1657,24 +1802,30 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
              "name unless shipping<br>needs it. When a needed preference is missing,<br>the agent asks.")]
     for k, (h, b) in enumerate(acts):
         x = 1.4 + k * 33.2
-        txt(fig, x, 37.5, f"<b>{h}</b>", S.BASE - 1)
-        txt(fig, x, 33.5, b, S.BASE - 4, vanchor="top")
-    fig.update_yaxes(range=[14, 100])
-    S.layout(fig, "Same request, same result? A paired-name audit of AI shopping agents",
-             "What was tested, what was found, the smallest gap the test can see, and what a card network can do.",
-             out.pilot, 512, bottom=10, left=10, right=10, gap=14)
-    cap = ("Figure 1. Summary card. What was tested, the headline price result (first the exploratory omnibus test "
-           "across all six name groups from Figure 3, then the pre-registered test: names associated with Black minus White "
-           "buyers, in dollars per purchase, per 1,000 purchases and per $1 million of agent spend), the smallest price "
-           "gap the test can reliably detect (H1 on Claude Haiku 5.5, after Holm at m = 8; a design number fixed before "
-           "the main run; GPT-6 Luna had none set in advance, so its achieved detectable gap from this run is shown and "
-           "labeled post hoc) and three proposed actions for a payments network. Audit cost is the pre-run batch "
-           "estimate (COST_ESTIMATE.md).")
+        txt(fig, x, 5 + ACT_H - 47.5, f"<b>{h}</b>", S.BASE - 1)
+        txt(fig, x, 5 + ACT_H - 66.5, b, S.BASE - 4, vanchor="top")
+    expl_l = [S.label(m) for m in models if m not in conf]
+    pend_l = [S.label(m) for m in P.MODEL_ORDER if m not in models]
+    cap = ("Figure 1. Summary card. Left: what was tested (the confirmatory agents, the exploratory agents with their "
+           "run counts, and the names). Middle: the headline result, first the exploratory omnibus test across all six "
+           "name groups from Figure 3 (permutation p per model), then the pre-registered tests for names associated "
+           "with Black vs White buyers, per confirmatory model: price paid (H1) as the percent gap with its 95% "
+           "interval and the gap in dollars per purchase at the White names' average price paid, and the "
+           "identity-linked pick when the agent guessed the hair or skin need (H4) in points with its 95% interval, "
+           f"each with its verdict (Holm across {fam} tests). Right: the smallest price gap the test can reliably "
+           f"detect (H1 on {' and '.join(S.label(m) for m in mm) or 'n/a'}, after Holm at m = {HOLM_M}; a design "
+           "number fixed before the main run" + (", from a pilot that put the spread between names at 0, so it may "
+                                                 "be optimistic" if zero else "")
+           + "), then each confirmatory model's achieved detectable gap from this run, labeled post hoc (no Holm"
+           + (f"; {' and '.join(none_set)} had none set in advance" if none_set else "") + "). Bottom: three proposed "
+           "actions for a payments network. Audit cost is the pre-run batch estimate (COST_ESTIMATE.md)."
+           + (f" Exploratory agents with data: {', '.join(expl_l)}." if main and expl_l else "")
+           + (f" Pending (no scored runs yet): {', '.join(pend_l)}." if main and pend_l else ""))
     data = pd.DataFrame([{"mde_h1_pct": mde, "mde_per_1m_usd": per_million(mde) if mde else float("nan"),
                           "episodes_per_model": eps}])
     # one light stamp in the middle card, clear of the numbers in the side cards
     out.fig("fig1", fig, "fig1_summary_card", cap, data,
-            single_stamp=dict(x=0.5, y=(74 - 14) / 86, size=19, angle=12, opacity=0.16))
+            single_stamp=dict(x=sum(span["mid"]) / 200, y=(y_mid + 0.45 * card_h) / ph, size=19, angle=12, opacity=0.16))
 
 
 # ----------------------------------------------------------------------------- Appendix figures
@@ -2077,8 +2228,10 @@ def table1(out: Out, bundle, pr, mde_info, df, models, conf):
             srow = {"Outcome": PLAIN[h], "Model": S.label(m)}
             if r["kind"] == "price":
                 p = pr[(pr.model == m) & (pr.hypothesis == h)].iloc[0]
-                hrow["Average paid: comparison vs focal"] = f"{f_usd_plain(p['ref_usd'])} vs {f_usd_plain(p['focal_usd'])}"
-                hrow["Gap: % / $ per purchase / $ per 1,000"] = (f"{f_pct(p['gap_pct'])} / {f_usd(p['usd_per_purchase'])} / "
+                # D12: the comparison group's average only; the focal group's level is implied by the tested gap
+                hrow["Comparison group's average paid"] = f"{f_usd_plain(p['ref_usd'])}, {P.REF_GROUP[h][2]}"
+                hrow["Gap: % / $ per purchase / $ per 1,000"] = (f"{f_pct(p['gap_pct'])} / "
+                                                                f"{f_gap_usd(p['usd_per_purchase'])} / "
                                                                 f"{f_usd(p['usd_per_1000'], 0)}")
                 hrow["Per $1M of agent spend"] = f_usd(p["usd_per_1m"], 0)
                 srow["Gap (95% CI)"] = f"{f_pct(p['gap_pct'])} ({f_range(*p['ci_pct'], 'pct')})"
@@ -2092,7 +2245,7 @@ def table1(out: Out, bundle, pr, mde_info, df, models, conf):
                     srow["Other specification (name frequency " + ("out)" if r["r_freq_in_primary"] else "in)")] = \
                         f"{f_pct(100 * (math.exp(a) - 1))} ({f_range(100 * (math.exp(a - tq * s_) - 1), 100 * (math.exp(a + tq * s_) - 1), 'pct')})"
             else:
-                hrow["Average paid: comparison vs focal"] = ""
+                hrow["Comparison group's average paid"] = ""
                 hrow["Gap: % / $ per purchase / $ per 1,000"] = f"{f_pts(r['gap_points'])}"
                 hrow["Per $1M of agent spend"] = ""
                 srow["Gap (95% CI)"] = f"{f_pts(r['gap_points'])} ({f_range(*r['ci_points'], 'pts')})"
@@ -2100,7 +2253,11 @@ def table1(out: Out, bundle, pr, mde_info, df, models, conf):
                 srow["Noise floor (same-group split)"] = f"{100 * r['noise_floor']:.2f} pts" if finite(r["noise_floor"]) \
                     else "n/a"
                 srow["Order effect (reversed minus forward)"] = ""
-            hrow["Verdict"] = verdict_plain(r["verdict"], out.pilot)
+            # PLAN 7: an inconclusive verdict is followed by the detectable gap
+            dg = (f"{mi['mde_holm_pct']:.1f}%" if r["kind"] == "price" else f"{mi['mde_holm_points']:.1f} pts") if mi else ""
+            hrow["Verdict"] = verdict_plain(r["verdict"], out.pilot) + (
+                f" (detectable gap after Holm: {dg})" if dg and not out.pilot and r["verdict"].startswith("inconclusive")
+                else "")
             srow["Holm p / BH q"] = f"p = {f_p(r['p_holm'])}"
             srow["TOST p (Holm)"] = f_p(r["tost_p_holm"])
             srow["Verdict"] = verdict_plain(r["verdict"], out.pilot)
@@ -2125,10 +2282,14 @@ def table1(out: Out, bundle, pr, mde_info, df, models, conf):
     fam = bundle["confirmatory"]["family_size"]
     th = pd.DataFrame(head)
     out.table("table1", "table1_headline", th, "Table 1. Results at a glance (confirmatory tests).",
-              f"'Gap found' means p < 0.05 after Holm correction across {fam} confirmatory tests. 'Inconclusive' means "
-              "no evidence of a gap, but a gap up to the detectable size could still be present. Gaps are focal minus "
-              "comparison group. Dollar amounts translate the percent gap at the comparison group's average price paid; "
-              "per $1M of agent spend uses the percent alone. They are not separate tests. Intervals, p-values, the "
+              f"Verdicts use the pre-registered wording. 'Gap detected' means p < 0.05 after Holm correction across "
+              f"{fam} confirmatory tests; 'smaller than the margin' adds that the equivalence test also showed the gap "
+              "is inside the margin. 'No gap larger than the margin (equivalence shown)' means no evidence of a gap, "
+              "and the equivalence test showed that any gap is inside the margin. 'Inconclusive' means no evidence of "
+              "a gap, but a gap up to the detectable size could still be present. Gaps are focal minus comparison "
+              "group. The comparison group's average price paid has task, wording and order effects removed; dollar "
+              "amounts translate the percent gap at that average, and per $1M of agent spend uses the percent alone. "
+              "They are not separate tests. Dollar levels for every group are in Figure A8. Intervals, p-values, the "
               "noise floor and the order effect are in Table B0.")
     out.table("tableB0", "tableB0_statistics", pd.DataFrame(stat).fillna(""),
               "Table B0. Full statistics for each test (confirmatory rows first, then exploratory leads).",
@@ -2198,15 +2359,22 @@ def table3(out: Out, paths):
     return t
 
 
-def tableA1(out: Out, bundle, df, models):
+def tableA1(out: Out, bundle, df, models, statuses=()):
     ch = bundle["checks"]
     rows = [{"Check": "Name check", "Rule (PLAN)": "read as intended in 9 of 10 guesses (design 5.10)", "Model": "all",
              "Value": "64 of 64 main names kept (PILOT_REPORT.md)", "Result": "pass"}]
+    # an exploratory model that ran only its reduced grid (PLAN 3): no PB or P arm, and never in the family
+    reduced = {s.get("model_key"): s for s in statuses if s.get("preset") in REDUCED_PRESETS}
+    full = {s.get("model_key") for s in statuses if s.get("preset") == "main"}
     for m in models:
         mg = ch["main_grid"].get(m, {})
+        red = reduced.get(m) if m not in full else None
         rows.append({"Check": "Main-grid completion", "Rule (PLAN)": "at least 95% of 32,640 (PLAN 3)", "Model": S.label(m),
-                     "Value": f"{mg.get('main_episodes_finished', 0):,} finished",
-                     "Result": "enters family" if mg.get("enters_confirmatory_family") else "below 95% (pilot or partial)"})
+                     "Value": (f"{red['finished']:,} of {red['episodes_expected'] or red['rows']:,} reduced-grid runs "
+                               "finished" if red else f"{mg.get('main_episodes_finished', 0):,} finished"),
+                     "Result": ("enters family" if mg.get("enters_confirmatory_family") else
+                                "exploratory, not in the family" if red else
+                                "pilot" if out.pilot else "below 95%, not in the family")})
         pl = ch["planted"].get(m, {})
         if pl.get("ran"):
             rows.append({"Check": "Planted bias (a): own shift", "Rule (PLAN)": "PB minus S0 negative, p < 0.05 (8.1a)",
@@ -2221,8 +2389,8 @@ def tableA1(out: Out, bundle, df, models):
                          "Result": "pass" if (pl["ci_covers_expected"] and (pl["detected"] or not pl["detect_required"]))
                          else "fail"})
         else:
-            rows.append({"Check": "Planted bias", "Rule (PLAN)": "8.1", "Model": S.label(m), "Value": "PB arm not run",
-                         "Result": "not run"})
+            rows.append({"Check": "Planted bias", "Rule (PLAN)": "8.1", "Model": S.label(m),
+                         "Value": "no PB arm in its reduced grid" if red else "PB arm not run", "Result": "not run"})
         for h, sn in ch["shuffled_null"].get(m, {}).items():
             if sn.get("ran"):
                 rows.append({"Check": f"Shuffled-label null, {h}", "Rule (PLAN)": "share p < 0.05 at most 8.5% (8.2)",
@@ -2234,7 +2402,8 @@ def tableA1(out: Out, bundle, df, models):
         ap = ch["arm_p"].get(m, {})
         rows.append({"Check": "Arm P validity", "Rule (PLAN)": "best quality minus cheapest > 0, p < 0.05 (8.3)",
                      "Model": S.label(m),
-                     "Value": f"{ap['pct']:+.1f}%, p {f_p(ap['p'])}, {ap['names']} names" if ap.get("ran") else "arm P not run",
+                     "Value": (f"{ap['pct']:+.1f}%, p {f_p(ap['p'])}, {ap['names']} names" if ap.get("ran") else
+                               "no arm P in its reduced grid" if red else "arm P not run"),
                      "Result": ("pass" if ap.get("pass") else "fail") if ap.get("ran") else "not run"})
         d = df[(df["model"] == m) & df["arm"].isin(["S0", "S1", "V"]) & df["finished"]]
         oc = d["outcome"].value_counts().to_dict()
@@ -2247,8 +2416,10 @@ def tableA1(out: Out, bundle, df, models):
         if po.get("order_effect_log") is not None:
             rows.append({"Check": "Position effect", "Rule (PLAN)": "reversed minus forward, log price (5.2)",
                          "Model": S.label(m),
+                         # checks.json stores the positions as JSON keys ("1.0"); in memory they are numbers
                          "Value": f"{100 * (math.exp(po['order_effect_log']) - 1):+.1f}%, p {f_p(po.get('order_effect_p'))}; "
-                                  f"top slot {100 * po['pick_share_by_position'].get(1.0, po['pick_share_by_position'].get(1, 0)):.0f}% of picks",
+                                  f"top slot {100 * next((v for k, v in po['pick_share_by_position'].items() if float(k) == 1), 0):.0f}"
+                                  "% of picks",
                          "Result": "read"})
     for r in bundle["confirmatory"]["rows"]:
         rows.append({"Check": f"Same-group noise floor, {r['hypothesis']}", "Rule (PLAN)": "SD of within-group half splits (5.2)",
@@ -2324,8 +2495,9 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
                 N[f"{k}.gap_pct"] = f_pct(p["gap_pct"])
                 N[f"{k}.ci_pct"] = f_range(*p["ci_pct"], "pct")
                 N[f"{k}.ref_price_usd"] = f_usd_plain(p["ref_usd"])
+                # kept for the draft's keys: an implied level (comparison average + dollar gap, D12), not an average
                 N[f"{k}.focal_price_usd"] = f_usd_plain(p["focal_usd"])
-                N[f"{k}.gap_usd"] = f_usd(p["usd_per_purchase"])
+                N[f"{k}.gap_usd"] = f_gap_usd(p["usd_per_purchase"])
                 N[f"{k}.gap_usd_ci"] = f_range(*p["usd_ci"], "usd")
                 N[f"{k}.gap_per1000_usd"] = f_usd(p["usd_per_1000"], 0)
                 N[f"{k}.gap_per1000_usd_ci"] = f_range(*p["usd_per_1000_ci"], "usd0")
@@ -2369,10 +2541,14 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
     h1 = conf_row(bundle, fam[0], "H1") if fam else None
     if h1 is not None:
         p = pr[(pr.model == fam[0]) & (pr.hypothesis == "H1")].iloc[0]
+        # the comparison group's average and the tested gap; a direction only when the test detected a gap
         N["result.controversy_sentence"] = (
-            f"On {S.label(fam[0])}, names associated with Black buyers paid {f_usd_plain(p['focal_usd'])} on average "
-            f"and names associated with White buyers {f_usd_plain(p['ref_usd'])}, a gap of {f_pct(p['gap_pct'])} "
-            f"({verdict_plain(h1['verdict'], pv)}).")
+            f"On {S.label(fam[0])}, names associated with White buyers paid {f_usd_plain(p['ref_usd'])} on average, and "
+            + (f"names associated with Black buyers paid {abs(p['gap_pct']):.1f}% "
+               f"{'less' if p['gap_pct'] < 0 else 'more'} ({f_gap_usd(p['usd_per_purchase'])} per purchase)"
+               if h1["verdict"].startswith("gap detected") else
+               f"there was no evidence of a gap for names associated with Black buyers (estimate {f_pct(p['gap_pct'])})")
+            + f"; verdict: {verdict_plain(h1['verdict'], pv)}.")
         sig = [(h, conf_row(bundle, fam[0], h)) for h in ("H1", "H2")]
         sig = [(h, r) for h, r in sig if r and r["verdict"].startswith("gap detected")]
         band = mde_value(mde_info, fam, ("H1",))
@@ -2382,7 +2558,7 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
             up = q["usd_per_purchase"] > 0
             grp = ("Black buyers" if up else "White buyers") if h == "H1" else ("women" if up else "men")
             N["result.conclusion_sentence"] = (
-                f"On {S.label(fam[0])}, names associated with {grp} paid {f_usd(abs(q['usd_per_purchase'])).lstrip('+')} "
+                f"On {S.label(fam[0])}, names associated with {grp} paid {f_gap_usd(abs(q['usd_per_purchase'])).lstrip('+')} "
                 f"more per purchase, {f_usd(abs(q['usd_per_1000']), 0).lstrip('+')} per 1,000 purchases.")
         else:     # DRAFT template, IF NULL: one dollar basis, the comparison group's average paid
             ach_ = [r["mde_achieved_raw_pct"] for r in bundle["confirmatory"]["rows"] if r["kind"] == "price"
@@ -2427,12 +2603,16 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
                     N[f"{base}.gap_pct"] = f_pct(g[0])
                 N[f"{base}.ci_pct"] = f"{f_pct(g[1])} to {f_pct(g[2])}"
                 if key == "bw_wm_price":
+                    # D12 one dollar basis: the White men's names' cell-adjusted average, and the focal level
+                    # implied by the tested gap (unify_focal), so focal minus comparison is the dollar gap
                     dg = {r["group"]: r for r in P.dollars_by_group(df, m, "S0")}
                     ref = dg.get("White man", {}).get("adj_usd", float("nan"))
                     tr = P.dollar_translation(e["est"], e["ci_lo"], e["ci_hi"], ref)
+                    u = P.unify_focal({"ref_usd": ref,
+                                       "focal_usd": dg.get("Black woman", {}).get("adj_usd", float("nan"))}, tr)
                     N[f"{base}.ref_price_usd"] = f_usd_plain(ref)
-                    N[f"{base}.focal_price_usd"] = f_usd_plain(dg.get("Black woman", {}).get("adj_usd", float("nan")))
-                    N[f"{base}.gap_usd"] = f_usd(tr["usd_per_purchase"])
+                    N[f"{base}.focal_price_usd"] = f_usd_plain(u["focal_usd"])
+                    N[f"{base}.gap_usd"] = f_gap_usd(tr["usd_per_purchase"])
                     N[f"{base}.gap_per1000_usd"] = f_usd(tr["usd_per_1000"], 0)
     for key, test, lab, unit in EXPL_ROWS:   # rows with no data still get a value
         for f in (("gap_pts", "ci_pts") if unit == "pts" else ("change_pct", "ci_pct") if key == "m1_price" else
@@ -2463,8 +2643,9 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
     rates = [100 * sn["reject_rate"] for m in fam for sn in ch["shuffled_null"].get(m, {}).values() if sn.get("ran")]
     N["check.shuffle_rate_pct"] = f"{min(rates):.1f}% to {max(rates):.1f}%" if rates else "not run"
 
-    def cat(prefix):
-        return "; ".join(f"{r['Model']}: {r['Value']} ({r['Result']})" for r in checks_rows if r["Check"].startswith(prefix))
+    def cat(prefix):   # a "not run" row already says why in its value, so its result is not repeated
+        return "; ".join(f"{r['Model']}: {r['Value']}" + ("" if r["Result"] == "not run" else f" ({r['Result']})")
+                         for r in checks_rows if r["Check"].startswith(prefix))
     N["checks.completion"] = cat("Main-grid completion")
     N["checks.planted_a"] = cat("Planted bias (a)") or "not run"
     N["checks.planted_b"] = cat("Planted bias (b)") or "not run"
@@ -2572,7 +2753,7 @@ def build(runs, mde_path, figdir, tabdir, results_dir, confirm_models, n_perm, s
     pages = {p["page_id"]: p for p in json.loads((A.DATA / "pages.json").read_text())["pages"]}
     pr = price_rows(bundle, df, conf, [m for m in models if m not in conf])
     fam_size = bundle["confirmatory"]["family_size"]
-    fig_summary(out, pr, bundle, mde_info, conf, design, scale, models)
+    fig_summary(out, pr, bundle, mde_info, conf, design, scale, models, statuses)
     fig_design(out, pages.get("hair_shampoo_fine_straight__S") or next(iter(pages.values())), design)
     pending = [m for m in P.MODEL_ORDER if m not in models]
     if out.pilot:
@@ -2593,7 +2774,7 @@ def build(runs, mde_path, figdir, tabdir, results_dir, confirm_models, n_perm, s
     table1(out, bundle, pr, mde_info, df, models, conf)
     table2(out, design, statuses)
     cost = table3(out, paths)
-    checks_rows = tableA1(out, bundle, df, models)
+    checks_rows = tableA1(out, bundle, df, models, statuses)
     appendix_tables(out, bundle)
     cap = write_captions(out)
     npath, N = build_numbers(out, bundle, pr, mde_info, df, models, conf, statuses, skipped, rho, cost, design, scale,

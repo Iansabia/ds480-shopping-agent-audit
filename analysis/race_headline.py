@@ -8,7 +8,9 @@ results/addon_exploratory.json.
   * The group rows are read from the add-on tables that analysis/addon_analysis.py
     already wrote (paper/tables/addon_C_race_gaps.csv and addon_C_race_groups.csv),
     so every number in the figure is the same number as in Table C. Black vs White
-    rows are the confirmatory H1 and H4.
+    rows are the confirmatory H1 and H4. Both panels draw the tested gap vs White
+    names (price in dollars, identity-linked pick in points); the pooled shares stay
+    in the table and the hover text, labeled as pooled shares.
   * The one new test: "does S0 price differ across any of the six race groups?"
     Name level, same cell residualization of log price as PLAN 5.1 (task x arm x
     wording x order, one residualization over every named group the model has, as
@@ -16,7 +18,9 @@ results/addon_exploratory.json.
     plus a women's-name indicator; statistic: the F for the five race terms.
     p from 10,000 shuffles of the race label across names within gender (seed 480),
     with the classical F p beside it. One test per model; Gemini 3.5 Flash-Lite ran
-    core names only (two groups), so it gets none.
+    core names only (two groups), so it gets none. Sensitivity ("without_black"):
+    the same test with names associated with Black buyers left out (five groups),
+    on its own generator with the same seed, so the main numbers do not move.
 
     .venv/bin/python analysis/race_headline.py       # writes results/race_omnibus.json and paper/tables/race_headline.*
 
@@ -26,6 +30,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -68,6 +73,20 @@ def _race_f(y: np.ndarray, race: np.ndarray, woman: np.ndarray, groups: list[str
     return ((r0 - r1) / q) / (r1 / dfr), q, dfr
 
 
+def _perm_f(y, race, woman, groups, n_perm, rng) -> tuple[float, int, int, int]:
+    """Race F, its df, and how many of n_perm shuffles of the race labels within gender give an F at least as large."""
+    f, q, dfr = _race_f(y, race, woman, groups)
+    idx_w, idx_m = np.where(woman == 1)[0], np.where(woman == 0)[0]
+    hits = 0
+    for _ in range(n_perm):
+        r2 = race.copy()
+        r2[idx_w] = race[rng.permutation(idx_w)]
+        r2[idx_m] = race[rng.permutation(idx_m)]
+        if _race_f(y, r2, woman, groups)[0] >= f - 1e-12:
+            hits += 1
+    return f, q, dfr, hits
+
+
 def omnibus(df: pd.DataFrame, model: str, n_perm: int = N_PERM, seed: int = A.SEED) -> dict:
     import addon_analysis as X
     dm = df[(df["model"] == model) & df["preset"].isin(["main", "arab", "sasian"])]
@@ -81,24 +100,26 @@ def omnibus(df: pd.DataFrame, model: str, n_perm: int = N_PERM, seed: int = A.SE
     if len(groups) < 3:
         return {"model": model, "groups": groups, "names": names, "note": "fewer than 3 groups: not run"}
     y, race, woman = nm["mean"].to_numpy(float), nm["race"].to_numpy(), nm["is_woman"].to_numpy(float)
-    f, q, dfr = _race_f(y, race, woman, groups)
-    rng = np.random.default_rng(seed)
-    idx_w, idx_m = np.where(woman == 1)[0], np.where(woman == 0)[0]
-    hits = 0
-    for _ in range(n_perm):
-        r2 = race.copy()
-        r2[idx_w] = race[rng.permutation(idx_w)]
-        r2[idx_m] = race[rng.permutation(idx_m)]
-        if _race_f(y, r2, woman, groups)[0] >= f - 1e-12:
-            hits += 1
-    return {"model": model, "groups": groups, "names": names, "n_names": int(len(nm)), "F": f, "df1": q, "df2": dfr,
-            "p_F": float(stats.f.sf(f, q, dfr)), "p_perm": (hits + 1) / (n_perm + 1), "perm_hits": hits,
-            "n_perm": n_perm, "seed": seed,
-            "group_mean_pct_vs_white": {r: 100 * (math.exp(float(nm.loc[nm.race == r, "mean"].mean())
-                                                           - float(nm.loc[nm.race == "White", "mean"].mean())) - 1)
-                                        for r in groups},
-            "note": "name level, cell-residualized log price, race F with a women's-name term; "
-                    "p from race labels shuffled within gender"}
+    f, q, dfr, hits = _perm_f(y, race, woman, groups, n_perm, np.random.default_rng(seed))
+    out = {"model": model, "groups": groups, "names": names, "n_names": int(len(nm)), "F": f, "df1": q, "df2": dfr,
+           "p_F": float(stats.f.sf(f, q, dfr)), "p_perm": (hits + 1) / (n_perm + 1), "perm_hits": hits,
+           "n_perm": n_perm, "seed": seed,
+           "group_mean_pct_vs_white": {r: 100 * (math.exp(float(nm.loc[nm.race == r, "mean"].mean())
+                                                          - float(nm.loc[nm.race == "White", "mean"].mean())) - 1)
+                                       for r in groups},
+           "note": "name level, cell-residualized log price, race F with a women's-name term; "
+                   "p from race labels shuffled within gender"}
+    # sensitivity: the same test with names associated with Black buyers left out (is the result more than the
+    # confirmatory Black vs White gap?). Its own generator with the same seed, so the main draws above are unchanged.
+    g2 = [r for r in groups if r != "Black"]
+    if "Black" in groups and len(g2) >= 3:
+        keep = race != "Black"
+        f2, q2, d2, h2 = _perm_f(y[keep], race[keep], woman[keep], g2, n_perm, np.random.default_rng(seed))
+        out["without_black"] = {"groups": g2, "n_names": int(keep.sum()), "F": f2, "df1": q2, "df2": d2,
+                                "p_F": float(stats.f.sf(f2, q2, d2)), "p_perm": (h2 + 1) / (n_perm + 1),
+                                "perm_hits": h2, "n_perm": n_perm, "seed": seed,
+                                "note": "sensitivity: same test with names associated with Black buyers left out"}
+    return out
 
 
 # ----------------------------------------------------------------------------- rows for the figure
@@ -113,9 +134,17 @@ def _rate_rows() -> pd.DataFrame:
     return c[c["outcome"].isin(["h4", "price"])].copy()
 
 
+def _adj_num(s) -> float:
+    """'q .173' or 'Holm p <.001' as a number (nan for 'not tested' or a missing value)."""
+    m = re.search(r"(<)?\s*(\d*\.\d+|\d+)\s*$", s) if isinstance(s, str) and "not" not in s else None
+    return np.nan if m is None else float(m.group(2)) / (2 if m.group(1) else 1)
+
+
 def headline_rows(ref_usd: dict[str, float]) -> pd.DataFrame:
     """One row per model x group: price gap vs White names (percent, and dollars at the White names'
-    average price paid from Table 1), and the H4-type identity-linked pick rate when the agent guessed."""
+    average price paid from Table 1), the tested H4-type gap in the identity-linked pick when the agent guessed
+    (name level, cell-adjusted, points; the same numbers as Table C), and the pooled share behind it (h4_rate,
+    not adjusted for the task mix, so two pooled shares do not subtract to the tested gap)."""
     gaps, rates = _gap_rows(), _rate_rows()
     out = []
     for m in MODELS:
@@ -142,6 +171,11 @@ def headline_rows(ref_usd: dict[str, float]) -> pd.DataFrame:
             gh = gaps[(gaps.model == m) & (gaps.race == r) & (gaps.outcome == "h4")]
             if not gh.empty:
                 row.update(h4_gap=gh["gap"].iloc[0], h4_source=gh["source"].iloc[0], h4_adj=gh["adjusted"].iloc[0])
+                if pd.notna(gh["gap_display"].iloc[0]):
+                    row.update(h4_gap_pts=float(gh["gap_display"].iloc[0]), h4_gap_lo=float(gh["lo_display"].iloc[0]),
+                               h4_gap_hi=float(gh["hi_display"].iloc[0]))
+            row["price_adj_num"] = _adj_num(row.get("price_adj"))
+            row["h4_adj_num"] = _adj_num(row.get("h4_adj"))
             out.append(row)
     return pd.DataFrame(out)
 
@@ -150,10 +184,13 @@ def load_omnibus() -> dict:
     return json.loads(OMNIBUS.read_text()) if OMNIBUS.exists() else {}
 
 
-def omnibus_text(om: dict, label=S.label) -> str:
+def omnibus_text(om: dict, label=S.label, part: str | None = None) -> str:
+    """'Claude Haiku 5.5 F(5, 75) = 0.52, permutation p = .760; ...'. part="without_black" gives the sensitivity
+    test (names associated with Black buyers left out) instead of the main one."""
     parts = []
     for m in MODELS:
         o = om.get(m)
+        o = o.get(part) if part and isinstance(o, dict) else o
         if not o or "F" not in o:
             continue
         parts.append(f"{label(m)} F({o['df1']}, {o['df2']}) = {o['F']:.2f}, permutation p = "
@@ -167,52 +204,90 @@ def _p(p):
     return "< .001" if p < 0.001 else f"{p:.3f}".lstrip("0")
 
 
+def _side(t: pd.DataFrame, m: str) -> str:
+    """'below' or 'above' when every other group's price estimate for model m sits on that side of White names,
+    else ''. Only the sign of the estimates, never a finding about any one group."""
+    g = t[(t.model == m) & (t.race != "White")].dropna(subset=["gap_pct"])
+    return "below" if len(g) and (g["gap_pct"] < 0).all() else "above" if len(g) and (g["gap_pct"] > 0).all() else ""
+
+
+def _split(om: dict) -> tuple[list[str], list[str]]:
+    """Models whose omnibus permutation p is below .05, and those with p of .05 or more."""
+    ran = [m for m in MODELS if om.get(m, {}).get("p_perm") is not None]
+    return [m for m in ran if om[m]["p_perm"] < 0.05], [m for m in ran if om[m]["p_perm"] >= 0.05]
+
+
 def headline_title(t: pd.DataFrame, om: dict) -> str:
-    """Takeaway title from the omnibus results (and, for a model with a price difference, whether every group's
-    estimate sits on the same side of White names). Never claims a gap the omnibus does not support."""
-    yes = [m for m in MODELS if om.get(m, {}).get("p_perm") is not None and om[m]["p_perm"] < 0.05]
-    no = [m for m in MODELS if om.get(m, {}).get("p_perm") is not None and om[m]["p_perm"] >= 0.05]
+    """Takeaway title from the omnibus results (and, for a model with a price difference, the side every group's
+    estimate falls on, as estimates). Never claims a gap the omnibus does not support, and never states a null as
+    an absence."""
+    yes, no = _split(om)
     if not yes and not no:
         return "Price paid and identity-linked picks for six name groups, same request"
+    nulls = " or ".join(f"{SHORT[m]} (p = {_p(om[m]['p_perm'])})" for m in no)
     if not yes:
-        return ("No price difference across the six name groups on "
-                + " or ".join(f"{SHORT[m]} (p = {_p(om[m]['p_perm'])})" for m in no))
+        return "Exploratory six-group test: no evidence of a price difference across the name groups on " + nulls
     bits = []
     for m in yes:
-        g = t[(t.model == m) & (t.race != "White")].dropna(subset=["gap_pct"])
-        side = (", every estimate below White names" if len(g) and (g["gap_pct"] < 0).all() else
-                ", every estimate above White names" if len(g) and (g["gap_pct"] > 0).all() else "")
-        bits.append(f"{SHORT[m]} (p = {_p(om[m]['p_perm'])}{side})")
-    title = "Price differs across the six name groups on " + " and ".join(bits)
+        side = _side(t, m)
+        bits.append(f"{SHORT[m]} (p = {_p(om[m]['p_perm'])}"
+                    + (f"; every group's estimate is {side} White names" if side else "") + ")")
+    title = "Exploratory six-group test: price differs across the name groups on " + " and ".join(bits)
     if no:
-        title += " but not on " + " or ".join(f"{SHORT[m]} (p = {_p(om[m]['p_perm'])})" for m in no)
+        title += ", with no evidence of a difference on " + nulls
     return title
 
 
 def six_group_sentence(t: pd.DataFrame, om: dict) -> str:
     """Lead sentence for the paper (numbers.json result.six_group_sentence): the omnibus result per model, then
-    the side every exploratory estimate falls on when a model's price differs. Exploratory, D12."""
-    yes, no = [], []
-    for m in MODELS:
-        o = om.get(m, {})
-        if o.get("p_perm") is None:
-            continue
-        if o["p_perm"] < 0.05:
-            g = t[(t.model == m) & (t.race != "White")].dropna(subset=["gap_pct"])
-            side = (", with every group paying less than White names" if len(g) and (g["gap_pct"] < 0).all() else
-                    ", with every group paying more than White names" if len(g) and (g["gap_pct"] > 0).all() else "")
-            yes.append(f"{S.label(m)}'s prices differed (p = {_p(o['p_perm'])}){side}")
-        else:
-            no.append(f"{S.label(m)}'s did not (p = {_p(o['p_perm'])})" if yes else
-                      f"{S.label(m)}'s prices did not differ (p = {_p(o['p_perm'])})")
+    the side every exploratory estimate falls on (as estimates) when a model's price differs. Exploratory, D12."""
+    yes, no = _split(om)
     if not yes and not no:
         return "Six name groups: not run."
-    return "Across six name groups (Figure 3, exploratory), " + "; ".join(yes + no) + "."
+    head = "Across six name groups (Figure 3, exploratory), "
+    if not yes:
+        return (head + "there was no evidence of a price difference for "
+                + " or ".join(f"{S.label(m)} (p = {_p(om[m]['p_perm'])})" for m in no) + ".")
+    bits = []
+    for m in yes:
+        side = _side(t, m)
+        bits.append(f"{S.label(m)}'s prices differed (p = {_p(om[m]['p_perm'])})"
+                    + (f", with every group's estimate {side} White names" if side else ""))
+    bits += [f"for {S.label(m)} there was no evidence of a difference (p = {_p(om[m]['p_perm'])})" for m in no]
+    return head + "; ".join(bits) + "."
+
+
+def model_key(models) -> str:
+    """One-line marker key for the subtitle (plain text: S.wrap splits on spaces, so no tags here). Gemini is
+    drawn open, so its glyph is the open diamond."""
+    glyph = {"circle": "●", "square": "■", "diamond": "◆", "triangle-up": "▲"}
+    opn = {"diamond": "◇", "circle": "○", "square": "□", "triangle-up": "△"}
+    if len(models) < 2:
+        return ""
+    bits = [f"{(opn if m == 'flashlite' else glyph).get(S.symbol(m), '?')} {S.label(m)}" for m in models]
+    return ("Marker = model:   " + "   ".join(bits)
+            + (" (open: estimate only)" if "flashlite" in models else ""))
+
+
+def _flagged(t: pd.DataFrame) -> list[str]:
+    """Exploratory rows (not Black vs White, not Gemini) with an adjusted q below .10, in either panel."""
+    out = []
+    for _, r in t[(t.race != "White") & (t.race != "Black") & (t.model != "flashlite")].iterrows():
+        for col, what in (("price_adj_num", "price"), ("h4_adj_num", "identity-linked pick")):
+            if pd.notna(r.get(col)) and r[col] < 0.10:
+                out.append(f"{SHORT[r['model']]} {NAMES_OF[r['race']]} {what}")
+    return out
+
+
+def _ticks(lo_v, hi_v, steps):
+    """At most 6 ticks covering [lo_v, hi_v] (so the labels stay level): (tick values, step)."""
+    step = next(st for st in steps if math.ceil(hi_v / st) - math.floor(lo_v / st) + 1 <= 6)
+    return np.arange(math.floor(lo_v / step), math.ceil(hi_v / step) + 1) * step, step
 
 
 def figure(t: pd.DataFrame, om: dict):
-    """Price gap vs White names in dollars per purchase (left) and the identity-linked pick when the
-    agent guessed (right), six groups, one marker per model. Black row is the pre-registered test."""
+    """Price gap vs White names in dollars per purchase (left) and the tested gap in the identity-linked pick when
+    the agent guessed, in points (right), six groups, one marker per model. Black row is the pre-registered test."""
     fig = make_subplots(rows=1, cols=2, shared_yaxes=True, horizontal_spacing=0.06, column_widths=[0.54, 0.46])
     ms = [m for m in MODELS if (t["model"] == m).any()]
     nrow = {r: t[(t.race == r) & (t.model.isin(["haiku", "luna"]))]["names"].max() for r in RACES}
@@ -221,6 +296,7 @@ def figure(t: pd.DataFrame, om: dict):
     for xr, yr in (("x", "y"), ("x2", "y2")):
         fig.add_shape(type="rect", xref=f"{xr} domain", yref=yr, x0=0, x1=1, y0=0.5, y1=1.5, fillcolor=S.BAND,
                       line=dict(width=0), layer="below")
+    pooled = {(r["model"], r["race"]): r for _, r in t.iterrows() if pd.notna(r.get("h4_rate"))}
     for m in ms:
         sub = t[t.model == m]
         open_ = m == "flashlite"
@@ -236,74 +312,104 @@ def figure(t: pd.DataFrame, om: dict):
                 S.dots(fig, [r["gap_usd"]], [yi], [lo if pd.notna(lo) else None], [hi if pd.notna(hi) else None],
                        S.INK if not open_ else S.MUTED, sym=S.symbol(m), htext=[ht], row=1, col=1, size=10,
                        open_=open_)
-            if pd.notna(r.get("h4_rate")):
-                ht = (f"{S.label(m)}<br>{NAMES_OF[r['race']]} names: {r['h4_rate']:.1f}% "
-                      f"[{r['h4_lo']:.1f}, {r['h4_hi']:.1f}] ({int(r['h4_k'])}/{int(r['h4_n'])})"
-                      + (f"<br>minus White: {r['h4_gap']}, {r['h4_source']}, {r['h4_adj']}"
-                         if isinstance(r.get("h4_gap"), str) else ""))
-                S.dots(fig, [r["h4_rate"]], [yi], [r["h4_lo"]], [r["h4_hi"]], S.INK if not open_ else S.MUTED,
-                       sym=S.symbol(m), htext=[ht], row=1, col=2, size=10, open_=open_)
+            if pd.notna(r.get("h4_gap_pts")) and r["race"] != "White":
+                w = pooled.get((m, "White"))
+                ht = (f"{S.label(m)}<br>{NAMES_OF[r['race']]} names, name-level gap vs White: {r['h4_gap']}, "
+                      f"{r['h4_source']}, {r['h4_adj']}"
+                      + (f"<br>Pooled shares, not adjusted for task mix: {r['h4_rate']:.1f}% "
+                         f"({int(r['h4_k'])}/{int(r['h4_n'])})" if pd.notna(r.get("h4_rate")) else "")
+                      + (f"; White {w['h4_rate']:.1f}% ({int(w['h4_k'])}/{int(w['h4_n'])})" if w is not None else ""))
+                S.dots(fig, [r["h4_gap_pts"]], [yi], [r["h4_gap_lo"]], [r["h4_gap_hi"]],
+                       S.INK if not open_ else S.MUTED, sym=S.symbol(m), htext=[ht], row=1, col=2, size=10,
+                       open_=open_)
     S.vline(fig, 0, 1, 1, layer="below", color=S.AXIS, width=1.2)
+    S.vline(fig, 0, 1, 2, layer="below", color=S.AXIS, width=1.2)
     refs = t[t.race == "White"].dropna(subset=["ref_usd_white"])
     fig.add_annotation(x=0.5, y=0, xref="x domain", yref="y", xanchor="center", yanchor="middle", showarrow=False,
                        bgcolor=S.SURFACE, align="center", text="Reference: average paid by White names<br>" + ", ".join(
                            f"{SHORT[m]} ${v:,.2f}" for m, v in zip(refs["model"], refs["ref_usd_white"])),
                        font=dict(size=S.BASE - 4, color=S.MUTED))
+    wsh = t[(t.race == "White")].dropna(subset=["h4_rate"]) if "h4_rate" in t else t.iloc[:0]
+    if len(wsh):
+        fig.add_annotation(x=0.5, y=0, xref="x2 domain", yref="y2", xanchor="center", yanchor="middle",
+                           showarrow=False, bgcolor=S.SURFACE, align="center",
+                           text="Reference: White names' pooled share<br>" + ", ".join(
+                               f"{SHORT[m]} {v:.1f}%" for m, v in zip(wsh["model"], wsh["h4_rate"])),
+                           font=dict(size=S.BASE - 4, color=S.MUTED))
     # dollar ticks with the sign before the dollar sign
     vals = np.r_[t["usd_lo"].to_numpy(float), t["usd_hi"].to_numpy(float), 0.0]
-    lo_v, hi_v = np.nanmin(vals), np.nanmax(vals)
-    # at most 6 ticks, so the labels stay level
-    step = next(st for st in (0.1, 0.2, 0.25, 0.5, 1.0, 2.0, 5.0)
-                if math.ceil(hi_v / st) - math.floor(lo_v / st) + 1 <= 6)
-    tv = np.arange(math.floor(lo_v / step), math.ceil(hi_v / step) + 1) * step
+    tv, step = _ticks(np.nanmin(vals), np.nanmax(vals), (0.1, 0.2, 0.25, 0.5, 1.0, 2.0, 5.0))
     fig.update_xaxes(tickvals=list(tv), ticktext=[S.fmt_usd(v) if abs(v) > 1e-9 else "$0" for v in tv],
                      range=[tv[0] - step * 0.12, tv[-1] + step * 0.12], row=1, col=1)
-    hl = np.nanmin(t["h4_lo"].to_numpy(float)) if "h4_lo" in t else 0
-    hh = np.nanmax(t["h4_hi"].to_numpy(float)) if "h4_hi" in t else 100
-    r_lo, r_hi = 10 * math.floor(hl / 10), 10 * math.ceil(hh / 10)
+    hv = np.r_[t["h4_gap_lo"].to_numpy(float) if "h4_gap_lo" in t else [],
+               t["h4_gap_hi"].to_numpy(float) if "h4_gap_hi" in t else [], 0.0]
+    tv2, st2 = _ticks(np.nanmin(hv), np.nanmax(hv), (1.0, 2.0, 2.5, 5.0, 10.0, 20.0))
+    fig.update_xaxes(tickvals=list(tv2), ticktext=[f"{v:+g}" if abs(v) > 1e-9 else "0" for v in tv2],
+                     range=[tv2[0] - st2 * 0.12, tv2[-1] + st2 * 0.12], row=1, col=2)
     ylab = []
     for r in RACES:
         n = nrow.get(r)
         tag = "pre-registered test" if r == "Black" else ("reference" if r == "White" else "exploratory")
-        ylab.append(f"<b>{NAMES_OF[r]} names</b><br><span style='font-size:{S.BASE - 4}px;color:{S.MUTED}'>"
+        ylab.append(f"<span style='font-size:{S.BASE - 3}px'>Names associated with</span><br>"
+                    f"<b>{NAMES_OF[r]} buyers</b><br><span style='font-size:{S.BASE - 4}px;color:{S.MUTED}'>"
                     f"{int(n) if pd.notna(n) else '?'} names, {tag}</span>")
     fig.update_yaxes(tickvals=list(range(len(RACES))), ticktext=ylab, range=[len(RACES) - 0.45, -0.75], row=1, col=1)
     fig.update_yaxes(range=[len(RACES) - 0.45, -0.75], row=1, col=2)
-    fig.update_xaxes(title_text="Paid per purchase vs White names", row=1, col=1)
-    fig.update_xaxes(ticksuffix="%", range=[r_lo - 1, r_hi + 1], dtick=10,
-                     title_text="Share of guessed hair or skin purchases", row=1, col=2)
+    fig.update_xaxes(title_text="Gap vs names associated with White buyers,<br>$ per purchase (below 0 = paid less)",
+                     row=1, col=1)
+    fig.update_xaxes(title_text="Gap vs names associated with White buyers,<br>points (above 0 = picked more often)",
+                     row=1, col=2)
     for c, txt in ((1, "Price paid, same clear request (S0)"),
                    (2, "Identity-linked pick when guessing (V)")):
         fig.add_annotation(x=0, y=1.0, xref=f"x{'' if c == 1 else c} domain", yref=f"y{'' if c == 1 else c} domain",
                            xanchor="left", yanchor="bottom", yshift=6, showarrow=False, text=f"<b>{txt}</b>",
                            font=dict(size=S.BASE - 1, color=S.INK))
-    ot = omnibus_text(om)
+    ot, wb = omnibus_text(om), omnibus_text(om, part="without_black")
+    flagged = _flagged(t)
     title = headline_title(t, om)
-    sub = ("Same request, only the account name changes. Dots: gap vs names associated with White buyers (left) or "
-           "share of purchases (right); bars: 95% intervals. Shaded row: the pre-registered Black vs White test.")
-    foot = (f"{TAG} Left: name-level gap in log price vs White names, in dollars at the White names' average price paid "
-            "(Table 1); Black row = confirmatory H1 (Holm, m = 8), other rows exploratory (Hispanic and Asian in the "
-            "frozen exploratory family, Arab or Middle Eastern and South Asian in the add-on family; BH 10%). Right: "
-            "coily 4C hair or deep shade product on hair and skin tasks, vague request, purchases made without "
-            "asking; pooled share, 95% Wilson interval; Black vs White = confirmatory H4. Hispanic and Asian: "
-            "extended-tier names, main runs; Arab or Middle Eastern and South Asian: add-on runs. Gemini 3.5 "
-            "Flash-Lite ran White and Black core names only (open marker, estimate only). "
+    sub = ("Same request, only the account name changes. Dots: gap vs names associated with White buyers, $ per "
+           "purchase (left), percentage points (right); bars: 95% intervals. Shaded: pre-registered Black vs White "
+           "test.<br>" + model_key(ms))
+    blk = t[(t.race == "Black") & t.model.isin(["haiku", "luna"])]
+    held = {c: ", ".join(f"{SHORT[r['model']]} {r[c]}" for _, r in blk.iterrows()
+                         if isinstance(r.get(c), str) and r[c].startswith("Holm")) for c in ("price_adj", "h4_adj")}
+    h1, h4 = (f" ({held[c]})" if held[c] else "" for c in ("price_adj", "h4_adj"))
+    foot = (f"Pre-registered: the Black vs White row only, H1 left{h1} and H4 right{h4}, Holm across 8 tests"
+            + ("; Gemini's marker in that row is an estimate only, not part of the test. " if "flashlite" in ms
+               else ". ")
+            + "Other rows are exploratory and were added after the main results were seen (Hispanic and Asian: "
+            "extended-tier names, main runs, frozen exploratory family; Arab or Middle Eastern and South Asian: "
+            "add-on runs, add-on family; BH 10%); "
+            + ("none of them is flagged at q < .10. " if not flagged else
+               "flagged at q < .10: " + ", ".join(flagged) + ". ")
+            + "Left: name-level gap in log price, in dollars at the White names' average price paid (Table 1). "
+            "Right: name-level, cell-adjusted gap in how often the agent bought the coily 4C hair or deep shade "
+            "product on a vague hair or skin request without asking; the White names' pooled share is for "
+            "reference, and pooled shares for every group are in the table view. "
+            + ("Gemini 3.5 Flash-Lite ran White and Black core names only. " if "flashlite" in ms else "")
             + (f"Omnibus test, does price differ across any of the six groups (exploratory): {ot}. " if ot else "")
-            + S.marker_key(ms, open_note="flashlite" in ms))
-    S.layout(fig, title, sub, False, 150 + 74 * len(RACES) + S.footer_margin(foot), bottom=S.footer_margin(foot),
-             left=210, right=24, gap=44)
+            + (f"Same test without names associated with Black buyers: {wb}." if wb else ""))
+    # title and footer carry no tags, so every "<" is text ("p <.001", "q < .10"); as an entity it survives a line
+    # that starts with it in both engines (the matplotlib engine reads a run that starts with "<" as a tag)
+    title, foot = title.replace("<", "&lt;"), foot.replace("<", "&lt;")
+    bottom = S.footer_margin(foot, axis_px=92)
+    S.layout(fig, title, sub, False, 150 + 80 * len(RACES) + bottom, bottom=bottom, left=236, right=24, gap=40)
     S.footer(fig, foot)
     cap = ("Figure 3. Six name groups side by side, for the same request. Left: price paid vs names associated with "
            "White buyers, as a name-level gap in log price (cell-adjusted name means, HC2), shown in dollars per "
-           "purchase at the White names' average price paid in Table 1; bars: 95% CI. Right: identity-linked pick "
-           "(coily 4C hair or deep shade product) when the agent bought without asking on a vague hair or skin "
-           "request; pooled share with 95% Wilson interval. The Black vs White comparison is the pre-registered "
-           "confirmatory test (H1 left, H4 right, Holm across 8 tests); every other group is exploratory and was "
-           "added to the headline after the main results were seen (PLAN D12). White and Black: 20 core names each; "
-           "Hispanic and Asian: 12 extended-tier names each (main runs); Arab or Middle Eastern: 10 names and South "
-           "Asian: 8 names (add-on runs). Gemini 3.5 Flash-Lite ran core names only. "
+           "purchase at the White names' average price paid in Table 1; bars: 95% CI. Right: the tested gap vs names "
+           "associated with White buyers in the identity-linked pick (coily 4C hair or deep shade product) when the "
+           "agent bought without asking on a vague hair or skin request, name level and cell-adjusted, in percentage "
+           "points; bars: 95% CI. The pooled shares (not adjusted for the task mix) are in the table view; the "
+           "difference between two pooled shares is not the tested gap. The Black vs White comparison is the "
+           "pre-registered confirmatory test (H1 left, H4 right, Holm across 8 tests); every other group is "
+           "exploratory and was added to the headline after the main results were seen. White and Black: 20 core "
+           "names each; Hispanic and Asian: 12 extended-tier names each (main runs); Arab or Middle Eastern: 10 names "
+           "and South Asian: 8 names (add-on runs). Gemini 3.5 Flash-Lite ran core names only (open marker, estimate "
+           "only). "
            + (f"One exploratory omnibus test asks whether price differs across any of the six groups (name level, "
               f"race labels shuffled within gender, 10,000 shuffles): {ot}. " if ot else "")
+           + (f"The same test with names associated with Black buyers left out: {wb}. " if wb else "")
            + "Exact numbers: paper/tables/race_headline.md and addon_C_race_groups.md. The dollar levels by race and "
            "gender cell are in Figure A8.")
     return fig, cap
@@ -316,16 +422,20 @@ def write_table(t: pd.DataFrame, om: dict, tabdir: Path = TAB):
     tabdir = Path(tabdir)
     t.to_csv(tabdir / "race_headline.csv", index=False)
     lines = ["# Six name groups (headline Figure 3)", "",
-             f"{TAG} Price: gap vs White names for the same clear request (S0), name level, 95% CI, in percent and in "
-             "dollars per purchase at the White names' average price paid (Table 1). Identity-linked pick: vague "
-             "request, hair and skin tasks, purchases made without asking, pooled share with 95% Wilson interval. "
-             "Black vs White rows are the confirmatory H1 and H4.", ""]
+             "Black vs White rows are the confirmatory H1 and H4. Every other row, and the omnibus test, is "
+             "exploratory and was added after the main results were seen. Price: gap vs White names for the same "
+             "clear request (S0), name level, 95% CI, in percent and in dollars per purchase at the White names' "
+             "average price paid (Table 1). Identity-linked pick: vague request, hair and skin tasks, purchases made "
+             "without asking. The gap column is the name-level, cell-adjusted gap with its 95% CI (the tested number "
+             "where a test exists; drawn in Figure 3). The pooled share column is the raw share of purchases with a "
+             "95% Wilson interval, not adjusted for the task mix, so the difference between two pooled shares is not "
+             "the tested gap.", ""]
     for m in MODELS:
         s = t[t.model == m]
         if s.empty:
             continue
-        lines += [f"## {S.label(m)}", "", "| Names | n names | Price gap vs White | Adjusted p or q | Identity-linked pick "
-                  "when guessed | Gap vs White |", "|---|---|---|---|---|---|"]
+        lines += [f"## {S.label(m)}", "", "| Names | n names | Price gap vs White | Adjusted p or q | Identity-linked "
+                  "pick: name-level gap vs White | Pooled share (not adjusted) |", "|---|---|---|---|---|---|"]
         for _, r in s.iterrows():
             if r["race"] == "White":
                 pg = f"reference (${r['ref_usd_white']:,.2f})"
@@ -336,14 +446,21 @@ def write_table(t: pd.DataFrame, om: dict, tabdir: Path = TAB):
                 pg = "not run"
             h4 = (f"{r['h4_rate']:.1f}% [{r['h4_lo']:.1f}, {r['h4_hi']:.1f}] ({int(r['h4_k'])}/{int(r['h4_n'])})"
                   if pd.notna(r.get("h4_rate")) else "not run")
-            hg = (f"{r['h4_gap']} ({r['h4_adj']})" if isinstance(r.get("h4_gap"), str) else "")
+            hg = ("reference" if r["race"] == "White" else
+                  f"{r['h4_gap']} ({r['h4_adj']})" if isinstance(r.get("h4_gap"), str) else "")
             lines.append(f"| {NAMES_OF[r['race']]} | {int(r['names']) if pd.notna(r['names']) else ''} | {pg} | "
-                         f"{r.get('price_adj', '') if isinstance(r.get('price_adj'), str) else ''} | {h4} | {hg} |")
+                         f"{r.get('price_adj', '') if isinstance(r.get('price_adj'), str) else ''} | {hg} | {h4} |")
         o = om.get(m)
         if o and "F" in o:
             lines += ["", f"Omnibus (exploratory): F({o['df1']}, {o['df2']}) = {o['F']:.2f}, permutation p = "
                       f"{o['p_perm']:.4f} ({o['perm_hits']:,} of {o['n_perm']:,} shuffles at least as large), "
                       f"classical F p = {o['p_F']:.4f}; {o['n_names']} names."]
+            w = o.get("without_black")
+            if w and "F" in w:
+                lines += ["", f"Sensitivity, same test with names associated with Black buyers left out: "
+                          f"F({w['df1']}, {w['df2']}) = {w['F']:.2f}, permutation p = {w['p_perm']:.4f} "
+                          f"({w['perm_hits']:,} of {w['n_perm']:,} shuffles at least as large), classical F p = "
+                          f"{w['p_F']:.4f}; {w['n_names']} names."]
         elif o:
             lines += ["", f"Omnibus: {o['note']}."]
         lines.append("")

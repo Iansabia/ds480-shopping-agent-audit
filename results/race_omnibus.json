@@ -35,7 +35,26 @@
    "MENA": -0.2128269600586652,
    "South Asian": 0.690103711813439
   },
-  "note": "name level, cell-residualized log price, race F with a women's-name term; p from race labels shuffled within gender"
+  "note": "name level, cell-residualized log price, race F with a women's-name term; p from race labels shuffled within gender",
+  "without_black": {
+   "groups": [
+    "White",
+    "Hispanic",
+    "Asian",
+    "MENA",
+    "South Asian"
+   ],
+   "n_names": 62,
+   "F": 0.5340897854183776,
+   "df1": 4,
+   "df2": 56,
+   "p_F": 0.7112002249051672,
+   "p_perm": 0.7177282271772822,
+   "perm_hits": 7177,
+   "n_perm": 10000,
+   "seed": 480,
+   "note": "sensitivity: same test with names associated with Black buyers left out"
+  }
  },
  "luna": {
   "model": "luna",
@@ -72,7 +91,26 @@
    "MENA": -0.5319900074580275,
    "South Asian": -1.0014090120800123
   },
-  "note": "name level, cell-residualized log price, race F with a women's-name term; p from race labels shuffled within gender"
+  "note": "name level, cell-residualized log price, race F with a women's-name term; p from race labels shuffled within gender",
+  "without_black": {
+   "groups": [
+    "White",
+    "Hispanic",
+    "Asian",
+    "MENA",
+    "South Asian"
+   ],
+   "n_names": 62,
+   "F": 1.4923990379902874,
+   "df1": 4,
+   "df2": 56,
+   "p_F": 0.2168418984654643,
+   "p_perm": 0.21677832216778323,
+   "perm_hits": 2167,
+   "n_perm": 10000,
+   "seed": 480,
+   "note": "sensitivity: same test with names associated with Black buyers left out"
+  }
  },
  "flashlite": {
   "model": "flashlite",

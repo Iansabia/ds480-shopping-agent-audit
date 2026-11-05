@@ -4,6 +4,9 @@ analysis/paper_calc.py). No API calls; synthetic logs only.
 Checks:
   - the dollar translation and the t interval are computed as FIGURES_SPEC says
   - number formatting never prints "-0.0" or a bare group label
+  - verdicts use the exact PLAN 7 wording; a dollar gap under 10 cents keeps
+    a tenth of a cent; the implied focal level differs from the comparison
+    average by exactly the dollar gap (D12)
   - runs still being written are skipped
   - the appendix figures reproduce analyze.py's frozen PLAN 10 numbers exactly
   - the Figure 5D p-values give the same reject share as analyze.shuffled_null
@@ -70,6 +73,30 @@ def test_formatting():
     assert MF.f_usd(335.2, 0) == "+$335"
     assert MF.f_p(0.0004) == "< 0.001"
     assert MF.f_usd(float("nan")) == "n/a"
+
+
+def test_verdicts_use_plan_wording():
+    for v in ("gap detected", "gap detected, smaller than the margin",
+              "no gap larger than the margin (equivalence shown)",
+              "inconclusive: no evidence of a gap, but equivalence not shown"):
+        assert MF.verdict_plain(v) == v                              # PLAN 7, exact
+    assert MF.verdict_lines("inconclusive: no evidence of a gap, but equivalence not shown", 42) == \
+        ["inconclusive: no evidence of a gap,", "but equivalence not shown"]
+    assert MF.verdict_lines("no gap larger than the margin (equivalence shown)", 42) == \
+        ["no gap larger than the margin", "(equivalence shown)"]
+    assert MF.verdict_lines("gap detected", 42) == ["gap detected"]
+
+
+def test_dollar_gap_basis():
+    # a gap under 10 cents keeps a tenth of a cent, so -$0.025 per purchase agrees with -$25 per 1,000
+    assert MF.f_gap_usd(-0.02485) == "-$0.025"
+    assert MF.f_gap_usd(-0.5604) == "-$0.56"
+    assert MF.f_gap_usd(float("nan")) == "n/a"
+    # D12: the focal level is implied by the tested gap, so focal minus comparison is the dollar gap
+    tr = P.dollar_translation(math.log(0.98), math.log(0.97), math.log(0.99), 31.0)
+    u = P.unify_focal({"ref_usd": 31.0, "focal_usd": 30.9}, tr)
+    assert u["focal_usd"] - u["ref_usd"] == pytest.approx(tr["usd_per_purchase"])
+    assert u["focal_usd_cellmean"] == 30.9
 
 
 def test_select_runs_skips_live(tmp_path):

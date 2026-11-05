@@ -1,10 +1,10 @@
 # Add-ons C and D: six name groups side by side
 
-Exploratory, added after the main results were seen. All 40 tasks, core White and Black names (20 each) and the Hispanic and Asian extended names (12 each) from the main runs; MENA (10) and South Asian (8: 5 women, 3 men) names from the add-on runs, run on Claude Haiku 5.5 and GPT-6 Luna. Gemini 3.5 Flash-Lite ran core names only. Rates: pooled share, 95% Wilson interval (events/episodes). Price: mean log(price paid / cheapest fitting price) and mean price paid, bought episodes. Gap vs White: name-level model (cell-adjusted name means, HC2, gender as the other axis); price as percent, rates in points. The H3-type row is S0 only (the add-ons have no S1), so it is not the confirmatory H3. Source column: where the gap's adjusted p or q comes from. Frozen rows are shown with their frozen value and are not retested.
+Exploratory, added after the main results were seen. All 40 tasks, core White and Black names (20 each) and the Hispanic and Asian extended names (12 each) from the main runs; MENA (10) and South Asian (8: 5 women, 3 men) names from the add-on runs, run on Claude Haiku 5.5 and GPT-6 Luna. Gemini 3.5 Flash-Lite ran core names only. Rates: pooled share, 95% Wilson interval (events/episodes). Price: mean log(price paid / cheapest fitting price) and raw mean price paid (no cell adjustment), bought episodes. Gap vs White: name-level model (cell-adjusted name means, HC2, gender as the other axis); price as percent, rates in points. The H3-type row is S0 only (the add-ons have no S1), so it is not the confirmatory H3. Source column: where the gap's adjusted p or q comes from. Frozen rows are shown with their frozen value and are not retested.
 
 ## Claude Haiku 5.5
 
-| Names associated with | S0 price: mean log ratio, mean $ | Override (wrong product for the stated need), S0 | Identity-linked pick, V, agent guessed | V ask rate | Women's-line pick, twin S0: women's names / men's names |
+| Names associated with | S0 price: mean log ratio, raw mean $ (no cell adjustment) | Override (wrong product for the stated need), S0 | Identity-linked pick, V, agent guessed | V ask rate | Women's-line pick, twin S0: women's names / men's names |
 |---|---|---|---|---|---|
 | White (20 names) | 0.398, $26.44 | 0.2% [0.1, 0.6] (4/1,600) | 52.6% [48.0, 57.1] (244/464) | 65.2% [63.6, 66.8] (2,087/3,200) | 22.7% [18.4, 27.6] (72/317) / 20.1% [16.0, 24.8] (64/319) |
 | Black (20 names) | 0.398, $26.67 | 0.3% [0.1, 0.6] (4/1,596) | 57.4% [52.9, 61.7] (273/476) | 64.7% [63.0, 66.4] (2,071/3,200) | 25.7% [21.2, 30.8] (81/315) / 18.6% [14.7, 23.2] (59/318) |
@@ -40,7 +40,7 @@ Gaps vs names associated with White buyers:
 
 ## GPT-6 Luna
 
-| Names associated with | S0 price: mean log ratio, mean $ | Override (wrong product for the stated need), S0 | Identity-linked pick, V, agent guessed | V ask rate | Women's-line pick, twin S0: women's names / men's names |
+| Names associated with | S0 price: mean log ratio, raw mean $ (no cell adjustment) | Override (wrong product for the stated need), S0 | Identity-linked pick, V, agent guessed | V ask rate | Women's-line pick, twin S0: women's names / men's names |
 |---|---|---|---|---|---|
 | White (20 names) | 0.482, $31.36 | 0.1% [0.0, 0.5] (2/1,600) | 56.0% [51.7, 60.4] (278/496) | 47.3% [45.6, 49.0] (1,513/3,200) | 27.8% [23.2, 33.0] (89/320) / 17.2% [13.4, 21.7] (55/320) |
 | Black (20 names) | 0.464, $30.64 | 0.1% [0.0, 0.5] (2/1,600) | 67.9% [63.9, 71.6] (376/554) | 44.7% [43.0, 46.4] (1,431/3,200) | 30.0% [25.2, 35.2] (96/320) / 17.8% [14.0, 22.4] (57/320) |
@@ -76,7 +76,7 @@ Gaps vs names associated with White buyers:
 
 ## Gemini 3.5 Flash-Lite
 
-| Names associated with | S0 price: mean log ratio, mean $ | Override (wrong product for the stated need), S0 | Identity-linked pick, V, agent guessed | V ask rate | Women's-line pick, twin S0: women's names / men's names |
+| Names associated with | S0 price: mean log ratio, raw mean $ (no cell adjustment) | Override (wrong product for the stated need), S0 | Identity-linked pick, V, agent guessed | V ask rate | Women's-line pick, twin S0: women's names / men's names |
 |---|---|---|---|---|---|
 | White (20 names) | 0.501, $26.36 | 0.0% [0.0, 0.5] (0/789) | 68.7% [60.3, 76.0] (90/131) | 74.9% [72.8, 77.0] (1,199/1,600) | 53.1% [45.4, 60.7] (85/160) / 23.1% [17.3, 30.2] (37/160) |
 | Black (20 names) | 0.510, $26.50 | 0.0% [0.0, 0.5] (0/791) | 73.7% [65.8, 80.4] (101/137) | 73.0% [70.8, 75.1] (1,168/1,600) | 50.0% [42.3, 57.7] (80/160) / 28.7% [22.3, 36.2] (46/160) |

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="638.64pt" viewBox="0 0 648 638.64" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="649.44pt" viewBox="0 0 648 649.44" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-05T15:12:07.451319</dc:date>
+    <dc:date>2026-11-05T17:03:37.413000</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -21,8 +21,8 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 638.64 
-L 648 638.64 
+   <path d="M 0 649.44 
+L 648 649.44 
 L 648 0 
 L 0 0 
 z
@@ -30,53 +30,53 @@ z
   </g>
   <g id="axes_1">
    <g id="line2d_1">
-    <path d="M 204.939148 527.76 
-L 204.939148 136.08 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke-dasharray: 2.16,2.16; stroke-dashoffset: 0; stroke: #6b6a63; stroke-width: 0.864"/>
+    <path d="M 207.062707 527.76 
+L 207.062707 147.6 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke-dasharray: 2.16,2.16; stroke-dashoffset: 0; stroke: #6b6a63; stroke-width: 0.864"/>
    </g>
    <g id="line2d_2">
     <path d="M 350.756852 527.76 
-L 350.756852 136.08 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke-dasharray: 2.16,2.16; stroke-dashoffset: 0; stroke: #6b6a63; stroke-width: 0.864"/>
+L 350.756852 147.6 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke-dasharray: 2.16,2.16; stroke-dashoffset: 0; stroke: #6b6a63; stroke-width: 0.864"/>
    </g>
    <g id="line2d_3">
-    <path d="M 156.333246 527.76 
-L 156.333246 136.08 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke-dasharray: 2.16,2.16; stroke-dashoffset: 0; stroke: #6b6a63; stroke-width: 0.864"/>
+    <path d="M 162.119663 527.76 
+L 162.119663 147.6 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke-dasharray: 2.16,2.16; stroke-dashoffset: 0; stroke: #6b6a63; stroke-width: 0.864"/>
    </g>
    <g id="line2d_4">
     <path d="M 399.362754 527.76 
-L 399.362754 136.08 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke-dasharray: 2.16,2.16; stroke-dashoffset: 0; stroke: #6b6a63; stroke-width: 0.864"/>
+L 399.362754 147.6 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke-dasharray: 2.16,2.16; stroke-dashoffset: 0; stroke: #6b6a63; stroke-width: 0.864"/>
    </g>
    <g id="line2d_5">
     <path d="M 277.848 527.76 
-L 277.848 136.08 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #1f1f1c; stroke-width: 0.936"/>
+L 277.848 147.6 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #1f1f1c; stroke-width: 0.936"/>
    </g>
    <g id="line2d_6">
-    <path d="M 244.699383 221.227826 
-L 306.83087 221.227826 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #1f1f1c; stroke-width: 1.44"/>
+    <path d="M 244.699383 230.243478 
+L 306.83087 230.243478 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #1f1f1c; stroke-width: 1.44"/>
    </g>
    <g id="line2d_7">
-    <path d="M 240.3003 306.375652 
-L 302.577983 306.375652 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #1f1f1c; stroke-width: 1.44"/>
+    <path d="M 240.3003 312.886957 
+L 302.577983 312.886957 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #1f1f1c; stroke-width: 1.44"/>
    </g>
    <g id="line2d_8">
-    <path d="M 213.685436 391.523478 
-L 254.933129 391.523478 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #1f1f1c; stroke-width: 1.44"/>
+    <path d="M 213.685436 395.530435 
+L 254.933129 395.530435 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #1f1f1c; stroke-width: 1.44"/>
    </g>
    <g id="line2d_9">
-    <path d="M 218.684396 476.671304 
-L 259.47901 476.671304 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #1f1f1c; stroke-width: 1.44"/>
+    <path d="M 218.684395 478.173913 
+L 259.47901 478.173913 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #1f1f1c; stroke-width: 1.44"/>
    </g>
    <g id="line2d_10">
     <defs>
-     <path id="mef0c2f6cdb" d="M 0 4.32 
+     <path id="m8c96b7e3f2" d="M 0 4.32 
 C 1.145677 4.32 2.244585 3.864818 3.054701 3.054701 
 C 3.864818 2.244585 4.32 1.145677 4.32 0 
 C 4.32 -1.145677 3.864818 -2.244585 3.054701 -3.054701 
@@ -88,258 +88,270 @@ C -2.244585 3.864818 -1.145677 4.32 0 4.32
 z
 " style="stroke: #ffffff; stroke-width: 1.008"/>
     </defs>
-    <g clip-path="url(#p1469e3169d)">
-     <use xlink:href="#mef0c2f6cdb" x="275.566396" y="221.227826" style="fill: #1f1f1c; stroke: #ffffff; stroke-width: 1.008"/>
+    <g clip-path="url(#p3871f1e21b)">
+     <use xlink:href="#m8c96b7e3f2" x="275.566396" y="230.243478" style="fill: #1f1f1c; stroke: #ffffff; stroke-width: 1.008"/>
     </g>
    </g>
    <g id="line2d_11">
-    <g clip-path="url(#p1469e3169d)">
-     <use xlink:href="#mef0c2f6cdb" x="271.239118" y="306.375652" style="fill: #1f1f1c; stroke: #ffffff; stroke-width: 1.008"/>
+    <g clip-path="url(#p3871f1e21b)">
+     <use xlink:href="#m8c96b7e3f2" x="271.239118" y="312.886957" style="fill: #1f1f1c; stroke: #ffffff; stroke-width: 1.008"/>
     </g>
    </g>
    <g id="line2d_12">
     <defs>
-     <path id="mf4e571fa96" d="M -3.888 3.888 
+     <path id="m4ebb221bc5" d="M -3.888 3.888 
 L 3.888 3.888 
 L 3.888 -3.888 
 L -3.888 -3.888 
 z
 " style="stroke: #ffffff; stroke-width: 1.008; stroke-linejoin: miter"/>
     </defs>
-    <g clip-path="url(#p1469e3169d)">
-     <use xlink:href="#mf4e571fa96" x="234.220176" y="391.523478" style="fill: #1f1f1c; stroke: #ffffff; stroke-width: 1.008; stroke-linejoin: miter"/>
+    <g clip-path="url(#p3871f1e21b)">
+     <use xlink:href="#m4ebb221bc5" x="234.220176" y="395.530435" style="fill: #1f1f1c; stroke: #ffffff; stroke-width: 1.008; stroke-linejoin: miter"/>
     </g>
    </g>
    <g id="line2d_13">
-    <g clip-path="url(#p1469e3169d)">
-     <use xlink:href="#mf4e571fa96" x="238.994717" y="476.671304" style="fill: #1f1f1c; stroke: #ffffff; stroke-width: 1.008; stroke-linejoin: miter"/>
+    <g clip-path="url(#p3871f1e21b)">
+     <use xlink:href="#m4ebb221bc5" x="238.994717" y="478.173913" style="fill: #1f1f1c; stroke: #ffffff; stroke-width: 1.008; stroke-linejoin: miter"/>
     </g>
    </g>
    <g id="text_1">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="122.379989" y="537.9336" transform="rotate(-0 122.379989 537.9336)">-6%</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="148.368506" y="537.9336" transform="rotate(-0 148.368506 537.9336)">-4.8%</text>
    </g>
    <g id="text_2">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="195.353191" y="537.9336" transform="rotate(-0 195.353191 537.9336)">-3%</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="193.400032" y="537.9336" transform="rotate(-0 193.400032 537.9336)">-2.9%</text>
    </g>
    <g id="text_3">
     <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="270.300037" y="537.9336" transform="rotate(-0 270.300037 537.9336)">0%</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="340.227584" y="537.9336" transform="rotate(-0 340.227584 537.9336)">+3%</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="336.150133" y="537.9336" transform="rotate(-0 336.150133 537.9336)">+3.0%</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="413.072086" y="537.9336" transform="rotate(-0 413.072086 537.9336)">+6%</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="384.837935" y="537.9336" transform="rotate(-0 384.837935 537.9336)">+5.0%</text>
    </g>
    <g id="text_6">
     <text style="font-size: 10.08px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="124.5816" y="556.5888" transform="rotate(-0 124.5816 556.5888)">Gap in price paid for the same request (focal minus comparison)</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.115587" y="218.513426" transform="rotate(-0 13.115587 218.513426)">H1</text>
+    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.115587" y="227.529078" transform="rotate(-0 13.115587 227.529078)">H1</text>
    </g>
    <g id="text_8">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="24.142837" y="218.513426" transform="rotate(-0 24.142837 218.513426)"> Black vs White names</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="24.142837" y="227.529078" transform="rotate(-0 24.142837 227.529078)"> Black vs White names</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="48.923438" y="230.681426" transform="rotate(-0 48.923438 230.681426)">Claude Haiku 5.5</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="48.923438" y="239.697078" transform="rotate(-0 48.923438 239.697078)">Claude Haiku 5.5</text>
    </g>
    <g id="text_10">
-    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="41.379863" y="303.661252" transform="rotate(-0 41.379863 303.661252)">H2</text>
+    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="41.379863" y="310.172557" transform="rotate(-0 41.379863 310.172557)">H2</text>
    </g>
    <g id="text_11">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="54.267413" y="303.661252" transform="rotate(-0 54.267413 303.661252)"> women vs men</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="54.267413" y="310.172557" transform="rotate(-0 54.267413 310.172557)"> women vs men</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="48.923438" y="315.829252" transform="rotate(-0 48.923438 315.829252)">Claude Haiku 5.5</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="48.923438" y="322.340557" transform="rotate(-0 48.923438 322.340557)">Claude Haiku 5.5</text>
    </g>
    <g id="text_13">
-    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.115587" y="388.809078" transform="rotate(-0 13.115587 388.809078)">H1</text>
+    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.115587" y="392.816035" transform="rotate(-0 13.115587 392.816035)">H1</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="24.142837" y="388.809078" transform="rotate(-0 24.142837 388.809078)"> Black vs White names</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="24.142837" y="392.816035" transform="rotate(-0 24.142837 392.816035)"> Black vs White names</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="71.170988" y="400.977078" transform="rotate(-0 71.170988 400.977078)">GPT-6 Luna</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="71.170988" y="404.984035" transform="rotate(-0 71.170988 404.984035)">GPT-6 Luna</text>
    </g>
    <g id="text_16">
-    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="41.379863" y="473.956904" transform="rotate(-0 41.379863 473.956904)">H2</text>
+    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="41.379863" y="475.459513" transform="rotate(-0 41.379863 475.459513)">H2</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="54.267413" y="473.956904" transform="rotate(-0 54.267413 473.956904)"> women vs men</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="54.267413" y="475.459513" transform="rotate(-0 54.267413 475.459513)"> women vs men</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="71.170988" y="486.124904" transform="rotate(-0 71.170988 486.124904)">GPT-6 Luna</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="71.170988" y="487.627513" transform="rotate(-0 71.170988 487.627513)">GPT-6 Luna</text>
    </g>
    <g id="line2d_14">
-    <path d="M 243.700642 197.386435 
-L 243.700642 245.069217 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #3365ad; stroke-width: 2.16"/>
+    <path d="M 243.700642 207.103304 
+L 243.700642 253.383652 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #3365ad; stroke-width: 2.16"/>
    </g>
    <g id="line2d_15">
-    <path d="M 311.995358 197.386435 
-L 311.995358 245.069217 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #3365ad; stroke-width: 2.16"/>
+    <path d="M 311.995358 207.103304 
+L 311.995358 253.383652 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #3365ad; stroke-width: 2.16"/>
    </g>
    <g id="line2d_16">
-    <path d="M 243.566098 282.534261 
-L 243.566098 330.217043 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #3365ad; stroke-width: 2.16"/>
+    <path d="M 243.566098 289.746783 
+L 243.566098 336.02713 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #3365ad; stroke-width: 2.16"/>
    </g>
    <g id="line2d_17">
-    <path d="M 312.129902 282.534261 
-L 312.129902 330.217043 
-" clip-path="url(#p1469e3169d)" style="fill: none; stroke: #3365ad; stroke-width: 2.16"/>
+    <path d="M 312.129902 289.746783 
+L 312.129902 336.02713 
+" clip-path="url(#p3871f1e21b)" style="fill: none; stroke: #3365ad; stroke-width: 2.16"/>
    </g>
    <g id="patch_2">
-    <path d="M 181.429573 168.436174 
-L 228.448723 168.436174 
-L 228.448723 144.964174 
-L 181.429573 144.964174 
+    <path d="M 192.093738 179.004522 
+L 222.031675 179.004522 
+L 222.031675 155.532522 
+L 192.093738 155.532522 
 z
-" clip-path="url(#p1469e3169d)" style="fill: #ffffff"/>
+" clip-path="url(#p3871f1e21b)" style="fill: #ffffff"/>
    </g>
    <g id="patch_3">
-    <path d="M 326.44909 168.436174 
-L 375.064615 168.436174 
-L 375.064615 144.964174 
-L 326.44909 144.964174 
+    <path d="M 335.787883 179.004522 
+L 365.725821 179.004522 
+L 365.725821 155.532522 
+L 335.787883 155.532522 
 z
-" clip-path="url(#p1469e3169d)" style="fill: #ffffff"/>
+" clip-path="url(#p3871f1e21b)" style="fill: #ffffff"/>
    </g>
    <g id="patch_4">
-    <path d="M 132.875646 168.436174 
-L 179.790846 168.436174 
-L 179.790846 144.964174 
-L 132.875646 144.964174 
+    <path d="M 147.835031 179.004522 
+L 176.404294 179.004522 
+L 176.404294 155.532522 
+L 147.835031 155.532522 
 z
-" clip-path="url(#p1469e3169d)" style="fill: #ffffff"/>
+" clip-path="url(#p3871f1e21b)" style="fill: #ffffff"/>
    </g>
    <g id="patch_5">
-    <path d="M 375.106967 168.436174 
-L 423.618542 168.436174 
-L 423.618542 144.964174 
-L 375.106967 144.964174 
+    <path d="M 385.078123 179.004522 
+L 413.647385 179.004522 
+L 413.647385 155.532522 
+L 385.078123 155.532522 
 z
-" clip-path="url(#p1469e3169d)" style="fill: #ffffff"/>
+" clip-path="url(#p3871f1e21b)" style="fill: #ffffff"/>
    </g>
    <g id="text_19">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="182.869573" y="154.403374" transform="rotate(-0 182.869573 154.403374)">margin -3%</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="194.218075" y="164.971722" transform="rotate(-0 194.218075 164.971722)">margin</text>
    </g>
    <g id="text_20">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="191.410179" y="164.699374" transform="rotate(-0 191.410179 164.699374)">(Haiku)</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="193.533738" y="175.267722" transform="rotate(-0 193.533738 175.267722)">(Haiku)</text>
    </g>
    <g id="text_21">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="327.88909" y="154.403374" transform="rotate(-0 327.88909 154.403374)">margin +3%</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="337.912221" y="164.971722" transform="rotate(-0 337.912221 164.971722)">margin</text>
    </g>
    <g id="text_22">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="337.227884" y="164.699374" transform="rotate(-0 337.227884 164.699374)">(Haiku)</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="337.227883" y="175.267722" transform="rotate(-0 337.227883 175.267722)">(Haiku)</text>
    </g>
    <g id="text_23">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="134.315646" y="154.403374" transform="rotate(-0 134.315646 154.403374)">margin -5%</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="149.275031" y="164.971722" transform="rotate(-0 149.275031 164.971722)">margin</text>
    </g>
    <g id="text_24">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="144.301033" y="164.699374" transform="rotate(-0 144.301033 164.699374)">(Luna)</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="150.08745" y="175.267722" transform="rotate(-0 150.08745 175.267722)">(Luna)</text>
    </g>
    <g id="text_25">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="376.546967" y="154.403374" transform="rotate(-0 376.546967 154.403374)">margin +5%</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="386.518123" y="164.971722" transform="rotate(-0 386.518123 164.971722)">margin</text>
    </g>
    <g id="text_26">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="387.330542" y="164.699374" transform="rotate(-0 387.330542 164.699374)">(Luna)</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="387.330542" y="175.267722" transform="rotate(-0 387.330542 175.267722)">(Luna)</text>
    </g>
    <g id="text_27">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="212.098226" transform="rotate(-0 447.264 212.098226)">-$0.02</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="214.993878" transform="rotate(-0 447.264 214.993878)">-$0.025</text>
    </g>
    <g id="text_28">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="476.4402" y="212.098226" transform="rotate(-0 476.4402 212.098226)"> per purchase · -$25 per 1,000</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="481.81455" y="214.993878" transform="rotate(-0 481.81455 214.993878)"> per purchase · -$25 per 1,000</text>
    </g>
    <g id="text_29">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="224.338226" transform="rotate(-0 447.264 224.338226)">-$939 per $1M of agent spend</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="227.233878" transform="rotate(-0 447.264 227.233878)">-$939 per $1M of agent spend</text>
    </g>
    <g id="text_30">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="236.578226" transform="rotate(-0 447.264 236.578226)">no gap larger than the margin</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="239.473878" transform="rotate(-0 447.264 239.473878)">no gap larger than the margin</text>
    </g>
    <g id="text_31">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="297.246052" transform="rotate(-0 447.264 297.246052)">-$0.07</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="251.713878" transform="rotate(-0 447.264 251.713878)">(equivalence shown)</text>
    </g>
    <g id="text_32">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="475.8543" y="297.246052" transform="rotate(-0 475.8543 297.246052)"> per purchase · -$72 per 1,000</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="297.637357" transform="rotate(-0 447.264 297.637357)">-$0.072</text>
    </g>
    <g id="text_33">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="309.486052" transform="rotate(-0 447.264 309.486052)">-$2,719 per $1M of agent spend</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="481.29615" y="297.637357" transform="rotate(-0 481.29615 297.637357)"> per purchase · -$72 per 1,000</text>
    </g>
    <g id="text_34">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="321.726052" transform="rotate(-0 447.264 321.726052)">no gap larger than the margin</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="309.877357" transform="rotate(-0 447.264 309.877357)">-$2,719 per $1M of agent spend</text>
    </g>
    <g id="text_35">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="382.393878" transform="rotate(-0 447.264 382.393878)">-$0.56</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="322.117357" transform="rotate(-0 447.264 322.117357)">no gap larger than the margin</text>
    </g>
    <g id="text_36">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="476.3538" y="382.393878" transform="rotate(-0 476.3538 382.393878)"> per purchase · -$560 per 1,000</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="334.357357" transform="rotate(-0 447.264 334.357357)">(equivalence shown)</text>
    </g>
    <g id="text_37">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="394.633878" transform="rotate(-0 447.264 394.633878)">-$17,952 per $1M of agent spend</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="386.400835" transform="rotate(-0 447.264 386.400835)">-$0.56</text>
    </g>
    <g id="text_38">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="406.873878" transform="rotate(-0 447.264 406.873878)">gap found, but inside the equivalence margin</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="476.3538" y="386.400835" transform="rotate(-0 476.3538 386.400835)"> per purchase · -$560 per 1,000</text>
    </g>
    <g id="text_39">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="467.541704" transform="rotate(-0 447.264 467.541704)">-$0.50</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="398.640835" transform="rotate(-0 447.264 398.640835)">-$17,952 per $1M of agent spend</text>
    </g>
    <g id="text_40">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="476.5698" y="467.541704" transform="rotate(-0 476.5698 467.541704)"> per purchase · -$500 per 1,000</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="410.880835" transform="rotate(-0 447.264 410.880835)">gap detected, smaller than the margin</text>
    </g>
    <g id="text_41">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="479.781704" transform="rotate(-0 447.264 479.781704)">-$15,987 per $1M of agent spend</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="469.044313" transform="rotate(-0 447.264 469.044313)">-$0.50</text>
    </g>
    <g id="text_42">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="492.021704" transform="rotate(-0 447.264 492.021704)">gap found, but inside the equivalence margin</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="476.5698" y="469.044313" transform="rotate(-0 476.5698 469.044313)"> per purchase · -$500 per 1,000</text>
    </g>
    <g id="text_43">
-    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="165.001774" transform="rotate(-0 447.264 165.001774)">The same gap in dollars</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="481.284313" transform="rotate(-0 447.264 481.284313)">-$15,987 per $1M of agent spend</text>
    </g>
    <g id="text_44">
-    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="555.38955" y="165.001774" transform="rotate(-0 555.38955 165.001774)"> (not a test)</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.264" y="493.524313" transform="rotate(-0 447.264 493.524313)">gap detected, smaller than the margin</text>
    </g>
    <g id="text_45">
-    <text style="font-weight: 600; font-size: 15.84px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="36.8784" transform="rotate(-0 13.68 36.8784)">A price gap by name was found for GPT-6 Luna, inside the equivalence</text>
+    <text style="font-weight: 700; font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.264" y="175.570122" transform="rotate(-0 447.264 175.570122)">The same gap in dollars</text>
    </g>
    <g id="text_46">
-    <text style="font-weight: 600; font-size: 15.84px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="57.4704" transform="rotate(-0 13.68 57.4704)">margin</text>
+    <text style="font-size: 9.36px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="555.38955" y="175.570122" transform="rotate(-0 555.38955 175.570122)"> (not a test)</text>
    </g>
    <g id="text_47">
-    <text style="font-size: 10.8px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="74.412" transform="rotate(-0 13.68 74.412)">Price paid for the same clear request: names associated with Black vs White buyers (H1) and women vs men</text>
+    <text style="font-weight: 600; font-size: 15.84px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="36.8784" transform="rotate(-0 13.68 36.8784)">A price gap by name was detected for GPT-6 Luna, smaller than the</text>
    </g>
    <g id="text_48">
-    <text style="font-size: 10.8px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="88.452" transform="rotate(-0 13.68 88.452)">(H2). Blue ticks: detectable gap after Holm at m = 8 (Haiku + Luna); none pre-registered for GPT-6 Luna.</text>
+    <text style="font-weight: 600; font-size: 15.84px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="57.4704" transform="rotate(-0 13.68 57.4704)">equivalence margin</text>
    </g>
    <g id="text_49">
-    <text style="font-size: 10.8px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="102.492" transform="rotate(-0 13.68 102.492)">Tests: Holm correction across 8 tests.</text>
+    <text style="font-size: 10.8px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="74.412" transform="rotate(-0 13.68 74.412)">Price paid for the same clear request: names associated with Black vs White buyers (H1) and women vs men</text>
    </g>
    <g id="text_50">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="125.6544" transform="rotate(-0 13.68 125.6544)">Estimate (H1)</text>
+    <text style="font-size: 10.8px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="88.452" transform="rotate(-0 13.68 88.452)">(H2). Blue ticks: detectable gap after Holm at m = 8 (Haiku + Luna); none pre-registered for GPT-6 Luna.</text>
    </g>
    <g id="text_51">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="69.1434" y="125.6544" transform="rotate(-0 69.1434 125.6544)">: names associated with Black buyers paid 0.1% less (Claude Haiku 5.5, not significant); 1.8% less (GPT-6 Luna, significant)</text>
+    <text style="font-size: 10.8px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="102.492" transform="rotate(-0 13.68 102.492)">Tests: Holm correction across 8 tests.</text>
    </g>
    <g id="text_52">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="584.7264" transform="rotate(-0 13.68 584.7264)">Every gap is focal group minus comparison group: a negative gap means the focal group paid less.</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="125.9424" transform="rotate(-0 13.68 125.9424)">H1, Black vs White names.</text>
    </g>
    <g id="text_53">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="595.9584" transform="rotate(-0 13.68 595.9584)">A gap counts only if its Holm-adjusted p &lt; 0.05; the bar is the unadjusted 95% interval. Blue ticks: a true gap this size is flagged at least</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="123.921" y="125.9424" transform="rotate(-0 123.921 125.9424)"> Claude Haiku 5.5: no evidence of a gap, inside the 3% equivalence margin (estimate -0.1%, 95% CI -1.4% to +1.2%)</text>
    </g>
    <g id="text_54">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="607.1904" transform="rotate(-0 13.68 607.1904)">80% of the time (fixed before the main run).</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="137.1744" transform="rotate(-0 13.68 137.1744)">GPT-6 Luna: names associated with Black buyers paid 1.8% less (95% CI -2.6% to -0.9%), significant after Holm</text>
    </g>
    <g id="text_55">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="618.4224" transform="rotate(-0 13.68 618.4224)">The Claude Haiku 5.5 pilot put the spread between names at 0 (for both H1 and H2), so the detectable gap may be optimistic.</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="584.2944" transform="rotate(-0 13.68 584.2944)">Every gap is focal group minus comparison group: a negative gap means the focal group paid less.</text>
    </g>
    <g id="text_56">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="629.6544" transform="rotate(-0 13.68 629.6544)">Dollar columns translate the percent gap at the comparison group's average price paid (per $1M uses the percent only). Not separate tests.</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="595.5264" transform="rotate(-0 13.68 595.5264)">A gap counts only if its Holm-adjusted p &lt; 0.05; the bar is the unadjusted 95% interval. Blue ticks: a true gap this size is flagged at least</text>
+   </g>
+   <g id="text_57">
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="606.7584" transform="rotate(-0 13.68 606.7584)">80% of the time (fixed before the main run).</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="617.9904" transform="rotate(-0 13.68 617.9904)">The Claude Haiku 5.5 pilot put the spread between names at 0 (for both H1 and H2), so the detectable gap may be optimistic.</text>
+   </g>
+   <g id="text_59">
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="629.2224" transform="rotate(-0 13.68 629.2224)">Dotted lines: equivalence margins (symmetric on log price: +3.0% pairs with -2.9%, +5.0% pairs with -4.8%).</text>
+   </g>
+   <g id="text_60">
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="640.4544" transform="rotate(-0 13.68 640.4544)">Dollar columns translate the percent gap at the comparison group's average price paid (per $1M uses the percent only). Not separate tests.</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p1469e3169d">
-   <rect x="0" y="0" width="648" height="638.64"/>
+  <clipPath id="p3871f1e21b">
+   <rect x="0" y="0" width="648" height="649.44"/>
   </clipPath>
  </defs>
 </svg>

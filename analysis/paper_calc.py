@@ -248,12 +248,15 @@ def dollar_translation(b: float, lo: float, hi: float, ref_usd: float) -> dict:
 
 
 def unify_focal(ref: dict, tr: dict) -> dict:
-    """D12: one dollar definition. The focal group's average is the reference
-    group's cell-adjusted average moved by the tested percent gap, so focal
-    minus reference equals the dollars-per-purchase translation everywhere
-    (Table 1, Figures 1, 3 and 4). The group mean of cell-adjusted dollar
-    prices, which differs by a few cents because the test is on log price, is
-    kept as focal_usd_cellmean (Figure A8)."""
+    """D12: one dollar definition. focal_usd is a level implied by the test,
+    not an average anyone paid: the reference group's cell-adjusted average
+    moved by the tested percent gap, so focal minus reference equals the
+    dollars-per-purchase translation. The figures and Table 1 show only the
+    reference average and the gap; focal_usd stays for numbers.json
+    (focal_price_usd). The group mean of cell-adjusted dollar prices is kept
+    as focal_usd_cellmean. Because the test is on log price, that mean can
+    differ from the implied level by tens of cents and can even sit on the
+    other side of the reference (Claude Haiku 5.5 H1; Figure A8 caption)."""
     out = dict(ref)
     out["focal_usd_cellmean"] = ref["focal_usd"]
     out["focal_usd"] = ref["ref_usd"] + tr["usd_per_purchase"]

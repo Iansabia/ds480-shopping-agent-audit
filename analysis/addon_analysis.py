@@ -63,10 +63,8 @@ LABEL = {"haiku": "Claude Haiku 5.5", "luna": "GPT-6 Luna", "flashlite": "Gemini
 RACES = ["White", "Black", "Hispanic", "Asian", "MENA", "South Asian"]
 RACE_LABEL = {"White": "White", "Black": "Black", "Hispanic": "Hispanic", "Asian": "Asian",
               "MENA": "Arab or Middle Eastern (MENA)", "South Asian": "South Asian"}
-# race-only groups take the darker (women's) shade of the figstyle ramp; the two new groups get two new hues
-RACE_COLOR = {"White": S.GROUP_COLORS["White woman"], "Black": S.GROUP_COLORS["Black woman"],
-              "Hispanic": S.GROUP_COLORS["Hispanic woman"], "Asian": S.GROUP_COLORS["Asian woman"],
-              "MENA": "#8a6a12", "South Asian": "#8c2f5a"}
+# figures use one name per group in the title, rows and footer (FIGURES_SPEC: groups by position and label, in ink)
+FIG_RACE = {r: lab.replace(" (MENA)", "") for r, lab in RACE_LABEL.items()}
 STATED_OPP = {"STM": "women", "STW": "men"}
 TAG = "Exploratory, added after the main results were seen."
 
@@ -246,6 +244,12 @@ A_GROUPS = [("Men's names", lambda d: (d["tier"] == "core") & (d["gender"] == "m
             ("Gender-neutral names", lambda d: d["race"] == "unmarked"),
             ("Women's names", lambda d: (d["tier"] == "core") & (d["gender"] == "woman")),
             ("No-name accounts", lambda d: d["tier"] == "baseline")]
+A_REFS = [("men's names", lambda d: (d["tier"] == "core") & (d["gender"] == "man")),
+          ("women's names", lambda d: (d["tier"] == "core") & (d["gender"] == "woman"))]
+
+
+def a_test_name(arm, ref):
+    return f"A: {arm} twin women's-line pick, gender-neutral vs {ref}"
 
 
 def part_a(df, fam: Family):
@@ -267,13 +271,11 @@ def part_a(df, fam: Family):
                              "v_ask_n": ask["n"] if ask else None})
             if not has_neutral:
                 continue
-            for ref, rf in [("men's names", lambda d: (d["tier"] == "core") & (d["gender"] == "man")),
-                            ("women's names", lambda d: (d["tier"] == "core") & (d["gender"] == "woman"))]:
+            for ref, rf in A_REFS:
                 sub = dsel[(dsel["race"] == "unmarked") | rf(dsel)]
                 nm = A.name_means(sub, "womens_line_pick")
                 nm["is_neutral"] = (nm["race"] == "unmarked").astype(float)
-                fam.add("A", model, f"A: {arm} twin women's-line pick, gender-neutral vs {ref}", nm, "is_neutral",
-                        None, "rate")
+                fam.add("A", model, a_test_name(arm, ref), nm, "is_neutral", None, "rate")
             # per neutral name (raw pooled rates)
             for pid, g in dsel[dsel["race"] == "unmarked"].groupby("profile_id"):
                 byname.append({"model": model, "arm": arm, "profile_id": pid, **pooled(g, "womens_line_pick")})
@@ -283,6 +285,57 @@ def part_a(df, fam: Family):
         fq = _addon_freq()
         bn = bn.merge(fq[["profile_id", "full_name", "ssa_female_share"]], on="profile_id", how="left")
     return tab, bn
+
+
+def one_task_splits(df, fam: Family) -> list[dict]:
+    """PLAN D10 caveat, from the data: for each flagged A test, the raw gender-neutral minus core-name gap on
+    equal-weight twin task means and the one task that adds most to it, kept only when that task carries more
+    than half of the raw gap. Descriptive; the tests are unchanged."""
+    tests = {(t["model"], t["test"]): t for t in fam.tests}
+    out = []
+    for model in MODELS:
+        dm = df[(df["model"] == model) & (df["preset"].isin(["main", "neutral"])) & df["finished"]
+                & (df["task_group"] == "twin")]
+        for arm, _, filt in A_ARMS:
+            da = dm[dm["arm"] == arm]
+            dsel = da[filt(da)]
+            neu = dsel[dsel["race"] == "unmarked"].groupby("task_id")["womens_line_pick"].mean()
+            for ref, rf in A_REFS:
+                t = tests.get((model, a_test_name(arm, ref)))
+                if t is None or not t["discovery_q10"]:
+                    continue
+                d = (neu - dsel[rf(dsel)].groupby("task_id")["womens_line_pick"].mean()).dropna()
+                if d.empty:
+                    continue
+                part = d / len(d)          # each task's share of the equal-weight mean gap
+                top, gap = part.abs().idxmax(), float(d.mean())
+                if gap and np.sign(part[top]) == np.sign(gap) and abs(part[top]) > 0.5 * abs(gap):
+                    out.append({"model": model, "arm": arm, "ref": ref, "gap_pts": 100 * gap, "task": top,
+                                "task_pts": 100 * float(part[top])})
+    return out
+
+
+def neutral_surname_range() -> tuple[float, float, int] | None:
+    """2010 Census Black share of the kept gender-neutral names' surnames (PLAN D9 limit): (low, high, n names)."""
+    na = pd.read_csv(A.DATA / "names_addon.csv")
+    s = na.loc[(na["race"] == "unmarked") & ~na["name_id"].isin(_addon_exclusions()), "surname_census_pctblack"]
+    s = pd.to_numeric(s, errors="coerce").dropna()
+    return (float(s.min()), float(s.max()), int(len(s))) if len(s) else None
+
+
+def neutral_caveats(splits: list[dict]) -> list[str]:
+    """The add-on A caveats as short clauses: separate sessions, surnames that lean Black, one-task gaps."""
+    out = ["the gender-neutral names ran in separate sessions from the core names they are compared with, so a "
+           "gap can include session drift"]
+    sr = neutral_surname_range()
+    if sr:
+        out.append(f"their surnames lean Black (2010 Census Black share {sr[0]:.0f} to {sr[1]:.0f}% for the "
+                   f"{sr[2]} kept names), so the set is not race-neutral")
+    for s in splits:
+        out.append(f"for {LABEL[s['model']]} in {s['arm']}, {abs(s['task_pts']):.1f} of the {abs(s['gap_pts']):.1f} "
+                   f"points between gender-neutral and {s['ref']} (raw task means) come from one task, "
+                   f"{s['task']}")
+    return out
 
 
 # ----------------------------------------------------------------------------- B: stated line
@@ -353,7 +406,8 @@ def _frozen_ref(model, race, out, conf, ex):
         if (model, h) in conf:
             r = conf[(model, h)]
             d = _disp(kind, r["r_est"], r["r_ci_lo"], r["r_ci_hi"])
-            return {"source": f"confirmatory {h}", "adj": f"Holm p {fmt_p(r['p_holm'])}", "est": r["r_est"], "disp": d}
+            return {"source": f"confirmatory {h}", "adj": f"Holm p {fmt_p(r['p_holm'])}", "est": r["r_est"], "disp": d,
+                    "flagged": bool(r["p_holm"] < A.ALPHA)}
     key = None
     if race == "Black" and out == "ask":
         key = "race: V ask rate"
@@ -362,7 +416,7 @@ def _frozen_ref(model, race, out, conf, ex):
     if key and (model, key) in ex:
         t = ex[(model, key)]
         return {"source": "frozen exploratory", "adj": f"q {fmt_p(t['q_bh'])}", "est": t["est"],
-                "disp": _disp(kind, t["est"], t["ci_lo"], t["ci_hi"])}
+                "disp": _disp(kind, t["est"], t["ci_lo"], t["ci_hi"]), "flagged": bool(t["q_bh"] < A.BH_Q)}
     return None
 
 
@@ -464,7 +518,7 @@ def build_tables(a_tab, a_byname, b_tab, cd_rows, gaps, fam: Family, status: dic
         lines.append("")
         for arm in ["S0", "V"]:
             for ref in ["men's names", "women's names"]:
-                tt = tests.get((model, f"A: {arm} twin women's-line pick, gender-neutral vs {ref}"))
+                tt = tests.get((model, a_test_name(arm, ref)))
                 if tt:
                     lines.append(f"- {arm}, gender-neutral minus {ref}: {gap_text(tt)}, q {fmt_p(tt.get('q_bh'))}")
         lines.append("")
@@ -485,8 +539,8 @@ def build_tables(a_tab, a_byname, b_tab, cd_rows, gaps, fam: Family, status: dic
              "\"I want the women's version.\" for every name, so name gender is crossed with the stated line. Cell: "
              "wrong-line rate = share of purchases that were the other gendered version, 95% Wilson interval "
              "(wrong/purchases); then the episodes that ended without a purchase, split into no purchase (the agent "
-             "chose not to buy) and invalid product (the agent tried to buy an id that is not on the page). **Bold** = mismatch cells (the stated line differs from "
-             "the name's usual gender reading). A name-driven override would show up as a higher rate there.", ""]
+             "was still asking at its last turn) and invalid product (the agent tried to buy an id that is not on the "
+             "page). **Bold** = mismatch cells (the stated line differs from the name's usual gender reading). A name-driven override would show up as a higher rate there.", ""]
     for model in MODELS:
         t = b_tab[b_tab["model"] == model]
         if t.empty:
@@ -537,9 +591,9 @@ def build_tables(a_tab, a_byname, b_tab, cd_rows, gaps, fam: Family, status: dic
              "(12 each) from the main runs; MENA (10) and South Asian (8: 5 women, 3 men) names from the add-on runs, "
              f"run on {race_groups_note(status)}. Gemini 3.5 Flash-Lite ran core names only. Rates: pooled share, "
              "95% Wilson interval "
-             "(events/episodes). Price: mean log(price paid / cheapest fitting price) and mean price paid, bought "
-             "episodes. Gap vs White: name-level model (cell-adjusted name means, HC2, gender as the other axis); "
-             "price as percent, rates in points. The H3-type row is S0 only (the add-ons have no S1), so it is not "
+             "(events/episodes). Price: mean log(price paid / cheapest fitting price) and raw mean price paid (no cell "
+             "adjustment), bought episodes. Gap vs White: name-level model (cell-adjusted name means, HC2, gender as "
+             "the other axis); price as percent, rates in points. The H3-type row is S0 only (the add-ons have no S1), so it is not "
              "the confirmatory H3. Source column: where the gap's adjusted p or q comes from. Frozen rows are "
              "shown with their frozen value and are not retested.", ""]
     for model in MODELS:
@@ -548,9 +602,9 @@ def build_tables(a_tab, a_byname, b_tab, cd_rows, gaps, fam: Family, status: dic
             continue
         present = [r for r in RACES if (t["race"] == r).any()]
         lines += [f"## {LABEL[model]}", "",
-                  "| Names associated with | S0 price: mean log ratio, mean $ | Override (wrong product for the stated "
-                  "need), S0 | Identity-linked pick, V, agent guessed | V ask rate | Women's-line pick, twin S0: women's "
-                  "names / men's names |", "|---|---|---|---|---|---|"]
+                  "| Names associated with | S0 price: mean log ratio, raw mean $ (no cell adjustment) | Override "
+                  "(wrong product for the stated need), S0 | Identity-linked pick, V, agent guessed | V ask rate | "
+                  "Women's-line pick, twin S0: women's names / men's names |", "|---|---|---|---|---|---|"]
         for race in present:
             tr = t[t["race"] == race]
             pr = tr[tr["outcome"] == "price"].iloc[0]
@@ -596,13 +650,38 @@ def build_tables(a_tab, a_byname, b_tab, cd_rows, gaps, fam: Family, status: dic
 # ----------------------------------------------------------------------------- figures
 
 OFFS = {"haiku": -0.22, "luna": 0.0, "flashlite": 0.22}
+PREREG = {"price": "H1", "h4": "H4"}      # outcomes whose Black vs White row is a confirmatory test
+NUM_WORD = {2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six"}
+SMALL = f"font-size:{S.BASE - 4}px;color:{S.MUTED}"
 
 
 def _hover(model, lab, r):
     return f"{LABEL[model]}<br>{lab}<br>{fmt_rate(r)}"
 
 
-def fig_a6(a_tab, b_tab, status: dict):
+def _ink(open_):
+    """Groups are shown by position and label only, so every marker is ink; open markers are muted (Figure 3)."""
+    return S.MUTED if open_ else S.INK
+
+
+def _key(models):
+    """Footer marker key with each glyph and model name kept on one line (no-break spaces)."""
+    k = S.marker_key(models)
+    for m in models:
+        g = S.GLYPH.get(S.symbol(m), "?")
+        k = k.replace(f"{g} {S.label(m)}", f"{g} " + S.label(m).replace(" ", " "))
+    return k
+
+
+def _ticks(lo, hi, suffix=""):
+    """At most 6 explicit ticks inside [lo, hi], with their text, so both engines print the same labels."""
+    step = next(s for s in (0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50)
+                if math.floor(hi / s + 1e-9) - math.ceil(lo / s - 1e-9) + 1 <= 6)
+    tv = [round(k * step, 6) for k in range(math.ceil(lo / step - 1e-9), math.floor(hi / step + 1e-9) + 1)]
+    return tv, [("−" if v < 0 else "") + f"{abs(v):g}{suffix}" for v in tv]
+
+
+def fig_a6(a_tab, b_tab, status: dict, caveats=()):
     fig = make_subplots(rows=3, cols=1, vertical_spacing=0.13,
                         row_heights=[0.32, 0.32, 0.36])
     groups = [g for g, _ in A_GROUPS]
@@ -616,10 +695,10 @@ def fig_a6(a_tab, b_tab, status: dict):
                 if r.empty or not r.iloc[0]["n"]:
                     continue
                 r = r.iloc[0].to_dict()
-                col = S.ACCENT if g == "Gender-neutral names" else S.MUTED
+                open_ = model == "flashlite"
                 S.dots(fig, [100 * r["rate"]], [gi + OFFS[model]], [100 * r["wilson_lo"]], [100 * r["wilson_hi"]],
-                       col, sym=S.symbol(model), htext=[_hover(model, g, r)], row=i, col=1, size=10,
-                       open_=(model == "flashlite"))
+                       _ink(open_), sym=S.symbol(model), htext=[_hover(model, g, r)], row=i, col=1, size=10,
+                       open_=open_)
                 rows_csv.append({"panel": arm, "model": model, "row": g, **{k: r[k] for k in
                                  ("k", "n", "rate", "wilson_lo", "wilson_hi", "names")}})
         fig.update_yaxes(tickvals=list(range(len(groups))), ticktext=groups, range=[len(groups) - 0.5, -0.5],
@@ -630,6 +709,8 @@ def fig_a6(a_tab, b_tab, status: dict):
              ("STM", "women's names", "Asked for men's: women's names"),
              ("STW", "men's names", "Asked for women's: men's names"),
              ("STW", "women's names", "Asked for women's: women's names")]
+    mism = ({(a, g) for a, g, m in zip(b_tab["stated"], b_tab["name_group"], b_tab["mismatch"]) if m}
+            if not b_tab.empty else set())
     xmax = 0
     for model in MODELS:
         t = b_tab[b_tab["model"] == model]
@@ -638,13 +719,14 @@ def fig_a6(a_tab, b_tab, status: dict):
         part = bool(t["partial"].any())
         for ci, (arm, g, lab) in enumerate(cells):
             r = t[(t["stated"] == arm) & (t["name_group"] == g)].iloc[0].to_dict()
-            col = S.ACCENT if r["mismatch"] else S.MUTED
             xmax = max(xmax, 100 * r["wilson_hi"])
-            S.dots(fig, [100 * r["rate"]], [ci + OFFS[model]], [100 * r["wilson_lo"]], [100 * r["wilson_hi"]], col,
-                   sym=S.symbol(model), htext=[_hover(model, lab, r)], row=3, col=1, size=10, open_=part)
+            S.dots(fig, [100 * r["rate"]], [ci + OFFS[model]], [100 * r["wilson_lo"]], [100 * r["wilson_hi"]],
+                   _ink(part), sym=S.symbol(model), htext=[_hover(model, lab, r)], row=3, col=1, size=10, open_=part)
             rows_csv.append({"panel": "stated", "model": model, "row": lab, "partial": part,
                              **{k: r[k] for k in ("k", "n", "rate", "wilson_lo", "wilson_hi", "names")}})
-    fig.update_yaxes(tickvals=list(range(4)), ticktext=[c[2] for c in cells], range=[3.5, -0.5], row=3, col=1)
+    fig.update_yaxes(tickvals=list(range(4)), range=[3.5, -0.5], row=3, col=1,
+                     ticktext=[lab + (f"<br><span style='{SMALL}'>mismatch</span>" if (a, g) in mism else "")
+                               for a, g, lab in cells])
     fig.update_xaxes(range=[0, max(5, math.ceil(xmax + 0.5))], ticksuffix="%", dtick=1,
                      title_text="Wrong-line pick (the other version)", row=3, col=1)
     _panel_title(fig, 3, "Request states the version (men's or women's)")
@@ -652,11 +734,12 @@ def fig_a6(a_tab, b_tab, status: dict):
     open_why = ((["Gemini 3.5 Flash-Lite ran no add-on and is exploratory"] if "flashlite" in models_drawn else [])
                 + ([partial_note(status).rstrip(".")] if partial_note(status) else []))
     foot = (f"{TAG} Twin tasks (a men's and a women's version of one product on the same page), 4 runs per name, "
-            "task and request. Dots: pooled share of purchases; bars: 95% Wilson intervals. Blue: gender-neutral "
-            "names (top two panels) and the mismatch cells (bottom). Men's and women's names: 40 core names, main "
-            "runs. Gender-neutral: 5 names that passed the add-on name check. "
+            "task and request. Dots: pooled share of purchases; bars: 95% Wilson intervals. Men's and women's names: "
+            "40 core names, main runs. Gender-neutral: 5 names that passed the add-on name check. Mismatch: the "
+            "request asks for the other gender's version (for example a woman's name asking for the men's version). "
+            + (f"Caveats: {'; '.join(caveats)}. " if caveats else "")
             + (f"Open markers: estimate only ({'; '.join(open_why)}). " if open_why else "")
-            + S.marker_key(models_drawn))
+            + _key(models_drawn))
     S.layout(fig, "GPT-6 Luna puts gender-neutral names between men's and women's names; a stated version is followed",
              "Women's-line pick by name group (top two panels) and wrong-version pick when the request names the "
              "version (bottom).", False, 1050 + S.footer_margin(foot), bottom=S.footer_margin(foot), left=270, gap=40)
@@ -671,69 +754,180 @@ def _panel_title(fig, i, text, col=1):
                        showarrow=False, align="left", font=dict(size=S.BASE - 1, color=S.INK))
 
 
-def fig_a7(cd_rows, gaps, status: dict):
-    fig = make_subplots(rows=2, cols=2, vertical_spacing=0.2, horizontal_spacing=0.12, shared_yaxes=True)
-    present = [r for r in RACES if (cd_rows["race"] == r).any()]
-    ylab = [RACE_LABEL[r].replace(" (MENA)", "") for r in present]
-    rows_csv = []
-    # (a) price gap vs White
+# Figure A7: two gap panels on top (the tested outcomes), two share panels below
+A7_PANELS = [((1, 1), "price", "Price paid, clear request (S0):<br>gap vs White names"),
+             ((1, 2), "h3", "Identity-linked pick, need stated (S0):<br>gap vs White names"),
+             ((2, 1), "h4", "Identity-linked pick when the<br>agent guessed (V)"),
+             ((2, 2), "ask", "Agent asked a question<br>(V, vague request)")]
+A7_GAP_AXIS = {"price": ("%", "Price gap (percent)"), "h3": ("", "Gap (percentage points)")}
+A7_RATE_AXIS = {"h4": "Share of guessed purchases", "ask": "Share of runs"}
+A7_WORD = {"price": "price", "h3": "identity-linked pick with the need stated",
+           "h4": "identity-linked pick when guessing", "ask": "ask rate"}
+A7_PANEL = {"price": "price", "h3": "need-stated", "h4": "guessed-pick", "ask": "ask"}
+A7_LEFT, A7_RIGHT, A7_SIZE = 236, 30, 10
+
+
+def _gap_disp(g):
+    """Display numbers for a gap row (percent for price, points for rates), or None when it has no estimate."""
+    if "_t" in g:
+        t = g["_t"]
+        return None if t.get("note") == A.NO_VARIATION else _disp(t["kind"], t["est"], t["ci_lo"], t["ci_hi"])
+    return g.get("disp")
+
+
+def _gap_flag(g):
+    """(adjusted p or q text, flagged): Holm p under ALPHA for confirmatory rows, q under BH_Q for frozen and
+    add-on rows; descriptive rows are never flagged."""
+    if "_t" in g:
+        return f"q {fmt_p(g['_t'].get('q_bh'))}", bool(g["_t"].get("discovery_q10"))
+    return g.get("adj", ""), bool(g.get("flagged"))
+
+
+def _race_names(cd_rows) -> dict:
+    """Names per group (the price rows), the largest count over models."""
+    pr = cd_rows[cd_rows["outcome"] == "price"]
+    return {r: int(pr.loc[pr["race"] == r, "names"].max()) for r in RACES if (pr["race"] == r).any()}
+
+
+def a7_title(gaps, present) -> str:
+    """Title from the tests drawn in Figure A7: which gaps vs White names are flagged (pre-registered tests at
+    Holm ALPHA, exploratory tests at q under BH_Q). It never states a null as an absence and never ranks estimates."""
+    outs = [o for _, o, _ in A7_PANELS]
+    hits = {}
     for g in gaps:
-        if g["outcome"] != "price" or g["race"] not in present:
-            continue
-        model, race = g["model"], g["race"]
-        if not g.get("disp"):
-            continue
-        est, lo, hi = g["disp"]
-        yi = present.index(race) + OFFS[model]
-        S.dots(fig, [est], [yi], [lo], [hi], RACE_COLOR[race], sym=S.symbol(model),
-               htext=[f"{LABEL[model]}<br>{RACE_LABEL[race]} minus White: {est:+.2f}% [{lo:+.2f}, {hi:+.2f}]"],
-               row=1, col=1, size=10, open_=(model == "flashlite"))
-        rows_csv.append({"panel": "price gap vs White (%)", "model": model, "race": race, "est": est, "lo": lo,
-                         "hi": hi, "source": g["source"]})
-    S.vline(fig, 0, 1, 1, layer="below", color=S.AXIS, width=1.2)
-    panels = [((1, 2), "override", "Override: wrong product for stated need (S0)"),
-              ((2, 1), "h4", "Identity-linked pick when the agent guessed (V)"),
-              ((2, 2), "ask", "Agent asked a question (V)")]
-    for (r_, c_), out, title in panels:
-        for model in MODELS:
-            t = cd_rows[(cd_rows["model"] == model) & (cd_rows["outcome"] == out)]
-            for _, rr in t.iterrows():
-                if not rr["n"] or rr["race"] not in present:
-                    continue
-                r = rr.to_dict()
-                yi = present.index(r["race"]) + OFFS[model]
-                S.dots(fig, [100 * r["rate"]], [yi], [100 * r["wilson_lo"]], [100 * r["wilson_hi"]],
-                       RACE_COLOR[r["race"]], sym=S.symbol(model), htext=[_hover(model, RACE_LABEL[r["race"]], r)],
-                       row=r_, col=c_, size=10, open_=(model == "flashlite"))
-                rows_csv.append({"panel": out, "model": model, "race": r["race"], "est": 100 * r["rate"],
-                                 "lo": 100 * r["wilson_lo"], "hi": 100 * r["wilson_hi"], "k": r["k"], "n": r["n"]})
-        _panel_title(fig, r_, title, c_)
-    _panel_title(fig, 1, "S0 price gap vs White names", 1)
-    for r_ in (1, 2):
-        for c_ in (1, 2):
-            fig.update_yaxes(tickvals=list(range(len(present))), ticktext=ylab, range=[len(present) - 0.5, -0.5],
-                             showticklabels=(c_ == 1), row=r_, col=c_)
-    fig.update_xaxes(ticksuffix="%", title_text="Price gap (percent)", row=1, col=1)
-    fig.update_xaxes(ticksuffix="%", rangemode="tozero", title_text="Share of purchases", row=1, col=2)
-    fig.update_xaxes(ticksuffix="%", range=[0, 100], dtick=20, title_text="Share of guessed purchases", row=2, col=1)
-    fig.update_xaxes(ticksuffix="%", range=[0, 100], dtick=20, title_text="Share of runs", row=2, col=2)
+        adj, flag = _gap_flag(g)
+        if flag and g["outcome"] in outs and g["race"] in present:
+            tag = "pre-registered" if g["source"].startswith("confirmatory") else f"exploratory, {adj}"
+            hits.setdefault((g["model"], g["race"]), []).append((outs.index(g["outcome"]), A7_WORD[g["outcome"]], tag))
+    head = f"{NUM_WORD.get(len(present), len(present))} name groups"
+    if not hits:
+        return f"{head}: none of the gaps vs names associated with White buyers is flagged in these panels"
+
+    def details(items):
+        items = sorted(items)
+        pre = [w for _, w, tag in items if tag == "pre-registered"]
+        return "; ".join(([f"{_join(pre)}, pre-registered"] if pre else [])
+                         + [f"{w}, {tag}" for _, w, tag in items if tag != "pre-registered"])
+    if len(hits) == 1:
+        (m, r), items = next(iter(hits.items()))
+        return (f"{head}: only names associated with {FIG_RACE[r]} buyers on {LABEL[m]} show "
+                f"{'flagged gaps' if len(items) > 1 else 'a flagged gap'} vs White names ({details(items)})")
+    return (f"{head}: flagged gaps vs White names appear only for "
+            + "; ".join(f"{FIG_RACE[r]} names on {LABEL[m]} ({details(it)})" for (m, r), it in hits.items()))
+
+
+def _a7_ylab(race, n, out):
+    tag = ("reference" if race == "White" else
+           f"pre-registered test ({PREREG[out]})" if race == "Black" and out in PREREG else "exploratory")
+    return (f"Names associated with<br>{FIG_RACE[race]} buyers<br><span style='{SMALL}'>"
+            + (f"{n} names, " if n else "") + f"{tag}</span>")
+
+
+def fig_a7(cd_rows, gaps, status: dict):
+    fig = make_subplots(rows=2, cols=2, vertical_spacing=0.18, horizontal_spacing=0.1, shared_yaxes=True)
+    present = [r for r in RACES if (cd_rows["race"] == r).any()]
     models_drawn = [m for m in MODELS if (cd_rows["model"] == m).any()]
-    foot = (f"{TAG} All 40 tasks, 4 runs per name, task and request. White and Black: 20 core names each; Hispanic "
-            "and Asian: 12 extended names each (main runs); MENA: 10 names, South Asian: 8 names (add-on runs, "
-            f"{race_groups_note(status)}). Price panel: name-level gap "
-            "vs White, 95% CI. Other panels: pooled shares with 95% Wilson intervals; identity-linked = coily 4C hair "
-            "or deep shade product, on hair and skin tasks. Open diamond: Gemini 3.5 Flash-Lite (core names only, "
-            "estimate only). " + S.marker_key(models_drawn))
-    S.layout(fig, "On Claude Haiku the MENA and South Asian names show no gap; GPT-6 Luna's largest gaps are for Black names",
-             _join([f"{LABEL[m]} ({cd_rows.loc[cd_rows['model'] == m, 'race'].nunique()} groups)"
-                    for m in models_drawn]) + ", by the group a name is associated with.", False, 820 + S.footer_margin(foot), bottom=S.footer_margin(foot), left=200, gap=40)
+    nnames = _race_names(cd_rows)
+    rows_csv, drawn, no_est = [], [], []
+    for (r_, c_), out, title in A7_PANELS:
+        xr, yr = S._refs(fig, r_, c_)
+        if out in PREREG and "Black" in present:
+            # shaded row: the pre-registered Black vs White test in this panel (as in Figure 3)
+            yb = present.index("Black")
+            fig.add_shape(type="rect", xref=f"{xr} domain", yref=yr, x0=0, x1=1, y0=yb - 0.5, y1=yb + 0.5,
+                          fillcolor=S.BAND, line=dict(width=0), layer="below")
+        if out in A7_GAP_AXIS:
+            # gap vs White names: the outcome that was tested (H1 type price, H3 type pick with the need stated)
+            for g in gaps:
+                if g["outcome"] != out or g["race"] not in present:
+                    continue
+                model, race, d3 = g["model"], g["race"], _gap_disp(g)
+                if not d3:
+                    no_est.append((out, model, race))
+                    continue
+                est, lo, hi = d3
+                adj, _ = _gap_flag(g)
+                open_ = model == "flashlite"
+                S.dots(fig, [est], [present.index(race) + OFFS[model]], [lo], [hi], _ink(open_),
+                       sym=S.symbol(model), row=r_, col=c_, size=A7_SIZE, open_=open_,
+                       htext=[f"{LABEL[model]}<br>{FIG_RACE[race]} names minus White names: "
+                              f"{_disp_text(RACE_OUT[out]['kind'], est, lo, hi)}<br>{g['source']}, {adj}"])
+                rows_csv.append({"panel": f"{out} gap vs White ({'%' if out == 'price' else 'points'})",
+                                 "model": model, "race": race, "est": est, "lo": lo, "hi": hi, "source": g["source"],
+                                 "adjusted": adj})
+                drawn.append((out, (r_, c_), race, est, lo, hi))
+            S.vline(fig, 0, r_, c_, layer="below", color=S.AXIS, width=1.2)
+            if "White" in present:
+                fig.add_annotation(x=0, y=present.index("White"), xref=xr, yref=yr, text="reference",
+                                   showarrow=False, xanchor="center", yanchor="middle", bgcolor=S.SURFACE,
+                                   font=dict(size=S.BASE - 4, color=S.MUTED))
+        else:
+            for model in MODELS:
+                t = cd_rows[(cd_rows["model"] == model) & (cd_rows["outcome"] == out)]
+                for _, rr in t.iterrows():
+                    if not rr["n"] or rr["race"] not in present:
+                        continue
+                    r = rr.to_dict()
+                    est, lo, hi = 100 * r["rate"], 100 * r["wilson_lo"], 100 * r["wilson_hi"]
+                    open_ = model == "flashlite"
+                    S.dots(fig, [est], [present.index(r["race"]) + OFFS[model]], [lo], [hi], _ink(open_),
+                           sym=S.symbol(model), htext=[_hover(model, f"Names associated with {FIG_RACE[r['race']]} "
+                                                              "buyers", r)],
+                           row=r_, col=c_, size=A7_SIZE, open_=open_)
+                    rows_csv.append({"panel": out, "model": model, "race": r["race"], "est": est, "lo": lo,
+                                     "hi": hi, "k": r["k"], "n": r["n"]})
+                    drawn.append((out, (r_, c_), r["race"], est, lo, hi))
+        _panel_title(fig, r_, title, c_)
+    # x axes: explicit ticks, so both engines print the same labels
+    for (r_, c_), out, _ in A7_PANELS:
+        if out in A7_GAP_AXIS:
+            vals = [v for o, _, _, _, lo, hi in drawn if o == out for v in (lo, hi)] + [0.0]
+            pad = 0.06 * (max(vals) - min(vals))
+            lo, hi = min(vals) - pad, max(vals) + pad
+            tv, tt = _ticks(lo, hi, A7_GAP_AXIS[out][0])
+            fig.update_xaxes(range=[lo, hi], tickvals=tv, ticktext=tt, title_text=A7_GAP_AXIS[out][1], row=r_, col=c_)
+        else:
+            tv, tt = _ticks(0, 100, "%")
+            fig.update_xaxes(range=[0, 100], tickvals=tv, ticktext=tt, title_text=A7_RATE_AXIS[out], row=r_, col=c_)
+    for r_ in (1, 2):
+        left = A7_PANELS[2 * (r_ - 1)][1]
+        for c_ in (1, 2):
+            fig.update_yaxes(tickvals=list(range(len(present))), range=[len(present) - 0.5, -0.5],
+                             ticktext=[_a7_ylab(r, nnames.get(r), left) for r in present],
+                             showticklabels=(c_ == 1), row=r_, col=c_)
+    # intervals shorter than the marker radius (plus its ring) on both sides are hidden behind the marker
+    pw = S.WIDTH - A7_LEFT - A7_RIGHT
+    hidden = {}
+    for out, (r_, c_), race, est, lo, hi in drawn:
+        ax = fig.get_subplot(r_, c_).xaxis
+        px = pw * (ax.domain[1] - ax.domain[0]) / (ax.range[1] - ax.range[0])
+        if max(est - lo, hi - est) * px < A7_SIZE / 2 + 1 and race not in hidden.get(out, []):
+            hidden.setdefault(out, []).append(race)
+    hid = "; ".join(f"{A7_PANEL[o]} panel: {_join([FIG_RACE[r] for r in present if r in rs])} names"
+                    for o, rs in hidden.items())
+    noe = "; ".join(f"{LABEL[m]}, {FIG_RACE[r]} names, {A7_PANEL[o]} panel" for o, m, r in no_est)
+    a_, q_ = f"{A.ALPHA:.2f}".lstrip("0"), f"{A.BH_Q:.2f}".lstrip("0")
+    foot = (f"{TAG} All 40 tasks, 4 runs per name, task and request. Hispanic and Asian: extended-tier names, main "
+            f"runs; Arab or Middle Eastern and South Asian: add-on runs ({race_groups_note(status)}). Top: name-level "
+            "gap vs names associated with White buyers (cell-adjusted name means, HC2), 95% CI; the need-stated pick "
+            "is S0 only, so it is not the confirmatory H3. Bottom: pooled shares, 95% Wilson intervals; "
+            "identity-linked = coily 4C hair or deep shade product, on hair and skin tasks. Shaded: the pre-registered Black vs White "
+            f"tests (H1 for price, H4 for the pick when guessing). Flagged in the title: Holm p under {a_} for "
+            f"pre-registered tests, q under {q_} for exploratory ones. "
+            + (f"Intervals narrower than the marker are hidden behind it ({hid}). " if hid else "")
+            + (f"No point is drawn where the name means do not vary ({noe}). " if noe else "")
+            + "Open diamond: Gemini 3.5 Flash-Lite (core names only, estimate only). " + _key(models_drawn))
+    sub = (_join([f"{LABEL[m]} ({cd_rows.loc[cd_rows['model'] == m, 'race'].nunique()} groups)" for m in models_drawn])
+           + ". Top: gap vs names associated with White buyers; bottom: share of purchases or runs.")
+    S.layout(fig, a7_title(gaps, present), sub, False, 1060 + S.footer_margin(foot), bottom=S.footer_margin(foot),
+             left=A7_LEFT, right=A7_RIGHT, gap=58)
     S.footer(fig, foot)
     return fig, pd.DataFrame(rows_csv)
 
 
 # ----------------------------------------------------------------------------- captions
 
-def caption_a6(a_tab, b_tab, fam, status: dict):
+def caption_a6(a_tab, b_tab, fam, status: dict, caveats=()):
     def rate(model, arm, g):
         t = a_tab[(a_tab["model"] == model) & (a_tab["arm"] == arm) & (a_tab["group"] == g)]
         return f"{100 * t.iloc[0]['rate']:.0f}%" if not t.empty and t.iloc[0]["n"] else "n/a"
@@ -753,21 +947,38 @@ def caption_a6(a_tab, b_tab, fam, status: dict):
             "passed the add-on name check, and the 4 no-name accounts; S0 is the clear request that says either "
             "version is fine, V is the vague request, counting only purchases made without asking. Bottom panel: "
             "the same 40 core names with a request that names the version; wrong-version rate by name gender and "
-            "stated version. Dots: pooled share; bars: 95% Wilson intervals. Name-level tests are in "
-            "paper/tables/addon_tests.md (Benjamini-Hochberg at 10% within the add-on family). " + "; ".join(parts)
-            + "." + (" " + partial_note(status) if partial_note(status) else ""))
+            "stated version (mismatch: the request asks for the other gender's version). Dots: pooled share; bars: "
+            "95% Wilson intervals. Name-level tests are in paper/tables/addon_tests.md (Benjamini-Hochberg at 10% "
+            "within the add-on family). " + "; ".join(parts) + "."
+            + (f" Caveats: {'; '.join(caveats)}." if caveats else "")
+            + (" " + partial_note(status) if partial_note(status) else ""))
 
 
-def caption_a7(status: dict):
-    return ("Figure A7. Six name groups side by side. " + TAG + " Price gap for the same clear request vs names "
-            "associated with White buyers (name-level model, 95% CI), override rate (bought the product for the "
-            "other need when the need was stated), identity-linked pick when the agent bought without asking on a "
-            "vague hair or skin request, and ask rate on vague requests (pooled shares, 95% Wilson intervals). White "
-            "and Black: 20 core names each; Hispanic and Asian: 12 extended-tier names each, main runs; Arab or "
-            "Middle Eastern (MENA, Moroccan names validated by Ghekiere et al. 2025) and South Asian (Indian and "
-            f"Pakistani audit-study names from Oreopoulos 2009/2011): 10 and 8 names, {race_groups_note(status)}. Gemini "
-            "3.5 Flash-Lite ran core names only and is shown as an estimate only. Exact numbers and adjusted p or q "
-            "values are in paper/tables/addon_C_race_groups.md.")
+def caption_a7(status: dict, cd_rows=None):
+    n = _race_names(cd_rows) if cd_rows is not None else {}
+
+    def pair(a, b, what):
+        na, nb = n.get(a), n.get(b)
+        if not na or not nb:
+            return f"{a} and {b}: {what}"
+        return f"{a} and {b}: {na} {what} each" if na == nb else f"{a} and {b}: {na} and {nb} {what}"
+    groups = NUM_WORD.get(len(n), "Six") if n else "Six"
+    a_, q_ = f"{A.ALPHA:.2f}".lstrip("0"), f"{A.BH_Q:.2f}".lstrip("0")
+    return (f"Figure A7. {groups} name groups side by side. " + TAG + " Top: gap vs names associated with White "
+            "buyers for the same clear request (name-level model on cell-adjusted name means, HC2, 95% CI), for "
+            "price paid (percent) and for the identity-linked pick when the buyer stated the need (percentage "
+            "points; the H3-type outcome that was tested, S0 only, so not the confirmatory H3). Bottom: "
+            "identity-linked pick when the agent bought without asking on a vague hair or skin request, and ask rate "
+            "on vague requests (pooled shares, 95% Wilson intervals). Shaded rows: the pre-registered Black vs White "
+            "tests (H1 for price, H4 for the pick when guessing); every other comparison is exploratory. The title "
+            f"calls a gap flagged when its Holm p is under {a_} (pre-registered tests) or its q is under {q_} "
+            f"(exploratory tests). {pair('White', 'Black', 'core names')}; "
+            f"{pair('Hispanic', 'Asian', 'extended-tier names')}, main runs; Arab or Middle Eastern (Moroccan names "
+            "from Ghekiere et al. 2025; weak rater validation, so our own name check is the main support) and South "
+            "Asian (Indian and Pakistani names from Table 2 of Oreopoulos 2009): "
+            + (f"{n['MENA']} and {n['South Asian']} names, " if n.get("MENA") and n.get("South Asian") else "")
+            + f"{race_groups_note(status)}. Gemini 3.5 Flash-Lite ran core names only and is shown as an estimate "
+            "only. Exact numbers and adjusted p or q values are in paper/tables/addon_C_race_groups.md.")
 
 
 def write_caption_entries(entries: dict[str, tuple[str, str]]):
@@ -804,7 +1015,8 @@ def run(write_figures: bool = True) -> dict:
            "note": TAG + " Separate BH family; no frozen output changed."}
     if write_figures:
         made: list = []
-        f6, d6 = fig_a6(a_tab, b_tab, status)
+        caveats = neutral_caveats(one_task_splits(df, fam))
+        f6, d6 = fig_a6(a_tab, b_tab, status, caveats)
         S.save(f6, FIG, "figA6_gender_line", False, made)
         S.save(f6, FIG, "figA6_gender_line", False, made, engine="matplotlib")
         d6.to_csv(FIG / "figA6_gender_line.csv", index=False)
@@ -812,8 +1024,8 @@ def run(write_figures: bool = True) -> dict:
         S.save(f7, FIG, "figA7_race_groups", False, made)
         S.save(f7, FIG, "figA7_race_groups", False, made, engine="matplotlib")
         d7.to_csv(FIG / "figA7_race_groups.csv", index=False)
-        write_caption_entries({"figA6": ("figA6_gender_line", caption_a6(a_tab, b_tab, fam, status)),
-                               "figA7": ("figA7_race_groups", caption_a7(status))})
+        write_caption_entries({"figA6": ("figA6_gender_line", caption_a6(a_tab, b_tab, fam, status, caveats)),
+                               "figA7": ("figA7_race_groups", caption_a7(status, cd_rows))})
         out["figures"] = made
     (RES / "addon_exploratory.json").write_text(json.dumps(out, indent=1, default=A._json_default))
     return out
