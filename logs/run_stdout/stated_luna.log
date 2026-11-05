@@ -1,0 +1,9 @@
+{
+  "run": "stated_luna",
+  "episodes": 2560,
+  "done": 187,
+  "error_final": 0,
+  "asked": 2,
+  "pending_turns": 2373,
+  "stop_reason": "openai still rate limited after 8 backoffs (free-tier daily quota?). Resume later."
+}

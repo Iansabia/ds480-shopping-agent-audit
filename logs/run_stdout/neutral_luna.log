@@ -1,0 +1,9 @@
+{
+  "run": "neutral_luna",
+  "episodes": 320,
+  "done": 320,
+  "error_final": 0,
+  "asked": 60,
+  "pending_turns": 0,
+  "stop_reason": null
+}
