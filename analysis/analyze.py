@@ -893,6 +893,8 @@ def group_vs_baseline(df, model, arm, y):
     95% CI from the between-name SE of both (Welch-Satterthwaite df)."""
     d = subset(df, model, [arm], tiers=("core", "extended", "baseline"))
     nm = name_means(d, y).dropna(subset=["mean"])
+    if nm.empty or "tier" not in nm.columns:
+        return []  # model has no episodes in this arm (e.g. Gemini reduced has no S1)
     base = nm[nm["tier"] == "baseline"]["mean"]
     out = []
     if len(base) < 2:

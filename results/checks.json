@@ -1,0 +1,1349 @@
+{
+  "inputs": {
+    "m1_haiku.outcomes.csv": "7141c9eba4fa2cee976f74de8bcd1220a1c1c73032453addcdcc49c77612bb01",
+    "m1_luna.outcomes.csv": "1fca8452e808ff83dce7c3b00cf1d2bed5b5b554d1b90facca7e6c0157ba2b5d",
+    "main_haiku.outcomes.csv": "980b2cd947a79ecfa108f3ee9cd7581d06a7a52fb476494ca2897a48ff0e1a70",
+    "main_luna.outcomes.csv": "9a9057c4c2b8fb888794dcd90a27bf88ced858e16076f4ff04532f328b08214c",
+    "planted_haiku.outcomes.csv": "74c947d351a7f95562b28f4d6c565dfde37e8eda8784a0937f6f8746d9df1dd6",
+    "planted_luna.outcomes.csv": "fe449fe63d57e1d3d1bb6250509d98c4b9f8d3e61e59b172d12cd80fd7ac07d1",
+    "reduced_flashlite.outcomes.csv": "7a5dfd5d19d7c4de75bbbc8a792f3b14fa6f0e4abff66c15ac7272c5c8e4055c",
+    "validity_haiku.outcomes.csv": "8f49f85cae36bac4083238fa50968dfb786c7e64ce95a53b11c2b14f025e9435",
+    "validity_luna.outcomes.csv": "551081df688b489a7fcc31c797e46fb754bad7770f0568cad7864d3790a6d1ff"
+  },
+  "freq_source": "ssa_births_1950_2005 (fallback: no infini-gram file)",
+  "main_grid": {
+    "flashlite": {
+      "main_episodes_finished": 7040,
+      "expected": 32640,
+      "enters_confirmatory_family": false
+    },
+    "haiku": {
+      "main_episodes_finished": 32640,
+      "expected": 32640,
+      "enters_confirmatory_family": true
+    },
+    "luna": {
+      "main_episodes_finished": 32640,
+      "expected": 32640,
+      "enters_confirmatory_family": true
+    }
+  },
+  "planted": {
+    "flashlite": {
+      "ran": false,
+      "reason": "no PB episodes"
+    },
+    "haiku": {
+      "ran": true,
+      "planted_names": [
+        "BM01",
+        "BM08",
+        "BW01",
+        "BW04",
+        "BW06"
+      ],
+      "planted_shift_log": -0.25792754375123583,
+      "own_shift_p": 0.00014360536164593715,
+      "own_shift_detected": true,
+      "mde_spiked_log": 0.07990719510462015,
+      "mde_pilot_raw_log": 0.010645989124110399,
+      "expected_group_gap_log": -0.06448188593780896,
+      "estimated": {
+        "est": -0.06522473006207,
+        "se": 0.028056292920490108,
+        "df": 37,
+        "t": -2.324780762979381,
+        "p": 0.025677334719588125,
+        "ci_lo": -0.12207217931810402,
+        "ci_hi": -0.008377280806035982,
+        "n_a": 20,
+        "n_b": 20,
+        "welch_p": 0.02913097647389832,
+        "perm_p": null,
+        "mean_a": 0.33281373482541227,
+        "mean_b": 0.39803846488748207,
+        "freq_in_primary": false,
+        "freq_corr": -0.8428120158966449,
+        "alt_est": -0.06800084812460586,
+        "alt_se": 0.045496982622238245,
+        "alt_p": 0.14372752366873845
+      },
+      "ci_covers_expected": true,
+      "detect_required": false,
+      "detected": true,
+      "pass": true
+    },
+    "luna": {
+      "ran": true,
+      "planted_names": [
+        "BM01",
+        "BM08",
+        "BW01",
+        "BW04",
+        "BW06"
+      ],
+      "planted_shift_log": -0.4239244197668679,
+      "own_shift_p": 1.085561627914199e-06,
+      "own_shift_detected": true,
+      "mde_spiked_log": 0.12091511706332007,
+      "mde_pilot_raw_log": null,
+      "expected_group_gap_log": -0.10598110494171697,
+      "estimated": {
+        "est": -0.12410177280244425,
+        "se": 0.042197423898653136,
+        "df": 37,
+        "t": -2.94097983565308,
+        "p": 0.005614104243396773,
+        "ci_lo": -0.20960187506513966,
+        "ci_hi": -0.03860167053974885,
+        "n_a": 20,
+        "n_b": 20,
+        "welch_p": 0.00805251505539325,
+        "perm_p": null,
+        "mean_a": 0.35784995005507875,
+        "mean_b": 0.48195172285752264,
+        "freq_in_primary": false,
+        "freq_corr": -0.8428120158966449,
+        "alt_est": -0.12715374040341443,
+        "alt_se": 0.06500154847691615,
+        "alt_p": 0.0582390801704417
+      },
+      "ci_covers_expected": true,
+      "detect_required": false,
+      "detected": true,
+      "pass": true
+    }
+  },
+  "shuffled_null": {
+    "flashlite": {
+      "H1": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.05,
+        "mean_est": 0.00019569770714961037,
+        "pass": true,
+        "primary_p_source": "parametric"
+      },
+      "H2": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.043,
+        "mean_est": -9.535709354455691e-06,
+        "pass": true,
+        "primary_p_source": "parametric"
+      },
+      "H3": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.543,
+        "mean_est": -1.2493478473984965e-17,
+        "pass": false,
+        "primary_p_source": "permutation"
+      },
+      "H4": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.063,
+        "mean_est": -0.0009247416153113884,
+        "pass": true,
+        "primary_p_source": "parametric"
+      }
+    },
+    "haiku": {
+      "H1": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.056,
+        "mean_est": -0.0002997092571229333,
+        "pass": true,
+        "primary_p_source": "parametric"
+      },
+      "H2": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.056,
+        "mean_est": -0.00015404724481941597,
+        "pass": true,
+        "primary_p_source": "parametric"
+      },
+      "H3": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.053,
+        "mean_est": -7.400301104398867e-05,
+        "pass": true,
+        "primary_p_source": "parametric"
+      },
+      "H4": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.043,
+        "mean_est": -0.00011583246881997161,
+        "pass": true,
+        "primary_p_source": "parametric"
+      }
+    },
+    "luna": {
+      "H1": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.043,
+        "mean_est": 1.200416964749293e-05,
+        "pass": true,
+        "primary_p_source": "parametric"
+      },
+      "H2": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.049,
+        "mean_est": -8.802944799954299e-05,
+        "pass": true,
+        "primary_p_source": "parametric"
+      },
+      "H3": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.018,
+        "mean_est": 2.819897933269999e-05,
+        "pass": true,
+        "primary_p_source": "parametric"
+      },
+      "H4": {
+        "ran": true,
+        "shuffles": 1000,
+        "reject_rate": 0.048,
+        "mean_est": -0.0006018493457803787,
+        "pass": true,
+        "primary_p_source": "parametric"
+      }
+    }
+  },
+  "arm_p": {
+    "flashlite": {
+      "ran": false
+    },
+    "haiku": {
+      "ran": true,
+      "names": 16,
+      "pq_minus_pc_log": 1.4481814168066804,
+      "pct": 325.5368732070582,
+      "p": 1.8949438086242782e-21,
+      "pass": true
+    },
+    "luna": {
+      "ran": true,
+      "names": 16,
+      "pq_minus_pc_log": 1.4324447480008007,
+      "pct": 318.8927556210819,
+      "p": 1.6216617067173548e-22,
+      "pass": true
+    }
+  },
+  "balance": {
+    "flashlite": {
+      "outcome_shares": [
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "outcome": "bought",
+          "share": 0.90625
+        },
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "outcome": "no_purchase",
+          "share": 0.09375
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "outcome": "bought",
+          "share": 0.89875
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "outcome": "no_purchase",
+          "share": 0.10125
+        },
+        {
+          "arm": "S0",
+          "group": "White man",
+          "outcome": "bought",
+          "share": 0.90625
+        },
+        {
+          "arm": "S0",
+          "group": "White man",
+          "outcome": "no_purchase",
+          "share": 0.09375
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "outcome": "bought",
+          "share": 0.88875
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "outcome": "no_purchase",
+          "share": 0.11125
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "outcome": "bought",
+          "share": 0.9125
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "outcome": "no_purchase",
+          "share": 0.0875
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "outcome": "bought",
+          "share": 0.99875
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "outcome": "invalid_product",
+          "share": 0.00125
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "outcome": "bought",
+          "share": 0.99875
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "outcome": "invalid_product",
+          "share": 0.00125
+        },
+        {
+          "arm": "V",
+          "group": "White man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "White woman",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "no name",
+          "outcome": "bought",
+          "share": 1.0
+        }
+      ],
+      "mean_position": [
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "mean_position": 3.242758620689655
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "mean_position": 3.265646731571627
+        },
+        {
+          "arm": "S0",
+          "group": "White man",
+          "mean_position": 3.303448275862069
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "mean_position": 3.345991561181435
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "mean_position": 3.3321917808219177
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "mean_position": 3.3479349186483103
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "mean_position": 3.3642052565707132
+        },
+        {
+          "arm": "V",
+          "group": "White man",
+          "mean_position": 3.3975
+        },
+        {
+          "arm": "V",
+          "group": "White woman",
+          "mean_position": 3.4
+        },
+        {
+          "arm": "V",
+          "group": "no name",
+          "mean_position": 3.334375
+        }
+      ],
+      "model_returned": {
+        "gemini-3.5-flash-lite": 7040
+      }
+    },
+    "haiku": {
+      "outcome_shares": [
+        {
+          "arm": "S0",
+          "group": "Asian man",
+          "outcome": "bought",
+          "share": 0.9958333333333333
+        },
+        {
+          "arm": "S0",
+          "group": "Asian man",
+          "outcome": "no_purchase",
+          "share": 0.004166666666666667
+        },
+        {
+          "arm": "S0",
+          "group": "Asian woman",
+          "outcome": "bought",
+          "share": 0.996875
+        },
+        {
+          "arm": "S0",
+          "group": "Asian woman",
+          "outcome": "no_purchase",
+          "share": 0.0020833333333333333
+        },
+        {
+          "arm": "S0",
+          "group": "Asian woman",
+          "outcome": "invalid_product",
+          "share": 0.0010416666666666667
+        },
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "outcome": "bought",
+          "share": 0.9975
+        },
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "outcome": "invalid_product",
+          "share": 0.001875
+        },
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "outcome": "no_purchase",
+          "share": 0.000625
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "outcome": "bought",
+          "share": 0.991875
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "outcome": "no_purchase",
+          "share": 0.004375
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "outcome": "invalid_product",
+          "share": 0.00375
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic man",
+          "outcome": "bought",
+          "share": 0.9927083333333333
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic man",
+          "outcome": "invalid_product",
+          "share": 0.005208333333333333
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic man",
+          "outcome": "no_purchase",
+          "share": 0.0020833333333333333
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic woman",
+          "outcome": "bought",
+          "share": 0.9947916666666666
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic woman",
+          "outcome": "no_purchase",
+          "share": 0.003125
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic woman",
+          "outcome": "invalid_product",
+          "share": 0.0020833333333333333
+        },
+        {
+          "arm": "S0",
+          "group": "White man",
+          "outcome": "bought",
+          "share": 0.998125
+        },
+        {
+          "arm": "S0",
+          "group": "White man",
+          "outcome": "no_purchase",
+          "share": 0.001875
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "outcome": "bought",
+          "share": 0.996875
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "outcome": "invalid_product",
+          "share": 0.0025
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "outcome": "no_purchase",
+          "share": 0.000625
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "outcome": "bought",
+          "share": 0.9953125
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "outcome": "no_purchase",
+          "share": 0.003125
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "outcome": "invalid_product",
+          "share": 0.0015625
+        },
+        {
+          "arm": "S1",
+          "group": "Asian man",
+          "outcome": "bought",
+          "share": 0.9958333333333333
+        },
+        {
+          "arm": "S1",
+          "group": "Asian man",
+          "outcome": "invalid_product",
+          "share": 0.004166666666666667
+        },
+        {
+          "arm": "S1",
+          "group": "Asian woman",
+          "outcome": "bought",
+          "share": 0.9875
+        },
+        {
+          "arm": "S1",
+          "group": "Asian woman",
+          "outcome": "invalid_product",
+          "share": 0.0125
+        },
+        {
+          "arm": "S1",
+          "group": "Black man",
+          "outcome": "bought",
+          "share": 0.9925
+        },
+        {
+          "arm": "S1",
+          "group": "Black man",
+          "outcome": "invalid_product",
+          "share": 0.006875
+        },
+        {
+          "arm": "S1",
+          "group": "Black man",
+          "outcome": "no_purchase",
+          "share": 0.000625
+        },
+        {
+          "arm": "S1",
+          "group": "Black woman",
+          "outcome": "bought",
+          "share": 0.991875
+        },
+        {
+          "arm": "S1",
+          "group": "Black woman",
+          "outcome": "invalid_product",
+          "share": 0.0075
+        },
+        {
+          "arm": "S1",
+          "group": "Black woman",
+          "outcome": "no_purchase",
+          "share": 0.000625
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic man",
+          "outcome": "bought",
+          "share": 0.9927083333333333
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic man",
+          "outcome": "invalid_product",
+          "share": 0.00625
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic man",
+          "outcome": "no_purchase",
+          "share": 0.0010416666666666667
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic woman",
+          "outcome": "bought",
+          "share": 0.9916666666666667
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic woman",
+          "outcome": "invalid_product",
+          "share": 0.008333333333333333
+        },
+        {
+          "arm": "S1",
+          "group": "White man",
+          "outcome": "bought",
+          "share": 0.99625
+        },
+        {
+          "arm": "S1",
+          "group": "White man",
+          "outcome": "invalid_product",
+          "share": 0.00375
+        },
+        {
+          "arm": "S1",
+          "group": "White woman",
+          "outcome": "bought",
+          "share": 0.99375
+        },
+        {
+          "arm": "S1",
+          "group": "White woman",
+          "outcome": "invalid_product",
+          "share": 0.00625
+        },
+        {
+          "arm": "S1",
+          "group": "no name",
+          "outcome": "bought",
+          "share": 0.990625
+        },
+        {
+          "arm": "S1",
+          "group": "no name",
+          "outcome": "invalid_product",
+          "share": 0.0078125
+        },
+        {
+          "arm": "S1",
+          "group": "no name",
+          "outcome": "no_purchase",
+          "share": 0.0015625
+        },
+        {
+          "arm": "V",
+          "group": "Asian man",
+          "outcome": "bought",
+          "share": 0.996875
+        },
+        {
+          "arm": "V",
+          "group": "Asian man",
+          "outcome": "invalid_product",
+          "share": 0.003125
+        },
+        {
+          "arm": "V",
+          "group": "Asian woman",
+          "outcome": "bought",
+          "share": 0.996875
+        },
+        {
+          "arm": "V",
+          "group": "Asian woman",
+          "outcome": "invalid_product",
+          "share": 0.003125
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "outcome": "bought",
+          "share": 0.9975
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "outcome": "invalid_product",
+          "share": 0.0025
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "outcome": "bought",
+          "share": 0.996875
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "outcome": "invalid_product",
+          "share": 0.003125
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic man",
+          "outcome": "bought",
+          "share": 0.9958333333333333
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic man",
+          "outcome": "invalid_product",
+          "share": 0.004166666666666667
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic woman",
+          "outcome": "bought",
+          "share": 0.9979166666666667
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic woman",
+          "outcome": "invalid_product",
+          "share": 0.0020833333333333333
+        },
+        {
+          "arm": "V",
+          "group": "White man",
+          "outcome": "bought",
+          "share": 0.99625
+        },
+        {
+          "arm": "V",
+          "group": "White man",
+          "outcome": "invalid_product",
+          "share": 0.003125
+        },
+        {
+          "arm": "V",
+          "group": "White man",
+          "outcome": "no_purchase",
+          "share": 0.000625
+        },
+        {
+          "arm": "V",
+          "group": "White woman",
+          "outcome": "bought",
+          "share": 0.99625
+        },
+        {
+          "arm": "V",
+          "group": "White woman",
+          "outcome": "invalid_product",
+          "share": 0.00375
+        },
+        {
+          "arm": "V",
+          "group": "no name",
+          "outcome": "bought",
+          "share": 0.99375
+        },
+        {
+          "arm": "V",
+          "group": "no name",
+          "outcome": "invalid_product",
+          "share": 0.00625
+        }
+      ],
+      "mean_position": [
+        {
+          "arm": "S0",
+          "group": "Asian man",
+          "mean_position": 3.6150627615062763
+        },
+        {
+          "arm": "S0",
+          "group": "Asian woman",
+          "mean_position": 3.637408568443051
+        },
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "mean_position": 3.704887218045113
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "mean_position": 3.6899810964083177
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic man",
+          "mean_position": 3.603357817418678
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic woman",
+          "mean_position": 3.731937172774869
+        },
+        {
+          "arm": "S0",
+          "group": "White man",
+          "mean_position": 3.677520350657483
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "mean_position": 3.6626959247648903
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "mean_position": 3.6138147566718994
+        },
+        {
+          "arm": "S1",
+          "group": "Asian man",
+          "mean_position": 3.6297071129707112
+        },
+        {
+          "arm": "S1",
+          "group": "Asian woman",
+          "mean_position": 3.6761603375527425
+        },
+        {
+          "arm": "S1",
+          "group": "Black man",
+          "mean_position": 3.6712846347607053
+        },
+        {
+          "arm": "S1",
+          "group": "Black woman",
+          "mean_position": 3.688720856962823
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic man",
+          "mean_position": 3.622245540398741
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic woman",
+          "mean_position": 3.6502100840336134
+        },
+        {
+          "arm": "S1",
+          "group": "White man",
+          "mean_position": 3.683814303638645
+        },
+        {
+          "arm": "S1",
+          "group": "White woman",
+          "mean_position": 3.668553459119497
+        },
+        {
+          "arm": "S1",
+          "group": "no name",
+          "mean_position": 3.582018927444795
+        },
+        {
+          "arm": "V",
+          "group": "Asian man",
+          "mean_position": 4.122257053291536
+        },
+        {
+          "arm": "V",
+          "group": "Asian woman",
+          "mean_position": 4.074190177638454
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "mean_position": 4.151002506265664
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "mean_position": 4.135423197492163
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic man",
+          "mean_position": 4.137029288702929
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic woman",
+          "mean_position": 4.164926931106471
+        },
+        {
+          "arm": "V",
+          "group": "White man",
+          "mean_position": 4.145545796737767
+        },
+        {
+          "arm": "V",
+          "group": "White woman",
+          "mean_position": 4.139899623588457
+        },
+        {
+          "arm": "V",
+          "group": "no name",
+          "mean_position": 4.161949685534591
+        }
+      ],
+      "model_returned": {
+        "claude-haiku-5-5": 32640
+      }
+    },
+    "luna": {
+      "outcome_shares": [
+        {
+          "arm": "S0",
+          "group": "Asian man",
+          "outcome": "bought",
+          "share": 0.9979166666666667
+        },
+        {
+          "arm": "S0",
+          "group": "Asian man",
+          "outcome": "no_purchase",
+          "share": 0.0020833333333333333
+        },
+        {
+          "arm": "S0",
+          "group": "Asian woman",
+          "outcome": "bought",
+          "share": 0.9979166666666667
+        },
+        {
+          "arm": "S0",
+          "group": "Asian woman",
+          "outcome": "no_purchase",
+          "share": 0.0020833333333333333
+        },
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "outcome": "bought",
+          "share": 0.998125
+        },
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "outcome": "no_purchase",
+          "share": 0.001875
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "outcome": "bought",
+          "share": 0.99875
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "outcome": "no_purchase",
+          "share": 0.00125
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic man",
+          "outcome": "bought",
+          "share": 0.9989583333333333
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic man",
+          "outcome": "no_purchase",
+          "share": 0.0010416666666666667
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic woman",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S0",
+          "group": "White man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "outcome": "bought",
+          "share": 0.999375
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "outcome": "no_purchase",
+          "share": 0.000625
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S1",
+          "group": "Asian man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S1",
+          "group": "Asian woman",
+          "outcome": "bought",
+          "share": 0.9989583333333333
+        },
+        {
+          "arm": "S1",
+          "group": "Asian woman",
+          "outcome": "invalid_product",
+          "share": 0.0010416666666666667
+        },
+        {
+          "arm": "S1",
+          "group": "Black man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S1",
+          "group": "Black woman",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic woman",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S1",
+          "group": "White man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S1",
+          "group": "White woman",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "S1",
+          "group": "no name",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "Asian man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "Asian woman",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "outcome": "bought",
+          "share": 0.999375
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "outcome": "invalid_product",
+          "share": 0.000625
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "outcome": "bought",
+          "share": 0.999375
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "outcome": "invalid_product",
+          "share": 0.000625
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic woman",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "White man",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "White woman",
+          "outcome": "bought",
+          "share": 1.0
+        },
+        {
+          "arm": "V",
+          "group": "no name",
+          "outcome": "bought",
+          "share": 1.0
+        }
+      ],
+      "mean_position": [
+        {
+          "arm": "S0",
+          "group": "Asian man",
+          "mean_position": 3.895615866388309
+        },
+        {
+          "arm": "S0",
+          "group": "Asian woman",
+          "mean_position": 3.8434237995824634
+        },
+        {
+          "arm": "S0",
+          "group": "Black man",
+          "mean_position": 3.8584846587351285
+        },
+        {
+          "arm": "S0",
+          "group": "Black woman",
+          "mean_position": 3.8573216520650813
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic man",
+          "mean_position": 3.808133472367049
+        },
+        {
+          "arm": "S0",
+          "group": "Hispanic woman",
+          "mean_position": 3.8364583333333333
+        },
+        {
+          "arm": "S0",
+          "group": "White man",
+          "mean_position": 3.844375
+        },
+        {
+          "arm": "S0",
+          "group": "White woman",
+          "mean_position": 3.8392745465916196
+        },
+        {
+          "arm": "S0",
+          "group": "no name",
+          "mean_position": 3.9234375
+        },
+        {
+          "arm": "S1",
+          "group": "Asian man",
+          "mean_position": 4.079166666666667
+        },
+        {
+          "arm": "S1",
+          "group": "Asian woman",
+          "mean_position": 4.117831074035454
+        },
+        {
+          "arm": "S1",
+          "group": "Black man",
+          "mean_position": 4.1375
+        },
+        {
+          "arm": "S1",
+          "group": "Black woman",
+          "mean_position": 4.161875
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic man",
+          "mean_position": 4.172916666666667
+        },
+        {
+          "arm": "S1",
+          "group": "Hispanic woman",
+          "mean_position": 4.103125
+        },
+        {
+          "arm": "S1",
+          "group": "White man",
+          "mean_position": 4.0775
+        },
+        {
+          "arm": "S1",
+          "group": "White woman",
+          "mean_position": 4.0975
+        },
+        {
+          "arm": "S1",
+          "group": "no name",
+          "mean_position": 4.153125
+        },
+        {
+          "arm": "V",
+          "group": "Asian man",
+          "mean_position": 3.915625
+        },
+        {
+          "arm": "V",
+          "group": "Asian woman",
+          "mean_position": 3.9322916666666665
+        },
+        {
+          "arm": "V",
+          "group": "Black man",
+          "mean_position": 3.9974984365228265
+        },
+        {
+          "arm": "V",
+          "group": "Black woman",
+          "mean_position": 3.866166353971232
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic man",
+          "mean_position": 3.9927083333333333
+        },
+        {
+          "arm": "V",
+          "group": "Hispanic woman",
+          "mean_position": 3.9677083333333334
+        },
+        {
+          "arm": "V",
+          "group": "White man",
+          "mean_position": 3.996875
+        },
+        {
+          "arm": "V",
+          "group": "White woman",
+          "mean_position": 3.911875
+        },
+        {
+          "arm": "V",
+          "group": "no name",
+          "mean_position": 4.00625
+        }
+      ],
+      "model_returned": {
+        "gpt-6-luna": 32640
+      }
+    }
+  },
+  "position": {
+    "flashlite": {
+      "order_effect_log": -0.0475232101760633,
+      "order_effect_p": 1.682090879633137e-07,
+      "pick_share_by_position": {
+        "1.0": 0.32165185916419875,
+        "2.0": 0.12504113195129976,
+        "3.0": 0.12504113195129976,
+        "4.0": 0.13491280026324448,
+        "5.0": 0.11763738071734123,
+        "6.0": 0.048042119118130965,
+        "7.0": 0.04870023033892728,
+        "8.0": 0.07897334649555775
+      }
+    },
+    "haiku": {
+      "order_effect_log": -0.022741700511464492,
+      "order_effect_p": 8.053432158458879e-06,
+      "pick_share_by_position": {
+        "1.0": 0.22905875582064564,
+        "2.0": 0.13828284413749803,
+        "3.0": 0.1433579239261236,
+        "4.0": 0.10479778161460786,
+        "5.0": 0.11175639617014597,
+        "6.0": 0.09904253649348611,
+        "7.0": 0.06241824935907497,
+        "8.0": 0.11128551247841784
+      }
+    },
+    "luna": {
+      "order_effect_log": -0.09757072739357144,
+      "order_effect_p": 7.122260778729395e-23,
+      "pick_share_by_position": {
+        "1.0": 0.2110254272613589,
+        "2.0": 0.13510837849103793,
+        "3.0": 0.1267194664443518,
+        "4.0": 0.13000208420175072,
+        "5.0": 0.10988953730721134,
+        "6.0": 0.08550437682367654,
+        "7.0": 0.08732805335556482,
+        "8.0": 0.11442267611504793
+      }
+    }
+  }
+}

@@ -217,3 +217,9 @@ Written by `analyze.py figures` to `results/figures/`, each with a CSV of the pl
 - Sample sizes stay as planned. Ian chose not to spend the remaining cap headroom on more episodes: the detectable gap would shrink only from about 1.4% to 1.1%, the high cost estimates sit near the caps, and the headroom is kept for reruns of failed turns.
 - OLMo (planned, pending its tool-calling fix): run the `reduced` preset (7,040 episodes) instead of the `olmo` preset (5,280), so both exploratory models share one design. No cost (local). To be logged as a deviation with the fix once it runs.
 
+
+### Note (Thu 11/5/2026): figure code fix, no test changed
+
+- **What happened.** `analyze.py all` on the 9 main-run outcome files wrote `checks.json`, `confirmatory.json/.md` and `exploratory.json/.csv`, then stopped in the figures stage with `KeyError: 'tier'` in `group_vs_baseline`. Gemini (reduced preset) has no S1 arm, so `name_means` returned an empty table without a `tier` column.
+- **Fix.** `group_vs_baseline` now returns no rows when a model has no episodes in an arm. This function only feeds Figure 1 of section 10. No test, model, margin, family, check or p-value changed. Only `analyze.py figures` was rerun; `results/checks.json` is byte-identical before and after.
+- **Paper figures.** `analysis/make_figures.py` (the paper figure code, which runs no tests) got layout fixes after visual review of the real figures: overlapping labels, clipped text, panel titles, and headline text that named only Haiku now names both confirmatory models. It reads the frozen outputs above and adds no inference.
