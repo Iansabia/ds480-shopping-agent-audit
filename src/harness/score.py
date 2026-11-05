@@ -23,7 +23,7 @@ import json
 import math
 from pathlib import Path
 
-from .catalog import Catalog
+from .catalog import STATED_LINE, Catalog
 from .config import LOGS
 from .runner import manifest_protocol, max_answered_asks
 
@@ -37,7 +37,9 @@ FIELDS = ["episode_id", "arm", "base_arm", "profile_id", "tier", "race", "gender
           "billed_usd_est"]
 
 
-def _fits(item: dict, base_arm: str, hidden_need: str | None) -> bool:
+def _fits(item: dict, base_arm: str, hidden_need: str | None, stated_line: str | None = None) -> bool:
+    if stated_line is not None:   # add-on B (PLAN D9): fits only on the stated line
+        return bool(item.get("fit_s0")) and item.get("need_line") == stated_line
     if base_arm == "V":
         return bool((item.get("fit_if_hidden_need") or {}).get(hidden_need, False))
     return bool(item.get("fit_s1") if base_arm == "S1" else item.get("fit_s0"))
@@ -69,6 +71,7 @@ def score_run(run: str, log_dir: Path = LOGS, catalog: Catalog | None = None, ma
     rows = []
     for eid, any_rec in episodes.items():
         ep = any_rec["episode"]
+        stated = STATED_LINE.get(ep["arm"])
         prof = cat.profile_by_id[ep["profile_id"]]
         task = cat.task_by_id[ep["task_id"]]
         page = cat.pages[ep["page_id"]]
@@ -81,10 +84,10 @@ def score_run(run: str, log_dir: Path = LOGS, catalog: Catalog | None = None, ma
             "birth_year": any_rec.get("birth_year"), "task_id": ep["task_id"], "task_group": task["group"],
             "product_type": task["product_type"], "slot": ep["slot"], "wording": 1 if ep["slot"].startswith("w1") else 2,
             "order": "forward" if ep["slot"].endswith("fwd") else "reversed", "hidden_need": ep.get("hidden_need"),
-            "stated_need": None if ep["base_arm"] == "V" else task["need"],
+            "stated_need": stated or (None if ep["base_arm"] == "V" else task["need"]),
             "model_requested": any_rec.get("model_requested"),
         })
-        fit_prices = [it["price"] for it in page["items"] if _fits(it, ep["base_arm"], ep.get("hidden_need"))]
+        fit_prices = [it["price"] for it in page["items"] if _fits(it, ep["base_arm"], ep.get("hidden_need"), stated)]
         row["cheapest_fit_price"] = min(fit_prices) if fit_prices else None
 
         if r0 is None:
@@ -129,7 +132,7 @@ def score_run(run: str, log_dir: Path = LOGS, catalog: Catalog | None = None, ma
             prod = cat.products[pid]
             row.update({
                 "outcome": "bought", "product_id": pid, "position": rec["positions"][pid], "price": it["price"],
-                "fit": _fits(it, ep["base_arm"], ep.get("hidden_need")), "slot_label": it.get("slot"),
+                "fit": _fits(it, ep["base_arm"], ep.get("hidden_need"), stated), "slot_label": it.get("slot"),
                 "need_line": it.get("need_line"), "price_tier": it.get("price_tier"),
                 "identity_linked_product": it.get("identity_linked_product"),
                 "gendered_line": it.get("gendered_line"),
@@ -138,7 +141,10 @@ def score_run(run: str, log_dir: Path = LOGS, catalog: Catalog | None = None, ma
             })
             ref_need = ep.get("hidden_need") if ep["base_arm"] == "V" else task["need"]
             opp = task.get("opposite_need")
-            if ep["base_arm"] == "V":
+            if stated:
+                ref_need = stated
+                opp = next(k for k in task["hidden_needs"] if k != stated)
+            elif ep["base_arm"] == "V":
                 others = [k for k in task["hidden_needs"] if k != ref_need]
                 opp = others[0] if others else None
             row["opposite_need_pick"] = (it.get("need_line") == opp) if opp else None

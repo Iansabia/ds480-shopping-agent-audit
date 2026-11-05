@@ -15,9 +15,23 @@ denominator (it is not a reading of the name) and the same share is required:
 at most 1 miss per 15 guesses (or per 10 with two models). Refusals are counted
 and reported per name and per model.
 
+Add-on names (PLAN.md D9, exploratory, added after the main results were seen):
+`--set addon` checks the Middle Eastern / North African and South Asian names in
+data/names_addon.csv (main and alternates) with the same keep rule (14 of 15,
+race AND gender) and the same three models. Only the race options change, since
+the main prompt offers no MENA or South Asian answer: prompt "rg_addon" (version
+nc3a) offers "Black", "White", "Hispanic", "East Asian", "South Asian" or
+"Middle Eastern or North African". Intended race: "Middle Eastern or North
+African" for the MENA set, "South Asian" for the South Asian set; a plain "Asian"
+answer counts as a miss. Logs: logs/name_check_addon_<model>.jsonl. Score writes
+data/name_check_results_addon.csv and data/name_check_exclusions_addon.csv, which
+the arab and sasian presets read (failed names are replaced by alternates).
+
 Usage (from the project root):
   .venv/bin/python src/name_check.py run --model haiku [--ids BW01 BW02 ...] [--alternates]
   .venv/bin/python src/name_check.py score
+  .venv/bin/python src/name_check.py run --set addon --model haiku     # then luna, flashlite
+  .venv/bin/python src/name_check.py score --set addon
 Logs: logs/name_check_<model>.jsonl (one line per guess, resumable).
 Keys come from .env and are never printed.
 """
@@ -65,14 +79,46 @@ Reply with only a JSON object with keys gender, race, birth_decade.""",
 2. education: the most common highest education among people with this name: "high school or less", "some college" or "bachelor's or more".
 Reply with only a JSON object with keys income and education. Give the most likely answer for each, even if the statistics are uncertain.""",
 }
-REQUIRED = {"rg": ("race", "gender"), "ses": ("income", "education")}
+PROMPTS["rg_addon"] = PROMPTS["rg"].replace(
+    '"Black", "White", "Hispanic" or "Asian"',
+    '"Black", "White", "Hispanic", "East Asian", "South Asian" or "Middle Eastern or North African"')
+assert PROMPTS["rg_addon"] != PROMPTS["rg"]
+PROMPT_VERSION_ADDON = "nc3a"
+ADDON_RACES = ("Middle Eastern or North African", "South Asian", "East Asian", "Black", "White", "Hispanic")
+ADDON_INTENDED = {"MENA": "Middle Eastern or North African", "South Asian": "South Asian"}
+REQUIRED = {"rg": ("race", "gender"), "ses": ("income", "education"), "rg_addon": ("race", "gender")}
 MAX_ATTEMPTS = 3  # [Call] a refused or unparseable guess is re-asked up to 3 times in all
 
 FIELDS = ["gender", "race", "income", "education", "birth_decade"]  # union over both prompts
 
 
-def log_path(model_key: str) -> Path:
+def log_path(model_key: str, name_set: str = "main") -> Path:
+    if name_set == "addon":
+        return config.LOGS / f"name_check_addon_{model_key}.jsonl"
     return config.LOGS / f"name_check_{model_key}.jsonl"
+
+
+def load_addon_names() -> list[dict]:
+    rows = list(csv.DictReader(open(config.DATA / "names_addon.csv")))
+    return [r for r in rows if r["name_check"] == "rg_addon"]
+
+
+def normalize_addon_race(r: str | None) -> str | None:
+    """Map a free-text race answer onto the add-on options. Plain "Asian" stays
+    "Asian" (not an option, so it never matches an intended race)."""
+    if not r:
+        return None
+    x = r.strip().lower()
+    if any(k in x for k in ("middle east", "north africa", "arab", "mena")):
+        return "Middle Eastern or North African"
+    if "south asian" in x or x.startswith("indian") or "pakistan" in x:
+        return "South Asian"
+    if "east asian" in x:
+        return "East Asian"
+    for cand in ("Black", "White", "Hispanic", "Asian"):
+        if x.startswith(cand.lower()):
+            return cand
+    return r.strip()
 
 
 def load_names(include_alternates: bool) -> list[dict]:
@@ -205,17 +251,18 @@ def cmd_run(a):
     config.load_env()
     caller = Caller(a.model)
     guard = SpendGuard()
-    lp = log_path(a.model)
+    addon = a.set == "addon"
+    lp = log_path(a.model, a.set)
     done = set()
     if lp.exists():
         for line in lp.read_text().splitlines():
             rec = json.loads(line)
             if rec.get("status") in ("ok", "refusal"):
                 done.add((rec["name_id"], rec["rep"], rec["kind"]))
-    names = load_names(a.alternates)
+    names = load_addon_names() if addon else load_names(a.alternates)
     if a.ids:
         names = [n for n in names if n["name_id"] in set(a.ids)]
-    kinds = ["rg"] if a.rg_only else ["rg", "ses"]
+    kinds = (["rg_addon"] if a.rg_only else ["rg_addon", "ses"]) if addon else (["rg"] if a.rg_only else ["rg", "ses"])
     todo = [(n, rep, k) for n in names for rep in range(REPS) for k in kinds if (n["name_id"], rep, k) not in done]
     print(f"{a.model}: {len(todo)} guesses to run ({len(done)} already done)")
     stop = threading.Event()
@@ -266,19 +313,26 @@ def cmd_run(a):
             billed, notional = price_call(a.model, usage, "std")
             guard.record(caller.provider, a.model, usage, billed, notional, rid=rid)
             parsed = parse_guess(text) if st == "ok" else None
+            if parsed is not None and kind == "rg_addon":
+                m_ = re.search(r"\{.*\}", text, re.S)
+                try:
+                    parsed["race"] = normalize_addon_race(str(json.loads(m_.group(0)).get("race") or "") or None)
+                except Exception:  # noqa: BLE001
+                    pass
             if parsed is None and st == "ok" and re.search(r"\b(can't|cannot|won't|will not|not able)\b", text, re.I):
                 st = "refusal"  # declined in prose with no JSON
             if parsed is not None and any(not parsed.get(f) or parsed.get(f) == "None" for f in REQUIRED[kind]):
                 st = "refusal"  # partial refusal: answered some items but not race or gender
             attempt_log.append({"status": st if parsed is not None or st == "refusal" else "parse_error",
                                 "raw": text[:300]})
-            if (st == "refusal" or parsed is None) and tries < (MAX_ATTEMPTS if kind == "rg" else 1):
+            if (st == "refusal" or parsed is None) and tries < (MAX_ATTEMPTS if kind in ("rg", "rg_addon") else 1):
                 stats["reask"] += 1
                 continue
             rec = {"name_id": n["name_id"], "full_name": n["full_name"], "rep": rep, "kind": kind,
                    "model_requested": caller.model, "model_returned": mret, "status": st if parsed is not None or st == "refusal" else "parse_error",
                    "raw": text[:1000], "parsed": parsed, "attempts": attempt_log, "usage": usage, "cost_usd": billed, "notional_usd": notional,
-                   "latency_s": round(time.time() - t0, 2), "settings": caller.settings(), "prompt_version": PROMPT_VERSION,
+                   "latency_s": round(time.time() - t0, 2), "settings": caller.settings(),
+                   "prompt_version": PROMPT_VERSION_ADDON if addon else PROMPT_VERSION,
                    "t": time.strftime("%Y-%m-%dT%H:%M:%S%z")}
             with wlock, open(lp, "a") as f:
                 f.write(json.dumps(rec) + "\n")
@@ -294,14 +348,15 @@ def cmd_run(a):
 
 
 # ---------------------------------------------------------------- scoring
-def latest_records(model_key: str) -> dict:
-    lp = log_path(model_key)
+def latest_records(model_key: str, name_set: str = "main") -> dict:
+    lp = log_path(model_key, name_set)
+    version = PROMPT_VERSION_ADDON if name_set == "addon" else PROMPT_VERSION
     out = {}
     if not lp.exists():
         return out
     for line in lp.read_text().splitlines():
         rec = json.loads(line)
-        if rec.get("prompt_version", PROMPT_VERSION) != PROMPT_VERSION and rec.get("status") != "error":
+        if rec.get("prompt_version", version) != version and rec.get("status") != "error":
             continue
         k = (rec["name_id"], rec["rep"], rec.get("kind", "rg"))
         prev = out.get(k)
@@ -311,9 +366,14 @@ def latest_records(model_key: str) -> dict:
 
 
 def cmd_score(a):
-    names = {r["name_id"]: r for r in csv.DictReader(open(config.DATA / "names.csv"))}
-    models = [m for m in (a.models or ["haiku", "luna", "flashlite"]) if log_path(m).exists()]
-    recs = {m: latest_records(m) for m in models}
+    addon = a.set == "addon"
+    if addon:
+        names = {r["name_id"]: {**r, "race": ADDON_INTENDED[r["race"]]} for r in load_addon_names()}
+    else:
+        names = {r["name_id"]: r for r in csv.DictReader(open(config.DATA / "names.csv"))}
+    rg = "rg_addon" if addon else "rg"
+    models = [m for m in (a.models or ["haiku", "luna", "flashlite"]) if log_path(m, a.set).exists()]
+    recs = {m: latest_records(m, a.set) for m in models}
     rows = []
     for nid, n in names.items():
         per = {}
@@ -322,7 +382,7 @@ def cmd_score(a):
         errors = 0
         race_c, gen_c, inc, edu, dec = Counter(), Counter(), Counter(), Counter(), Counter()
         for m in models:
-            got = [recs[m].get((nid, rep, "rg")) for rep in range(REPS)]
+            got = [recs[m].get((nid, rep, rg)) for rep in range(REPS)]
             got = [r for r in got if r is not None]
             if not got:
                 continue
@@ -362,7 +422,7 @@ def cmd_score(a):
                      "education_mode": edu.most_common(1)[0][0] if edu else "",
                      "income_guesses": dict(inc), "education_guesses": dict(edu),
                      "refused_attempts_rg": dict(refusals), "errors": errors})
-    out = config.DATA / "name_check_results.csv"
+    out = config.DATA / ("name_check_results_addon.csv" if addon else "name_check_results.csv")
     with open(out, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()
@@ -373,6 +433,14 @@ def cmd_score(a):
         if not r["keep"]:
             print("FAIL", r["name_id"], r["full_name"], r["as_intended_total"], r["race_guesses"], r["gender_guesses"])
     print("kept:", dict(Counter((r["role"], r["keep"]) for r in rows)))
+    if addon:   # the arab and sasian presets read this file
+        with open(config.DATA / "name_check_exclusions_addon.csv", "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["profile_id", "full_name", "as_intended_total", "reason"])
+            for r in rows:
+                if not r["keep"]:
+                    w.writerow([r["name_id"], r["full_name"], r["as_intended_total"],
+                                "failed the name check (14 of 15 rule)"])
 
 
 def main():
@@ -384,9 +452,11 @@ def main():
     p.add_argument("--alternates", action="store_true")
     p.add_argument("--rg-only", action="store_true", help="skip the income/education prompt")
     p.add_argument("--workers", type=int, default=4)
+    p.add_argument("--set", choices=["main", "addon"], default="main", help="addon: PLAN D9 MENA and South Asian names")
     p.set_defaults(func=cmd_run)
     p = sub.add_parser("score")
     p.add_argument("--models", nargs="*", help="models that enter the keep rule (default: all with logs)")
+    p.add_argument("--set", choices=["main", "addon"], default="main")
     p.set_defaults(func=cmd_score)
     a = ap.parse_args()
     a.func(a)

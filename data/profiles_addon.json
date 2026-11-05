@@ -1,0 +1,606 @@
+{
+  "seed": 20261105,
+  "zip": "43215",
+  "birth_years": [
+    1978,
+    1998
+  ],
+  "note": "Exploratory add-on profiles (PLAN.md D9), added after the main results were seen. Not part of any confirmatory test.",
+  "profiles": [
+    {
+      "profile_id": "GN01",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Avery Williams",
+      "email": "avery.williams@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "GN02",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Kerry Johnson",
+      "email": "kerry.johnson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "GN03",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Kendall Green",
+      "email": "kendall.green@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "GN04",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Jessie Lewis",
+      "email": "jessie.lewis@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "GN05",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Riley Walker",
+      "email": "riley.walker@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "GN06",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Casey Thomas",
+      "email": "casey.thomas@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "GN07",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Jody Jones",
+      "email": "jody.jones@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "GN08",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Dominique Robinson",
+      "email": "dominique.robinson@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "GN09",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Jordan Scott",
+      "email": "jordan.scott@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "GN10",
+      "role": "main",
+      "tier": "addon",
+      "set": "neutral",
+      "race": "unmarked",
+      "gender": "neutral",
+      "name": "Taylor Harris",
+      "email": "taylor.harris@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "MEW01",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "woman",
+      "name": "Naima El Amrani",
+      "email": "naima.elamrani@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "MEW02",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "woman",
+      "name": "Samira Saidi",
+      "email": "samira.saidi@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "MEW03",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "woman",
+      "name": "Khadija Dahmani",
+      "email": "khadija.dahmani@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "MEW04",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "woman",
+      "name": "Karima Idrissi",
+      "email": "karima.idrissi@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "MEW05",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "woman",
+      "name": "Fatima Benali",
+      "email": "fatima.benali@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "MEW06",
+      "role": "alternate",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "woman",
+      "name": "Nadia Salhi",
+      "email": "nadia.salhi@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "MEW07",
+      "role": "alternate",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "woman",
+      "name": "Aicha Tahiri",
+      "email": "aicha.tahiri@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "MEM01",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "man",
+      "name": "Said El Moussaoui",
+      "email": "said.elmoussaoui@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "MEM02",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "man",
+      "name": "Youssef Saidi",
+      "email": "youssef.saidi@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "MEM03",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "man",
+      "name": "Omar Salhi",
+      "email": "omar.salhi@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "MEM04",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "man",
+      "name": "Mohamed Tahiri",
+      "email": "mohamed.tahiri@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "MEM05",
+      "role": "main",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "man",
+      "name": "Khalid Dahmani",
+      "email": "khalid.dahmani@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "MEM06",
+      "role": "alternate",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "man",
+      "name": "Ahmed Benali",
+      "email": "ahmed.benali@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "MEM07",
+      "role": "alternate",
+      "tier": "addon",
+      "set": "arab",
+      "race": "MENA",
+      "gender": "man",
+      "name": "Mehdi Idrissi",
+      "email": "mehdi.idrissi@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "SAW01",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "woman",
+      "name": "Maya Kumar",
+      "email": "maya.kumar@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "SAW02",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "woman",
+      "name": "Priyanka Kaur",
+      "email": "priyanka.kaur@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "SAW03",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "woman",
+      "name": "Shreya Sharma",
+      "email": "shreya.sharma@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "SAW04",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "woman",
+      "name": "Tara Singh",
+      "email": "tara.singh@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "SAW05",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "woman",
+      "name": "Hina Chaudhry",
+      "email": "hina.chaudhry@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "SAW06",
+      "role": "alternate",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "woman",
+      "name": "Sana Khan",
+      "email": "sana.khan@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "SAM01",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "man",
+      "name": "Arjun Kumar",
+      "email": "arjun.kumar@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "SAM02",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "man",
+      "name": "Rahul Kaur",
+      "email": "rahul.kaur@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1998,
+        "w1_rev": 1978,
+        "w2_fwd": 1978,
+        "w2_rev": 1998
+      }
+    },
+    {
+      "profile_id": "SAM03",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "man",
+      "name": "Samir Sharma",
+      "email": "samir.sharma@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "SAM04",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "man",
+      "name": "Asif Sheikh",
+      "email": "asif.sheikh@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    },
+    {
+      "profile_id": "SAM05",
+      "role": "main",
+      "tier": "addon",
+      "set": "sasian",
+      "race": "South Asian",
+      "gender": "man",
+      "name": "Hassan Khan",
+      "email": "hassan.khan@example.com",
+      "zip": "43215",
+      "birth_year_by_run": {
+        "w1_fwd": 1978,
+        "w1_rev": 1998,
+        "w2_fwd": 1998,
+        "w2_rev": 1978
+      }
+    }
+  ]
+}

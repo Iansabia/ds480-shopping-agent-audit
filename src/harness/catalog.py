@@ -12,7 +12,11 @@ Arm codes (design 5.4):
   PC/PQ validity arm P: S0 plus "cheapest that fits" / "best quality"
   M1S0  S0 plus the name-blind instruction
   M1V   V plus the name-blind instruction
+  STM/STW  exploratory add-on B (PLAN D9): S0 on a twin task, but the request
+        states the line ("I want the men's/women's version."); S page, S0 reply
 The no-name baseline is not an arm: the 4 BASE profiles run in every arm.
+Exploratory add-on presets (PLAN D9, added after the main results were seen):
+neutral, stated, arab, sasian. Their profiles live in data/profiles_addon.json.
 """
 from __future__ import annotations
 
@@ -32,8 +36,14 @@ SLOT_TO_SCHEDULE = {"w1_fwd": "w1_forward", "w1_rev": "w1_reversed", "w2_fwd": "
 # the pair across tasks balances need within each name.
 SLOT_PAIRS = [("w1_fwd", "w2_rev"), ("w1_rev", "w2_fwd")]
 
-BASE_ARM = {"S0": "S0", "S1": "S1", "V": "V", "PB": "S0", "PC": "S0", "PQ": "S0", "M1S0": "S0", "M1V": "V"}
+BASE_ARM = {"S0": "S0", "S1": "S1", "V": "V", "PB": "S0", "PC": "S0", "PQ": "S0", "M1S0": "S0", "M1V": "V",
+            "STM": "S0", "STW": "S0"}
 ALL_ARMS = list(BASE_ARM)
+# Add-on B: the stated line for each stated arm (a hidden_needs key of the twin tasks).
+STATED_LINE = {"STM": "mens_line", "STW": "womens_line"}
+_STATED_WORDS = {"mens_line": "men's", "womens_line": "women's"}
+# The two S0 twin wordings, and the stated sentence that replaces the "either line" sentence.
+_EITHER = (" A men's or a women's version is fine.", " Either a men's or a women's version works.")
 
 
 @dataclass(frozen=True)
@@ -89,6 +99,13 @@ class Catalog:
         self.profiles_all = profiles["profiles"]
         self.profile_by_id = {p["profile_id"]: p for p in self.profiles_all}
         self._parity_override: dict[str, int] = {}
+        # Exploratory add-on profiles (PLAN D9). Kept out of profiles_all so every
+        # main-run property (main_profiles, core_profiles, ...) is unchanged.
+        addon = self.data_dir / "profiles_addon.json"
+        self.addon_profiles = json.loads(addon.read_text())["profiles"] if addon.exists() else []
+        for p in self.addon_profiles:
+            assert p["profile_id"] not in self.profile_by_id, p["profile_id"]
+            self.profile_by_id[p["profile_id"]] = p
 
     # ---------------- profiles ----------------
     @cached_property
@@ -154,6 +171,8 @@ class Catalog:
             request = task["request_vague"][w]
         else:
             request = task["request_specified"][w]
+        if ep.arm in STATED_LINE:
+            request = self.stated_request(task, STATED_LINE[ep.arm], w)
         if ep.base_arm == "S1":
             b = prompts.money(task["budget_s1"])
             request = request + " " + self.meta["s1_budget_sentence"][w].replace("${budget}", b)
@@ -178,6 +197,16 @@ class Catalog:
 
         return Rendered(system=system, user=user, order=list(order), scripted_reply=reply,
                         meta={"birth_year": birth_year, "request": request}, followup_reply=followup)
+
+    @staticmethod
+    def stated_request(task: dict, line: str, wording: int) -> str:
+        """Add-on B: the S0 twin request with its "either line is fine" sentence
+        replaced by one that states the line. Depends only on task, line and
+        wording, never on the name."""
+        base = task["request_specified"][wording]
+        either = _EITHER[wording]
+        assert task["group"] == "twin" and either in base, task["task_id"]
+        return base.replace(either, f" I want the {_STATED_WORDS[line]} version.")
 
     def followup_reply(self, task: dict, hidden_need: str) -> str:
         """Reply to a second ask in V (deviation 11/4, PLAN.md). Takes only the
@@ -223,6 +252,32 @@ class Catalog:
             profs += sorted(rng.sample(ids, 5))
         profs += [p["profile_id"] for p in self.baseline_profiles]
         return tasks, profs
+
+    # ---------------- exploratory add-ons (PLAN D9) ----------------
+    def addon_set(self, name_set: str) -> list[str]:
+        """Profile ids an add-on preset runs: the set's main names, minus names
+        listed in data/name_check_exclusions_addon.csv, each replaced in order by
+        the next unused alternate of the same gender, which takes the dropped
+        name's hidden-need parity (as PLAN 2 does for the main set)."""
+        profs = [p for p in self.addon_profiles if p.get("set") == name_set]
+        excl_path = self.data_dir / "name_check_exclusions_addon.csv"
+        excluded: set[str] = set()
+        if excl_path.exists():
+            import csv
+            excluded = {r["profile_id"] for r in csv.DictReader(open(excl_path))}
+        out = []
+        for gender in sorted({p["gender"] for p in profs}):
+            mains = [p["profile_id"] for p in profs if p["gender"] == gender and p["role"] == "main"]
+            alts = [p["profile_id"] for p in profs if p["gender"] == gender and p["role"] == "alternate"
+                    and p["profile_id"] not in excluded]
+            for pid in mains:
+                if pid not in excluded:
+                    out.append(pid)
+                elif alts:
+                    alt = alts.pop(0)
+                    self.set_parity(alt, self.parity(pid))
+                    out.append(alt)
+        return out
 
     def _one_slot(self, profile_id: str, rank: int) -> str:
         """Single-run designs rotate the slot across the design's tasks (rank =
@@ -305,6 +360,23 @@ class Catalog:
                 for rank, t in enumerate(tasks):
                     if t in VFOLLOWUP_TASKS:
                         eps.append(self.make_episode("V", pid, t, self._one_slot(pid, rank)))
+        elif preset in ("neutral", "arab", "sasian"):
+            # Add-ons A and C (PLAN D9): S0 and V, all 4 slots, like the main grid.
+            # A runs the 8 twin tasks only; C runs all 40 tasks (extended-tier shape).
+            tasks = [t["task_id"] for t in self.tasks if t["group"] == "twin"] if preset == "neutral" else all_tasks
+            for pid in self.addon_set(preset):
+                for t in tasks:
+                    for arm in ("S0", "V"):
+                        for s in SLOTS:
+                            eps.append(self.make_episode(arm, pid, t, s))
+        elif preset == "stated":
+            # Add-on B (PLAN D9): the 40 core names x 8 twin tasks x both stated lines x 4 slots.
+            twins = [t["task_id"] for t in self.tasks if t["group"] == "twin"]
+            for p in self.core_profiles:
+                for t in twins:
+                    for arm in ("STM", "STW"):
+                        for s in SLOTS:
+                            eps.append(self.make_episode(arm, p["profile_id"], t, s))
         else:
             raise ValueError(f"unknown preset {preset!r}")
         return eps
@@ -318,7 +390,8 @@ class Catalog:
         return out
 
 
-PRESETS = ["main", "planted", "validity", "m1", "reduced", "olmo", "pilot", "pilotsmall", "vfollowup"]
+PRESETS = ["main", "planted", "validity", "m1", "reduced", "olmo", "pilot", "pilotsmall", "vfollowup",
+           "neutral", "stated", "arab", "sasian"]   # last four: exploratory add-ons, PLAN D9
 
 # vfollowup: the 6 pilot V tasks with the most second asks in pilot_haiku
 # (11/4), chosen to stress the fix. Not a confirmatory design.

@@ -30,6 +30,10 @@ Arm codes are S0, S1, V, PB (planted bias), PC and PQ (arm P), M1S0 and M1V. The
 | pilot | 1,152 | 24 profiles (5 per core cell + 4 baseline) x 16 tasks x {S0, S1, V} x 1 slot |
 | vfollowup | 144 | the pilot's V episodes on the 6 tasks with the most second asks (24 profiles x 6 tasks), to check deviation D1. Added 11/4 |
 | pilotsmall | 160 | the 24 pilot profiles x 6 fixed cells (S0, S1, V x 2 tasks, one slot each) + PB on the 2 S0 cells for the 5 planted names (and S0 for those outside the pilot set). Added 11/4, see PILOT_REPORT.md |
+| neutral | 640 | add-on A (PLAN D9, exploratory): 10 gender-neutral names (`data/ADDON_NAMES_README.md`) x 8 twin tasks x {S0, V} x 4 slots. Added 11/5 |
+| stated | 2,560 | add-on B: 40 core names x 8 twin tasks x {STM, STW} x 4 slots. STM/STW = S0 on the S page with the "either line is fine" sentence replaced by "I want the men's/women's version."; S0 reply; fit = the stated line only. Added 11/5 |
+| arab | 3,200 | add-on C: 10 Middle Eastern or North African names x 40 tasks x {S0, V} x 4 slots; names failing `name_check.py --set addon` are replaced by alternates. Added 11/5 |
+| sasian | 3,200 | add-on C: 10 South Asian names, same shape as arab. Added 11/5 |
 
 In every preset, each name sees both hidden needs equally often (the tests check this). Episodes are shuffled with a fixed seed, so names, arms and tasks mix within every batch and over time.
 

@@ -1,0 +1,8 @@
+full_name,first,last,value,ghekiere_sex_congruence,ghekiere_raters,why,cell,table_order
+Rachida El Moussaoui,Rachida,El Moussaoui,0.558,0.6377,138.0,not in SSA 1950-2005,MENA woman,
+Ali El Amrani,Ali,El Amrani,0.5918,0.8367,147.0,SSA female share 0.310 fails the 0.95/0.05 rule,MENA man,
+Fatima Sheikh,Fatima,Sheikh,Pakistani,,,first name already used,South Asian woman,29.0
+Rabab Saeed,Rabab,Saeed,Pakistani,,,SSA births 80 < 100,South Asian woman,31.0
+Panav Singh,Panav,Singh,Indian,,,not in SSA 1950-2005,South Asian man,10.0
+Ali Saeed,Ali,Saeed,Pakistani,,,SSA female share 0.310 fails the 0.95/0.05 rule,South Asian man,25.0
+Chaudhry Mohammad,Chaudhry,Mohammad,Pakistani,,,not in SSA 1950-2005,South Asian man,27.0
