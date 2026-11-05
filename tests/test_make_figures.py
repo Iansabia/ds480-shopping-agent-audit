@@ -6,7 +6,7 @@ Checks:
   - number formatting never prints "-0.0" or a bare group label
   - runs still being written are skipped
   - the appendix figures reproduce analyze.py's frozen PLAN 10 numbers exactly
-  - the Figure 6D p-values give the same reject share as analyze.shuffled_null
+  - the Figure 5D p-values give the same reject share as analyze.shuffled_null
   - pilot output is watermarked everywhere; main output is not, and main mode
     refuses to run without analyze.py's results for the same input files
   - numbers.json carries every result key paper/DRAFT.md uses
@@ -125,7 +125,7 @@ def test_pilot_build_is_watermarked(world, monkeypatch):
     pngs = sorted((tmp / "pilot_fig").glob("*.png"))
     assert pngs
     for p in pngs:
-        assert p.name == "fig1_design.png" or p.stem.endswith("_PILOT"), p.name
+        assert p.name == "fig2_design.png" or p.stem.endswith("_PILOT"), p.name
     for c in (tmp / "pilot_fig").glob("*.csv"):
         assert pd.read_csv(c)["watermark"].eq(P.WATERMARK).all()
     for t in (tmp / "pilot_tab").glob("*.md"):
@@ -135,7 +135,10 @@ def test_pilot_build_is_watermarked(world, monkeypatch):
     assert P.WATERMARK in (tmp / "pilot_fig" / "CAPTIONS_PILOT.md").read_text()
     # every figure file stem in numbers.json exists, with svg and png
     for k, rec in n["_meta"]["figures"].items():
-        assert Path(rec["png"]).exists() and Path(rec["svg"]).exists()
+        assert Path(rec["png"]).exists() and Path(rec["svg"]).exists() and Path(rec["html"]).exists()
+    # pilot figures never print a verdict or a dollar translation of a group gap
+    fig4 = (tmp / "pilot_fig" / "fig4_price_gap_PILOT.html").read_text()
+    assert "PILOT DATA, NOT RESULTS" in fig4
 
 
 def test_main_build_matches_frozen_outputs(world, monkeypatch):
@@ -158,17 +161,18 @@ def test_main_build_matches_frozen_outputs(world, monkeypatch):
     assert not list(figdir.glob("*_PILOT*")) and not list(tabdir.glob("*_PILOT*"))
     n = json.loads((tabdir / "numbers.json").read_text())
     assert n["_meta"]["watermark"] is None
-    for key in ("fig2", "fig3", "fig4", "fig5", "fig6", "fig7", "fig8", "figA1", "figA2"):
+    for key in ("fig1", "fig2", "fig3", "fig4", "fig5", "fig6", "fig7", "fig8", "figA1", "figA2", "figA4"):
         assert key in n["_meta"]["figures"], key
 
     # numbers come from analyze.py's confirmatory.json
     conf = json.loads((tmp / "results_main" / "confirmatory.json").read_text())
     r = next(r for r in conf["rows"] if r["model"] == "synth_a" and r["hypothesis"] == "H1")
-    f3 = pd.read_csv(figdir / "fig3_price_gap_forest.csv")
+    f3 = pd.read_csv(figdir / "fig4_price_gap.csv")
     row = f3[(f3.model == "synth_a") & (f3.hypothesis == "H1")].iloc[0]
     assert row["est_log"] == pytest.approx(r["r_est"])
     assert row["gap_pct"] == pytest.approx(100 * (math.exp(r["r_est"]) - 1))
     assert row["usd_per_purchase"] == pytest.approx((math.exp(r["r_est"]) - 1) * row["ref_usd"])
+    assert row["usd_per_1m"] == pytest.approx(1e6 * (math.exp(r["r_est"]) - 1))
 
     # appendix figures reproduce analyze.py's frozen PLAN 10 tables
     df = A.load_outcomes(ns.outcomes)
@@ -183,13 +187,13 @@ def test_main_build_matches_frozen_outputs(world, monkeypatch):
     fa1 = pd.read_csv(tmp / "frozen_figs" / "figA1_pick_share_by_position.csv").sort_values(
         ["model", "order", "position"]).reset_index(drop=True)
     np.testing.assert_allclose(a1["share"], fa1["share"])
-    f4 = pd.read_csv(figdir / "fig4_fit_vs_other_need.csv")
+    f4 = pd.read_csv(figdir / "fig6_hair_skin_fit.csv")
     fb = pd.read_csv(tmp / "frozen_figs" / "fig2b_wrong_need_when_assumed.csv")
     mine = f4[f4.panel == "B"].set_index(["model", "group"])["est"].sort_index()
     theirs = fb[fb.split == "identity-linked need"].set_index(["model", "group"])["est"].sort_index()
     np.testing.assert_allclose(mine.to_numpy(), theirs.loc[mine.index].to_numpy())
 
-    # Figure 6D p-values give the same reject share as the frozen shuffled-null check
+    # Figure 5D p-values give the same reject share as the frozen shuffled-null check
     ch = json.loads((tmp / "results_main" / "checks.json").read_text())
     ps = P.shuffled_pvalues(df, "synth_a", "H1", n=ns.shuffles)
     assert np.mean(np.array(ps) < 0.05) == pytest.approx(ch["shuffled_null"]["synth_a"]["H1"]["reject_rate"])

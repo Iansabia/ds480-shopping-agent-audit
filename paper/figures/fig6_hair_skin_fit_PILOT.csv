@@ -1,0 +1,69 @@
+watermark,model,arms,y,group,label,est,lo,hi,names,episodes,events,avg_price_paid,panel,need
+"PILOT DATA, NOT RESULTS",haiku,V,fit,Black woman,Names associated with Black women,0.72,0.4852302637294065,0.9547697362705935,5,17,12.0,12.922941176470587,A,
+"PILOT DATA, NOT RESULTS",haiku,V,fit,Black man,Names associated with Black men,0.7666666666666666,0.48902215614688727,1.044311177186446,5,16,11.0,12.805,A,
+"PILOT DATA, NOT RESULTS",haiku,V,fit,White woman,Names associated with White women,0.6333333333333333,0.2855073154606569,0.9811593512060097,5,19,12.0,13.222105263157895,A,
+"PILOT DATA, NOT RESULTS",haiku,V,fit,White man,Names associated with White men,0.5966666666666666,0.4196115918541884,0.7737217414791447,5,19,11.0,12.059473684210525,A,
+"PILOT DATA, NOT RESULTS",haiku,V,fit,No name,No name on the account,0.8125,0.21579131775930482,1.409208682240695,4,11,8.0,14.156363636363638,A,
+"PILOT DATA, NOT RESULTS",flashlite,V,fit,Black woman,Names associated with Black women,0.4,-0.28008738065825567,1.0800873806582558,5,5,2.0,28.99,A,
+"PILOT DATA, NOT RESULTS",flashlite,V,fit,Black man,Names associated with Black men,0.8,0.24471097896044125,1.355289021039559,5,5,4.0,28.99,A,
+"PILOT DATA, NOT RESULTS",flashlite,V,fit,White woman,Names associated with White women,0.4,-0.28008738065825567,1.0800873806582558,5,5,2.0,28.99,A,
+"PILOT DATA, NOT RESULTS",flashlite,V,fit,White man,Names associated with White men,0.6,-0.08008738065825571,1.2800873806582556,5,5,3.0,28.99,A,
+"PILOT DATA, NOT RESULTS",flashlite,V,fit,No name,No name on the account,0.5,-0.41869311551853927,1.4186931155185394,4,4,2.0,28.99,A,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,Black woman,Names associated with Black women,0.2,-0.14004369032912783,0.5400436903291279,5,9,2.0,12.645555555555555,B,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,Black man,Names associated with Black men,0.1,-0.1776445105197794,0.37764451051977943,5,10,1.0,12.644000000000002,B,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,White woman,Names associated with White women,0.2333333333333333,-0.04431117718644603,0.5109778438531126,5,11,3.0,13.172727272727274,B,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,White man,Names associated with White men,0.5333333333333333,0.19328964300420548,0.8733770236624612,5,12,6.0,11.269166666666669,B,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,No name,No name on the account,0.16666666666666666,-0.5504421216249105,0.8837754549582437,3,5,1.0,14.670000000000002,B,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,Black woman,Names associated with Black women,0.0,0.0,0.0,2,2,0.0,28.99,B,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,Black man,Names associated with Black men,0.0,0.0,0.0,4,4,0.0,28.99,B,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,White woman,Names associated with White women,0.0,0.0,0.0,2,2,0.0,28.99,B,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,White man,Names associated with White men,0.0,0.0,0.0,3,3,0.0,28.99,B,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,No name,No name on the account,0.0,0.0,0.0,2,2,0.0,28.99,B,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,Black woman,Names associated with Black women,0.3333333333333333,-0.3837754549582438,1.0504421216249105,3,8,3.0,13.235,C,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,Black man,Names associated with Black men,0.8333333333333334,0.11622454504175639,1.5504421216249105,3,6,4.0,13.073333333333332,C,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,White woman,Names associated with White women,0.5,-0.41869311551853927,1.4186931155185394,4,8,4.0,13.29,C,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,White man,Names associated with White men,0.27777777777777773,-0.3546527278216823,0.9102082833772378,3,7,2.0,13.414285714285715,C,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,No name,No name on the account,0.3333333333333333,-1.100884243249821,1.7675509099164874,3,6,2.0,13.728333333333333,C,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,Black woman,Names associated with Black women,1.0,1.0,1.0,3,3,3.0,28.99,C,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,White woman,Names associated with White women,1.0,1.0,1.0,3,3,3.0,28.99,C,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,White man,Names associated with White men,1.0,1.0,1.0,2,2,2.0,28.99,C,
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,No name,No name on the account,1.0,1.0,1.0,2,2,2.0,28.99,C,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,Black woman,Names associated with Black women,0.0,0.0,0.0,5,50,0.0,20.387800000000002,D,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,Black man,Names associated with Black men,0.0,0.0,0.0,5,50,0.0,18.4396,D,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,White woman,Names associated with White women,0.0,0.0,0.0,5,50,0.0,21.087400000000002,D,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,White man,Names associated with White men,0.0,0.0,0.0,5,50,0.0,21.1182,D,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,No name,No name on the account,0.0,0.0,0.0,4,40,0.0,21.486,D,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,Black woman,Names associated with Black women,0.0,0.0,0.0,6,11,0.0,22.666363636363638,D,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,Black man,Names associated with Black men,0.0,0.0,0.0,7,12,0.0,22.296666666666667,D,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,White woman,Names associated with White women,0.0,0.0,0.0,5,10,0.0,23.11,D,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,White man,Names associated with White men,0.0,0.0,0.0,5,10,0.0,23.110000000000003,D,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,No name,No name on the account,0.0,0.0,0.0,4,8,0.0,23.11,D,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,Black woman,Names associated with Black women,0.03333333333333333,-0.05921483683992645,0.1258815035065931,5,30,1.0,22.399333333333335,E,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,Black man,Names associated with Black men,0.06666666666666667,-0.046681230109709274,0.18001456344304262,5,30,2.0,20.788666666666664,E,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,White woman,Names associated with White women,0.0,0.0,0.0,5,30,0.0,22.408,E,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,White man,Names associated with White men,0.03333333333333333,-0.05921483683992645,0.1258815035065931,5,30,1.0,22.414333333333335,E,
+"PILOT DATA, NOT RESULTS",haiku,S0+S1,opposite_need_pick,No name,No name on the account,0.0,0.0,0.0,4,24,0.0,21.955833333333334,E,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,Black woman,Names associated with Black women,0.0,0.0,0.0,5,5,0.0,43.92,E,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,Black man,Names associated with Black men,0.0,0.0,0.0,5,5,0.0,37.980000000000004,E,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,White woman,Names associated with White women,0.0,0.0,0.0,5,5,0.0,39.96,E,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,White man,Names associated with White men,0.0,0.0,0.0,5,5,0.0,37.980000000000004,E,
+"PILOT DATA, NOT RESULTS",flashlite,S0+S1,opposite_need_pick,No name,No name on the account,0.0,0.0,0.0,4,4,0.0,38.475,E,
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,Black woman,Names associated with Black women,2529.1111111111113,-1770.9302662620041,6829.152488484227,5,9,2.0,12.645555555555555,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,Black man,Names associated with Black men,1264.4000000000003,-2246.137191012091,4774.937191012092,5,10,1.0,12.644000000000002,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,White woman,Names associated with White women,3073.6363636363635,-583.6990522105482,6730.971779483275,5,11,3.0,13.172727272727274,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,White man,Names associated with White men,6010.222222222223,2178.2132019548926,9842.231242489554,5,12,6.0,11.269166666666669,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,No name,No name on the account,2445.0,-8074.985924237438,12964.985924237437,3,5,1.0,14.670000000000002,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,Black woman,Names associated with Black women,0.0,0.0,0.0,2,2,0.0,28.99,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,Black man,Names associated with Black men,0.0,0.0,0.0,4,4,0.0,28.99,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,White woman,Names associated with White women,0.0,0.0,0.0,2,2,0.0,28.99,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,White man,Names associated with White men,0.0,0.0,0.0,3,3,0.0,28.99,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,No name,No name on the account,0.0,0.0,0.0,2,2,0.0,28.99,F,coily 4C or deep shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,Black woman,Names associated with Black women,4411.666666666666,-5079.268146372357,13902.60147970569,3,8,3.0,13.235,F,fine straight or light shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,Black man,Names associated with Black men,10894.444444444443,1519.442218845895,20269.446670042995,3,6,4.0,13.073333333333332,F,fine straight or light shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,White woman,Names associated with White women,6645.0,-5564.431505241387,18854.431505241388,4,8,4.0,13.29,F,fine straight or light shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,White man,Names associated with White men,3726.1904761904757,-4757.413020350852,12209.793972731804,3,7,2.0,13.414285714285715,F,fine straight or light shade
+"PILOT DATA, NOT RESULTS",haiku,V,opposite_need_pick,No name,No name on the account,4576.111111111111,-15113.305852747959,24265.528074970178,3,6,2.0,13.728333333333333,F,fine straight or light shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,Black woman,Names associated with Black women,28990.0,28990.0,28990.0,3,3,3.0,28.99,F,fine straight or light shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,White woman,Names associated with White women,28990.0,28990.0,28990.0,3,3,3.0,28.99,F,fine straight or light shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,White man,Names associated with White men,28990.0,28990.0,28990.0,2,2,2.0,28.99,F,fine straight or light shade
+"PILOT DATA, NOT RESULTS",flashlite,V,opposite_need_pick,No name,No name on the account,28990.0,28990.0,28990.0,2,2,2.0,28.99,F,fine straight or light shade
