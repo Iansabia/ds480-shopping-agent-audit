@@ -2468,6 +2468,9 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
     return path, N
 
 
+ADDON_CAPTION_KEYS = ("figA6", "figA7")
+
+
 def write_captions(out: Out):
     lines = [f"# Figure captions{' (PILOT DATA, NOT RESULTS)' if out.pilot else ''}", ""]
     if out.pilot:
@@ -2483,6 +2486,15 @@ def write_captions(out: Out):
     for k, why in out.skipped.items():
         lines += [f"## {k} (not drawn)", "", why, ""]
     p = out.figdir / f"{out.sfx('CAPTIONS')}.md"
+    if not out.pilot and p.exists():
+        # D9/D10 add-on figures are written by analysis/addon_analysis.py; keep their entries on a rebuild
+        old = p.read_text().split("\n")
+        for key in ADDON_CAPTION_KEYS:
+            start = next((i for i, ln in enumerate(old) if ln.strip() == f"## {key}"), None)
+            if start is None or key in out.figs:
+                continue
+            end = next((j for j in range(start + 1, len(old)) if old[j].startswith("## ")), len(old))
+            lines += old[start:end]
     p.write_text("\n".join(lines))
     return p
 

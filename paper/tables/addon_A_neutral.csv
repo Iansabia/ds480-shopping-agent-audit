@@ -1,0 +1,25 @@
+model,arm,arm_label,group,k,n,rate,wilson_lo,wilson_hi,names,v_ask_rate,v_ask_k,v_ask_n
+haiku,S0,"S0, clear request (bought)",Men's names,123,637,0.19309262166405022,0.16431602856561323,0.22554866477127522,20,,,
+haiku,S0,"S0, clear request (bought)",Gender-neutral names,33,159,0.20754716981132076,0.15177637888012313,0.2771159887422835,5,,,
+haiku,S0,"S0, clear request (bought)",Women's names,153,632,0.24208860759493672,0.21031603335248533,0.27697754356425475,20,,,
+haiku,S0,"S0, clear request (bought)",No-name accounts,38,127,0.2992125984251969,0.22642466269393455,0.3837906279358445,4,,,
+haiku,V,"V, vague request, agent bought without asking",Men's names,22,221,0.09954751131221719,0.06666163039254926,0.14611700514746728,20,0.653125,418.0,640.0
+haiku,V,"V, vague request, agent bought without asking",Gender-neutral names,7,54,0.12962962962962962,0.06423720747326257,0.2442173022236977,5,0.6625,106.0,160.0
+haiku,V,"V, vague request, agent bought without asking",Women's names,25,193,0.12953367875647667,0.08930053202703535,0.18422649395248214,20,0.6890625,441.0,640.0
+haiku,V,"V, vague request, agent bought without asking",No-name accounts,4,41,0.0975609756097561,0.03859708489808934,0.22547681305523387,4,0.65625,84.0,128.0
+luna,S0,"S0, clear request (bought)",Men's names,112,640,0.175,0.14752535006787146,0.20635285348556967,20,,,
+luna,S0,"S0, clear request (bought)",Gender-neutral names,34,160,0.2125,0.15624068307038502,0.2822408791532305,5,,,
+luna,S0,"S0, clear request (bought)",Women's names,185,640,0.2890625,0.2552821451404774,0.32535995812738094,20,,,
+luna,S0,"S0, clear request (bought)",No-name accounts,28,128,0.21875,0.15590524094938307,0.29798429695446543,4,,,
+luna,V,"V, vague request, agent bought without asking",Men's names,22,406,0.054187192118226604,0.03605353302578401,0.08067809036428593,20,0.365625,234.0,640.0
+luna,V,"V, vague request, agent bought without asking",Gender-neutral names,39,100,0.39,0.3001687400639441,0.4879698295415926,5,0.375,60.0,160.0
+luna,V,"V, vague request, agent bought without asking",Women's names,258,409,0.6308068459657702,0.5830225269354466,0.6761568692076921,20,0.3609375,231.0,640.0
+luna,V,"V, vague request, agent bought without asking",No-name accounts,23,68,0.3382352941176471,0.23714253215255424,0.45662760613335107,4,0.46875,60.0,128.0
+flashlite,S0,"S0, clear request (bought)",Men's names,83,320,0.259375,0.21440817254299385,0.31005049139457397,20,,,
+flashlite,S0,"S0, clear request (bought)",Gender-neutral names,0,0,,,,0,,,
+flashlite,S0,"S0, clear request (bought)",Women's names,165,320,0.515625,0.4610091657474637,0.5698701417890577,20,,,
+flashlite,S0,"S0, clear request (bought)",No-name accounts,24,64,0.375,0.2666598017882464,0.497496213159955,4,,,
+flashlite,V,"V, vague request, agent bought without asking",Men's names,1,134,0.007462686567164179,0.001318564353840538,0.041059533430896106,20,0.58125,186.0,320.0
+flashlite,V,"V, vague request, agent bought without asking",Gender-neutral names,0,0,,,,0,,0.0,0.0
+flashlite,V,"V, vague request, agent bought without asking",Women's names,110,122,0.9016393442622951,0.8359226807162072,0.942834979266389,20,0.61875,198.0,320.0
+flashlite,V,"V, vague request, agent bought without asking",No-name accounts,4,14,0.2857142857142857,0.11721378644576919,0.5464908432989318,4,0.78125,50.0,64.0
