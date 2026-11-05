@@ -50,6 +50,7 @@ BAND = "#efeee9"         # light band fill
 MUTED_SERIES = "#c9c7be"  # context series next to the highlighted one
 ACCENT = "#3365ad"       # the one highlighted series; detectable-gap ticks
 STAMP = AXIS             # diagonal pilot stamp
+STAMP_OPACITY = 0.2      # light enough that a dot or interval under the stamp stays readable
 ALERT = ACCENT           # kept for old imports; no red text any more
 FONT = "Inter, 'Source Sans 3', 'Helvetica Neue', Helvetica, Arial, sans-serif"
 FONT_LIST = ["Inter", "Source Sans 3", "Helvetica Neue", "Helvetica", "Arial", "DejaVu Sans"]
@@ -224,11 +225,13 @@ def footer(fig, text):
 GLYPH = {"circle": "●", "square": "■", "diamond": "◆", "triangle-up": "▲"}
 
 
-def marker_key(models):
-    """'Marker shape = model: ● Claude Haiku 5.5  ◆ Gemini 3.5 Flash-Lite' for the footer."""
+def marker_key(models, open_note=False):
+    """'Marker shape = model: ● Claude Haiku 5.5  ◆ Gemini 3.5 Flash-Lite' for the footer
+    (the only place the figures name the marker key)."""
     if len(models) < 2:
         return ""
-    return "Marker shape = model: " + "   ".join(f"{GLYPH.get(symbol(m), '?')} {label(m)}" for m in models) + "."
+    return ("Marker shape = model: " + "   ".join(f"{GLYPH.get(symbol(m), '?')} {label(m)}" for m in models) + "."
+            + ("  Open marker: exploratory model, estimate only." if open_note else ""))
 
 
 def _refs(fig, row, col):
@@ -238,15 +241,16 @@ def _refs(fig, row, col):
     return sp.xaxis.plotly_name.replace("axis", ""), sp.yaxis.plotly_name.replace("axis", "")
 
 
-def vline(fig, x, row=None, col=None, **line):
-    """Full-height vertical line in one panel (works before any trace exists)."""
+def vline(fig, x, row=None, col=None, layer="below", **line):
+    """Full-height vertical line in one panel (works before any trace exists).
+    layer "between" draws it over the gridlines, "above" over the data."""
     xr, yr = _refs(fig, row, col)
-    fig.add_shape(type="line", x0=x, x1=x, y0=0, y1=1, xref=xr, yref=f"{yr} domain", line=line, layer="below")
+    fig.add_shape(type="line", x0=x, x1=x, y0=0, y1=1, xref=xr, yref=f"{yr} domain", line=line, layer=layer)
 
 
-def hline(fig, y, row=None, col=None, **line):
+def hline(fig, y, row=None, col=None, layer="below", **line):
     xr, yr = _refs(fig, row, col)
-    fig.add_shape(type="line", y0=y, y1=y, x0=0, x1=1, yref=yr, xref=f"{xr} domain", line=line, layer="below")
+    fig.add_shape(type="line", y0=y, y1=y, x0=0, x1=1, yref=yr, xref=f"{xr} domain", line=line, layer=layer)
 
 
 def dots(fig, x, y, lo, hi, color, sym="circle", htext=None, row=None, col=None, size=11, open_=False, text=None,
@@ -316,7 +320,7 @@ def stamp(fig, skip=()):
         fs = max(9, min(40, 0.9 * wpx / (len(WATERMARK) * 0.62 * math.cos(math.radians(ang))),
                         0.9 * hpx / (len(WATERMARK) * 0.62 * math.sin(math.radians(ang)) + 1.2)))
         fig.add_annotation(text=f"<b>{WATERMARK}</b>", xref="paper", yref="paper", x=(xd[0] + xd[1]) / 2,
-                           y=(yd[0] + yd[1]) / 2, showarrow=False, textangle=-ang, opacity=0.35,
+                           y=(yd[0] + yd[1]) / 2, showarrow=False, textangle=-ang, opacity=STAMP_OPACITY,
                            font=dict(size=fs, color=STAMP), xanchor="center", yanchor="middle", name="pilot-stamp")
         done += 1
     if not done:   # a card or diagram with hidden axes: one stamp across the page

@@ -45,7 +45,8 @@ prints its count ("0 of 12") or "not estimable" instead; every panel states
 its n; models with no scored runs get a "pending" row. Color = name group in
 every figure (the PLAN 10 per-model colors are used only by analyze.py's
 frozen figures); marker shape = model; an open marker means only "exploratory
-model, estimate only".
+model, estimate only". Figure text is plain English: no PLAN section numbers,
+file names or deviation codes (those stay in the captions file and the code).
 
 Pilot vs main is decided from the run manifests: any run whose preset is not
 a main-run preset makes the whole output a pilot output.
@@ -83,8 +84,7 @@ ARM_PLAIN = {"S0": "Clear request", "S1": "Clear request + budget", "V": "Vague 
 PREVIEW = "PILOT PREVIEW, NOT A RESULT"
 SIGN_NOTE = "Every gap is focal group minus comparison group: a negative gap means the focal group paid less."
 PILOT_DROP = ("verdict", "p_primary", "p_holm", "tost_p_holm", "p_adj", "q_bh")
-COLOR_NOTE = ("Color = name group (not model; the PLAN 10 model colors apply only to analyze.py's own figures); "
-              "marker shape = model.")
+COLOR_NOTE = "Color = name group, the same in every figure."
 HOLM_M = 8          # results/mde.json family_size: the planned Haiku + Luna family (PLAN 3)
 PILOT_N = "pilot: 5 names per group, 16 runs per name; main run: 10 names per group, 160 runs per name"
 BOOT_SEED, BOOT_B = 480, 4000
@@ -374,13 +374,16 @@ def hover_prefix(pilot):
 
 def plot_group_rows(fig, t, models, groups, est, lo, hi, row, col, scale=1.0, unit="%", what="", pilot=False,
                     text_fmt=None, clip=None, extra_hover=None, flat_text=None, open_models=(), ci_word="95% CI",
-                    ghost=None):
+                    ghost=None, ghost_key=None):
     """One dot and 95% interval per (group, model); color = group, marker =
     model, open marker = exploratory model. A cell whose interval has no width
     gets no bar: rates print their count ("0 of 12"), other cells print
     flat_text(r) ("not estimable: ...") in place of a dot when given.
-    ghost: column of a second, unadjusted value drawn as a small gray tick."""
-    offs = offsets(len(models)) if len(models) > 1 else [0.0]
+    ghost: column of a second, unadjusted value drawn as a small gray tick,
+    joined to its dot by a thin dotted line; ghost_key=(tick word, dot word)
+    labels both on the first row. text_fmt: the dot's value, printed in an
+    aligned column just right of the panel (never at an interval end)."""
+    offs = offsets(len(models), 0.32) if len(models) > 1 else [0.0]
     xr, yr = S._refs(fig, row, col)
     for j, m in enumerate(models):
         sub = t[t["model"] == m]
@@ -426,18 +429,24 @@ def plot_group_rows(fig, t, models, groups, est, lo, hi, row, col, scale=1.0, un
                    htext=[h], row=row, col=col, open_=m in open_models)
             if ghost is not None and finite(r.get(ghost)):
                 gx = scale * r[ghost]
+                fig.add_shape(type="line", x0=gx, x1=e, y0=yy, y1=yy, xref=xr, yref=yr, layer="between",
+                              line=dict(color=S.FAINT, width=1.2, dash="dot"))
                 fig.add_trace(go.Scatter(x=[gx], y=[yy], mode="markers", marker=dict(symbol="line-ns", size=13,
                                          line=dict(width=2.2, color=S.FAINT)), hoverinfo="skip", showlegend=False,
                                          cliponaxis=False), row=row, col=col)
+                if ghost_key and i == 0 and j == 0:       # in-plot key on the first row
+                    for xx, word, colr in ((gx, ghost_key[0], S.MUTED), (e, ghost_key[1], S.INK)):
+                        fig.add_annotation(x=xx, y=yy, xref=xr, yref=yr, yshift=13, yanchor="bottom",
+                                           xanchor="center", showarrow=False, text=word,
+                                           font=dict(size=S.BASE - 4, color=colr))
             if is_flat and count:      # no bar to draw: say how many runs the dot rests on
                 right = clip is not None and e > 0.7 * clip[1] or (unit == "%" and scale == 100 and e > 70)
                 fig.add_annotation(x=e, y=yy, xref=xr, yref=yr, xanchor="right" if right else "left",
                                    xshift=-8 if right else 8, showarrow=False,
                                    text=count, font=dict(size=S.BASE - 5, color=S.MUTED))
-            if text_fmt:     # direct label just past the end of the interval, never on top of it
-                fig.add_annotation(x=b if (b is not None and not is_flat) else e, y=yy, xref=xr, yref=yr,
-                                   xanchor="left", xshift=8, showarrow=False, text=text_fmt(e).strip(),
-                                   font=dict(size=S.BASE - 2, color=S.INK))
+            if text_fmt:     # the dot's value in an aligned column right of the panel
+                fig.add_annotation(x=1.0, y=yy, xref=f"{xr} domain", yref=yr, xanchor="left", xshift=14,
+                                   showarrow=False, text=text_fmt(e).strip(), font=dict(size=S.BASE - 2, color=S.INK))
 
 
 def model_legend(fig, models, y=1.0, x=1.0, xanchor="right"):
@@ -446,8 +455,8 @@ def model_legend(fig, models, y=1.0, x=1.0, xanchor="right"):
     return
 
 
-def with_key(foot, models):
-    k = S.marker_key(models)
+def with_key(foot, models, open_note=False):
+    k = S.marker_key(models, open_note)
     return foot + ("<br>" + k if k else "")
 
 
@@ -511,14 +520,14 @@ def fig_design(out: Out, page: dict, design: dict):
     txt(fig, 51.2, 74.6, "The account name travels with the purchase: the<br>protocol's buyer object holds it, and "
         "Visa's Trusted<br>Agent Protocol can carry an encrypted name.", S.BASE - 4, S.MUTED, vanchor="top")
     # audit callout
-    box(fig, 25.6, 66.2, 49.6, 74.6, fill="white", line=S.INK, width=1.2, dash="dot")
-    txt(fig, 26.6, 70.4, "<b>Proposed audit plugs in here:</b><br>before an agent joins, and after<br>every model update",
+    box(fig, 25.6, 64.9, 49.6, 75.6, fill="white", line=S.INK, width=1.2, dash="dot")
+    txt(fig, 26.8, 70.25, "<b>Proposed audit plugs in here:</b><br>before an agent joins, and after<br>every model update",
         S.BASE - 4)
-    arrow(fig, 37.6, 74.8, 37.6, 77.6, S.INK, 1.4)
+    arrow(fig, 37.6, 75.7, 37.6, 77.7, S.INK, 1.4)
     # zoom line
-    fig.add_shape(type="line", x0=0, x1=100, y0=63.5, y1=63.5, line=dict(color=S.GRID, width=1.2))
+    fig.add_shape(type="line", x0=0, x1=100, y0=63.4, y1=63.4, line=dict(color=S.GRID, width=1.2))
     txt(fig, 0, 61.0, "INSIDE THE TEST: ONE SHOPPING RUN (EPISODE)", S.BASE - 3, S.MUTED, bold=True)
-    top, bot = 57.5, 22.0
+    top, bot = 57.5, 19.6
 
     def panel(x, w, title):
         box(fig, x, bot, x + w, top)
@@ -527,11 +536,11 @@ def fig_design(out: Out, page: dict, design: dict):
     # 1 account profile
     panel(0, 24.6, "1  Account profile")
     box(fig, 1.2, 46.6, 23.4, 51.6, fill="#e3eefb", line=S.ACCENT, width=1.4, rx=0.5, ry=0.9)
-    txt(fig, 2.2, 49.1, "<b>Name: the only thing that changes</b>", S.BASE - 4)
+    txt(fig, 12.3, 49.1, "<b>Name: the only change</b>", S.BASE - 4, anchor="center")
     for k, s in enumerate(["Email: first.last@example.com", "ZIP 43215 (same for all)", "Birth year 1978 or 1998"]):
-        txt(fig, 2.2, 43.4 - 3.5 * k, s, S.BASE - 4)
+        txt(fig, 2.2, 43.6 - 3.3 * k, s, S.BASE - 4)
     nc, nb = design.get("n_core", 40), design.get("n_baseline", 4)
-    txt(fig, 2.2, 33.2, f"<b>{nc} core names</b>: Black and White,<br>women and men, 10 each<br>"
+    txt(fig, 2.2, 35.0, f"<b>{nc} core names</b>: Black and White,<br>women and men, 10 each<br>"
         f"24 more names (exploratory)<br>{nb} accounts with no name", S.BASE - 4, vanchor="top")
     # 2 the request
     panel(26.6, 24.0, "2  The request")
@@ -540,10 +549,10 @@ def fig_design(out: Out, page: dict, design: dict):
             ("Clear + budget", f"the same request, with<br>a price cap{budget}"),
             ("Vague request", "\"Buy me a shampoo.\" The need<br>is revealed only if it asks.")]
     for k, (arm, s) in enumerate(reqs):      # every request: a bold line, then two muted lines, evenly spaced
-        y = 50.8 - 8.2 * k
+        y = 50.8 - 9.2 * k
         txt(fig, 27.8, y, f"<b>{arm}</b>", S.BASE - 3)
         txt(fig, 27.8, y - 1.4, s, S.BASE - 4, S.MUTED, vanchor="top")
-    txt(fig, 27.8, 23.0, "Plus check arms (Table 2)", S.BASE - 5, S.FAINT, vanchor="bottom")
+    txt(fig, 27.8, bot + 1.0, "Plus check arms (Table 2)", S.BASE - 5, S.FAINT, vanchor="bottom")
     # 3 store page
     panel(52.6, 24.6, "3  One page, 8 real products")
     slot_txt = {"fit_low": "fits, low price", "fit_mid": "fits, mid", "fit_high": "fits, high",
@@ -558,7 +567,7 @@ def fig_design(out: Out, page: dict, design: dict):
             width=1.1 if fitting else 0.8, rx=0.4, ry=0.8)
         txt(fig, x + 0.6, y + 0.9, f"<b>${it['price']:.2f}</b>", S.BASE - 4)
         txt(fig, x + 0.6, y - 1.2, slot_txt[it["slot"]], S.BASE - 6, S.MUTED)
-    txt(fig, 53.8, 23.4, "Order reversed in half the runs", S.BASE - 5, S.FAINT, vanchor="bottom")
+    txt(fig, 53.8, bot + 1.0, "Order reversed in half the runs", S.BASE - 5, S.FAINT, vanchor="bottom")
     # 4 agent acts
     panel(79.2, 20.8, "4  The agent acts")
     txt(fig, 80.4, 49.6, "<b>ask_user(question)</b>", S.BASE - 4)
@@ -569,15 +578,15 @@ def fig_design(out: Out, page: dict, design: dict):
     for x0, x1 in [(24.8, 26.4), (50.8, 52.4), (77.4, 79.0)]:
         arrow(fig, x0, 40, x1, 40)
     # outcomes
-    box(fig, 0, 7.8, 100, 18.6, fill="white")
-    txt(fig, 1.2, 15.4, "What is scored (by label lookup, never by an AI judge)", S.BASE - 2, bold=True)
-    txt(fig, 1.2, 10.8, "price paid in $ and vs the cheapest fitting item  ·  fits the stated need  ·  bought the other "
+    box(fig, 0, 6.6, 100, 17.4, fill="white")
+    txt(fig, 1.2, 14.2, "What is scored (by label lookup, never by an AI judge)", S.BASE - 2, bold=True)
+    txt(fig, 1.2, 9.6, "price paid in $ and vs the cheapest fitting item  ·  fits the stated need  ·  bought the other "
         "need's product  ·  asked first  ·  no purchase", S.BASE - 4)
     eps = design.get("main", {}).get("episodes", 32640)
-    txt(fig, 0, 3.6, f"Per model: 68 accounts x 40 tasks x 3 request types x 4 runs = {eps:,} runs (plus check arms).<br>"
+    txt(fig, 0, 2.7, f"Per model: 68 accounts x 40 tasks x 3 request types x 4 runs = {eps:,} runs (plus check arms).<br>"
         "Confirmatory: Claude Haiku 5.5, GPT-6 Luna.  Exploratory: Gemini 3.5 Flash-Lite, OLMo 3 7B.",
         S.BASE - 4, S.MUTED)
-    S.layout(fig, "Same request, same page, same replies: only the name on the account changes",
+    S.layout(fig, "Only the account name changes: same request, page and replies",
              "Top: where an AI shopping agent sits in a card payment. Bottom: what one test run looks like.",
              False, 640, bottom=10, left=10, right=10, gap=14)
     cap = ("Figure 2. Design and where it sits in a card payment. Top: an agent purchase on a card network; the "
@@ -615,9 +624,10 @@ def fig_dollars(out: Out, df, models, conf, pr, pending=()):
         sub = t[t["model"] == m]
         plot_group_rows(fig, sub, [m], GROUPS, "adj_usd", "adj_lo", "adj_hi", 1, k, unit="$",
                         what="Average price paid (task effects removed)", pilot=out.pilot,
-                        text_fmt=lambda v: f"  ${v:,.2f}", ghost="raw_usd",
+                        text_fmt=(lambda v: f"${v:,.2f}") if k == n else None, ghost="raw_usd",
+                        ghost_key=("raw average", "adjusted") if k == 1 else None,
                         extra_hover=lambda r: f"<br>raw average (no adjustment, gray tick): ${r['raw_usd']:,.2f}")
-        fig.update_xaxes(range=[lo_all - 0.06 * span, hi_all + 0.30 * span], tickprefix="$", row=1, col=k,
+        fig.update_xaxes(range=[lo_all - 0.06 * span, hi_all + 0.06 * span], tickprefix="$", row=1, col=k,
                          title_text="Average price paid per purchase")
         d0 = A.subset(df, m, ["S0"], tiers=("core", "baseline"))
         d0 = d0[d0["price"].notna() & (d0["bought"] == 1)]
@@ -647,13 +657,17 @@ def fig_dollars(out: Out, df, models, conf, pr, pending=()):
         title = (f"Names associated with Black and White buyers paid {f_usd_plain(p['focal_usd'])} vs "
                  f"{f_usd_plain(p['ref_usd'])} for the same request" if p is not None else
                  "What each name group paid for the same clear request")
-    sub = "Clear request (S0). Dot = group average per purchase, bar = 95% interval across names."
-    foot = ("Dot: dollar price with task, wording and product-order effects removed, so every group is compared on the "
-            "same mix of tasks. Gray tick: the raw average before that adjustment.<br>The tests use percent gaps on log "
+    sub = ("Clear request (S0). Dot = adjusted group average per purchase (value at right), bar = 95% interval "
+           "across names, gray tick = raw average.")
+    foot = ("Adjusted: dollar price with task, wording and product-order effects removed, so every group is compared on "
+            "the same mix of tasks. Raw average: before that adjustment.<br>The tests use percent gaps on log "
             "price (Figure 4); this chart shows the dollar levels behind them." + ex
-            + (f" {', '.join(pend)}: pending (no scored runs yet)." if pend else "") + "<br>" + COLOR_NOTE)
-    S.layout(fig, title, sub, out.pilot, 190 + 80 * len(GROUPS) + S.footer_margin(foot), bottom=S.footer_margin(foot),
-             left=LEFT_GROUPS, gap=40)
+            + (f" {', '.join(pend)}: pending (no scored runs yet)." if pend else ""))
+    S.layout(fig, title, sub, out.pilot, 190 + 60 * len(GROUPS) + S.footer_margin(foot), bottom=S.footer_margin(foot),
+             left=LEFT_GROUPS, right=84, gap=44)
+    fig.add_annotation(x=1.0, y=1.0, xref=f"x{'' if n == 1 else n} domain", yref="paper", xanchor="left", xshift=14,
+                       yanchor="bottom", yshift=2, showarrow=False, text="adjusted", font=dict(size=S.BASE - 4,
+                                                                                              color=S.MUTED))
     S.footer(fig, foot)
     cap = ("Figure 3. Average price paid per purchase for the same clear request (S0, no budget), by name group, on "
            "the confirmatory models. Dots: mean over names of the dollar price after removing task, wording and order "
@@ -722,8 +736,12 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
     pend = [m for m in pending if m in A.CONFIRM_MODELS_DEFAULT]
     rows_all = order + [(h, m) for m in pend for h in ("H1", "H2")]
     n = len(rows_all)
+    # pending rows are shorter than data rows: they carry one line of text, no marks
+    ys = list(range(len(order))) + [len(order) - 0.8 + 0.6 * k for k in range(1, len(rows_all) - len(order) + 1)]
+    ybot = (ys[-1] if ys else 0) + (0.45 if len(rows_all) > len(order) else 0.6)
     fig = make_subplots(rows=1, cols=1)
-    fig.update_xaxes(domain=[0.0, 0.47])
+    fig.update_xaxes(domain=[0.0, 0.58])
+    TX = 0.62                                       # left edge of the dollar text column (paper x)
     margins = sorted({round(100 * (math.exp(mg) - 1), 2) for mg in pr["margin_log"].dropna()}) if "margin_log" in pr else []
     mdes = [mde_for(mde_info, m, h, "mde_holm_pct") or 0 for h, m in order]
     lim = max([abs(c) for cc in pr["ci_pct"] for c in cc] + margins + mdes + [2.0]) * 1.22
@@ -735,6 +753,7 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
                                font=dict(size=S.BASE - 4, color=S.MUTED))
     S.vline(fig, 0, color=S.INK, width=1.3)
     cheap = scale.get("cheapest_fit_mean") if scale else None
+    blocks = {}                                     # dollar text per row; identical blocks of one model merge
     for i, (h, m) in enumerate(order):
         r = pr[(pr.hypothesis == h) & (pr.model == m)].iloc[0]
         lo, hi = r["ci_pct"]
@@ -748,49 +767,55 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
                   f"{f_usd(r['usd_per_1m'], 0)}<br>Holm p: {f_p(r['p_holm'])}; verdict: {verdict_plain(r['verdict'])}")
                + f"<br>names: {int(r['names_focal'])} focal, {int(r['names_ref'])} comparison"
                + (f"<br>detectable gap: ±{mde:.2f}% (Holm, m = {HOLM_M})" if mde else ""))
-        S.dots(fig, [r["gap_pct"]], [i], [lo], [hi], S.INK, S.symbol(m), htext=[hov], size=12)
+        S.dots(fig, [r["gap_pct"]], [ys[i]], [lo], [hi], S.INK, S.symbol(m), htext=[hov], size=12)
         if mde:
             for sgn in (-1, 1):
-                fig.add_shape(type="line", x0=sgn * mde, x1=sgn * mde, y0=i - 0.28, y1=i + 0.28,
+                fig.add_shape(type="line", x0=sgn * mde, x1=sgn * mde, y0=ys[i] - 0.28, y1=ys[i] + 0.28,
                               line=dict(color=S.ACCENT, width=3))
         # right-hand text column: the same gap in dollars, then the verdict in words
         if out.pilot:
-            lines = [(f"Detectable gap ±{mde:.2f}% = about ${round(per_million(mde), -2):,.0f}" if mde else
-                      "Detectable gap n/a", S.INK),
-                     ((f"per $1M of agent spend, or about ${round(10 * mde * cheap, -1):,.0f} per 1,000 purchases"
-                       if mde and cheap else "per $1M of agent spend"), S.INK),
-                     ((f"at the ${cheap:.2f} average cheapest fit (design, not a result)" if cheap else
-                       "(a design number, not a result)"), S.MUTED)]
+            lines = [(f"Detectable gap ±{mde:.2f}% is about" if mde else "Detectable gap n/a", S.INK),
+                     (f"${round(per_million(mde), -2):,.0f} per $1M of agent spend," if mde else "", S.INK),
+                     (f"or about ${round(10 * mde * cheap, -1):,.0f} per 1,000 purchases" if mde and cheap else "", S.INK),
+                     (f"at the ${cheap:.2f} average cheapest fit" if cheap else "", S.MUTED),
+                     ("(a design number, not a result)", S.MUTED)]
+            lines = [x for x in lines if x[0]]
         else:
             lines = [(f"<b>{f_usd(r['usd_per_purchase'])}</b> per purchase · {f_usd(r['usd_per_1000'], 0)} per 1,000", S.INK),
                      (f"{f_usd(r['usd_per_1m'], 0)} per $1M of agent spend", S.INK),
                      (verdict_plain(r["verdict"]), S.MUTED)]
-        for j, (tx, colr) in enumerate(lines):
-            fig.add_annotation(xref="paper", yref="y", x=0.51, y=i, yshift=19 - 19 * j, text=tx, showarrow=False,
-                               xanchor="left", font=dict(size=S.BASE - 3, color=colr), align="left")
+        blocks.setdefault(m, []).append((ys[i], lines))
+    for m, bl in blocks.items():
+        if out.pilot and len(bl) > 1 and all(b[1] == bl[0][1] for b in bl):
+            bl = [(sum(b[0] for b in bl) / len(bl), bl[0][1])]      # one block, centered across the model's rows
+        for yc, lines in bl:
+            for j, (tx, colr) in enumerate(lines):
+                fig.add_annotation(xref="paper", yref="y", x=TX, y=yc, yshift=17 * ((len(lines) - 1) / 2 - j), text=tx,
+                                   showarrow=False, xanchor="left", font=dict(size=S.BASE - 3, color=colr), align="left")
     for i, (h, m) in enumerate(rows_all[len(order):], start=len(order)):
-        fig.add_annotation(x=0, y=i, xref="x", yref="y", text="pending: no scored runs yet", showarrow=False,
+        fig.add_annotation(x=0, y=ys[i], xref="x", yref="y", text="pending: no scored runs yet", showarrow=False,
                            xanchor="center", bgcolor="white", borderpad=3, font=dict(size=S.BASE - 3, color=S.MUTED))
-        fig.add_annotation(xref="paper", yref="y", x=0.51, y=i, text="Dollar gap and verdict: after the main run",
+        fig.add_annotation(xref="paper", yref="y", x=TX, y=ys[i], text="Dollar gap and verdict: after the main run",
                            showarrow=False, xanchor="left", font=dict(size=S.BASE - 3, color=S.MUTED))
-    fig.add_annotation(xref="paper", yref="y", x=0.51, y=-0.62, yanchor="bottom", showarrow=False, xanchor="left",
-                       text=("<b>The detectable gap in dollars</b> (design number)" if out.pilot else
-                             "<b>The same gap in dollars</b> (translation, not a test)"), font=dict(size=S.BASE - 2))
+    fig.add_annotation(xref="paper", yref="y", x=TX, y=-0.62, yanchor="bottom", showarrow=False, xanchor="left",
+                       text=("<b>Detectable gap in dollars</b>" if out.pilot else
+                             "<b>The same gap in dollars</b> (not a test)"), font=dict(size=S.BASE - 2))
     r0 = pr[(pr.hypothesis == order[0][0]) & (pr.model == order[0][1])].iloc[0]
-    note = ("<b>dot</b> = pilot estimate   <b>bar</b> = unadjusted 95% interval   <b>blue ticks</b> = detectable gap"
+    note = (f"<b>●</b> dot = pilot estimate    <b>—</b> bar = unadjusted 95% interval    "
+            f"<span style='color:{S.ACCENT}'><b>|</b></span> blue ticks = detectable gap"
             if out.pilot else
-            f"<b>estimate</b>: {SHORT[order[0][0]][1]} paid {abs(r0['gap_pct']):.1f}% "
-            f"{'less' if r0['gap_pct'] < 0 else 'more'}<br>than {SHORT[order[0][0]][2]}"
+            f"<b>Estimate</b>: {SHORT[order[0][0]][1]} paid {abs(r0['gap_pct']):.1f}% "
+            f"{'less' if r0['gap_pct'] < 0 else 'more'} than {SHORT[order[0][0]][2]}"
             + ("" if r0["verdict"].startswith("gap detected") else " (not significant)"))
-    fig.add_annotation(x=-lim * 0.97, y=len(order) - 0.5, xref="x", yref="y", text=note, showarrow=False,
-                       xanchor="left", yanchor="middle", bgcolor="rgba(255,255,255,0.92)", borderpad=4,
-                       bordercolor=S.GRID, font=dict(size=S.BASE - 4, color=S.INK), align="left")
+    tv = ([k * margins[0] for k in range(-int(lim // margins[0]), int(lim // margins[0]) + 1)] if margins
+          else pct_ticks(lim)[0])
+    # no gridlines: the ticks sit on the margin lines, and a gridline there would hide the dotted margin
     fig.update_xaxes(range=[-lim, lim], title_text="Gap in price paid for the same request "
-                     "(focal minus comparison)", zeroline=False, tickmode="array", tickvals=pct_ticks(lim)[0],
-                     ticktext=pct_ticks(lim)[1])
-    fig.update_yaxes(tickmode="array", tickvals=list(range(n)),
+                     "(focal minus comparison)", zeroline=False, showgrid=not margins, tickmode="array", tickvals=tv,
+                     ticktext=[("0%" if abs(x) < 1e-12 else f"{x:+g}%") for x in tv])
+    fig.update_yaxes(tickmode="array", tickvals=ys,
                      ticktext=[f"<b>{h}</b> {SHORT[h][0]}<br><span style='color:{S.MUTED}'>{S.label(m)}</span>"
-                               for h, m in rows_all], range=[n - 0.4, -1.0])
+                               for h, m in rows_all], range=[ybot, -1.0])
     if out.pilot:
         title = "Price gap by name group, next to the smallest gap the test can detect"
     else:
@@ -801,18 +826,21 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
     sub = ("Price paid for the same clear request: names associated with Black vs White buyers (H1) and women vs men "
            f"(H2). Blue ticks: detectable gap after Holm at m = {HOLM_M} (Haiku + Luna)."
            + ("" if out.pilot else f" Tests: Holm correction across {family_m} tests."))
-    caveat = (" The pilot put the spread between names at 0 (sn_p80 = 0 for H1 and H2), so the detectable gap may be "
+    caveat = (" The pilot put the spread between names at 0 (for both H1 and H2), so the detectable gap may be "
               "optimistic." if sn_zero(mde_info, [m for _, m in order]) else "")
     foot = (SIGN_NOTE + "<br>A gap counts only if its Holm-adjusted p < 0.05; the bar is the unadjusted 95% interval. "
-            f"Blue ticks: a true gap this size is flagged at least 80% of the time (results/mde.json).<br>"
+            f"Blue ticks: a true gap this size is flagged at least 80% of the time (fixed before the main run).<br>"
             + (f"Bars are wider than the ticks because they come from the pilot ({PILOT_N}).{caveat}"
                if out.pilot else caveat.strip())
             + ("<br>Dollar column: the detectable gap applied to $1M of spend and to 1,000 purchases at the catalog's "
                "average cheapest fitting price. Not a pilot gap." if out.pilot else
                "<br>Dollar columns translate the percent gap at the comparison group's average price paid (per $1M uses "
                "the percent only). Not separate tests."))
-    S.layout(fig, title, sub, out.pilot, 230 + 105 * n + S.footer_margin(foot), bottom=S.footer_margin(foot),
-             left=180, right=10)
+    S.layout(fig, title, sub, out.pilot, int(250 + 105 * (ybot + 1.0)) + S.footer_margin(foot),
+             bottom=S.footer_margin(foot), left=180, right=10, gap=44)
+    fig.add_annotation(xref="paper", yref="paper", x=-(180 - S.MARGIN_X) / (S.WIDTH - 190), y=1.0, yanchor="bottom",
+                       yshift=10, xanchor="left", showarrow=False, align="left", text=note,
+                       font=dict(size=S.BASE - 3, color=S.INK))
     S.footer(fig, foot)
     band = mde_value(mde_info, conf, ("H1",))
     cap = (("Figure 4. Price gaps by name group (pilot preview). " if out.pilot else
@@ -866,9 +894,10 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
     pos = [(k // nc + 1, k % nc + 1) for k in range(len(panels))]
     if nc == 2 and len(panels) % 2 == 1:      # last panel spans the full width; no empty stamped panel
         specs[-1] = [{"colspan": 2}, None]
-    fig = make_subplots(rows=nr, cols=nc, specs=specs, horizontal_spacing=0.2, vertical_spacing=0.22 if nr > 1 else 0.1,
-                        row_heights=[0.56, 0.44] if nr == 2 else None)
+    fig = make_subplots(rows=nr, cols=nc, specs=specs, horizontal_spacing=0.16, vertical_spacing=0.2 if nr > 1 else 0.1,
+                        row_heights=[0.55, 0.45] if nr == 2 else None)
     tabs, results = [], []
+    titles = {}            # (row, col) -> (text, size); drawn at the end, top-aligned within each row
     f = lambda x: 100 * (math.exp(x) - 1)  # noqa: E731
     grp_of = df.drop_duplicates("profile_id").set_index("profile_id")
     pre = hover_prefix(out.pilot)
@@ -901,7 +930,8 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
                       f"(${g.loc['PB', 'usd']:.2f})<br>runs: {int(g.loc['S0', 'n'])} per arm")
                 fig.add_trace(go.Scatter(x=[0 + jit[jj], 1 + jit[jj]], y=[y0, y1], mode="lines+markers",
                                          line=dict(color=S.gline(grp), width=1.6),
-                                         marker=dict(size=8, color=S.gline(grp), line=dict(color="white", width=1)),
+                                         marker=dict(size=8, color=S.gline(grp), symbol=S.symbol(m),
+                                                     line=dict(color="white", width=1)),
                                          hovertext=[hv, hv], hovertemplate="%{hovertext}<extra></extra>",
                                          showlegend=False, opacity=0.9), row=row, col=col)
                 ends.setdefault((round(y0, 3), round(y1, 3)), []).append((pid, grp))
@@ -915,7 +945,8 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
             if {"S0", "PB"} <= set(mean.index):
                 fig.add_trace(go.Scatter(x=[0, 1], y=[mean["S0"], mean["PB"]], mode="lines+markers",
                                          line=dict(color=S.INK, width=3.2, dash="dot"),
-                                         marker=dict(size=10, color=S.INK, line=dict(color="white", width=1.5)),
+                                         marker=dict(size=10, color=S.INK, symbol=S.symbol(m),
+                                                     line=dict(color="white", width=1.5)),
                                          hovertext=[pre + f"average of planted names: {mean['S0']:.1f}%",
                                                     pre + f"average of planted names: {mean['PB']:.1f}%"],
                                          hovertemplate="%{hovertext}<extra></extra>", showlegend=False),
@@ -925,21 +956,19 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
             ok = pl["own_shift_detected"]
             results.append(("planted (a) " + S.label(m), ok))
             word = ("caught" if ok else "not caught")
-            fig.add_annotation(xref=f"{xr} domain", yref=f"{yr} domain", x=0.0, y=0.02, xanchor="left",
-                               yanchor="bottom", showarrow=False, align="left", bgcolor="white", borderpad=4,
-                               text=(f"average shift {sh:+.1f}%, p {f_p(pl['own_shift_p'])}: <b>{word}</b>"
-                                     + (f"<br>only {runs} runs per name per arm" if out.pilot and runs else "")),
-                               font=dict(size=S.BASE - 4))
+            # pilot: no p-value and no pass or fail word, even for a method check (too few runs to judge)
+            shift_txt = (f"average shift {sh:+.1f}%: too few runs to judge" if out.pilot else
+                         f"average shift {sh:+.1f}%, p {f_p(pl['own_shift_p'])}: <b>{word}</b>")
             ytop = max(45, d["pct_over_cheapest"].max() * 1.25)
             ytv = [v for v in range(0, int(ytop) + 1, 10)]
             fig.update_yaxes(title_text="% paid above cheapest fitting", showgrid=True, gridcolor=S.GRID,
-                             range=[-16, ytop], tickmode="array", tickvals=ytv, ticktext=[f"{v}%" for v in ytv],
+                             range=[-6, ytop], tickmode="array", tickvals=ytv, ticktext=[f"{v}%" for v in ytv],
                              row=row, col=col)
             fig.update_xaxes(showgrid=False, range=[-0.3, 2.6], row=row, col=col, tickmode="array", tickvals=[0, 1],
                              ticktext=["Clear<br>request", "With saved<br>'buy the cheapest'"])
-            panel_title(fig, row, col, f"{L}. Planted preference: does price drop?<br><span style='font-weight:normal;"
-                        f"color:{S.MUTED}'>{S.label(m)}, {nnames} names<br>n = {runs} runs per name per arm; "
-                        "dotted: average</span>", size=S.BASE - 2)
+            titles[(row, col)] = (f"{L}. Planted preference: does price drop?<br><span style='font-weight:normal;"
+                                  f"color:{S.MUTED}'>{S.label(m)}, {nnames} names<br>n = {runs} runs per name per arm; "
+                                  f"dotted: average<br>{shift_txt}</span>", S.BASE - 2)
             tabs.append(d.assign(model=m, panel=L))
         elif kind == "wait":
             fig.update_xaxes(visible=False, range=[0, 1], row=row, col=col)
@@ -950,7 +979,7 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
                                text=f"<b>Awaiting main run</b><br>{'<br>'.join(S.label(x) for x in pwait)}:<br>no "
                                     "planted-bias runs yet<br>(the planted preset runs<br>with the main run)",
                                font=dict(size=S.BASE - 3, color=S.MUTED))
-            panel_title(fig, row, col, f"{L}. Planted preference,<br>confirmatory models", size=S.BASE - 2)
+            titles[(row, col)] = (f"{L}. Planted preference,<br>confirmatory models", S.BASE - 2)
         elif kind == "recover":
             rowsb = []
             ylabs = []
@@ -991,8 +1020,8 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
             fig.update_xaxes(title_text="H1 gap on planted data", range=[-xl, xl], tickmode="array",
                              tickvals=nice_ticks(xl), ticktext=[("0%" if abs(v) < 1e-12 else f"{v:+g}%")
                                                                 for v in nice_ticks(xl)], row=row, col=col)
-            panel_title(fig, row, col, f"{L}. Does the frozen H1 test recover it?<br><span style='font-weight:normal;"
-                        f"color:{S.MUTED}'>planted runs swapped into the data</span>", size=S.BASE - 2)
+            titles[(row, col)] = (f"{L}. Does the frozen H1 test recover it?<br><span style='font-weight:normal;"
+                                  f"color:{S.MUTED}'>planted runs swapped into the data</span>", S.BASE - 2)
             tabs.append(pd.DataFrame(rowsb))
         elif kind == "validity":
             rowsc = []
@@ -1014,7 +1043,7 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
             fig.update_yaxes(tickmode="array", tickvals=list(range(len(apm))), ticktext=[S.label(mm) for mm in apm],
                              range=[len(apm) - 0.5, -0.5], row=row, col=col)
             fig.update_xaxes(title_text="'Best quality' minus 'cheapest that fits' (%)", ticksuffix="%", row=row, col=col)
-            panel_title(fig, row, col, f"{L}. Does price follow what the buyer asked for?", size=S.BASE - 2)
+            titles[(row, col)] = (f"{L}. Does price follow what the buyer asked for?", S.BASE - 2)
             tabs.append(pd.DataFrame(rowsc))
         else:
             hyps = list(A.HYPOTHESES)
@@ -1037,23 +1066,33 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
                     rowsd.append({"model": mm, "panel": L, "hypothesis": h, "shuffles": len(ps),
                                   "share_p_lt_05_pct": share, "checks_reject_rate_pct": 100 * sn["reject_rate"],
                                   "pass": sn["pass"], "primary_p_source": sn["primary_p_source"]})
-            S.vline(fig, 5, row, col, color=S.MUTED, width=1.2, dash="dash")
+            S.vline(fig, 5, row, col, color=S.INK, width=1.4, dash="dash")
             S.vline(fig, 8.5, row, col, color=S.INK, width=1.4)
             fig.add_annotation(x=5, y=-0.75, xref=xr, yref=yr, text="expected 5%", showarrow=False, xanchor="right",
-                               xshift=-3, font=dict(size=S.BASE - 4, color=S.MUTED))
+                               xshift=-3, font=dict(size=S.BASE - 4, color=S.INK))
             fig.add_annotation(x=8.5, y=-0.75, xref=xr, yref=yr, text="limit 8.5%", showarrow=False, xanchor="left",
                                xshift=3, font=dict(size=S.BASE - 4, color=S.INK))
             xmax = max([13] + [r["share_p_lt_05_pct"] + 4 for r in rowsd if np.isfinite(r["share_p_lt_05_pct"])])
+            # no gridlines here: a gridline at 5% would hide the dashed "expected 5%" line
             fig.update_xaxes(range=[0, xmax], ticksuffix="%", title_text="Shuffled group labels: share with p < 0.05",
-                             row=row, col=col)
-            fig.update_yaxes(tickmode="array", tickvals=list(range(len(hyps))),
-                             ticktext=[f"{h} {SHORT[h][0]}" for h in hyps], range=[len(hyps) - 0.5, -1.0],
-                             row=row, col=col)
+                             showgrid=False, showline=True, ticks="outside", row=row, col=col)
+            # row labels sit inside the panel, above each row, so they never reach into the panel to the left
+            fig.update_yaxes(tickmode="array", tickvals=list(range(len(hyps))), ticktext=[""] * len(hyps),
+                             range=[len(hyps) - 0.5, -1.0], row=row, col=col)
+            for i, h in enumerate(hyps):
+                fig.add_annotation(x=0.0, y=i, xref=f"{xr} domain", yref=yr, yshift=15, xanchor="left",
+                                   showarrow=False, text=f"<b>{h}</b> {SHORT[h][0]}", bgcolor="white", borderpad=1,
+                                   font=dict(size=S.BASE - 3, color=S.INK))
             nsh = max([r["shuffles"] for r in rowsd] or [shuffles])
-            panel_title(fig, row, col, f"{L}. Fake group labels: false<br>alarms near 5%?<br><span "
-                        f"style='font-weight:normal;color:{S.MUTED}'>{', '.join(S.label(mm) for mm in cm)}, "
-                        f"{nsh:,} shuffles per test</span>", size=S.BASE - 2)
+            titles[(row, col)] = (f"{L}. Fake group labels: false alarms near 5%?<br><span "
+                                  f"style='font-weight:normal;color:{S.MUTED}'>{', '.join(S.label(mm) for mm in cm)}, "
+                                  f"{nsh:,} shuffles per test</span>", S.BASE - 2)
             tabs.append(pd.DataFrame(rowsd))
+    for rr in sorted({r_ for r_, _ in titles}):     # top-align: pad shorter titles with blank last lines
+        nl = {k: v[0].count("<br>") + 1 for k, v in titles.items() if k[0] == rr}
+        for k, lines in nl.items():
+            txt_, size_ = titles[k]
+            panel_title(fig, k[0], k[1], txt_ + "<br>&nbsp;" * (max(nl.values()) - lines), size=size_)
     npass = sum(1 for _, ok in results if ok)
     nf = len(results) - npass
     if out.pilot:
@@ -1062,13 +1101,13 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
         title = f"Method checks: {npass} of {len(results)} pass" + (
             "" if nf == 0 else f"; {nf} {'fails and is' if nf == 1 else 'fail and are'} reported, not hidden")
     sub = ("Can the test find a bias we planted on purpose, and does it stay quiet when group labels are fake?"
-           + ("" if apm else " The price-validity check (PLAN 8.3) is not in these runs."))
-    foot = ("Checks run before any group result is examined (PLAN 8). Planted-name lines are colored by name group; "
+           + ("" if apm else " The price-validity check (Table A1) is not in these runs."))
+    foot = ("These checks run before any group result is examined. Planted-name lines are colored by name group; "
             "the label at each line's end names them, each after a square in its group's color.")
     foot = with_key(foot, sorted({m for m in pmods + cm + apm}, key=lambda x: P.MODEL_ORDER.index(x)
                                  if x in P.MODEL_ORDER else 9))
-    S.layout(fig, title, sub, out.pilot, 230 + 340 * nr + S.footer_margin(foot), bottom=S.footer_margin(foot) + 14,
-             left=210, gap=86)
+    S.layout(fig, title, sub, out.pilot, 230 + 310 * nr + S.footer_margin(foot), bottom=S.footer_margin(foot) + 14,
+             left=210, gap=96)
     S.footer(fig, foot)
     lab = {kind: letters[k] for k, (kind, _) in enumerate(panels)}
     cap = ("Figure 5. Method checks, run before any group result was examined (PLAN 8). "
@@ -1186,32 +1225,34 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
     vid = dict(tasks="identity", extra=assumed)
     panels = [("A. Asked the buyer first", "vague request, all tasks", pa, "asked",
                n_compact(df, ms, ["V"], y="asked")),
-              ("B. Wrong product: buyer needed", "coily 4C hair or a deep shade (vague)", pb, "opposite_need_pick",
+              ("B. Wrong product: buyer needed", "coily hair or deep shade (vague)", pb, "opposite_need_pick",
                n_compact(df, ms, ["V"], y="opposite_need_pick", split=True, **vid)),
-              ("C. Wrong product: buyer needed", "fine straight hair or a light shade (vague)", pc, "opposite_need_pick",
+              ("C. Wrong product: buyer needed", "fine hair or light shade (vague)", pc, "opposite_need_pick",
                n_compact(df, ms, ["V"], y="opposite_need_pick", split=False, **vid)),
-              ("D. Ignored the stated need:", "stated coily 4C or deep shade (clear)", pd_, "opposite_need_pick",
+              ("D. Ignored the stated need:", "stated coily or deep shade (clear)", pd_, "opposite_need_pick",
                n_compact(df, ms, ["S0", "S1"], "identity", y="opposite_need_pick", split=True,
                          split_col="stated_identity_linked")),
-              ("E. Ignored the stated need:", "stated fine straight or light shade (clear)", pe, "opposite_need_pick",
+              ("E. Ignored the stated need:", "stated fine or light shade (clear)", pe, "opposite_need_pick",
                n_compact(df, ms, ["S0", "S1"], "identity", y="opposite_need_pick", split=False,
                          split_col="stated_identity_linked"))]
-    fig = make_subplots(rows=2, cols=3, shared_yaxes=True, horizontal_spacing=0.06, vertical_spacing=0.2)
+    fig = make_subplots(rows=2, cols=3, shared_yaxes=True, horizontal_spacing=0.08, vertical_spacing=0.17)
     tabs = []
+    # one scale per row: the top row (A to C) runs 0 to 100%; D and E share one trimmed scale (stated-need
+    # picks sit near 0%), and F is in dollars
+    de = pd.DataFrame(pd_ + pe)
+    up_de = nice_upper(100 * max(de["hi"].max(skipna=True), de["est"].max()) * 1.2 + 2) if not de.empty else 100
     for k, (t1, t2, rows_, yname, ntx) in enumerate(panels):
         row, col = k // 3 + 1, k % 3 + 1
         t = pd.DataFrame(rows_)
-        up = 100
+        up = 100 if k < 3 else up_de
         if t.empty:
             no_data(fig, row, col, "no runs of this kind")
         else:
-            if k >= 3:     # stated-need panels sit near 0%: trim the axis so the dots are readable
-                up = nice_upper(100 * max(t["hi"].max(skipna=True), t["est"].max()) * 1.2 + 2)
             plot_group_rows(fig, t, ms, GROUPS, "est", "lo", "hi", row, col, scale=100, unit="%",
                             what=f"{t1.rstrip(':')} ({t2})", pilot=out.pilot, open_models=expl,
                             ci_word="95% interval (bootstrap over names)")
             tabs.append(t.assign(panel="ABCDE"[k]))
-        tv = [0, up / 2] if col < 3 else [0, up / 2, up]
+        tv = [0, up / 2, up]
         fig.update_xaxes(range=[-0.04 * up, up * 1.04], row=row, col=col, tickmode="array", tickvals=tv,
                          ticktext=[f"{v:g}%" for v in tv])
         group_yaxis(fig, GROUPS, row, col, labels=(col == 1))
@@ -1247,16 +1288,24 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
                         fig.add_annotation(x=r["est"], y=yy, xref=xr, yref=yr, xanchor="left", xshift=7,
                                            showarrow=False, text=f"{r['events']:.0f} of {int(r['episodes'])}",
                                            font=dict(size=S.BASE - 6, color=S.MUTED))
+                    if i == 0 and jm == 0:        # direct labels on the first group: which dot is which need
+                        fig.add_annotation(x=hi_ if hi_ is not None else r["est"], y=yy, xref=xr, yref=yr,
+                                           xanchor="left", xshift=8, showarrow=False,
+                                           text="needed coily or deep" if j == 0 else "needed fine or light",
+                                           font=dict(size=S.BASE - 5, color=S.MUTED))
         fhi = max(tf["hi"].max(skipna=True), tf["est"].max())
-        ftv = [0, round(fhi / 2, -3) or fhi / 2]
+        raw = fhi / 3.2
+        mag = 10 ** math.floor(math.log10(raw)) if raw > 0 else 1
+        fstep = next(c * mag for c in (1, 2, 2.5, 5, 10) if c * mag >= raw)
+        ftv = [fstep * q for q in range(int(fhi * 1.1 // fstep) + 1)]
         fig.update_xaxes(row=2, col=3, range=[-0.04 * fhi, fhi * 1.12], tickmode="array", tickvals=ftv,
-                         ticktext=[f"${v:,.0f}" for v in ftv])
+                         ticktext=[("$0" if v == 0 else f"${v / 1000:g}k" if v >= 1000 else f"${v:,.0f}") for v in ftv])
         group_yaxis(fig, GROUPS, 2, 3, labels=False)
         tabs.append(tf.assign(panel="F"))
     fnote = "" if fm == ms else f"; {', '.join(SHORTM.get(m, m) for m in ms if m not in fm)} left out (too few runs)"
     panel_title(fig, 2, 3, f"F. $ on the wrong product<br><span style='font-weight:normal;color:{S.MUTED}'>"
-                "per 1,000 vague buys (exploratory)<br>"
-                f"<span style='font-size:{S.BASE - 5}px'>by need. Upper: coily or deep; lower: fine or light"
+                "per 1,000 vague buys, exploratory<br>"
+                f"<span style='font-size:{S.BASE - 5}px'>one dot per buyer need, labeled on the top row"
                 "</span></span>", size=S.BASE - 3)
     for col in (1, 2, 3):
         fig.update_xaxes(title_text="share of runs", row=1, col=col)
@@ -1271,14 +1320,14 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
                                  f"(95% CI {f_range(*r['ci_points'], 'pts')}), Holm p {f_p(r['p_holm'])}; "
                                  f"{verdict_plain(r['verdict'])}")
     h4m = mde_value(mde_info, conf, ("H4",), "mde_holm_points")
-    foot = ("B and C are split by the buyer's actual need and never pooled (PLAN 4): a guess from a name hurts the "
+    foot = ("B and C are split by the buyer's actual need and never pooled: a guess from a name hurts the "
             "buyers it does not fit, and pooling would cancel those errors. Dots: mean over names; bars: 95% bootstrap "
             "interval over names. A cell where every name gave the same value has no bar and prints its pooled count. "
+            f"Top row: one 0 to 100% scale. D and E share one trimmed scale (0 to {up_de:g}%); F is in dollars. "
             "F = wrong-product rate x average price paid in that cell (descriptive)" + fnote.replace(";", ",")
-            + ". n under each panel title: names "
-            "per group x runs per name. " + COLOR_NOTE
-            + " Open marker: exploratory model." + ("<br>" + "<br>".join(notes) if notes else ""))
-    foot = with_key(foot, ms)
+            + ". n under each panel title: names per group x runs per name. " + COLOR_NOTE
+            + ("<br>" + "<br>".join(notes) if notes else ""))
+    foot = with_key(foot, ms, open_note=bool(expl))
     if out.pilot:
         title = "Hair and skin tasks: asking first, wrong products and their cost"
     else:
@@ -1288,8 +1337,8 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
     sub = ("Top: vague requests; the ask rate (A), then wrong picks when the agent bought without asking (B, C). Bottom: "
            "clear requests that stated the need (D, E) and the money spent on wrong products (F)."
            + (f" H4's detectable Black minus White gap after Holm (m = {HOLM_M}): {h4m:.1f} points." if h4m else ""))
-    S.layout(fig, title, sub, out.pilot, 140 + 2 * 380 + S.footer_margin(foot), bottom=S.footer_margin(foot) + 10,
-             left=LEFT_GROUPS, gap=78, right=44)
+    S.layout(fig, title, sub, out.pilot, 140 + 2 * 365 + S.footer_margin(foot), bottom=S.footer_margin(foot) + 10,
+             left=LEFT_GROUPS, gap=78, right=56)
     S.footer(fig, foot)
     cap = ("Figure 6. Hair and skin tasks, by name group. A: share of vague-request runs (all tasks) where the agent "
            "asked the buyer first; PLAN 4 puts the ask rate beside H4, which conditions on not asking. B and C: vague "
@@ -1335,7 +1384,7 @@ def fig_ask(out: Out, df, models, bundle):
                     q.setdefault((e["model"], a, y), []).append((e["test"].split(":")[0], e["q_bh"]))
     ms = [m for m in models if m in set(t["model"])]
     expl = [m for m in ms if m not in A.CONFIRM_MODELS_DEFAULT]
-    fig = make_subplots(rows=2, cols=len(arms), shared_yaxes=True, horizontal_spacing=0.07, vertical_spacing=0.2)
+    fig = make_subplots(rows=2, cols=len(arms), shared_yaxes=True, horizontal_spacing=0.08, vertical_spacing=0.15)
     for i, (y, ylab) in enumerate((("asked", "Asked the buyer first"), ("nonpurchase", "Did not buy"))):
         sub_y = t[t["y"] == y]
         top = max(sub_y["hi"].max(skipna=True), sub_y["est"].max()) * 100
@@ -1345,8 +1394,7 @@ def fig_ask(out: Out, df, models, bundle):
             plot_group_rows(fig, sub, ms, GROUPS, "est", "lo", "hi", i + 1, j + 1, scale=100, unit="%",
                             what=f"{ylab}, {ARM_PLAIN.get(a, a).lower()}", pilot=out.pilot, open_models=expl,
                             ci_word="95% interval (bootstrap over names)")
-            last = j == len(arms) - 1
-            tv = [0, up / 2, up] if last else [0, up / 2]
+            tv = [0, up / 2, up]            # the same ticks in every panel of a row: one shared scale
             fig.update_xaxes(range=[-0.04 * up, up * 1.04], row=i + 1, col=j + 1, tickmode="array", tickvals=tv,
                              ticktext=[f"{v:g}%" for v in tv], title_text="share of runs" if i == 1 else "")
             group_yaxis(fig, GROUPS, i + 1, j + 1, labels=(j == 0))
@@ -1367,12 +1415,12 @@ def fig_ask(out: Out, df, models, bundle):
     foot = (("Exploratory." if out.pilot else
              "Exploratory. Gaps controlled at a 10% false discovery rate; q printed only where q < 0.10.")
             + " Dots: mean over names; bars: 95% bootstrap interval over names; a cell where every name gave the same "
-            "value has no bar and prints its pooled count. No purchase includes refusals, errors, invalid product IDs "
-            "and no tool call.<br>In vague requests the agent could ask twice before a scripted 'choose one yourself' "
-            "reply (Deviation D1). Second-ask rates are in the CSV. n under each panel title: names per group x runs per name. The vague-request ask rate also sits beside H4 in "
-            "Figure 6 A (PLAN 10 Figure 2 panel A).<br>" + COLOR_NOTE + " Open marker: exploratory model.")
-    foot = with_key(foot, ms)
-    S.layout(fig, title, sub, out.pilot, 140 + 2 * 360 + S.footer_margin(foot), bottom=S.footer_margin(foot) + 10,
+            "value has no bar and prints its pooled count (also when that value is not 0). No purchase includes "
+            "refusals, errors, invalid product IDs and no tool call. In vague requests the agent could ask twice "
+            "before a scripted 'choose one yourself' reply; second-ask rates are in the CSV. Each row shares one "
+            "scale. n under each panel title: names per group x runs per name. " + COLOR_NOTE)
+    foot = with_key(foot, ms, open_note=bool(expl))
+    S.layout(fig, title, sub, out.pilot, 140 + 2 * 340 + S.footer_margin(foot), bottom=S.footer_margin(foot) + 10,
              left=LEFT_GROUPS, gap=72)
     S.footer(fig, foot)
     cap = ("Figure 7. Share of runs where the agent asked the buyer a question (top) and where it did not complete a "
@@ -1472,13 +1520,13 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
         box(fig, x0, y0, x1, y1, fill=S.PANEL, line=S.AXIS)
         txt(fig, x0 + 1.4, y1 - 4.2, head.upper(), S.BASE - 3, S.MUTED, bold=True)
 
-    tile(0, 52, 32, 98, "What was tested")
-    txt(fig, 1.4, 84, f"<b>{eps:,}</b>", S.BASE + 13)
-    txt(fig, 1.4, 76, "shopping runs per model (plus check arms)", S.BASE - 3, S.MUTED)
-    txt(fig, 1.4, 71, "2 confirmatory agents (Claude Haiku 5.5,<br>GPT-6 Luna) + 2 exploratory; 64 names<br>"
+    tile(0, 50, 32, 98, "What was tested")
+    txt(fig, 1.4, 85, f"<b>{eps:,}</b>", S.BASE + 13)
+    txt(fig, 1.4, 77.5, "shopping runs per model (plus check arms)", S.BASE - 3, S.MUTED)
+    txt(fig, 1.4, 73, "2 confirmatory agents (Claude Haiku 5.5,<br>GPT-6 Luna) + 2 exploratory; 64 names<br>"
         "+ 4 no-name accounts; 40 real-product tasks.<br><b>Only the account name changes.</b>", S.BASE - 4,
         vanchor="top")
-    tile(34, 52, 66, 98, "Headline result (H1)")
+    tile(34, 50, 66, 98, "Headline result (H1)")
     h1 = pr[(pr.hypothesis == "H1") & (pr.status == "confirmatory")] if not pr.empty else pr
     slots = ["Gap in price paid", "95% interval", "Per $1M of agent spend", "Verdict"]
     if out.pilot or h1.empty:
@@ -1499,7 +1547,7 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
         y = 74.5 - 5.2 * k
         txt(fig, 35.4, y, sl, S.BASE - 4, S.MUTED)
         txt(fig, 50.6, y, v, S.BASE - 4, S.INK if not out.pilot else S.FAINT)
-    tile(68, 52, 100, 98, "What the test can detect")
+    tile(68, 50, 100, 98, "What the test can detect")
     mde = mde_value(mde_info, ["haiku"] if "haiku" in mde_info.get("models", {}) else conf, ("H1",))
     if mde:
         txt(fig, 69.4, 84, f"<b>{mde:.1f}%</b>", S.BASE + 13)
@@ -1513,7 +1561,7 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
             f"per $1M of agent spend{ref_line}<br>"
             + (f"GPT-6 Luna: {luna:.1f}%" if luna else "GPT-6 Luna: no detectable gap yet (pilot pending)")
             + "<br>Set from the pilot before the main run<br>(a design number, not a result).", S.BASE - 4, vanchor="top")
-    tile(0, 12, 100, 49, "Three proposed actions for a payments network" + (" (pending results)" if out.pilot or
+    tile(0, 15, 100, 47.5, "Three proposed actions for a payments network" + (" (pending results)" if out.pilot or
                                                                              h1.empty else ""))
     acts = [("1  Audit gate (do now)", "An agent joins the network's agent program only after<br>passing this paired-name "
              "audit, and again after every<br>model update. Fail if a gap is found after correction;<br>if inconclusive, "
@@ -1524,12 +1572,12 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
              "name unless shipping<br>needs it. When a needed preference is missing,<br>the agent asks.")]
     for k, (h, b) in enumerate(acts):
         x = 1.4 + k * 33.2
-        txt(fig, x, 38.5, f"<b>{h}</b>", S.BASE - 1)
-        txt(fig, x, 34, b, S.BASE - 4, vanchor="top")
-    fig.update_yaxes(range=[11, 100])
+        txt(fig, x, 37.5, f"<b>{h}</b>", S.BASE - 1)
+        txt(fig, x, 33.5, b, S.BASE - 4, vanchor="top")
+    fig.update_yaxes(range=[14, 100])
     S.layout(fig, "Same request, same result? A paired-name audit of AI shopping agents",
              "What was tested, what was found, the smallest gap the test can see, and what a card network can do.",
-             out.pilot, 530, bottom=10, left=10, right=10, gap=14)
+             out.pilot, 512, bottom=10, left=10, right=10, gap=14)
     cap = ("Figure 1. Summary card. What was tested, the headline price result (names associated with Black minus White "
            "buyers, in dollars per purchase, per 1,000 purchases and per $1 million of agent spend), the smallest price "
            "gap the test can reliably detect (H1 on Claude Haiku 5.5, after Holm at m = 8; a design number fixed before "
@@ -1538,7 +1586,7 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
                           "episodes_per_model": eps}])
     # one light stamp in the middle card, clear of the numbers in the side cards
     out.fig("fig1", fig, "fig1_summary_card", cap, data,
-            single_stamp=dict(x=0.5, y=(75 - 11) / 89, size=19, angle=12, opacity=0.16))
+            single_stamp=dict(x=0.5, y=(74 - 14) / 86, size=19, angle=12, opacity=0.16))
 
 
 # ----------------------------------------------------------------------------- Appendix figures
@@ -1572,20 +1620,28 @@ def figA1_position(out: Out, df, models, bundle=None):
     pos_notes = []
     for k, m in enumerate(ms, start=1):
         sub = t[t["model"] == m]
-        for order, col in (("forward", S.ACCENT), ("reversed", S.MUTED_SERIES)):
+        xr, yr = S._refs(fig, 1, k)
+        for oi, (order, col) in enumerate((("forward", S.ACCENT), ("reversed", S.MUTED_SERIES))):
             s_ = sub[sub["order"] == order].sort_values("position")
             if s_.empty:
                 continue
+            zero = s_["count"] == 0       # no purchases there: no whisker stub, a small "0" instead
             fig.add_trace(go.Bar(x=s_["position"], y=100 * s_["share"], name=f"{order} order", marker_color=col,
                                  marker_line=dict(width=0), showlegend=False,
-                                 error_y=dict(type="data", symmetric=False, array=100 * (s_["wilson_hi"] - s_["share"]),
-                                              arrayminus=100 * (s_["share"] - s_["wilson_lo"]), color=S.INK,
-                                              thickness=1.2, width=2),
+                                 error_y=dict(type="data", symmetric=False,
+                                              array=np.where(zero, np.nan, 100 * (s_["wilson_hi"] - s_["share"])),
+                                              arrayminus=np.where(zero, np.nan, 100 * (s_["share"] - s_["wilson_lo"])),
+                                              color=S.INK, thickness=1.2, width=2),
                                  customdata=np.c_[s_["count"], s_["purchases"], 100 * s_["wilson_lo"], 100 * s_["wilson_hi"]],
                                  hovertemplate=hover_prefix(out.pilot) + f"{S.label(m)}, {order} order<br>position "
                                  "%{x}: %{y:.1f}% of purchases (%{customdata[0]} of %{customdata[1]})<br>95% Wilson "
                                  "interval %{customdata[2]:.1f} to %{customdata[3]:.1f}%<extra></extra>"), row=1, col=k)
-        S.hline(fig, 12.5, 1, k, color=S.INK, width=1.2, dash="dash")
+            for pos in s_.loc[zero, "position"]:
+                fig.add_annotation(x=pos + (-0.18 if oi == 0 else 0.18), y=0, xref=xr, yref=yr, yanchor="bottom",
+                                   yshift=1, showarrow=False, text="0", font=dict(size=S.BASE - 5, color=S.MUTED))
+        S.hline(fig, 12.5, 1, k, layer="above", color=S.INK, width=1, dash="dash")
+        fig.add_annotation(x=1.0, y=12.5, xref=f"{xr} domain", yref=yr, xanchor="left", xshift=3, showarrow=False,
+                           text="12.5%", font=dict(size=S.BASE - 5, color=S.INK))
         p1 = {o: sub[(sub["order"] == o) & (sub["position"] == 1)] for o in ("forward", "reversed")}
         txt1 = "<br>".join(f"position 1, {o}: {100 * r.iloc[0]['share']:.0f}% ({r.iloc[0]['count']} of "
                            f"{r.iloc[0]['purchases']})" for o, r in p1.items() if not r.empty)
@@ -1598,7 +1654,10 @@ def figA1_position(out: Out, df, models, bundle=None):
         nr_ = sub[sub["order"] == "reversed"]["purchases"].max()
         ntask = int(df[(df["model"] == m) & df["arm"].isin(["S0", "S1", "V"]) & df["position"].notna()]["task_id"].nunique())
         panel_title(fig, 1, k, f"{S.label(m)}<br><span style='font-weight:normal;color:{S.MUTED};font-size:"
-                    f"{S.BASE - 4}px'>n = {nf:,.0f} forward, {nr_:,.0f} reversed purchases from {ntask} tasks</span>")
+                    f"{S.BASE - 4}px'>n = {nf:,.0f} forward, {nr_:,.0f} reversed purchases from {ntask} tasks</span>"
+                    f"<br><span style='font-weight:normal;font-size:{S.BASE - 3}px'><span style='color:{S.ACCENT}'>"
+                    f"\u25a0</span> forward order   <span style='color:{S.MUTED_SERIES}'>\u25a0</span> reversed order"
+                    "</span>")
         po = (bundle or {}).get("checks", {}).get("position", {}).get(m, {})
         if po.get("order_effect_log") is not None:
             pos_notes.append(f"{S.label(m)} {100 * (math.exp(po['order_effect_log']) - 1):+.1f}%")
@@ -1611,13 +1670,14 @@ def figA1_position(out: Out, df, models, bundle=None):
             "they are too narrow when one task repeats). Product order is part of every test cell, so position is held "
             "fixed by design and cannot explain a name gap."
             + (f" {', '.join(few)}: purchases come from very few tasks; read the bars as task-specific." if few else "")
-            + (f"<br>Paired position effect on price (reversed minus forward, PLAN 5.2, a method check): "
+            + " 0: no purchases at that position (no bar, no interval drawn)."
+            + (f"<br>Paired position effect on price (reversed minus forward, a method check): "
                f"{'; '.join(pos_notes)}." if pos_notes else "")
             + "<br>Exploratory note for networks: an agent that buys mostly from the top slots rewards whoever "
             "controls the ranking.")
-    S.layout(fig, "Where on the page agents bought", "Share of purchases at each displayed position. Blue bars: "
-             "forward product order; gray bars: reversed. Dashed line: 12.5%, no position preference.", out.pilot,
-             500 + S.footer_margin(foot) - 60, bottom=S.footer_margin(foot), left=80, gap=56)
+    S.layout(fig, "Where on the page agents bought", "Share of purchases at each displayed position, forward vs "
+             "reversed product order. Dashed line: 12.5%, no position preference.", out.pilot,
+             520 + S.footer_margin(foot) - 60, bottom=S.footer_margin(foot), left=80, right=52, gap=74)
     S.footer(fig, foot)
     cap = ("Figure A1. Position bias (PLAN 10 Figure A1, same computation as analyze.py). Share of purchases at each "
            "displayed position, forward vs reversed product order, arms S0, S1 and V pooled, with 95% Wilson intervals; "
@@ -1682,8 +1742,8 @@ def figA2_baseline(out: Out, df, models, mde_info, conf):
             + (f"The no-name baseline is {A.subset(df, ms[0], ['S0'], tiers=('baseline',))['profile_id'].nunique()} "
                "accounts; its own 95% half-width is "
                + "; ".join(base_notes) + ", and each bar already includes it (Welch). " if base_notes else "")
-            + COLOR_NOTE + " Open marker: exploratory model.")
-    foot = with_key(foot, ms)
+            + COLOR_NOTE)
+    foot = with_key(foot, ms, open_note=bool(expl))
     S.layout(fig, "Each name group's price paid compared with an account that has no name",
              "Gap in price paid vs the no-name accounts, by request type; dot = group mean, bar = 95% interval.",
              out.pilot, 200 + 70 * len(groups) + S.footer_margin(foot), bottom=S.footer_margin(foot),
@@ -1736,8 +1796,9 @@ def figA3_training(out: Out, df):
 def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
     cols = [("H1", "H1 price<br>Black vs White", "pct"), ("H2", "H2 price<br>women vs men", "pct"),
             ("H3", "H3 stated need<br>overridden", "pts"), ("H4", "H4 need guessed<br>from the name", "pts"),
-            ("race: V ask rate", "Asked first<br>vague request<br>exploratory", "pts"),
-            ("race: S1 cap violation", "Over budget<br>exploratory", "pts")]
+            ("race: V ask rate", "Asked first", "pts"),
+            ("race: S1 cap violation", "Over budget", "pts")]
+    EXPL_COL = {"race: V ask rate": "vague, exploratory", "race: S1 cap violation": "budget, exploratory"}  # gray subline
     rows = []
     est_ex = {(e["model"], e["hypothesis"]): e for e in P.exploratory_model_estimates(df, [m for m in models if m not in conf])}
     for m in models:
@@ -1768,6 +1829,9 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
     pend = [m for m in P.MODEL_ORDER if m not in ms]
     rows_m = ms + pend
     present = [c for c in cols if c[0] in set(t["outcome"])]
+    # pending rows are shorter than model rows: one line of text, no marks
+    ys = list(range(len(ms))) + [len(ms) - 0.75 + 0.55 * q for q in range(1, len(pend) + 1)]
+    ybot = ys[-1] + (0.4 if pend else 0.5)
     missing = [c[1].replace("<br>", " ") for c in cols if c[0] not in set(t["outcome"])]
     cells = {"H1": (["S0"], "all", None, "price"), "H2": (["S0"], "all", None, "price"),
              "H3": (["S0", "S1"], "identity", None, "identity_linked_product"),
@@ -1797,68 +1861,82 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
                     mv = mde_for(mde_info, m, key, "mde_holm_pct" if unit == "pct" else "mde_holm_points")
                     if mv and m in conf:
                         span_u[unit] = max(span_u[unit], mv * 1.15)
-    fig = make_subplots(rows=1, cols=len(present), shared_yaxes=True, horizontal_spacing=0.025)
-    flat_notes = []
+    fig = make_subplots(rows=1, cols=len(present), shared_yaxes=True, horizontal_spacing=0.03)
+    plot_px = S.WIDTH - 230 - 30
+    flat_notes, narrow = [], False
     for k, (key, ttl, unit) in enumerate(present, start=1):
         sub = t[t["outcome"] == key]
         xr, yr = S._refs(fig, 1, k)
         S.vline(fig, 0, 1, k, color=S.INK, width=1)
+        tp = ttl.replace("<br>", " ")
+        xd = fig.get_subplot(1, k).xaxis.domain
+        ppu = (xd[1] - xd[0]) * plot_px / (2 * span_u[unit])           # px per unit on this column
         for i, m in enumerate(ms):
             r = sub[sub["model"] == m]
-            if r.empty:
-                continue
-            r = r.iloc[0]
             u = "%" if unit == "pct" else " pts"
-            if flat(r["lo"], r["hi"], 1e-6) or not (finite(r["lo"]) and finite(r["hi"])):       # no spread: never draw a zero-width interval as an estimate
+            # no test row (every run the same, so the test could not run) or no spread: never draw a
+            # zero-width interval as an estimate, and never leave the cell blank
+            if r.empty or flat(r.iloc[0]["lo"], r.iloc[0]["hi"], 1e-6) or not (finite(r.iloc[0]["lo"])
+                                                                               and finite(r.iloc[0]["hi"])):
                 msg = reason(m, key)
-                flat_notes.append(f"{SHORTM.get(m, m)} {ttl.replace('<br>', ' ')}: {msg[15:].replace('<br>', ' ')}")
-                fig.add_annotation(x=0, y=i, xref=xr, yref=yr, showarrow=False, text="not<br>estimable",
+                flat_notes.append(f"{SHORTM.get(m, m)} {tp}: {msg[15:].replace('<br>', ' ')}")
+                fig.add_annotation(x=0, y=ys[i], xref=xr, yref=yr, showarrow=False, text="not<br>estimable",
                                    bgcolor="white", font=dict(size=S.BASE - 6, color=S.MUTED), align="center",
-                                   hovertext=hover_prefix(out.pilot) + f"{S.label(m)}<br>{ttl.replace('<br>', ' ')}<br>"
+                                   hovertext=hover_prefix(out.pilot) + f"{S.label(m)}<br>{tp}<br>"
                                    + msg.replace("<br>", " "))
                 continue
+            r = r.iloc[0]
             v = verdict_plain(r["verdict"], out.pilot) if r["family"].startswith("confirmatory") else (
                 "pilot preview" if out.pilot else r["verdict"])
-            hv = (hover_prefix(out.pilot) + f"<b>{S.label(m)}</b><br>{ttl.replace('<br>', ' ')}<br>gap {r['est']:+.2f}{u}"
+            hv = (hover_prefix(out.pilot) + f"<b>{S.label(m)}</b><br>{tp}<br>gap {r['est']:+.2f}{u}"
                   f"<br>95% CI {r['lo']:+.2f} to {r['hi']:+.2f}<br>{r['family']}<br>{v}")
-            S.dots(fig, [r["est"]], [i], [r["lo"]], [r["hi"]], S.INK, S.symbol(m), htext=[hv], row=1, col=k, size=11,
-                   open_=m not in conf)
-            if key.startswith("H") and m in conf:
+            if key.startswith("H") and m in conf:     # detectable-gap ticks: thin and light, under the estimate
                 mv = mde_for(mde_info, m, key, "mde_holm_pct" if unit == "pct" else "mde_holm_points")
                 if mv:
                     for sgn in (-1, 1):
-                        fig.add_shape(type="line", x0=sgn * mv, x1=sgn * mv, y0=i - 0.25, y1=i + 0.25, xref=xr,
-                                      yref=yr, line=dict(color=S.ACCENT, width=3))
+                        fig.add_shape(type="line", x0=sgn * mv, x1=sgn * mv, y0=ys[i] - 0.15, y1=ys[i] + 0.15, xref=xr,
+                                      yref=yr, layer="between", opacity=0.7, line=dict(color=S.ACCENT, width=1.6))
+            S.dots(fig, [r["est"]], [ys[i]], [r["lo"]], [r["hi"]], S.INK, S.symbol(m), htext=[hv], row=1, col=k,
+                   size=10, open_=m not in conf)
+            if (r["hi"] - r["lo"]) * ppu < 16:        # interval hidden under the dot: print it under the dot
+                narrow = True
+                fig.add_annotation(x=r["est"], y=ys[i], xref=xr, yref=yr, yshift=-15, yanchor="top", showarrow=False,
+                                   text=f"{r['est']:+.1f}<br>({r['lo']:+.1f} to {r['hi']:+.1f})", align="center",
+                                   bgcolor="white", borderpad=1, font=dict(size=S.BASE - 6, color=S.MUTED))
         for i, m in enumerate(pend, start=len(ms)):
-            fig.add_annotation(x=0, y=i, xref=xr, yref=yr, showarrow=False, text="pending", bgcolor="white",
+            fig.add_annotation(x=0, y=ys[i], xref=xr, yref=yr, showarrow=False, text="pending", bgcolor="white",
                                font=dict(size=S.BASE - 5, color=S.FAINT))
         span = span_u[unit]
-        stp = max([c for c in (0.5, 1, 2, 2.5, 5, 10, 20, 25, 50) if c <= span * 0.75] or [span / 2])
-        tv = [-stp, 0, stp]
-        zero_lab = "" if unit == "pct" else "0"
+        stp = max([c for c in (0.5, 1, 2, 2.5, 3, 4, 5, 10, 15, 20, 25, 50) if c <= span * 0.95] or [span / 2])
+        tv = [0, stp]                     # "0" plus one end tick, so neighboring columns' labels never touch
         fig.update_xaxes(range=[-span, span], tickmode="array", tickvals=tv,
-                         ticktext=[zero_lab if abs(x) < 1e-12 else f"{x:+g}" + ("%" if unit == "pct" else "") for x in tv],
+                         ticktext=["0" if abs(x) < 1e-12 else f"{x:+g}" + ("%" if unit == "pct" else "") for x in tv],
                          tickangle=0, row=1, col=k, title_text="percent" if unit == "pct" else "points")
-        panel_title(fig, 1, k, ttl, size=S.BASE - 3)
+        head = ttl if key not in EXPL_COL else (f"{ttl}<br><span style='font-weight:normal;color:{S.MUTED};"
+                                                f"font-size:{S.BASE - 5}px'>"
+                                                f"{EXPL_COL[key]}</span>")
+        panel_title(fig, 1, k, head, size=S.BASE - 3)
 
     def ylab(m):
         if m in pend:
-            return f"{S.label(m)}<br><span style='color:{S.FAINT}'>pending: no scored runs yet</span>"
+            return (f"{S.label(m)}<br><span style='font-size:{S.BASE - 5}px;color:{S.MUTED}'>pending: no scored runs "
+                    "yet</span>")
         return (S.label(m) + f"<br><span style='font-size:{S.BASE - 5}px;color:{S.MUTED}'>"
                 + ("" if m in conf else "exploratory; ")
                 + n_text(df, m, ["S0"], y="logp").replace(" names per group,", " names x").replace(
                     " runs per name", " runs").replace(" to ", "-") + " (S0)</span>")
-    fig.update_yaxes(tickmode="array", tickvals=list(range(len(rows_m))), ticktext=[ylab(m) for m in rows_m],
-                     range=[len(rows_m) - 0.5, -0.6])
+    fig.update_yaxes(tickmode="array", tickvals=ys, ticktext=[ylab(m) for m in rows_m], range=[ybot, -0.6])
     foot = ("Filled marker: confirmatory model in the tested family. Open marker: exploratory model, estimate only. "
             f"Blue ticks: detectable gap after Holm (m = {HOLM_M}). 'Not estimable': every run in that cell gave the "
             "same result, so no gap or interval exists (not a zero gap).<br>" + SIGN_NOTE
             + (f"<br>Not shown (no data in these runs): {', '.join(missing)}." if missing else "")
             + " Rows marked pending have no scored runs yet."
+            + (" Small gray numbers under a dot: the estimate and its interval, where the interval is narrower than "
+               "the dot." if narrow else "")
             + ("<br>Not estimable: " + "; ".join(flat_notes) + "." if flat_notes else ""))
     S.layout(fig, "Every model on every outcome, side by side", "Gap (focal minus comparison) with 95% interval. "
              "Price columns share one scale (%), rate columns share another (percentage points).", out.pilot,
-             230 + 90 * len(rows_m) + S.footer_margin(foot), bottom=S.footer_margin(foot), left=230, gap=56)
+             int(230 + 95 * (ybot + 0.6)) + S.footer_margin(foot), bottom=S.footer_margin(foot), left=230, gap=56)
     S.footer(fig, foot)
     cap = ("Figure A4. Gaps by model and outcome (focal group minus comparison group, name level, 95% CI); price in "
            "percent on one shared scale, rates in percentage points on another. Blue ticks: detectable gap after Holm "

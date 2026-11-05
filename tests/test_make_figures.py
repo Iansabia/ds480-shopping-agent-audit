@@ -139,6 +139,12 @@ def test_pilot_build_is_watermarked(world, monkeypatch):
     # pilot figures never print a verdict or a dollar translation of a group gap
     fig4 = (tmp / "pilot_fig" / "fig4_price_gap_PILOT.html").read_text()
     assert "PILOT DATA, NOT RESULTS" in fig4
+    # figure text is plain English: no plan section numbers, file names or deviation codes, and no
+    # p-value on a pilot figure, not even for a method check
+    for h in (tmp / "pilot_fig").glob("*.html"):
+        body = h.read_text()
+        assert not re.search(r"PLAN \d|analyze\.py|Deviation D\d|sn_p80|mde\.json", body), h.name
+        assert not re.search(r"\bp 0\.\d|Holm p:", body), h.name
 
 
 def test_main_build_matches_frozen_outputs(world, monkeypatch):
