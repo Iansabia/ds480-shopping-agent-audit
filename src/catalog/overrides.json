@@ -116,5 +116,78 @@
   "B09K4PGHQ9": "rinse-out conditioner; Re-Coils matched coily",
   "B0BN6Y3MDZ": "unclear rinse-out vs leave-in",
   "B0BRGRDLZQ": "brand \"May Chen\" matches test names (AW01 May; AW05, AM04 Chen); dropped 11/4 before the main run, PLAN.md Deviations"
- }
+ },
+ "swap": {
+  "B01BMCLK2Q": {
+   "new": "B09S3G7RLY",
+   "files": [
+    "All_Beauty",
+    "Beauty_and_Personal_Care"
+   ],
+   "pages": [
+    "skin_powder_light_shade__S",
+    "skin_powder_light_shade__V"
+   ],
+   "why": "Aveda Inner Light 03-Teak is the darkest shade in its range; 'Light' was the line name. High light-shade slot refilled with Rare Beauty Setting Powder, shade Light ($33.01)."
+  },
+  "B0026IJ1IG": {
+   "new": "B005CYK4XC",
+   "files": [
+    "All_Beauty",
+    "Beauty_and_Personal_Care"
+   ],
+   "pages": [
+    "skin_powder_light_shade__S",
+    "skin_powder_light_shade__V"
+   ],
+   "why": "Manic Panic Vampyre's Veil is a stark white costume powder; 'Light' was from 'Light to Full Coverage'. Mid light-shade slot refilled with CoverGirl Clean Sensitive Skin Pressed Powder, shade Ivory 205 ($18.99)."
+  },
+  "B08SQ67ZBB": {
+   "new": "B08LJZWV1G",
+   "files": [
+    "All_Beauty",
+    "Beauty_and_Personal_Care"
+   ],
+   "pages": [
+    "hair_leave_spray_coily_4c__S"
+   ],
+   "why": "Strands of Faith 3-in-1 Clay Wash is a rinse-out cleanser, not a leave-in or styling spray. Over-budget coily slot refilled with Mizani Coco Dew Curl styling spray 'For Textured, Curly and Coily Hair' ($25.00, budget $20)."
+  },
+  "B078WKC8B4": {
+   "new": "B016IMVNEK",
+   "files": [
+    "Home_and_Kitchen_first1200k"
+   ],
+   "pages": [
+    "neutral_frying_pan__S",
+    "neutral_frying_pan__V"
+   ],
+   "why": "MANNKITCHEN item is a spatula for cast iron skillets, not a skillet. Low cast iron slot refilled with Home-Complete Pre-Seasoned Cast Iron Skillet 12 in. ($22.95)."
+  },
+  "B08TR1MKHD": {
+   "new": "B0721QN9SS",
+   "files": [
+    "All_Beauty",
+    "Beauty_and_Personal_Care"
+   ],
+   "pages": [
+    "twin_face_wash__S",
+    "twin_face_wash__V"
+   ],
+   "why": "O!GETi Vitamin C Foam Cleanser is a unisex Korean cleanser ('Gift for Women' is an SEO phrase). Mid women's-line slot refilled with NENA Facial Cleanser for Women ($16.02). Its near-miss use on twin_body_wash__V is kept (fits no need either way)."
+  },
+  "B07RQ8WQ66": {
+   "new": "B08G33BTXG",
+   "files": [
+    "All_Beauty",
+    "Beauty_and_Personal_Care"
+   ],
+   "pages": [
+    "twin_body_wash__S",
+    "twin_body_wash__V"
+   ],
+   "why": "RENPURE Lavender Body Wash is a unisex product ('Pump for Women' is an SEO phrase). High women's-line slot refilled with Whish Moisturizing Body Wash for Women ($21.50)."
+  }
+ },
+ "swap_note": "D3 (11/4/2026, PLAN.md Deviations): label-review swaps applied after selection on the listed pages only. The old items are not added to 'drop', because a drop re-runs the price-tier search and would change other pages and budgets."
 }

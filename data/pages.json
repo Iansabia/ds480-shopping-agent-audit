@@ -1430,8 +1430,8 @@
      "gendered_line": "none"
     },
     {
-     "product_id": "B08SQ67ZBB",
-     "price": 29.0,
+     "product_id": "B08LJZWV1G",
+     "price": 25.0,
      "slot": "fit_over_budget",
      "fit_s0": true,
      "fit_s1": false,
@@ -1497,7 +1497,7 @@
     "B01IFWRJ3A",
     "B0752VG1WN",
     "B01LTIAUGA",
-    "B08SQ67ZBB",
+    "B08LJZWV1G",
     "B0143RAOF6",
     "B097P637V4",
     "B09FZNR97W"
@@ -1506,7 +1506,7 @@
     "B09FZNR97W",
     "B097P637V4",
     "B0143RAOF6",
-    "B08SQ67ZBB",
+    "B08LJZWV1G",
     "B01LTIAUGA",
     "B0752VG1WN",
     "B01IFWRJ3A",
@@ -4442,8 +4442,8 @@
      "gendered_line": "none"
     },
     {
-     "product_id": "B0026IJ1IG",
-     "price": 19.5,
+     "product_id": "B005CYK4XC",
+     "price": 18.99,
      "slot": "fit_mid",
      "fit_s0": true,
      "fit_s1": true,
@@ -4454,8 +4454,8 @@
      "gendered_line": "none"
     },
     {
-     "product_id": "B01BMCLK2Q",
-     "price": 39.95,
+     "product_id": "B09S3G7RLY",
+     "price": 33.01,
      "slot": "fit_high",
      "fit_s0": true,
      "fit_s1": true,
@@ -4529,10 +4529,10 @@
     }
    ],
    "order_forward": [
-    "B0026IJ1IG",
+    "B005CYK4XC",
     "B00154P26C",
     "B09Y44NL4N",
-    "B01BMCLK2Q",
+    "B09S3G7RLY",
     "B08J2T8KGY",
     "B00RM4QZQK",
     "B00ZA9ZTLG",
@@ -4543,10 +4543,10 @@
     "B00ZA9ZTLG",
     "B00RM4QZQK",
     "B08J2T8KGY",
-    "B01BMCLK2Q",
+    "B09S3G7RLY",
     "B09Y44NL4N",
     "B00154P26C",
-    "B0026IJ1IG"
+    "B005CYK4XC"
    ],
    "cheapest_fit_price_s0": 8.47,
    "cheapest_fit_price_s1": 8.47,
@@ -4575,8 +4575,8 @@
      }
     },
     {
-     "product_id": "B0026IJ1IG",
-     "price": 19.5,
+     "product_id": "B005CYK4XC",
+     "price": 18.99,
      "slot": "A_mid",
      "need_line": "light_shade",
      "price_tier": "mid",
@@ -4589,8 +4589,8 @@
      }
     },
     {
-     "product_id": "B01BMCLK2Q",
-     "price": 39.95,
+     "product_id": "B09S3G7RLY",
+     "price": 33.01,
      "slot": "A_high",
      "need_line": "light_shade",
      "price_tier": "high",
@@ -4679,8 +4679,8 @@
     "B0BQNPX7KG",
     "B00154P26C",
     "B00ZA9ZTLG",
-    "B01BMCLK2Q",
-    "B0026IJ1IG",
+    "B09S3G7RLY",
+    "B005CYK4XC",
     "B001SZ1NUW",
     "B09Y44NL4N",
     "B08J2T8KGY"
@@ -4689,8 +4689,8 @@
     "B08J2T8KGY",
     "B09Y44NL4N",
     "B001SZ1NUW",
-    "B0026IJ1IG",
-    "B01BMCLK2Q",
+    "B005CYK4XC",
+    "B09S3G7RLY",
     "B00ZA9ZTLG",
     "B00154P26C",
     "B0BQNPX7KG"
@@ -6108,8 +6108,8 @@
      "identity_linked_product": false
     },
     {
-     "product_id": "B07RQ8WQ66",
-     "price": 21.95,
+     "product_id": "B08G33BTXG",
+     "price": 21.5,
      "slot": "fit_high",
      "fit_s0": true,
      "fit_s1": true,
@@ -6186,7 +6186,7 @@
     "B0C6G2H1SK",
     "B003LNGM3C",
     "B07Q41GYW8",
-    "B07RQ8WQ66",
+    "B08G33BTXG",
     "B07HNVHXCY",
     "B09TFY4B1Y",
     "B07NVXFT9N"
@@ -6195,7 +6195,7 @@
     "B07NVXFT9N",
     "B09TFY4B1Y",
     "B07HNVHXCY",
-    "B07RQ8WQ66",
+    "B08G33BTXG",
     "B07Q41GYW8",
     "B003LNGM3C",
     "B0C6G2H1SK",
@@ -6242,8 +6242,8 @@
      }
     },
     {
-     "product_id": "B07RQ8WQ66",
-     "price": 21.95,
+     "product_id": "B08G33BTXG",
+     "price": 21.5,
      "slot": "A_high",
      "price_tier": "high",
      "identity_axis": "gender_line",
@@ -6336,10 +6336,10 @@
     "B08TR1MKHD",
     "B07TNTLXN1",
     "B0C6G2H1SK",
-    "B07RQ8WQ66"
+    "B08G33BTXG"
    ],
    "order_reversed": [
-    "B07RQ8WQ66",
+    "B08G33BTXG",
     "B0C6G2H1SK",
     "B07TNTLXN1",
     "B08TR1MKHD",
@@ -7196,8 +7196,8 @@
      "identity_linked_product": false
     },
     {
-     "product_id": "B08TR1MKHD",
-     "price": 14.0,
+     "product_id": "B0721QN9SS",
+     "price": 16.02,
      "slot": "fit_mid",
      "fit_s0": true,
      "fit_s1": true,
@@ -7282,7 +7282,7 @@
     }
    ],
    "order_forward": [
-    "B08TR1MKHD",
+    "B0721QN9SS",
     "B07X4Q44WM",
     "B07L6TXZBN",
     "B07L6VPNCH",
@@ -7299,7 +7299,7 @@
     "B07L6VPNCH",
     "B07L6TXZBN",
     "B07X4Q44WM",
-    "B08TR1MKHD"
+    "B0721QN9SS"
    ],
    "cheapest_fit_price_s0": 8.4,
    "cheapest_fit_price_s1": 8.4,
@@ -7328,8 +7328,8 @@
      }
     },
     {
-     "product_id": "B08TR1MKHD",
-     "price": 14.0,
+     "product_id": "B0721QN9SS",
+     "price": 16.02,
      "slot": "A_mid",
      "price_tier": "mid",
      "identity_axis": "gender_line",
@@ -7430,7 +7430,7 @@
    ],
    "order_forward": [
     "B07L6VPNCH",
-    "B08TR1MKHD",
+    "B0721QN9SS",
     "B07L6TXZBN",
     "B07X4Q44WM",
     "B0CCYT6DSZ",
@@ -7445,7 +7445,7 @@
     "B0CCYT6DSZ",
     "B07X4Q44WM",
     "B07L6TXZBN",
-    "B08TR1MKHD",
+    "B0721QN9SS",
     "B07L6VPNCH"
    ]
   },
@@ -8610,8 +8610,8 @@
      "identity_linked_product": false
     },
     {
-     "product_id": "B078WKC8B4",
-     "price": 24.99,
+     "product_id": "B016IMVNEK",
+     "price": 22.95,
      "slot": "opposite",
      "fit_s0": false,
      "fit_s1": false,
@@ -8668,10 +8668,10 @@
     "B071YMK5Q5",
     "B0BB2F859L",
     "B091WPM37N",
-    "B078WKC8B4"
+    "B016IMVNEK"
    ],
    "order_reversed": [
-    "B078WKC8B4",
+    "B016IMVNEK",
     "B091WPM37N",
     "B0BB2F859L",
     "B071YMK5Q5",
@@ -8735,8 +8735,8 @@
      }
     },
     {
-     "product_id": "B078WKC8B4",
-     "price": 24.99,
+     "product_id": "B016IMVNEK",
+     "price": 22.95,
      "slot": "B_low",
      "need_line": "cast_iron_skillet",
      "price_tier": "low",
@@ -8813,14 +8813,14 @@
     "B0BB2F859L",
     "B00LJSF11A",
     "B08QN4BCCG",
-    "B078WKC8B4",
+    "B016IMVNEK",
     "B08Y6ZYGVG",
     "B091WPM37N"
    ],
    "order_reversed": [
     "B091WPM37N",
     "B08Y6ZYGVG",
-    "B078WKC8B4",
+    "B016IMVNEK",
     "B08QN4BCCG",
     "B00LJSF11A",
     "B0BB2F859L",

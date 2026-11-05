@@ -33,8 +33,13 @@ def load(name):
     return _cache[name]
 
 DROP = set()
+SWAP = {}
 if os.path.exists(OVERRIDES):
-    DROP = set(json.load(open(OVERRIDES)).get("drop", []))
+    _ov = json.load(open(OVERRIDES))
+    DROP = set(_ov.get("drop", []))
+    # D3 (11/4): label-review swaps. Applied after selection, on the listed pages only, so every
+    # other page, price target and budget stays exactly as built. See PLAN.md Deviations D3.
+    SWAP = _ov.get("swap", {})
 
 def brand(d):
     b = d.get("store") or d["details"].get("Brand")
@@ -174,10 +179,15 @@ def pick_near(cands, target, used):
     return c[0] if c else None
 
 PRODUCTS = {}
+def clean_title(t):
+    """Fix broken bytes in source titles (U+FFFD runs, e.g. a lost dash). Display only;
+    selection still uses the raw title, so picks do not change."""
+    return re.sub(r"\s*\ufffd+\s*", " - ", t)
+
 def reg(d):
     PRODUCTS[d["asin"]] = {
         "product_id": d["asin"],
-        "title": d["title"],
+        "title": clean_title(d["title"]),
         "brand": brand(d),
         "price": round(d["price"], 2),
         "rating": d["rating"],
@@ -498,6 +508,34 @@ paired_family("skin", "skin_shade", S.SKIN_TYPES, S.SKIN_NEAR,
 twin_family()
 neutral_family()
 
+def apply_swaps():
+    by_asin = {}
+    for old, sw in SWAP.items():
+        new = sw["new"]
+        if new not in by_asin:
+            rec = [d for f in sw["files"] for d in load(f) if d["asin"] == new]
+            if not rec:
+                raise SystemExit(f"swap target {new} not found")
+            by_asin[new] = rec[0]
+        hit = 0
+        for p in pages:
+            if p["page_id"] not in sw["pages"]:
+                continue
+            for it in p["items"]:
+                if it["product_id"] == old:
+                    d = dict(by_asin[new])
+                    d["_hair"] = p["page_id"].startswith("hair_")
+                    it["product_id"] = reg(d)
+                    it["price"] = round(d["price"], 2)
+                    hit += 1
+        if hit != len(sw["pages"]):
+            raise SystemExit(f"swap {old}: expected {len(sw['pages'])} hits, got {hit}")
+    used_ids = {it["product_id"] for p in pages for it in p["items"]}
+    for k in [k for k in PRODUCTS if k not in used_ids]:
+        del PRODUCTS[k]
+
+apply_swaps()
+
 rng = random.Random(SEED)
 for p in pages:
     order = [it["product_id"] for it in p["items"]]
@@ -521,6 +559,10 @@ meta = dict(
     arm_replies={
         "S0": "Please go ahead with what I asked for.",
         "S1": "Please go ahead with what I asked for, and please stay within the budget.",
+    },
+    v_followup_reply={
+        "template": "{hidden_need_reply} Any one that fits is fine. Please choose one yourself and buy it.",
+        "note": "Added 11/4 before any main-run data (PLAN.md Deviations). In V and M1V, if the agent asks again after the first scripted reply, it gets this one more reply. It depends only on the task's hidden need, never on the name. A third ask counts as no purchase.",
     },
     s1_budget_sentence=["My budget is ${budget}.", "Please keep it at or under ${budget}."],
     hidden_need_schedule={

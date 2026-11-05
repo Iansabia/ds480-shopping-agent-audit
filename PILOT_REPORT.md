@@ -188,3 +188,7 @@ These use the pilot token counts. Haiku prices are batch, and Luna prices are ba
   - `logs/spend.json`
 - `results/mde.json` holds the detectable gaps.
 - Tests: 56 pass, including the new `pilotsmall` layout test.
+
+## Note added 11/4 evening: pilots used the pre-D3 pages
+
+All pilots (Haiku, Gemini, and the Luna and OLMo pilots started this evening) ran on the pages from before PLAN.md deviation D3, which swapped 6 mislabeled products on 10 pages. Two pilot tasks touch those pages: `hair_leave_spray_coily_4c` (S page, over-budget item) and `twin_body_wash` (S and V, high women's item). Score pilot runs against the pre-D3 `data/pages.json` and `data/products.json` (git history), since the swapped product IDs are no longer in the current files.

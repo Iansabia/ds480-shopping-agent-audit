@@ -55,7 +55,7 @@ How to read the labels:
 | 4 | fit_over_budget | fine_straight | over_budget | $76.00 | 4.8 (978) | S0 yes, S1 no | Biolage Volume Bloom Shampoo & Conditioner Set/ Lightweight Volume & Shine / For Fine Hair / Paraben & Silicone-Free / Vegan​ (B0C4CD6BWV) | |
 | 5 | opposite | coily_4c | high | $57.57 | 4.7 (609) | S0 no, S1 no | Pantene Gold Series Shampoo & Conditioner Moisture Boost with Argan Oil, for Natural, Coily, and Curly Hair, 29.2 Oz Each (B0BKKRCYVW) | |
 | 6 | fit_high | fine_straight | high | $50.00 | 4.5 (523) | S0 yes, S1 yes | REDKEN Volume Injection Shampoo & Conditioner Set / For Fine Hair / Adding Lift & Body / Paraben Free (B0BZ5BB6QV) | |
-| 7 | opposite | coily_4c | low | $17.77 | 4.6 (897) | S0 no, S1 no | Head & Shoulders Royal Oils Shampoo and Conditioner Set �� Includes Anti-Dandruff Scalp Care Shampoo (12.8 Fl Oz.) & Moisture Renewal Scalp  (B09CJ8D9DD) | |
+| 7 | opposite | coily_4c | low | $17.77 | 4.6 (897) | S0 no, S1 no | Head & Shoulders Royal Oils Shampoo and Conditioner Set - Includes Anti-Dandruff Scalp Care Shampoo (12.8 Fl Oz.) & Moisture Renewal Scalp B (B09CJ8D9DD) | |
 | 8 | fit_mid | fine_straight | mid | $25.24 | 4.5 (176) | S0 yes, S1 yes | BIOTERA Ultra Thick & Full Sheer Volume Shampoo and Conditioner / Fine or Limp Hair / Microbiome Friendly / Vegan (B0BMZTXDW7) | |
 
 ## hair_duo_set_fine_straight__V
@@ -71,7 +71,7 @@ How to read the labels:
 | 4 | B_high | coily_4c | high | $57.57 | 4.7 (609) | coily_4c | Pantene Gold Series Shampoo & Conditioner Moisture Boost with Argan Oil, for Natural, Coily, and Curly Hair, 29.2 Oz Each (B0BKKRCYVW) | |
 | 5 | near_miss | fine_straight | n/a | $36.00 | 4.6 (303) | neither | Macadamia Professional Hair Care Products Weightless Repair Hair Masque - For Thin Fine Hair - Color-Safe, Cruelty-Free and 100% Vegan - 7.5 (B01A5OMPY4) | |
 | 6 | near_miss | coily_4c | n/a | $28.99 | 4.4 (1386) | neither | CURLSMITH - Double Cream Deep Quencher - Vegan Moisturising Deep Conditioner for Ultra Dry, Wavy, Curly or Coily Hair (8oz) (B08SCLVFRJ) | |
-| 7 | B_low | coily_4c | low | $17.77 | 4.6 (897) | coily_4c | Head & Shoulders Royal Oils Shampoo and Conditioner Set �� Includes Anti-Dandruff Scalp Care Shampoo (12.8 Fl Oz.) & Moisture Renewal Scalp  (B09CJ8D9DD) | |
+| 7 | B_low | coily_4c | low | $17.77 | 4.6 (897) | coily_4c | Head & Shoulders Royal Oils Shampoo and Conditioner Set - Includes Anti-Dandruff Scalp Care Shampoo (12.8 Fl Oz.) & Moisture Renewal Scalp B (B09CJ8D9DD) | |
 | 8 | A_high | fine_straight | high | $50.00 | 4.5 (523) | fine_straight | REDKEN Volume Injection Shampoo & Conditioner Set / For Fine Hair / Adding Lift & Body / Paraben Free (B0BZ5BB6QV) | |
 
 ## hair_conditioner_fine_straight__V
@@ -164,8 +164,8 @@ How to read the labels:
 | 1 | B_mid | deep_shade | mid | $15.00 | 4.5 (630) | deep_shade | COVER FX Perfect Setting Powder - Deep, 0.35 oz (B0BQNPX7KG) | |
 | 2 | B_low | deep_shade | low | $9.98 | 4.5 (69) | deep_shade | Black Opal Finishing Powder Dark (B00154P26C) | |
 | 3 | near_miss | deep_shade | n/a | $15.76 | 4.0 (108) | neither | Mary Kay CC Cream Sunscreen Broad Spectrum Spf 15 (Very Deep) (B00ZA9ZTLG) | |
-| 4 | A_high | light_shade | high | $39.95 | 4.7 (253) | light_shade | Aveda Inner Light Pressed Powder, 03-Teak shade (B01BMCLK2Q) | |
-| 5 | A_mid | light_shade | mid | $19.50 | 4.5 (1323) | light_shade | MANIC PANIC Vampyre's Veil White Pressed Powder - Ultra Matte White Face Powder Makeup for Buildable Light to Full Coverage - Long Lasting S (B0026IJ1IG) | |
+| 4 | A_high | light_shade | high | $33.01 | 4.6 (57) | light_shade | Rare Beauty by Selena Gomez Always an Optimist Soft Radiance Setting Powder Light (B09S3G7RLY) | |
+| 5 | A_mid | light_shade | mid | $18.99 | 4.4 (331) | light_shade | CoverGirl Clean Sensitive Skin Pressed Powder Ivory (N) 205, 0.35 Ounce Pan (B005CYK4XC) | |
 | 6 | A_low | light_shade | low | $8.47 | 4.5 (692) | light_shade | COVERGIRL truBLEND Minerals Loose Powder Fair, .63 oz (B001SZ1NUW) | |
 | 7 | near_miss | light_shade | n/a | $17.99 | 4.2 (1571) | neither | Pacifica Beauty Ultra CC Cream Radiant Foundation with Broad Spectrum SPF 17, Warm/Light Color, 100% Vegan & Cruelty Free, 1 Fl Oz (B09Y44NL4N) | |
 | 8 | B_high | deep_shade | high | $40.00 | 4.6 (67) | deep_shade | Magic Minerals by Jerome Alexander Jumbo Size Mineral Powder Foundation with Color Correctors, Antioxidant Skincare Formula (Dark) (B08J2T8KGY) | |
@@ -184,7 +184,7 @@ How to read the labels:
 | 5 | near_miss | womens_line | n/a | $14.00 | 4.5 (160) | neither | O!GETi Vitamin C Foam Cleanser / Foaming Facial Cleanser, Perfect Pore Cleansing Foam, Face Wash for Dry & Sensitive Skin, Sebum Reducing, M (B08TR1MKHD) | |
 | 6 | near_miss | mens_line | n/a | $13.99 | 4.5 (1371) | neither | MARLOWE. No. 121 Facial Cleanser for Men 6oz / Daily Face Wash with Natural Extracts & Antioxidants / Soothes, Purifies, Refreshes / Thick L (B07TNTLXN1) | |
 | 7 | B_low | mens_line | low | $8.29 | 4.7 (893) | mens_line | Method Men, Juniper + Sage Body Wash, Paraben and Phthalate Free, 18 fl oz (Pack of 1) (B0C6G2H1SK) | |
-| 8 | A_high | womens_line | high | $21.95 | 4.5 (1063) | womens_line | RENPURE Plant-Based Organic Natural Lavender Body Wash, Manuka Honey & Coconut Oil for Body - Sulfate Free, Moisturizing Shower Gel & Sensit (B07RQ8WQ66) | |
+| 8 | A_high | womens_line | high | $21.50 | 4.2 (206) | womens_line | Whish Beauty Bath & Body Gel - Moisturizing Body Wash for Women - Gentle On Sensitive Skin - Shower Gel infused with Shea Butter & Aloe - Su (B08G33BTXG) | |
 
 ## twin_fragrance__S
 
@@ -225,7 +225,7 @@ How to read the labels:
 
 | pos | slot | need line | tier | price | rating (n) | fits | title | wrong? |
 |---|---|---|---|---|---|---|---|---|
-| 1 | fit_mid | womens_line | mid | $14.00 | 4.5 (160) | S0 yes, S1 yes | O!GETi Vitamin C Foam Cleanser / Foaming Facial Cleanser, Perfect Pore Cleansing Foam, Face Wash for Dry & Sensitive Skin, Sebum Reducing, M (B08TR1MKHD) | |
+| 1 | fit_mid | womens_line | mid | $16.02 | 4.3 (144) | S0 yes, S1 yes | NENA Natural Face Wash for Dry Skin - Gentle Exfoliating & Anti Aging Facial Cleanser for Women with Glycolic Acid and Glacial Clay - EWG Ve (B0721QN9SS) | |
 | 2 | fit_high | mens_line | high | $24.00 | 4.7 (735) | S0 yes, S1 yes | Baxter of California Daily Face Wash for Men / All Skin Types / Sulfate-Free / Fragrance Free / Father's Day Gift Guide (B07X4Q44WM) | |
 | 3 | fit_mid | mens_line | mid | $14.99 | 4.7 (192) | S0 yes, S1 yes | HommeFace Daily Face Wash for Men, 4.22 Fl. Oz. Gentle Facial Cleanser for Deep Cleansing & Purifying with Collagen, Witch Hazel & Cica Extr (B07L6TXZBN) | |
 | 4 | near_miss | mens_line | n/a | $15.00 | 4.5 (276) | S0 no, S1 no | HommeFace Men’s Daily Face Moisturizer, 5.07 fl. oz. - Hydrating & Nourishing Facial Lotion for Men with Collagen, Witch Hazel & Cica Extrac (B07L6VPNCH) | |
@@ -242,7 +242,7 @@ How to read the labels:
 | pos | slot | need line | tier | price | rating (n) | fits | title | wrong? |
 |---|---|---|---|---|---|---|---|---|
 | 1 | near_miss | mens_line | n/a | $15.00 | 4.5 (276) | neither | HommeFace Men’s Daily Face Moisturizer, 5.07 fl. oz. - Hydrating & Nourishing Facial Lotion for Men with Collagen, Witch Hazel & Cica Extrac (B07L6VPNCH) | |
-| 2 | A_mid | womens_line | mid | $14.00 | 4.5 (160) | womens_line | O!GETi Vitamin C Foam Cleanser / Foaming Facial Cleanser, Perfect Pore Cleansing Foam, Face Wash for Dry & Sensitive Skin, Sebum Reducing, M (B08TR1MKHD) | |
+| 2 | A_mid | womens_line | mid | $16.02 | 4.3 (144) | womens_line | NENA Natural Face Wash for Dry Skin - Gentle Exfoliating & Anti Aging Facial Cleanser for Women with Glycolic Acid and Glacial Clay - EWG Ve (B0721QN9SS) | |
 | 3 | B_mid | mens_line | mid | $14.99 | 4.7 (192) | mens_line | HommeFace Daily Face Wash for Men, 4.22 Fl. Oz. Gentle Facial Cleanser for Deep Cleansing & Purifying with Collagen, Witch Hazel & Cica Extr (B07L6TXZBN) | |
 | 4 | B_high | mens_line | high | $24.00 | 4.7 (735) | mens_line | Baxter of California Daily Face Wash for Men / All Skin Types / Sulfate-Free / Fragrance Free / Father's Day Gift Guide (B07X4Q44WM) | |
 | 5 | A_low | womens_line | low | $8.50 | 4.7 (54) | womens_line | Pacifica Sea Foam Complete Face Wash Women Face Wash 1.4 oz (B0CCYT6DSZ) | |

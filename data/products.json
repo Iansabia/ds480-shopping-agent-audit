@@ -644,20 +644,6 @@
    ],
    "source_file": "Beauty_and_Personal_Care"
   },
-  "B08SQ67ZBB": {
-   "product_id": "B08SQ67ZBB",
-   "title": "Strands of Faith Miracle 3-in-1 Clay Wash | Detox, Detangle, and Cleanse | Dry or Damaged Natural Hair to Healthy Hydrated Moisturized Hair | Formulated for Kinky, Coily, Curly Types | 8oz",
-   "brand": "Strands of Faith",
-   "price": 29.0,
-   "rating": 4.3,
-   "rating_count": 46,
-   "attributes": [
-    "\ud83d\udc9a CLEANSE & DETOX FROM THE ENVIRONMENT: This strands of faith miracle 3-n-1 clay wash was specifically formulated for all hair types in need of a thor",
-    "\ud83d\udc9a NATURAL HANDMADE CLAY WASH: The DIY clay mixers, this ready-made handmade natural clay wash will make you feel as if you made it yourself minus the ",
-    "\ud83d\udc9a INCLUDING ESSENTIAL OILS: The strands of faith miracle 3-in-1 clay wash made from natural ingredients featuring Rhassoul bentonite and kaolin clays "
-   ],
-   "source_file": "Beauty_and_Personal_Care"
-  },
   "B09FZNR97W": {
    "product_id": "B09FZNR97W",
    "title": "John Frieda Volume Lift Thickening Spray for Natural Fullness, 6 Ounces, Fine or Flat Hair Root Booster Spray with Air-Silk Technology",
@@ -1131,7 +1117,7 @@
   },
   "B09CJ8D9DD": {
    "product_id": "B09CJ8D9DD",
-   "title": "Head & Shoulders Royal Oils Shampoo and Conditioner Set \ufffd\ufffd Includes Anti-Dandruff Scalp Care Shampoo (12.8 Fl Oz.) & Moisture Renewal Scalp Balancing Conditioner, Hair Treatment for Curly & Coily Hair",
+   "title": "Head & Shoulders Royal Oils Shampoo and Conditioner Set - Includes Anti-Dandruff Scalp Care Shampoo (12.8 Fl Oz.) & Moisture Renewal Scalp Balancing Conditioner, Hair Treatment for Curly & Coily Hair",
    "brand": "Head & Shoulders",
    "price": 17.77,
    "rating": 4.6,
@@ -1712,34 +1698,6 @@
    ],
    "source_file": "Beauty_and_Personal_Care"
   },
-  "B0026IJ1IG": {
-   "product_id": "B0026IJ1IG",
-   "title": "MANIC PANIC Vampyre's Veil White Pressed Powder - Ultra Matte White Face Powder Makeup for Buildable Light to Full Coverage - Long Lasting Setting Powder for Makeup - With Mirror & Applicator (2.4oz)",
-   "brand": "MANIC PANIC",
-   "price": 19.5,
-   "rating": 4.5,
-   "rating_count": 1323,
-   "attributes": [
-    "Stark White Pressed Face Makeup Powder; For Those Who Prefer A Whiter Shade Of Pale Pressed Powder; Compact Has Two Levels One Compartment With A Mirr",
-    "Buildable Light To Full Coverage; Can Be Used For Light Coverage Or Buildable To Full Coverage In An Ultra Matte Finish",
-    "White Setting Powder; Use To Set Liquid Or Cream Foundation For A Long Lasting Flawless Finish"
-   ],
-   "source_file": "Beauty_and_Personal_Care"
-  },
-  "B01BMCLK2Q": {
-   "product_id": "B01BMCLK2Q",
-   "title": "Aveda Inner Light Pressed Powder, 03-Teak shade",
-   "brand": "Aveda",
-   "price": 39.95,
-   "rating": 4.7,
-   "rating_count": 253,
-   "attributes": [
-    "Darkest shade in the range and is perfect for deeper skin tones",
-    "Leave your skin soft to touch",
-    "Shine free in an instant"
-   ],
-   "source_file": "Beauty_and_Personal_Care"
-  },
   "B00RM4QZQK": {
    "product_id": "B00RM4QZQK",
    "title": "Colorescience Brush-On Sunscreen Mineral Powder for Sensitive Skin, Fair 1 Count (Pack of 1)",
@@ -2311,18 +2269,6 @@
     "A unique body wash with a blend of baobab, avocado, sweet almond and chia seed oils nourish and soften the skin while promoting skin rejuvenation",
     "Natural oil blend shower gel moisturizes and enhances the cleansing experience",
     "Enjoy a bath Infused with a delicate, clean and uplifting scent to awaken the senses and enhance the daily experience"
-   ],
-   "source_file": "Beauty_and_Personal_Care"
-  },
-  "B07RQ8WQ66": {
-   "product_id": "B07RQ8WQ66",
-   "title": "RENPURE Plant-Based Organic Natural Lavender Body Wash, Manuka Honey & Coconut Oil for Body \u2013 Sulfate Free, Moisturizing Shower Gel & Sensitive Skin Body Wash with Pump for Women, 19 Ounce",
-   "brand": "RENPURE",
-   "price": 21.95,
-   "rating": 4.5,
-   "rating_count": 1063,
-   "attributes": [
-    "Body Wash: Cleanse, escape and relax with our Lavender and Honey Body Wash to gently remove oils, dirt and impurities without stripping your skin of t"
    ],
    "source_file": "Beauty_and_Personal_Care"
   },
@@ -3396,20 +3342,6 @@
    ],
    "source_file": "Home_and_Kitchen_first1200k"
   },
-  "B078WKC8B4": {
-   "product_id": "B078WKC8B4",
-   "title": "MANNKITCHEN Professional Grade Stainless Steel Spatula Perfect for Cast Iron Skillets and Flat Top Grills",
-   "brand": "MANNKITCHEN",
-   "price": 24.99,
-   "rating": 4.7,
-   "rating_count": 2361,
-   "attributes": [
-    "Hardened Stainless Steel For Even Cast Iron Skillet Surface Leveling",
-    "Precision Beveled Straight Edge for Optimal Food Release",
-    "Comfortable Heat Resistant Single Piece Hardwood Handle"
-   ],
-   "source_file": "Home_and_Kitchen_first1200k"
-  },
   "B08QN4BCCG": {
    "product_id": "B08QN4BCCG",
    "title": "EDGING CASTING Pre-Seasoned Cast Iron Skillet,Seasoned Large 15\" Dual Handle Frying Pan, Cast Iron Pan for Bread, Baking,Pizza, Outdoor Cooking, Camping, Grill, Stovetop, Oven Safe Cookware",
@@ -4451,6 +4383,84 @@
     "4 Push Button Functions: Defrost toasts frozen bread longer to ensure consistent results; Reheat allows for reheating toast so it warms without added "
    ],
    "source_file": "Home_and_Kitchen_first1200k"
+  },
+  "B09S3G7RLY": {
+   "product_id": "B09S3G7RLY",
+   "title": "Rare Beauty by Selena Gomez Always an Optimist Soft Radiance Setting Powder Light",
+   "brand": "Rare Beauty",
+   "price": 33.01,
+   "rating": 4.6,
+   "rating_count": 57,
+   "attributes": [],
+   "source_file": "Beauty_and_Personal_Care"
+  },
+  "B005CYK4XC": {
+   "product_id": "B005CYK4XC",
+   "title": "CoverGirl Clean Sensitive Skin Pressed Powder Ivory (N) 205, 0.35 Ounce Pan",
+   "brand": "COVERGIRL",
+   "price": 18.99,
+   "rating": 4.4,
+   "rating_count": 331,
+   "attributes": [
+    "100% Fragrance-Free and Oil-Free",
+    "Safe for Sensitive Skin",
+    "Hypoallergenic"
+   ],
+   "source_file": "Beauty_and_Personal_Care"
+  },
+  "B08LJZWV1G": {
+   "product_id": "B08LJZWV1G",
+   "title": "Mizani Style Shifter Society Coco Dew Curl (P)restyling Spray | 2-in-1 Moisturizing Styling Spray | For Textured, Curly and Coily Hair | 6.8 Fl. Oz",
+   "brand": "Mizani",
+   "price": 25.0,
+   "rating": 4.5,
+   "rating_count": 717,
+   "attributes": [
+    "Hair type: Oily, Curly"
+   ],
+   "source_file": "Beauty_and_Personal_Care"
+  },
+  "B016IMVNEK": {
+   "product_id": "B016IMVNEK",
+   "title": "Home-Complete Pre-Seasoned Cast Iron Skillet-12 inch for Home, Camping Indoor and Outdoor Cooking, Frying, Searing and Baking, 12\", Black",
+   "brand": "Home-Complete",
+   "price": 22.95,
+   "rating": 4.6,
+   "rating_count": 3290,
+   "attributes": [
+    "Cook your best food ever! Forget all those non-stick flimsy pans you have in your cabinets Use cast iron to cook with instead! It makes a world of dif",
+    "Taste the way food was meant to be made! Cast iron is preferred by gourmet chefs around the world and its always used by those who demand perfection",
+    "Fast (pre-seasoned coating) even heating high heat No problem! An important part of cooking is controlling the temperature of the cooking surface Cast"
+   ],
+   "source_file": "Home_and_Kitchen_first1200k"
+  },
+  "B0721QN9SS": {
+   "product_id": "B0721QN9SS",
+   "title": "NENA Natural Face Wash for Dry Skin - Gentle Exfoliating & Anti Aging Facial Cleanser for Women with Glycolic Acid and Glacial Clay - EWG Verified - 3.5 oz.",
+   "brand": "NENA",
+   "price": 16.02,
+   "rating": 4.3,
+   "rating_count": 144,
+   "attributes": [
+    "GENTLY CLEANSES SKIN: Glacial Oceanic Clay effectively removes makeup, dead skin cells and environmental pollutants.",
+    "RESTORES RADIANCE: Natural anti-oxidant rich botanical extracts help promote skin cell renewal, leaving the skin soft and glowing.",
+    "RICH IN OVER 60 MINERALS: Made with Glacial Mineral Water and Glacial Oceanic Clay rich in over 60 minerals and rare earth elements beneficial to the "
+   ],
+   "source_file": "Beauty_and_Personal_Care"
+  },
+  "B08G33BTXG": {
+   "product_id": "B08G33BTXG",
+   "title": "Whish Beauty Bath & Body Gel - Moisturizing Body Wash for Women - Gentle On Sensitive Skin - Shower Gel infused with Shea Butter & Aloe - Sulfate & Paraben Free - Lemongrass - 13 fl oz",
+   "brand": "Whish",
+   "price": 21.5,
+   "rating": 4.2,
+   "rating_count": 206,
+   "attributes": [
+    "Not Your Ordinary Body Wash: Quench thirsty skin with our super moisturizing bath & body gel. Free from skin-drying sulfates and dyes, our women body ",
+    "Gentle On Sensitive Skin: Our sensitive skin body wash is full of natural, skin-loving ingredients that are gentle on all skin types. We've conjured u",
+    "Bright & Citrusy Lemongrass: Bursting with bright citrus and fresh undertones, completely immerse your bath or shower with this clean, invigorating sc"
+   ],
+   "source_file": "Beauty_and_Personal_Care"
   }
  }
 }
