@@ -1,0 +1,5 @@
+haiku: 250 guesses to run (0 already done)
+{"model": "haiku", "ok": 146, "refusal": 104, "reask": 1}
+haiku: 95 guesses to run (5 already done)
+{"model": "haiku", "ok": 68, "refusal": 27, "reask": 1}
+DONE

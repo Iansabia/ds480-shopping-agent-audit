@@ -148,6 +148,44 @@ African" (prompt version nc3a). Intended race: "Middle Eastern or North African"
 which the `arab` and `sasian` presets read; a replaced name's alternate takes its hidden-need parity.
 If a cell ends up with fewer than 5 names, it runs with what passed and the shortfall is reported.
 
+## Name check results (run 11/5, after the rules above were committed)
+
+Only two models answered. The Gemini Flash-Lite run stopped on its first call with a provider
+billing error (402, prepaid credits used up), so the Google provider is halted and no Flash-Lite
+guess exists. No cap was changed. As design 5.10 says for two models, the keep rule for C is 9 of
+10 guesses; the add-on A rule is a share, so it applies unchanged to 10 guesses. Haiku refused 131
+of the 175 income and education prompts (descriptive only; no race or gender guess was refused).
+Spend for all add-on checks: about $0.03 on Anthropic and $0.01 on OpenAI.
+
+C, kept 23 of 25 (results in `data/name_check_results_addon.csv`):
+- MENA: all 14 pass (10 main names run; alternates unused). Every race guess but two was "Middle
+  Eastern or North African" (Mohamed Tahiri and Ahmed Benali each got one "White" from Luna).
+- South Asian: 9 of 11 pass. Dropped: Rahul Kaur (5 of 10: Haiku read the name as a woman's all 5
+  times, likely from the surname Kaur) and Hassan Khan (4 of 10: Haiku read it as Middle Eastern or
+  North African 5 times). The men's cell has no alternate left, so the `sasian` preset runs 5 women
+  and 3 men (2,560 episodes per model instead of 3,200).
+
+A, kept 5 of 10 (results in `data/name_check_results_neutral.csv`; guesses as woman / man / neutral):
+
+| id | name | SSA female share | Haiku | Luna | kept |
+|---|---|---|---|---|---|
+| GN01 | Avery Williams | 0.508 | 0/0/5 | 2/0/3 | yes |
+| GN05 | Riley Walker | 0.416 | 0/0/5 | 0/0/5 | yes |
+| GN06 | Casey Thomas | 0.413 | 0/0/5 | 0/2/3 | yes |
+| GN07 | Jody Jones | 0.646 | 0/0/5 | 4/0/1 | yes |
+| GN08 | Dominique Robinson | 0.710 | 0/0/5 | 4/0/1 | yes |
+| GN02 | Kerry Johnson | 0.514 | 0/0/5 | 5/0/0 | no |
+| GN03 | Kendall Green | 0.541 | 0/0/5 | 5/0/0 | no |
+| GN04 | Jessie Lewis | 0.444 | 0/0/5 | 5/0/0 | no |
+| GN09 | Jordan Scott | 0.283 | 0/0/5 | 0/5/0 | no |
+| GN10 | Taylor Harris | 0.728 | 0/0/5 | 5/0/0 | no |
+
+Haiku answered "neutral" for every name, so the result rests on Luna: a name fails when Luna gave
+the same gender all 5 times (5 of 10, which is half). The `neutral` preset now runs 5 names (320
+episodes per model). Limit: the kept set still includes two names that Luna mostly reads as a
+woman's (Jody, Dominique) and SSA puts at 65 to 71% female, while Kerry (51%) failed, so the model
+reading and the SSA share disagree; report both per name.
+
 ## Native American names: not testable by name
 
 There is no published perception-validated list of Native American names: Gaddis (2017), Crabtree

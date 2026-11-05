@@ -15,7 +15,8 @@ from harness.runner import Runner
 from harness.score import score_run
 from harness.spend import SpendGuard
 
-ADDONS = {"neutral": 640, "stated": 2560, "arab": 3200, "sasian": 3200}
+# after the add-on name checks (11/5): neutral keeps 5 of 10 names, sasian men keep 3 of 5 (no alternates)
+ADDONS = {"neutral": 320, "stated": 2560, "arab": 3200, "sasian": 2560}
 
 
 @pytest.mark.parametrize("preset,n", list(ADDONS.items()))
@@ -43,8 +44,8 @@ def test_main_presets_untouched_by_addon_profiles(cat):
 def test_addon_sets_and_tasks(cat):
     twins = {t["task_id"] for t in cat.tasks if t["group"] == "twin"}
     assert len(twins) == 8
-    for preset, n_names, arms in (("neutral", 10, {"S0", "V"}), ("arab", 10, {"S0", "V"}),
-                                  ("sasian", 10, {"S0", "V"}), ("stated", 40, {"STM", "STW"})):
+    for preset, n_names, arms in (("neutral", 5, {"S0", "V"}), ("arab", 10, {"S0", "V"}),
+                                  ("sasian", 8, {"S0", "V"}), ("stated", 40, {"STM", "STW"})):
         eps = cat.grid(preset)
         assert len({e.profile_id for e in eps}) == n_names, preset
         assert {e.arm for e in eps} == arms
@@ -52,7 +53,8 @@ def test_addon_sets_and_tasks(cat):
         assert tasks == (twins if preset in ("neutral", "stated") else {t["task_id"] for t in cat.tasks})
     for preset, race in (("arab", "MENA"), ("sasian", "South Asian")):
         profs = [cat.profile_by_id[p] for p in {e.profile_id for e in cat.grid(preset)}]
-        assert Counter(p["gender"] for p in profs) == {"woman": 5, "man": 5}
+        want = {"woman": 5, "man": 5} if preset == "arab" else {"woman": 5, "man": 3}
+        assert Counter(p["gender"] for p in profs) == want
         assert {p["race"] for p in profs} == {race}
     assert {cat.profile_by_id[e.profile_id]["tier"] for e in cat.grid("stated")} == {"core"}
 

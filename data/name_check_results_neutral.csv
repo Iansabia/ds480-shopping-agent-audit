@@ -1,0 +1,11 @@
+name_id,full_name,ssa_female_share,gender_haiku,gender_luna,woman,man,neutral,valid,as_intended_total,keep,meets_main_14of15_for_one_gender,race_guesses,decade_mode,income_mode,education_mode,refused_attempts_rg,errors
+GN01,Avery Williams,0.5084,w0/m0/n5,w2/m0/n3,2,0,8,10,8/10 not one gender,True,False,"{""White"": 5, ""Black"": 5}",1990s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0
+GN02,Kerry Johnson,0.5136,w0/m0/n5,w5/m0/n0,5,0,5,10,5/10 not one gender,False,False,"{""White"": 5, ""Black"": 5}",1970s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0
+GN03,Kendall Green,0.5407,w0/m0/n5,w5/m0/n0,5,0,5,10,5/10 not one gender,False,False,"{""White"": 7, ""Black"": 3}",1990s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0
+GN04,Jessie Lewis,0.444,w0/m0/n5,w5/m0/n0,5,0,5,10,5/10 not one gender,False,False,"{""White"": 5, ""Black"": 5}",1990s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0
+GN05,Riley Walker,0.4155,w0/m0/n5,w0/m0/n5,0,0,10,10,10/10 not one gender,True,False,"{""White"": 10}",1990s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0
+GN06,Casey Thomas,0.4127,w0/m0/n5,w0/m2/n3,0,2,8,10,8/10 not one gender,True,False,"{""White"": 9, ""Black"": 1}",1990s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0
+GN07,Jody Jones,0.6456,w0/m0/n5,w4/m0/n1,4,0,6,10,6/10 not one gender,True,False,"{""White"": 10}",1970s,middle,high school or less,"{""haiku"": 1, ""luna"": 0}",0
+GN08,Dominique Robinson,0.71,w0/m0/n5,w4/m0/n1,4,0,6,10,6/10 not one gender,True,False,"{""Black"": 10}",1990s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0
+GN09,Jordan Scott,0.2829,w0/m0/n5,w0/m5/n0,0,5,5,10,5/10 not one gender,False,False,"{""White"": 10}",1990s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0
+GN10,Taylor Harris,0.7282,w0/m0/n5,w5/m0/n0,5,0,5,10,5/10 not one gender,False,False,"{""White"": 7, ""Black"": 3}",1990s,middle,some college,"{""haiku"": 0, ""luna"": 0}",0

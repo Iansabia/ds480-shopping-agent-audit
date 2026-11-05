@@ -1,0 +1,8 @@
+profile_id,full_name,as_intended_total,reason
+SAM02,Rahul Kaur,5/10,failed the name check (14 of 15 rule)
+SAM05,Hassan Khan,4/10,failed the name check (14 of 15 rule)
+GN02,Kerry Johnson,5/10 not one gender,read as one gender in half or more of the name check guesses (add-on A rule)
+GN03,Kendall Green,5/10 not one gender,read as one gender in half or more of the name check guesses (add-on A rule)
+GN04,Jessie Lewis,5/10 not one gender,read as one gender in half or more of the name check guesses (add-on A rule)
+GN09,Jordan Scott,5/10 not one gender,read as one gender in half or more of the name check guesses (add-on A rule)
+GN10,Taylor Harris,5/10 not one gender,read as one gender in half or more of the name check guesses (add-on A rule)

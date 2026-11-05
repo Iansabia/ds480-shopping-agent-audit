@@ -4,40 +4,19 @@
     "anthropic": {
       "by_model": {
         "haiku": {
-          "calls": 66640,
-          "spent_usd": 11.05160285
+          "calls": 66829,
+          "spent_usd": 11.06478965
         }
       },
-      "calls": 66640,
+      "calls": 66829,
       "cap_usd": 15.0,
       "halted": false,
       "halted_reason": null,
-      "input_tokens": 188152394,
-      "notional_usd": 11.05160285,
-      "output_tokens": 6218009,
-      "reservations": {
-        "55f6c96d6ccc": {
-          "label": "call:namecheck_haiku",
-          "t": 1793885203.6846,
-          "usd": 0.0001267
-        },
-        "5e3b21dd7250": {
-          "label": "call:namecheck_haiku",
-          "t": 1793885205.2569442,
-          "usd": 0.0001264
-        },
-        "81634fd5dcf4": {
-          "label": "call:namecheck_haiku",
-          "t": 1793885205.1108322,
-          "usd": 0.0001267
-        },
-        "b05564590e15": {
-          "label": "call:namecheck_haiku",
-          "t": 1793885204.3676941,
-          "usd": 0.0001267
-        }
-      },
-      "spent_usd": 11.05160285
+      "input_tokens": 188204582,
+      "notional_usd": 11.06478965,
+      "output_tokens": 6233945,
+      "reservations": {},
+      "spent_usd": 11.06478965
     },
     "google": {
       "by_model": {
@@ -77,27 +56,21 @@
     "openai": {
       "by_model": {
         "luna": {
-          "calls": 50427,
-          "spent_usd": 4.0133404
+          "calls": 50767,
+          "spent_usd": 4.0235404
         }
       },
-      "calls": 50427,
+      "calls": 50767,
       "cap_usd": 10.0,
       "halted": false,
       "halted_at": "2026-11-04T15:10:33-0500",
       "halted_reason": null,
-      "input_tokens": 72952454,
-      "notional_usd": 4.0133404,
-      "output_tokens": 1440539,
-      "reservations": {
-        "1db9f08c4f31": {
-          "label": "call:namecheck_luna",
-          "t": 1793885200.929791,
-          "usd": 0.0001208
-        }
-      },
-      "spent_usd": 4.0133404
+      "input_tokens": 73021534,
+      "notional_usd": 4.0235404,
+      "output_tokens": 1447123,
+      "reservations": {},
+      "spent_usd": 4.0235404
     }
   },
-  "updated": "2026-11-05T08:26:45-0500"
+  "updated": "2026-11-05T09:03:29-0500"
 }
