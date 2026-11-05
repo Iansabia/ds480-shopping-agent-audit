@@ -1,0 +1,25 @@
+{
+  "run": "planted_luna",
+  "created": "2026-11-05T05:21:53.981-05:00",
+  "preset": "planted",
+  "provider": "openai",
+  "model_key": "luna",
+  "model_requested": "gpt-6-luna",
+  "settings": {
+    "reasoning_effort": "none",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "parallel_tool_calls": false,
+    "store": false,
+    "service_tier": "flex",
+    "max_output_tokens": 512
+  },
+  "mode": "flex",
+  "n_episodes": 800,
+  "max_output_tokens": 512,
+  "git_commit": "47c58f4348357304fa463af76eb597baa9e4e1aa",
+  "episode_ids_sha256": "c3b3f1c003c4b8b9c9a47cc153a3a715a8dae1fc19a41ebe4665af1b08951f0e",
+  "ask_protocol": "v_followup_1",
+  "limit": null,
+  "tool_choice": "required"
+}
