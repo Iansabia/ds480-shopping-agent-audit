@@ -4,19 +4,40 @@
     "anthropic": {
       "by_model": {
         "haiku": {
-          "calls": 66477,
-          "spent_usd": 11.03817125
+          "calls": 66640,
+          "spent_usd": 11.05160285
         }
       },
-      "calls": 66477,
+      "calls": 66640,
       "cap_usd": 15.0,
       "halted": false,
       "halted_reason": null,
-      "input_tokens": 188106833,
-      "notional_usd": 11.03817125,
-      "output_tokens": 6200258,
-      "reservations": {},
-      "spent_usd": 11.03817125
+      "input_tokens": 188152394,
+      "notional_usd": 11.05160285,
+      "output_tokens": 6218009,
+      "reservations": {
+        "55f6c96d6ccc": {
+          "label": "call:namecheck_haiku",
+          "t": 1793885203.6846,
+          "usd": 0.0001267
+        },
+        "5e3b21dd7250": {
+          "label": "call:namecheck_haiku",
+          "t": 1793885205.2569442,
+          "usd": 0.0001264
+        },
+        "81634fd5dcf4": {
+          "label": "call:namecheck_haiku",
+          "t": 1793885205.1108322,
+          "usd": 0.0001267
+        },
+        "b05564590e15": {
+          "label": "call:namecheck_haiku",
+          "t": 1793885204.3676941,
+          "usd": 0.0001267
+        }
+      },
+      "spent_usd": 11.05160285
     },
     "google": {
       "by_model": {
@@ -27,8 +48,9 @@
       },
       "calls": 11375,
       "cap_usd": 2.4,
-      "halted": false,
-      "halted_reason": null,
+      "halted": true,
+      "halted_at": "2026-11-05T08:25:41-0500",
+      "halted_reason": "billing/credit error in name check: 402 RESOURCE_EXHAUSTED. {'error': {'code': 402, 'message': 'Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. ', 'status': 'RESOURCE_EXHAUSTED'}}",
       "input_tokens": 17039378,
       "notional_usd": 3.33985325,
       "output_tokens": 573226,
@@ -55,21 +77,27 @@
     "openai": {
       "by_model": {
         "luna": {
-          "calls": 50417,
-          "spent_usd": 4.0130324
+          "calls": 50427,
+          "spent_usd": 4.0133404
         }
       },
-      "calls": 50417,
+      "calls": 50427,
       "cap_usd": 10.0,
       "halted": false,
       "halted_at": "2026-11-04T15:10:33-0500",
       "halted_reason": null,
-      "input_tokens": 72950399,
-      "notional_usd": 4.0130324,
-      "output_tokens": 1440334,
-      "reservations": {},
-      "spent_usd": 4.0130324
+      "input_tokens": 72952454,
+      "notional_usd": 4.0133404,
+      "output_tokens": 1440539,
+      "reservations": {
+        "1db9f08c4f31": {
+          "label": "call:namecheck_luna",
+          "t": 1793885200.929791,
+          "usd": 0.0001208
+        }
+      },
+      "spent_usd": 4.0133404
     }
   },
-  "updated": "2026-11-05T06:16:26-0500"
+  "updated": "2026-11-05T08:26:45-0500"
 }
