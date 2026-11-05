@@ -209,3 +209,11 @@ Written by `analyze.py figures` to `results/figures/`, each with a CSV of the pl
   - All replacements come from the same source file and the same builder pool as the old item, and none was on any page before. The rebuild changed only these 14 pages and the product list; every other page, every task and the build gap list came out identical. All S1 fits stay at or under budget and every over-budget item stays above it.
 - **Not changed.** Winky Lux White Tea tint (flagged in the 20-page review): its full title ends "Deep", so the deep label is right; the checkers saw a cut-off title. Teami face wash (`twin_face_wash` high women's slot): its bullets are unisex and "for Women" is a title keyword, but the builder pool has no other women's face wash between $18 and $30, so there is nothing to swap in under the $30 budget (the one relaxed-pool item, Tru Alchemy at $29.99, has the same keyword-only "for Women"). Beauty For Real MVP tinted moisturizer and concealer (`skin_concealer_deep_shade__S`, over budget): the pool has no plain deep concealer clearly over the $30 budget (the only one above $30 is EVE PEARL Dual Salmon at $31.50, a color-correcting duo just 5% over), so it stays; its title does say "Concealer" and "Deep 1".
 - **Timing.** Decided and committed before any main-run data. The pilots ran on the pre-D3 pages (PILOT_REPORT.md).
+
+### Approval and launch (Wed 11/4/2026, evening)
+
+- Ian finished his 20-page label check (`data/spotcheck_20.md`) and found nothing further to fix. He approved D1, D2 and D3 and the main-run launch the same evening.
+- Launched on the post-D3 pages: Haiku `main`, `m1`, `planted`, `validity` (Anthropic Batch) and Gemini `reduced` (Google Batch). Luna's presets run one at a time in flex mode after its pilot finishes, so spend reservations do not stack past the $10 cap.
+- Sample sizes stay as planned. Ian chose not to spend the remaining cap headroom on more episodes: the detectable gap would shrink only from about 1.4% to 1.1%, the high cost estimates sit near the caps, and the headroom is kept for reruns of failed turns.
+- OLMo (planned, pending its tool-calling fix): run the `reduced` preset (7,040 episodes) instead of the `olmo` preset (5,280), so both exploratory models share one design. No cost (local). To be logged as a deviation with the fix once it runs.
+
