@@ -75,6 +75,7 @@ sys.path.insert(0, str(ROOT / "analysis"))
 import analyze as A  # noqa: E402
 import paper_calc as P  # noqa: E402
 import figstyle as S  # noqa: E402
+from fig_a5_random_split import figA5_random_split  # noqa: E402
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
@@ -2523,6 +2524,7 @@ def build(runs, mde_path, figdir, tabdir, results_dir, confirm_models, n_perm, s
     figA2_baseline(out, df, models, mde_info, conf)
     rho = figA3_training(out, df)
     figA4_scorecard(out, df, models, conf, bundle, mde_info)
+    figA5_random_split(out, df, conf)
     table1(out, bundle, pr, mde_info, df, models, conf)
     table2(out, design, statuses)
     cost = table3(out, paths)

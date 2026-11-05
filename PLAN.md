@@ -249,3 +249,10 @@ Written by `analyze.py figures` to `results/figures/`, each with a CSV of the pl
 - **Figure A4 and Table A1.** Gemini's H3 analog is shown as "not estimable" (no spread between names) and its shuffled-null row reads "no name variation, not testable" (D5), never as a zero gap or a failed check.
 - **Captions.** Removed PLAN section numbers and deviation codes from the main figure captions (Figures 5, 6, 7, A1, A2, A4), in line with the figure text rule.
 - **Timing.** After the main results were seen. `analysis/make_figures.py` reads the frozen outputs and adds no inference.
+
+### D8 (Thu 11/5/2026): Figure A5, random name splits drawn for the price tests (descriptive, no test changed)
+
+- **What.** New appendix figure `paper/figures/figA5_random_split.*` (PNG, SVG, HTML, CSV, plus a JSON of the numbers) made by `analysis/fig_a5_random_split.py`, which `analysis/make_figures.py` now calls after Figure A4 (main runs only, so CAPTIONS.md keeps the entry on a rebuild). For Luna H1 and H2 it draws two checks that section 5.2 already has: the permutation test's draws (focal label shuffled across the 40 core names within the other axis, frozen primary model refit, statistic b), kept as a distribution instead of only counted, at 10,000 draws with seed 480; and the same-group noise floor draws from `analyze.noise_floor` (2,000 splits, same seed; the script checks that their SD equals the reported floor). The real gap is marked. Haiku H1 numbers are given for contrast in the caption and JSON.
+- **Why.** Ian asked whether two groups of randomly chosen names would show a price gap as large as the real one. The plan answers that with these checks; the figure shows it.
+- **Timing.** After the main results were seen.
+- **What it changes.** Nothing in `results/` and no test, model, margin or family. The share of relabelings at least as large is a 10,000 draw version of the permutation p already reported in `results/confirmatory.json` (20,000 draws); it is not a new p-value and does not enter Holm.
