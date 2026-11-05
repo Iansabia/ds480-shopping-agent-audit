@@ -11,10 +11,10 @@ Exploratory, added after the main results were seen. Ian approved 11/5 (PLAN.md 
 | Women's names | 24.2% [21.0, 27.7] (153/632) | 13.0% [8.9, 18.4] (25/193) | 68.9% (441/640) |
 | No-name accounts | 29.9% [22.6, 38.4] (38/127) | 9.8% [3.9, 22.5] (4/41) | 65.6% (84/128) |
 
-- S0, gender-neutral minus men's names: +1.1 pts [-2.0, +4.3], q .638
-- S0, gender-neutral minus women's names: -2.7 pts [-5.8, +0.4], q .299
-- V, gender-neutral minus men's names: +3.1 pts [-0.8, +7.0], q .321
-- V, gender-neutral minus women's names: -1.7 pts [-5.0, +1.5], q .473
+- S0, gender-neutral minus men's names: +1.1 pts [-2.0, +4.3], q .610
+- S0, gender-neutral minus women's names: -2.7 pts [-5.8, +0.4], q .312
+- V, gender-neutral minus men's names: +3.1 pts [-0.8, +7.0], q .341
+- V, gender-neutral minus women's names: -1.7 pts [-5.0, +1.5], q .463
 
 ## GPT-6 Luna
 

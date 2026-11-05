@@ -46,3 +46,16 @@ def test_frozen_results_untouched_by_addon_run():
         assert "confirmatory" not in ln and "checks" not in ln
         assert "exploratory" not in ln or "addon_exploratory" in ln
     assert '"addon_exploratory.json"' in src
+
+
+def test_run_status_wording_comes_from_data():
+    """Captions name partial runs and the models with C runs from the run status, not typed-in counts."""
+    full = {"episodes": 2560, "finished": 2560, "bought": 2521, "partial": False}
+    status = {"arab_haiku": full, "sasian_haiku": full, "arab_luna": full, "sasian_luna": full, "stated_luna": full}
+    assert X.partial_note(status) == ""
+    assert X.race_groups_note(status) == "Claude Haiku 5.5 and GPT-6 Luna"
+    status["sasian_luna"] = {**full, "episodes": 1166, "bought": 1160, "partial": True}
+    assert X.race_groups_note(status) == "Claude Haiku 5.5"
+    assert "1,166 episodes, 1,160 bought" in X.partial_note(status)
+    src = (ROOT / "analysis" / "addon_analysis.py").read_text()
+    assert "190 of 2,560" not in src and "187 bought" not in src

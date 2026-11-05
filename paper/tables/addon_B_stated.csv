@@ -3,7 +3,7 @@ haiku,False,STM,asked for the men's version,men's names,False,12,631,0.019017432
 haiku,False,STM,asked for the men's version,women's names,True,10,616,0.016233766233766232,0.008841323496115296,0.029622477983144758,20,24,640,0.0375,24,0
 haiku,False,STW,asked for the women's version,men's names,True,7,623,0.011235955056179775,0.005453133777945584,0.02300934037661989,20,17,640,0.0265625,11,6
 haiku,False,STW,asked for the women's version,women's names,False,3,615,0.004878048780487805,0.0016603344450969604,0.014242702884445685,20,25,640,0.0390625,15,10
-luna,True,STM,asked for the men's version,men's names,False,0,45,0.0,0.0,0.07865159873288836,18,0,45,0.0,0,0
-luna,True,STM,asked for the men's version,women's names,True,0,51,0.0,0.0,0.07004661989853143,17,0,51,0.0,0,0
-luna,True,STW,asked for the women's version,men's names,True,0,45,0.0,0.0,0.07865159873288836,18,0,45,0.0,0,0
-luna,True,STW,asked for the women's version,women's names,False,0,46,0.0,0.0,0.07707356308558039,19,0,46,0.0,0,0
+luna,False,STM,asked for the men's version,men's names,False,0,626,0.0,0.0,0.006099088535528951,20,14,640,0.021875,14,0
+luna,False,STM,asked for the men's version,women's names,True,0,624,0.0,0.0,0.006118517289236887,20,16,640,0.025,16,0
+luna,False,STW,asked for the women's version,men's names,True,0,635,0.0,0.0,0.0060131645616511575,20,5,640,0.0078125,5,0
+luna,False,STW,asked for the women's version,women's names,False,0,636,0.0,0.0,0.006003766663970794,20,4,640,0.00625,4,0

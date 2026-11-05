@@ -25,7 +25,7 @@ stated,haiku,Asked for men's: men's names,12,631,0.01901743264659271,0.010911633
 stated,haiku,Asked for men's: women's names,10,616,0.016233766233766232,0.008841323496115296,0.029622477983144758,20,False
 stated,haiku,Asked for women's: men's names,7,623,0.011235955056179775,0.005453133777945584,0.02300934037661989,20,False
 stated,haiku,Asked for women's: women's names,3,615,0.004878048780487805,0.0016603344450969604,0.014242702884445685,20,False
-stated,luna,Asked for men's: men's names,0,45,0.0,0.0,0.07865159873288836,18,True
-stated,luna,Asked for men's: women's names,0,51,0.0,0.0,0.07004661989853143,17,True
-stated,luna,Asked for women's: men's names,0,45,0.0,0.0,0.07865159873288836,18,True
-stated,luna,Asked for women's: women's names,0,46,0.0,0.0,0.07707356308558039,19,True
+stated,luna,Asked for men's: men's names,0,626,0.0,0.0,0.006099088535528951,20,False
+stated,luna,Asked for men's: women's names,0,624,0.0,0.0,0.006118517289236887,20,False
+stated,luna,Asked for women's: men's names,0,635,0.0,0.0,0.0060131645616511575,20,False
+stated,luna,Asked for women's: women's names,0,636,0.0,0.0,0.006003766663970794,20,False

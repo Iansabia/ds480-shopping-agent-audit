@@ -26,8 +26,9 @@ Black vs White rows in the race table repeat the confirmatory H1 and H4 and the
 frozen "race: V ask rate" row (shown with their own adjusted p or q); the S0-only
 H3-type row for Black names is descriptive (the confirmatory H3 uses S0 and S1).
 
-Runs that are only partly done (stated_luna, stopped when OpenAI flex capacity
-ran out) are scored in memory and shown descriptively, never tested.
+A run that is only partly done (turns but no scored outcomes file) is scored in
+memory and shown descriptively, never tested. Every caption and table note that
+says which runs exist or are partial is built from the run status, not typed in.
 
     .venv/bin/python analysis/addon_analysis.py
 """
@@ -157,6 +158,32 @@ def md_table(df: pd.DataFrame) -> str:
     for _, r in df.iterrows():
         out.append("| " + " | ".join("" if (isinstance(v, float) and math.isnan(v)) else str(v) for v in r) + " |")
     return "\n".join(out)
+
+
+def _join(items: list[str]) -> str:
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1]
+
+
+def addon_models(status: dict, presets, full_only: bool = True) -> list[str]:
+    """Models with a run for every preset given (finished and scored, unless full_only is False)."""
+    return [m for m in MODELS if all(f"{p}_{m}" in status and (not full_only or not status[f"{p}_{m}"]["partial"])
+                                     for p in presets)]
+
+
+def partial_note(status: dict) -> str:
+    """One sentence naming partial add-on runs from the run status, or "" when every run is complete."""
+    parts = []
+    for run, st in status.items():
+        if st["partial"]:
+            preset, model = run.rsplit("_", 1)
+            parts.append(f"{LABEL[model]}'s {preset} run is partial ({st['episodes']:,} episodes, "
+                         f"{st['bought']:,} bought), so its points are descriptive only")
+    return ("; ".join(parts) + ".") if parts else ""
+
+
+def race_groups_note(status: dict) -> str:
+    ms = addon_models(status, ["arab", "sasian"])
+    return f"{_join([LABEL[m] for m in ms])}" if ms else "no model"
 
 
 class Family:
@@ -466,8 +493,8 @@ def build_tables(a_tab, a_byname, b_tab, cd_rows, gaps, fam: Family, status: dic
             continue
         part = bool(t["partial"].any())
         st = status.get(f"stated_{model}", {})
-        lines += [f"## {LABEL[model]}" + (f" (partial run: {st.get('episodes')} of 2,560 episodes, "
-                                          f"{st.get('bought')} bought, descriptive only, not tested)"
+        lines += [f"## {LABEL[model]}" + (f" (partial run: {st.get('episodes', 0):,} episodes, "
+                                          f"{st.get('bought', 0):,} bought, descriptive only, not tested)"
                                           if part else ""), "",
                   "| Names | Asked for the men's version | Asked for the women's version |", "|---|---|---|"]
         for g in ["men's names", "women's names"]:
@@ -508,8 +535,8 @@ def build_tables(a_tab, a_byname, b_tab, cd_rows, gaps, fam: Family, status: dic
     lines = ["# Add-ons C and D: six name groups side by side", "",
              f"{TAG} All 40 tasks, core White and Black names (20 each) and the Hispanic and Asian extended names "
              "(12 each) from the main runs; MENA (10) and South Asian (8: 5 women, 3 men) names from the add-on runs, "
-             "Claude Haiku 5.5 only (the GPT-6 Luna add-on runs for these groups did not run: OpenAI flex capacity, "
-             "D10). Gemini 3.5 Flash-Lite ran core names only. Rates: pooled share, 95% Wilson interval "
+             f"run on {race_groups_note(status)}. Gemini 3.5 Flash-Lite ran core names only. Rates: pooled share, "
+             "95% Wilson interval "
              "(events/episodes). Price: mean log(price paid / cheapest fitting price) and mean price paid, bought "
              "episodes. Gap vs White: name-level model (cell-adjusted name means, HC2, gender as the other axis); "
              "price as percent, rates in points. The H3-type row is S0 only (the add-ons have no S1), so it is not "
@@ -575,7 +602,7 @@ def _hover(model, lab, r):
     return f"{LABEL[model]}<br>{lab}<br>{fmt_rate(r)}"
 
 
-def fig_a6(a_tab, b_tab):
+def fig_a6(a_tab, b_tab, status: dict):
     fig = make_subplots(rows=3, cols=1, vertical_spacing=0.13,
                         row_heights=[0.32, 0.32, 0.36])
     groups = [g for g, _ in A_GROUPS]
@@ -622,12 +649,14 @@ def fig_a6(a_tab, b_tab):
                      title_text="Wrong-line pick (the other version)", row=3, col=1)
     _panel_title(fig, 3, "Request states the version (men's or women's)")
     models_drawn = [m for m in MODELS if (a_tab["model"] == m).any() or (b_tab["model"] == m).any()]
+    open_why = ((["Gemini 3.5 Flash-Lite ran no add-on and is exploratory"] if "flashlite" in models_drawn else [])
+                + ([partial_note(status).rstrip(".")] if partial_note(status) else []))
     foot = (f"{TAG} Twin tasks (a men's and a women's version of one product on the same page), 4 runs per name, "
             "task and request. Dots: pooled share of purchases; bars: 95% Wilson intervals. Blue: gender-neutral "
             "names (top two panels) and the mismatch cells (bottom). Men's and women's names: 40 core names, main "
-            "runs. Gender-neutral: 5 names that passed the add-on name check. Open markers: estimate only (Gemini 3.5 "
-            "Flash-Lite ran no add-on and is exploratory; GPT-6 Luna's stated-version run is partial, 190 of 2,560 "
-            "episodes, 187 bought). " + S.marker_key(models_drawn))
+            "runs. Gender-neutral: 5 names that passed the add-on name check. "
+            + (f"Open markers: estimate only ({'; '.join(open_why)}). " if open_why else "")
+            + S.marker_key(models_drawn))
     S.layout(fig, "GPT-6 Luna puts gender-neutral names between men's and women's names; a stated version is followed",
              "Women's-line pick by name group (top two panels) and wrong-version pick when the request names the "
              "version (bottom).", False, 1050 + S.footer_margin(foot), bottom=S.footer_margin(foot), left=270, gap=40)
@@ -642,7 +671,7 @@ def _panel_title(fig, i, text, col=1):
                        showarrow=False, align="left", font=dict(size=S.BASE - 1, color=S.INK))
 
 
-def fig_a7(cd_rows, gaps):
+def fig_a7(cd_rows, gaps, status: dict):
     fig = make_subplots(rows=2, cols=2, vertical_spacing=0.2, horizontal_spacing=0.12, shared_yaxes=True)
     present = [r for r in RACES if (cd_rows["race"] == r).any()]
     ylab = [RACE_LABEL[r].replace(" (MENA)", "") for r in present]
@@ -691,20 +720,20 @@ def fig_a7(cd_rows, gaps):
     models_drawn = [m for m in MODELS if (cd_rows["model"] == m).any()]
     foot = (f"{TAG} All 40 tasks, 4 runs per name, task and request. White and Black: 20 core names each; Hispanic "
             "and Asian: 12 extended names each (main runs); MENA: 10 names, South Asian: 8 names (add-on runs, "
-            "Claude Haiku 5.5 only; the GPT-6 Luna runs for these groups did not finish). Price panel: name-level gap "
+            f"{race_groups_note(status)}). Price panel: name-level gap "
             "vs White, 95% CI. Other panels: pooled shares with 95% Wilson intervals; identity-linked = coily 4C hair "
             "or deep shade product, on hair and skin tasks. Open diamond: Gemini 3.5 Flash-Lite (core names only, "
             "estimate only). " + S.marker_key(models_drawn))
     S.layout(fig, "On Claude Haiku the MENA and South Asian names show no gap; GPT-6 Luna's largest gaps are for Black names",
-             "Haiku (all six groups), GPT-6 Luna (four) and Gemini 3.5 Flash-Lite (two), by the group a name is "
-             "associated with.", False, 820 + S.footer_margin(foot), bottom=S.footer_margin(foot), left=200, gap=40)
+             _join([f"{LABEL[m]} ({cd_rows.loc[cd_rows['model'] == m, 'race'].nunique()} groups)"
+                    for m in models_drawn]) + ", by the group a name is associated with.", False, 820 + S.footer_margin(foot), bottom=S.footer_margin(foot), left=200, gap=40)
     S.footer(fig, foot)
     return fig, pd.DataFrame(rows_csv)
 
 
 # ----------------------------------------------------------------------------- captions
 
-def caption_a6(a_tab, b_tab, fam):
+def caption_a6(a_tab, b_tab, fam, status: dict):
     def rate(model, arm, g):
         t = a_tab[(a_tab["model"] == model) & (a_tab["arm"] == arm) & (a_tab["group"] == g)]
         return f"{100 * t.iloc[0]['rate']:.0f}%" if not t.empty and t.iloc[0]["n"] else "n/a"
@@ -726,18 +755,17 @@ def caption_a6(a_tab, b_tab, fam):
             "the same 40 core names with a request that names the version; wrong-version rate by name gender and "
             "stated version. Dots: pooled share; bars: 95% Wilson intervals. Name-level tests are in "
             "paper/tables/addon_tests.md (Benjamini-Hochberg at 10% within the add-on family). " + "; ".join(parts)
-            + ". GPT-6 Luna's stated-version run stopped part way (OpenAI flex capacity), so its points are "
-            "descriptive.")
+            + "." + (" " + partial_note(status) if partial_note(status) else ""))
 
 
-def caption_a7():
+def caption_a7(status: dict):
     return ("Figure A7. Six name groups side by side. " + TAG + " Price gap for the same clear request vs names "
             "associated with White buyers (name-level model, 95% CI), override rate (bought the product for the "
             "other need when the need was stated), identity-linked pick when the agent bought without asking on a "
             "vague hair or skin request, and ask rate on vague requests (pooled shares, 95% Wilson intervals). White "
             "and Black: 20 core names each; Hispanic and Asian: 12 extended-tier names each, main runs; Arab or "
             "Middle Eastern (MENA, Moroccan names validated by Ghekiere et al. 2025) and South Asian (Indian and "
-            "Pakistani audit-study names from Oreopoulos 2009/2011): 10 and 8 names, Claude Haiku 5.5 only. Gemini "
+            f"Pakistani audit-study names from Oreopoulos 2009/2011): 10 and 8 names, {race_groups_note(status)}. Gemini "
             "3.5 Flash-Lite ran core names only and is shown as an estimate only. Exact numbers and adjusted p or q "
             "values are in paper/tables/addon_C_race_groups.md.")
 
@@ -776,16 +804,16 @@ def run(write_figures: bool = True) -> dict:
            "note": TAG + " Separate BH family; no frozen output changed."}
     if write_figures:
         made: list = []
-        f6, d6 = fig_a6(a_tab, b_tab)
+        f6, d6 = fig_a6(a_tab, b_tab, status)
         S.save(f6, FIG, "figA6_gender_line", False, made)
         S.save(f6, FIG, "figA6_gender_line", False, made, engine="matplotlib")
         d6.to_csv(FIG / "figA6_gender_line.csv", index=False)
-        f7, d7 = fig_a7(cd_rows, gaps)
+        f7, d7 = fig_a7(cd_rows, gaps, status)
         S.save(f7, FIG, "figA7_race_groups", False, made)
         S.save(f7, FIG, "figA7_race_groups", False, made, engine="matplotlib")
         d7.to_csv(FIG / "figA7_race_groups.csv", index=False)
-        write_caption_entries({"figA6": ("figA6_gender_line", caption_a6(a_tab, b_tab, fam)),
-                               "figA7": ("figA7_race_groups", caption_a7())})
+        write_caption_entries({"figA6": ("figA6_gender_line", caption_a6(a_tab, b_tab, fam, status)),
+                               "figA7": ("figA7_race_groups", caption_a7(status))})
         out["figures"] = made
     (RES / "addon_exploratory.json").write_text(json.dumps(out, indent=1, default=A._json_default))
     return out
