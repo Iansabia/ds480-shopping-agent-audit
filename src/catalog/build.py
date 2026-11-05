@@ -34,12 +34,15 @@ def load(name):
 
 DROP = set()
 SWAP = {}
+ATTRS = {}
 if os.path.exists(OVERRIDES):
     _ov = json.load(open(OVERRIDES))
     DROP = set(_ov.get("drop", []))
     # D3 (11/4): label-review swaps. Applied after selection, on the listed pages only, so every
     # other page, price target and budget stays exactly as built. See PLAN.md Deviations D3.
     SWAP = _ov.get("swap", {})
+    # D3b: replace the shown feature bullets of a product (e.g. bullets from a metadata mixup).
+    ATTRS = _ov.get("attributes", {})
 
 def brand(d):
     b = d.get("store") or d["details"].get("Brand")
@@ -530,6 +533,10 @@ def apply_swaps():
                     hit += 1
         if hit != len(sw["pages"]):
             raise SystemExit(f"swap {old}: expected {len(sw['pages'])} hits, got {hit}")
+    for asin, ov in ATTRS.items():
+        if asin not in PRODUCTS:
+            raise SystemExit(f"attributes override {asin}: product not on any page")
+        PRODUCTS[asin]["attributes"] = list(ov["attributes"])
     used_ids = {it["product_id"] for p in pages for it in p["items"]}
     for k in [k for k in PRODUCTS if k not in used_ids]:
         del PRODUCTS[k]

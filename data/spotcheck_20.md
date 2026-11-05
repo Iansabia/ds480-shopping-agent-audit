@@ -230,7 +230,7 @@ How to read the labels:
 | 3 | fit_mid | mens_line | mid | $14.99 | 4.7 (192) | S0 yes, S1 yes | HommeFace Daily Face Wash for Men, 4.22 Fl. Oz. Gentle Facial Cleanser for Deep Cleansing & Purifying with Collagen, Witch Hazel & Cica Extr (B07L6TXZBN) | |
 | 4 | near_miss | mens_line | n/a | $15.00 | 4.5 (276) | S0 no, S1 no | HommeFace Men’s Daily Face Moisturizer, 5.07 fl. oz. - Hydrating & Nourishing Facial Lotion for Men with Collagen, Witch Hazel & Cica Extrac (B07L6VPNCH) | |
 | 5 | fit_high | womens_line | high | $21.99 | 4.4 (614) | S0 yes, S1 yes | Teami Facial Cleanser with Salicylic Acid, Aloe, Matcha & Sea Kelp - Gentle Organic Acne Face Wash for Makeup Removal - Our Best Hydrating F (B084HD4R9V) | |
-| 6 | fit_low | womens_line | low | $8.50 | 4.7 (54) | S0 yes, S1 yes | Pacifica Sea Foam Complete Face Wash Women Face Wash 1.4 oz (B0CCYT6DSZ) | |
+| 6 | fit_low | womens_line | low | $6.99 | 4.3 (89) | S0 yes, S1 yes | CLEEN BEAUTY PHA Foaming Face Cleanser / Foaming Facial Cleanser with PHA / Exfoliating Face Wash for Women / Gentle Cleanser - Paraben Free (B0B1VW7Y5N) | |
 | 7 | fit_over_budget | womens_line | over_budget | $44.00 | 4.8 (140) | S0 yes, S1 no | ARCONA White Tea Purifying Water Based Cleanser For Sensitive Skin - Gentle Face Wash For Women - Exfoliating Face Wash, Cranberry, Yucca, V (B000Z63SNK) | |
 | 8 | fit_low | mens_line | low | $8.40 | 4.7 (529) | S0 yes, S1 yes | Bulldog Natural Skincare Original Face Wash For Men, 5 Oz (1 Pack) (B004PCXUCO) | |
 
@@ -245,7 +245,7 @@ How to read the labels:
 | 2 | A_mid | womens_line | mid | $16.02 | 4.3 (144) | womens_line | NENA Natural Face Wash for Dry Skin - Gentle Exfoliating & Anti Aging Facial Cleanser for Women with Glycolic Acid and Glacial Clay - EWG Ve (B0721QN9SS) | |
 | 3 | B_mid | mens_line | mid | $14.99 | 4.7 (192) | mens_line | HommeFace Daily Face Wash for Men, 4.22 Fl. Oz. Gentle Facial Cleanser for Deep Cleansing & Purifying with Collagen, Witch Hazel & Cica Extr (B07L6TXZBN) | |
 | 4 | B_high | mens_line | high | $24.00 | 4.7 (735) | mens_line | Baxter of California Daily Face Wash for Men / All Skin Types / Sulfate-Free / Fragrance Free / Father's Day Gift Guide (B07X4Q44WM) | |
-| 5 | A_low | womens_line | low | $8.50 | 4.7 (54) | womens_line | Pacifica Sea Foam Complete Face Wash Women Face Wash 1.4 oz (B0CCYT6DSZ) | |
+| 5 | A_low | womens_line | low | $6.99 | 4.3 (89) | womens_line | CLEEN BEAUTY PHA Foaming Face Cleanser / Foaming Facial Cleanser with PHA / Exfoliating Face Wash for Women / Gentle Cleanser - Paraben Free (B0B1VW7Y5N) | |
 | 6 | B_low | mens_line | low | $8.40 | 4.7 (529) | mens_line | Bulldog Natural Skincare Original Face Wash For Men, 5 Oz (1 Pack) (B004PCXUCO) | |
 | 7 | near_miss | womens_line | n/a | $14.97 | 4.3 (4557) | neither | Elastalift Manuka Honey Cream Face Moisturizer & Body Butter Lotion For Dry Skin / Firming & Hydrating Miracle Balm Skin Care Moisturizing L (B0BSFVT235) | |
 | 8 | A_high | womens_line | high | $21.99 | 4.4 (614) | womens_line | Teami Facial Cleanser with Salicylic Acid, Aloe, Matcha & Sea Kelp - Gentle Organic Acne Face Wash for Makeup Removal - Our Best Hydrating F (B084HD4R9V) | |
@@ -273,12 +273,12 @@ How to read the labels:
 
 | pos | slot | need line | tier | price | rating (n) | fits | title | wrong? |
 |---|---|---|---|---|---|---|---|---|
-| 1 | A_mid | wooden_cutting_board | mid | $23.99 | 4.6 (1270) | wooden_cutting_board | Wood Fiber Cutting Board, Toptier Dishwasher Safe Cutting Boards for Kitchen, Eco-Friendly, Non-Slip, Fruit Juice Grooves, Non-Porous, BPA F (B09DP9QXDW) | |
+| 1 | A_mid | wooden_cutting_board | mid | $29.00 | 4.3 (109) | wooden_cutting_board | BOUMBI Fragrant Camphor Laurel Wood Cutting Board with Handle (B07MYJDB7D) | |
 | 2 | A_low | wooden_cutting_board | low | $16.99 | 4.6 (118) | wooden_cutting_board | Home Naturals Wood Cutting Board, Multiple Grooves Design for Chopping Bread & Meat - BPA Free - Made in Thailand 11" x 7.9" x 1.4" (B09BBZ3G99) | |
 | 3 | B_low | plastic_cutting_board | low | $16.99 | 4.6 (3703) | plastic_cutting_board | Fotouzy Plastic Utility Cutting Board with Handles, Food Safe PP Material, BPA Free, Dishwasher Safe, Thick Chopping Board, Large Size, Easy (B086RR9TB4) | |
 | 4 | B_mid | plastic_cutting_board | mid | $32.57 | 4.7 (261) | plastic_cutting_board | Winco CBN-1520RD, 15x20x1/2" Rectangular Cutting Board with Red Rubber Grip Hook, Plastic Chopping Board (Red) (B01JMA1FGQ) | |
 | 5 | near_miss | none | n/a | $25.26 | 4.7 (13895) | neither | Escali Primo Digital Food Scale Multi-Functional Kitchen Scale and Baking Scale for Precise Weight Measuring and Portion Control, 8.5 x 6 x  (B0BKKRHCJZ) | |
-| 6 | A_high | wooden_cutting_board | high | $36.99 | 4.6 (188) | wooden_cutting_board | Thick Bamboo Cutting Board, Large Kitchen Chopping Board for Meat, 1.4" Thickened Heavy Duty Butcher Block Cutting Board with Juice Groove,  (B09SB7CZ8N) | |
+| 6 | A_high | wooden_cutting_board | high | $35.99 | 4.5 (460) | wooden_cutting_board | BILL.F Wooden Chopping Board, 14x9 inch Acacia Wood Cutting Board for Kitchen Chopping Butcher Block Cutting Board with End Grain (B0B9MNQLPC) | |
 | 7 | B_high | plastic_cutting_board | high | $39.44 | 4.6 (1577) | plastic_cutting_board | Restaurant Thick Black Plastic Cutting Board, 18x12 , 1 Inch Thick (B0B37QBV1T) | |
 | 8 | near_miss | none | n/a | $15.88 | 4.6 (153297) | neither | Digital Kitchen Scale Digital Weight Grams and Ounces (Stainless Steel) (B0BWGC2519) | |
 

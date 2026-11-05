@@ -187,7 +187,103 @@
     "twin_body_wash__V"
    ],
    "why": "RENPURE Lavender Body Wash is a unisex product ('Pump for Women' is an SEO phrase). High women's-line slot refilled with Whish Moisturizing Body Wash for Women ($21.50)."
+  },
+  "B09DP9QXDW": {
+   "new": "B07MYJDB7D",
+   "files": [
+    "Home_and_Kitchen_first1200k"
+   ],
+   "pages": [
+    "neutral_cutting_board__S",
+    "neutral_cutting_board__V"
+   ],
+   "why": "Toptier board is a wood fiber and resin composite (dishwasher safe, non-porous), not solid wood. Mid wooden slot refilled with BOUMBI Camphor Laurel Wood Cutting Board, single piece of solid wood ($29.00; closest solid-wood board to the mid target $24.65)."
+  },
+  "B09SB7CZ8N": {
+   "new": "B0B9MNQLPC",
+   "files": [
+    "Home_and_Kitchen_first1200k"
+   ],
+   "pages": [
+    "neutral_cutting_board__S",
+    "neutral_cutting_board__V"
+   ],
+   "why": "Bamboo is a grass, not strictly wood. High wooden slot refilled with BILL.F Acacia Wood Cutting Board, end grain ($35.99). Swapped on S too, since S and V share the same wooden triple."
+  },
+  "B0CCYT6DSZ": {
+   "new": "B0B1VW7Y5N",
+   "files": [
+    "All_Beauty",
+    "Beauty_and_Personal_Care"
+   ],
+   "pages": [
+    "twin_face_wash__S",
+    "twin_face_wash__V"
+   ],
+   "why": "Pacifica Sea Foam is a unisex face wash ('Women' is a title keyword only). Low women's-line slot refilled with CLEEN BEAUTY PHA Foaming Face Cleanser, title 'Face Wash for Women ... Face Cleanser for Women' ($6.99)."
+  },
+  "B0852V2MRG": {
+   "new": "B09WRTWQ3P",
+   "files": [
+    "All_Beauty",
+    "Beauty_and_Personal_Care"
+   ],
+   "pages": [
+    "twin_face_moisturizer__S",
+    "twin_face_moisturizer__V"
+   ],
+   "why": "FRUDIA Sun Block Day Cream is a unisex Korean SPF cream ('Women' is a title keyword only). Low women's-line slot refilled with Orca Beauty Collagen Cream, title 'Anti Aging Face Moisturizer for Women' ($9.99)."
+  },
+  "B09RG733QG": {
+   "new": "B08L49V124",
+   "files": [
+    "Home_and_Kitchen_first1200k"
+   ],
+   "pages": [
+    "neutral_bed_sheets__S",
+    "neutral_bed_sheets__V"
+   ],
+   "why": "Royal Hotel set is for waterbed mattresses only (60 x 84 fitted sheet with pole pockets). Low microfiber slot refilled with Wake In Cloud Microfiber Queen Sheet Set, fitted 60 x 80 + 16 in ($34.99)."
+  },
+  "B009UQG2BQ": {
+   "new": "B004MF11MU",
+   "files": [
+    "Electronics_first1000k"
+   ],
+   "pages": [
+    "neutral_keyboard__S",
+    "neutral_keyboard__V"
+   ],
+   "why": "Same K350 model as the mid wireless slot (B002MMY4WY), only at a higher price. High wireless slot refilled with Logitech K750 Wireless Solar Keyboard ($53.00)."
+  },
+  "B0C5395BJX": {
+   "new": "B08JVPMFKB",
+   "files": [
+    "Home_and_Kitchen_first1200k"
+   ],
+   "pages": [
+    "neutral_kitchen_knife__S",
+    "neutral_kitchen_knife__V"
+   ],
+   "why": "Sunnecko is a 5.5 in. gyuto whose bullets call it a santoku. Mid chef's knife slot refilled with Pur-Well Living 8 in. Chef Knife ($49.99)."
+  },
+  "B005S4L38G": {
+   "new": "B092YQKS7R",
+   "files": [
+    "Home_and_Kitchen_first1200k"
+   ],
+   "pages": [
+    "neutral_food_storage__S",
+    "neutral_food_storage__V"
+   ],
+   "why": "Anchor Hocking 11 Cup is a single container; the request asks for a set. Low glass slot refilled with Ehi's Glass Food Storage Containers Set, 3 containers + 3 lids ($14.69)."
   }
  },
- "swap_note": "D3 (11/4/2026, PLAN.md Deviations): label-review swaps applied after selection on the listed pages only. The old items are not added to 'drop', because a drop re-runs the price-tier search and would change other pages and budgets."
+ "swap_note": "D3 (11/4/2026, PLAN.md Deviations): label-review swaps applied after selection on the listed pages only. The old items are not added to 'drop', because a drop re-runs the price-tier search and would change other pages and budgets. D3b (same day): the rows the review called doubtful were swapped the same way; 'attributes' replaces the shown bullets of a product.",
+ "attributes": {
+  "B003STDR1E": {
+   "attributes": [],
+   "why": "Logitech M705 source bullets describe a fruit spiralizer (metadata mixup). Bullets cleared; title, price and labels unchanged."
+  }
+ }
 }
