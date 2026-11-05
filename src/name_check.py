@@ -416,7 +416,7 @@ def latest_records(model_key: str, name_set: str = "main") -> dict:
     return out
 
 
-def write_addon_exclusions(name_ids: set[str], failed_rows: list[dict], reason: str) -> None:
+def write_addon_exclusions(name_ids: set[str], failed_rows: list[dict], reason) -> None:
     """Rewrite this set's rows of data/name_check_exclusions_addon.csv, keeping
     rows that belong to other add-on sets."""
     path = config.DATA / "name_check_exclusions_addon.csv"
@@ -429,7 +429,8 @@ def write_addon_exclusions(name_ids: set[str], failed_rows: list[dict], reason: 
         for r in keep:
             w.writerow([r["profile_id"], r["full_name"], r["as_intended_total"], r["reason"]])
         for r in failed_rows:
-            w.writerow([r["name_id"], r["full_name"], r["as_intended_total"], reason])
+            w.writerow([r["name_id"], r["full_name"], r["as_intended_total"],
+                        reason(r) if callable(reason) else reason])
 
 
 def neutral_keep(gender_counts: Counter, n_valid: int) -> bool:
@@ -483,7 +484,7 @@ def cmd_score_neutral(a):
                      "race_guesses": dict(race_c), "decade_mode": dec.most_common(1)[0][0] if dec else "",
                      "income_mode": inc.most_common(1)[0][0] if inc else "",
                      "education_mode": edu.most_common(1)[0][0] if edu else "",
-                     "refused_attempts_rg": dict(refusals), "errors": errors})
+                     "refused_attempts_rg": dict(refusals), "errors": errors, "_rule": rule_label})
     out = config.DATA / "name_check_results_neutral.csv"
     with open(out, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
@@ -547,6 +548,7 @@ def cmd_score(a):
         n_models = sum(1 for v in per.values() if not v.endswith("/0"))
         share_need = 14 / 15 if n_models >= 3 else 9 / 10
         keep = total_ok >= share_need * total_n - 1e-9
+        rule_label = "14 of 15 rule" if n_models >= 3 else "9 of 10 rule, two models answered"
         rows.append({"name_id": nid, "role": n["role"], "tier": n["tier"], "race": n["race"], "gender": n["gender"],
                      "full_name": n["full_name"], **{f"as_intended_{m}": per.get(m, "") for m in models},
                      "as_intended_total": f"{total_ok}/{total_n}", "keep": keep,
@@ -555,13 +557,13 @@ def cmd_score(a):
                      "income_mode": inc.most_common(1)[0][0] if inc else "",
                      "education_mode": edu.most_common(1)[0][0] if edu else "",
                      "income_guesses": dict(inc), "education_guesses": dict(edu),
-                     "refused_attempts_rg": dict(refusals), "errors": errors})
+                     "refused_attempts_rg": dict(refusals), "errors": errors, "_rule": rule_label})
     out = config.DATA / ("name_check_results_addon.csv" if addon else "name_check_results.csv")
     with open(out, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        w = csv.DictWriter(f, fieldnames=[k for k in rows[0] if k != "_rule"])
         w.writeheader()
         for r in rows:
-            w.writerow({k: (json.dumps(v) if isinstance(v, dict) else v) for k, v in r.items()})
+            w.writerow({k: (json.dumps(v) if isinstance(v, dict) else v) for k, v in r.items() if k != "_rule"})
     print(f"{len(rows)} names scored with models {models} -> {out}")
     for r in rows:
         if not r["keep"]:
@@ -569,7 +571,7 @@ def cmd_score(a):
     print("kept:", dict(Counter((r["role"], r["keep"]) for r in rows)))
     if addon:   # the arab and sasian presets read this file
         write_addon_exclusions(set(names), [r for r in rows if not r["keep"]],
-                               "failed the name check (14 of 15 rule)")
+                               lambda r: f"failed the name check ({r['_rule']})")
 
 
 def main():

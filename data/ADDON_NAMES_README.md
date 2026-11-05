@@ -18,7 +18,8 @@ Built by `src/build_addon_names.py`. Outputs: `data/names_addon.csv`, `data/prof
 | US Census Bureau 2010 surnames | race shares of the neutral surnames | `data/raw/census_surnames/` (same file) |
 | Tzioumis, K. (2018). Demographic aspects of first names. *Scientific Data* 5:180025 | race shares of the neutral first names (descriptive, plus a Hispanic cutoff) | copy in the Elder and Hayes package (same file) |
 | Ghekiere, A., Martiniello, B., Capistrano, D., et al. (2025). The Perception of Names in Experimental Studies on Ethnic Origin: A Cross-National Validation in Europe. *Scientific Data* 12:1883. doi:10.1038/s41597-025-06153-8. Data: OSF doi:10.17605/OSF.IO/YD5QV | Moroccan (North African) names and their per-name perception rates | `NameSurvey_DATARAW_2025.csv` (sha256 6b110461...6018) and `tb_dictionary_full.csv` (sha256 283dc56b...3301), downloaded from OSF 11/5, in `data/raw/ghekiere/` |
-| Oreopoulos, P. (2009). Why Do Skilled Immigrants Struggle in the Labor Market? A Field Experiment with Six Thousand Resumes. NBER Working Paper 15036, Table 2. Published as Oreopoulos (2011), *American Economic Journal: Economic Policy* 3(4):148-71, doi:10.1257/pol.3.4.148 | Indian and Pakistani names used on audit resumes | NBER PDF (sha256 e723fa09...a7c), `data/raw/oreopoulos/`; Table 2 typed into `data/derived/oreopoulos2011_table2_names.csv`. The published AEJ version was not accessible (paywall), so the names are taken from the working paper's Table 2 and were not checked against the journal version. |
+| Oreopoulos, P. (2009). Why Do Skilled Immigrants Struggle in the Labor Market? A Field Experiment with Six Thousand Resumes. NBER Working Paper 15036, Table 2 | Indian and Pakistani names used on audit resumes (the names come from this working paper's Table 2) | NBER PDF (sha256 e723fa09...a7c), `data/raw/oreopoulos/`; Table 2 typed into `data/derived/oreopoulos2011_table2_names.csv` (the file name says 2011, but the names are from the 2009 working paper). |
+| Oreopoulos, P. (2011). Why Do Skilled Immigrants Struggle in the Labor Market? A Field Experiment with Thirteen Thousand Resumes. *American Economic Journal: Economic Policy* 3(4):148-71, doi:10.1257/pol.3.4.148 | the published version of the study, cited for the study only | Not accessible (paywall). Its title says thirteen thousand resumes, against six thousand in the working paper, so its name list may differ from the working paper's Table 2; our names were not checked against it. |
 
 ## A. Gender-neutral names (preset `neutral`)
 
@@ -51,6 +52,9 @@ Rules:
 | GN09 | Jordan Scott | 381,865 | 0.283 | 96.8 / 0.7 | 60.2 / 32.9 |
 | GN10 | Taylor Harris | 345,987 | 0.728 | 95.4 / 1.2 | 51.4 / 42.4 |
 
+Limit (found after the runs): rule 5 picked surnames with high Black shares (Williams 47.7%, Robinson
+44.9%, Harris 42.4% Black), which departs from the race-neutral goal of add-on A.
+
 Limits: the last three names lean one way (Dominique and Taylor 71 to 73% female, Jordan 28%), so
 the analysis should report the female share per name beside its result. Tzioumis shares come from
 mortgage applicants and lean White for most first names.
@@ -71,8 +75,10 @@ race guesses. Results: `data/name_check_results_neutral.csv`.
 No US audit-study list with five women's and five men's Arab names could be read in full:
 Widner and Chicoine (2011, *Sociological Forum* 26(4):806-823) and Gaddis and Ghoshal (2015,
 *ANNALS* 660:282-299) are paywalled and their name lists could not be checked, so they are not
-used. The source is the validated list in Ghekiere et al. (2025): 16 Moroccan names, rated by
-UK and Irish respondents (the two English-speaking samples).
+used. The source is Ghekiere et al. (2025): 16 Moroccan names, rated by UK and Irish respondents
+(the two English-speaking samples). Their validation is weak for our use: UK and Irish raters placed
+these names in the right region only 25 to 61% of the time (region congruence below). The main
+support is our own name check, where every MENA name read as MENA in at least 9 of its 10 Haiku and Luna guesses.
 
 Rules:
 1. Candidates: the 16 Moroccan names tested in the UK and Ireland samples.
@@ -109,7 +115,9 @@ these are Moroccan (North African) names and stand in for "Arab or Middle Easter
 
 ## C. South Asian names (preset `sasian`)
 
-Source: Oreopoulos (2009/2011) Table 2, 8 Indian and 8 Pakistani names used on audit resumes.
+Source: Oreopoulos (2009), NBER Working Paper 15036, Table 2: 8 Indian and 8 Pakistani names used
+on audit resumes. The published version (Oreopoulos 2011, AEJ: Economic Policy, "...Thirteen
+Thousand Resumes") may list different names; it was not checked.
 These are audit-study names, not perception-validated; the model name check is the validation.
 Crabtree et al. (2023) has no South Asian first names (its only South Asian surname, Patel, is
 paired with East Asian first names), so it cannot be used.
@@ -147,6 +155,7 @@ African" (prompt version nc3a). Intended race: "Middle Eastern or North African"
 "South Asian". A plain "Asian" answer is a miss. Failures go to `data/name_check_exclusions_addon.csv`,
 which the `arab` and `sasian` presets read; a replaced name's alternate takes its hidden-need parity.
 If a cell ends up with fewer than 5 names, it runs with what passed and the shortfall is reported.
+(As run, only two models answered, so the two-model rule of 9 of 10 applied; see below.)
 
 ## Name check results (run 11/5, after the rules above were committed)
 

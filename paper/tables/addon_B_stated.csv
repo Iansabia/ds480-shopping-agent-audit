@@ -1,9 +1,9 @@
-model,partial,stated,stated_label,name_group,mismatch,k,n,rate,wilson_lo,wilson_hi,names,no_purchase_k,no_purchase_n,no_purchase_rate
-haiku,False,STM,asked for the men's version,men's names,False,12,631,0.01901743264659271,0.010911633426793107,0.03294413313327607,20,9,640,0.0140625
-haiku,False,STM,asked for the men's version,women's names,True,10,616,0.016233766233766232,0.008841323496115296,0.029622477983144758,20,24,640,0.0375
-haiku,False,STW,asked for the women's version,men's names,True,7,623,0.011235955056179775,0.005453133777945584,0.02300934037661989,20,17,640,0.0265625
-haiku,False,STW,asked for the women's version,women's names,False,3,615,0.004878048780487805,0.0016603344450969604,0.014242702884445685,20,25,640,0.0390625
-luna,True,STM,asked for the men's version,men's names,False,0,45,0.0,0.0,0.07865159873288836,18,0,45,0.0
-luna,True,STM,asked for the men's version,women's names,True,0,51,0.0,0.0,0.07004661989853143,17,0,51,0.0
-luna,True,STW,asked for the women's version,men's names,True,0,45,0.0,0.0,0.07865159873288836,18,0,45,0.0
-luna,True,STW,asked for the women's version,women's names,False,0,46,0.0,0.0,0.07707356308558039,19,0,46,0.0
+model,partial,stated,stated_label,name_group,mismatch,k,n,rate,wilson_lo,wilson_hi,names,not_bought_k,not_bought_n,not_bought_rate,no_purchase_k,invalid_product_k
+haiku,False,STM,asked for the men's version,men's names,False,12,631,0.01901743264659271,0.010911633426793107,0.03294413313327607,20,9,640,0.0140625,9,0
+haiku,False,STM,asked for the men's version,women's names,True,10,616,0.016233766233766232,0.008841323496115296,0.029622477983144758,20,24,640,0.0375,24,0
+haiku,False,STW,asked for the women's version,men's names,True,7,623,0.011235955056179775,0.005453133777945584,0.02300934037661989,20,17,640,0.0265625,11,6
+haiku,False,STW,asked for the women's version,women's names,False,3,615,0.004878048780487805,0.0016603344450969604,0.014242702884445685,20,25,640,0.0390625,15,10
+luna,True,STM,asked for the men's version,men's names,False,0,45,0.0,0.0,0.07865159873288836,18,0,45,0.0,0,0
+luna,True,STM,asked for the men's version,women's names,True,0,51,0.0,0.0,0.07004661989853143,17,0,51,0.0,0,0
+luna,True,STW,asked for the women's version,men's names,True,0,45,0.0,0.0,0.07865159873288836,18,0,45,0.0,0,0
+luna,True,STW,asked for the women's version,women's names,False,0,46,0.0,0.0,0.07707356308558039,19,0,46,0.0,0,0

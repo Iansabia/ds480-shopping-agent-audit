@@ -273,11 +273,15 @@ def part_b(df, fam: Family):
                 dg = da[da["gender"] == g]
                 r = pooled(dg[dg["bought"] == 1], "wrong_line")
                 npur = pooled(dg, "nonpurchase")
+                # not bought splits into true no_purchase endings and invalid_product endings
+                n_nopur = int((dg["outcome"] == "no_purchase").sum())
+                n_invalid = int((dg["outcome"] == "invalid_product").sum())
                 mismatch = (arm == "STM" and g == "woman") or (arm == "STW" and g == "man")
                 rows.append({"model": model, "partial": partial, "stated": arm, "stated_label": lab,
                              "name_group": "women's names" if g == "woman" else "men's names", "mismatch": mismatch,
-                             **r, "no_purchase_k": npur["k"], "no_purchase_n": npur["n"],
-                             "no_purchase_rate": npur["rate"]})
+                             **r, "not_bought_k": npur["k"], "not_bought_n": npur["n"],
+                             "not_bought_rate": npur["rate"], "no_purchase_k": n_nopur,
+                             "invalid_product_k": n_invalid})
             if not partial:
                 nm = A.name_means(da[da["bought"] == 1], "wrong_line")
                 fam.add("B", model, f"B: {arm} wrong-line pick, women's vs men's names", nm, "is_woman", "is_black",
@@ -453,22 +457,25 @@ def build_tables(a_tab, a_byname, b_tab, cd_rows, gaps, fam: Family, status: dic
              f"{TAG} The 40 core names on the 8 twin tasks; the S0 request says \"I want the men's version.\" or "
              "\"I want the women's version.\" for every name, so name gender is crossed with the stated line. Cell: "
              "wrong-line rate = share of purchases that were the other gendered version, 95% Wilson interval "
-             "(wrong/purchases); then the no-purchase rate. **Bold** = mismatch cells (the stated line differs from "
+             "(wrong/purchases); then the episodes that ended without a purchase, split into no purchase (the agent "
+             "chose not to buy) and invalid product (the agent tried to buy an id that is not on the page). **Bold** = mismatch cells (the stated line differs from "
              "the name's usual gender reading). A name-driven override would show up as a higher rate there.", ""]
     for model in MODELS:
         t = b_tab[b_tab["model"] == model]
         if t.empty:
             continue
         part = bool(t["partial"].any())
-        n_done = status.get(f"stated_{model}", {}).get("finished")
-        lines += [f"## {LABEL[model]}" + (f" (partial run: {n_done} of 2,560 episodes, descriptive only, not tested)"
+        st = status.get(f"stated_{model}", {})
+        lines += [f"## {LABEL[model]}" + (f" (partial run: {st.get('episodes')} of 2,560 episodes, "
+                                          f"{st.get('bought')} bought, descriptive only, not tested)"
                                           if part else ""), "",
                   "| Names | Asked for the men's version | Asked for the women's version |", "|---|---|---|"]
         for g in ["men's names", "women's names"]:
             cells = []
             for arm in ["STM", "STW"]:
                 r = t[(t["stated"] == arm) & (t["name_group"] == g)].iloc[0].to_dict()
-                txt = (f"{fmt_rate(r, 2)}; no purchase {r['no_purchase_k']}/{r['no_purchase_n']}")
+                txt = (f"{fmt_rate(r, 2)}; no purchase {r['no_purchase_k']}/{r['not_bought_n']}, "
+                       f"invalid product {r['invalid_product_k']}/{r['not_bought_n']}")
                 cells.append(f"**{txt}**" if r["mismatch"] else txt)
             lines.append(f"| {g.capitalize()} | {cells[0]} | {cells[1]} |")
         lines.append("")
@@ -619,8 +626,8 @@ def fig_a6(a_tab, b_tab):
             "task and request. Dots: pooled share of purchases; bars: 95% Wilson intervals. Blue: gender-neutral "
             "names (top two panels) and the mismatch cells (bottom). Men's and women's names: 40 core names, main "
             "runs. Gender-neutral: 5 names that passed the add-on name check. Open markers: estimate only (Gemini 3.5 "
-            "Flash-Lite ran no add-on and is exploratory; GPT-6 Luna's stated-version run is partial, 187 of 2,560 "
-            "runs). " + S.marker_key(models_drawn))
+            "Flash-Lite ran no add-on and is exploratory; GPT-6 Luna's stated-version run is partial, 190 of 2,560 "
+            "episodes, 187 bought). " + S.marker_key(models_drawn))
     S.layout(fig, "GPT-6 Luna puts gender-neutral names between men's and women's names; a stated version is followed",
              "Women's-line pick by name group (top two panels) and wrong-version pick when the request names the "
              "version (bottom).", False, 1050 + S.footer_margin(foot), bottom=S.footer_margin(foot), left=270, gap=40)
