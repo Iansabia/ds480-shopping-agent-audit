@@ -1,0 +1,12 @@
+**PILOT DATA, NOT RESULTS**
+
+*Table B1. Agreement checks for each confirmatory test (PLAN 5.2). Never used to pick a winner.*
+
+| model | hypothesis | primary_est | primary_p | p_source_used | welch_p | perm_p | cluster_ols_est | cluster_p_cr1 | wild_bootstrap_p | mixed_est | mixed_p | noise_floor | freq_in_primary | freq_corr | freq_adjusted_est | freq_adjusted_p | mde_achieved_raw_posthoc |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| haiku | H1 | -0.01666 | 0.22351 | parametric | 0.21476 | 0.22154 | -0.0258 | 0.30527 | 0.363 | -0.02415 | 0.3587 | 0.01821 | False | -0.83269 | -0.02414 | 0.40298 | 0.03863 |
+| haiku | H2 | -0.00761 | 0.58567 | parametric | 0.57453 | 0.58647 | -0.00805 | 0.52756 | 0.559 | -0.00248 | 0.86573 | 0.01826 | True | 0.00649 | -0.00767 | 0.56874 | 0.04001 |
+| haiku | H3 | 0.0125 | 0.26556 | parametric | 0.27269 | 0.30263 | -0.01463 | 0.45441 | 0.499 | -0.01273 | 0.50743 | 0.01578 | False | -0.83269 | -0.01309 | 0.52971 | 0.0329 |
+| haiku | H4 | 0.05056 | 0.41423 | parametric | 0.4036 | 0.43978 | 0.27141 | 0.02326 | 0.095 | 0.12919 | 0.11258 | 0.0821 | False | -0.83269 | 0.23783 | 0.02876 | 0.17536 |
+
+**PILOT DATA, NOT RESULTS**
