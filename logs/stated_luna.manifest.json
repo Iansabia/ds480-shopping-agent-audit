@@ -21,5 +21,41 @@
   "episode_ids_sha256": "a8f7a275fbdc85b1bb30fbfbbeb6d48b84ef96efee2c534b314d37126655056c",
   "ask_protocol": "v_followup_1",
   "limit": null,
-  "tool_choice": "required"
+  "tool_choice": "required",
+  "resumed_at": [
+    "2026-11-05T10:58:48.301-05:00",
+    "2026-11-05T11:26:53.103-05:00",
+    "2026-11-05T11:47:48.623-05:00",
+    "2026-11-05T12:28:38.305-05:00",
+    "2026-11-05T12:41:19.766-05:00",
+    "2026-11-05T12:41:55.261-05:00"
+  ],
+  "resumes": [
+    {
+      "at": "2026-11-05T12:41:19.766-05:00",
+      "mode": "sync",
+      "settings": {
+        "reasoning_effort": "none",
+        "temperature": "not sent",
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "store": false,
+        "service_tier": null,
+        "max_output_tokens": 512
+      }
+    },
+    {
+      "at": "2026-11-05T12:41:55.261-05:00",
+      "mode": "sync",
+      "settings": {
+        "reasoning_effort": "none",
+        "temperature": "not sent",
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "store": false,
+        "service_tier": null,
+        "max_output_tokens": 512
+      }
+    }
+  ]
 }

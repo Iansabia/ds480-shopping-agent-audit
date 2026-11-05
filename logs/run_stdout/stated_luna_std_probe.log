@@ -1,0 +1,2 @@
+{"episodes": 20, "done": 20, "error_final": 0, "asked": 0, "pending_turns": 0, "stop_reason": null}
+["STM_BM03_26_w2_rev", "STM_BW03_22_w2_rev", "STM_BW04_24_w1_fwd", "STM_WM05_20_w1_rev", "STM_WM05_23_w1_rev", "STM_WM05_24_w2_fwd", "STM_WM07_24_w1_fwd", "STM_WW05_24_w2_rev", "STM_WW06_24_w2_fwd", "STM_WW07_20_w2_fwd", "STW_BM10_27_w1_rev", "STW_BW10_24_w1_rev", "STW_WM02_25_w2_rev", "STW_WM03_20_w2_rev", "STW_WM04_27_w1_rev", "STW_WM05_24_w1_fwd", "STW_WM09_24_w1_fwd", "STW_WW01_22_w1_rev", "STW_WW06_24_w2_fwd", "STW_WW09_24_w2_fwd"]

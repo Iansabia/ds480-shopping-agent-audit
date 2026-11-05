@@ -1,0 +1,25 @@
+{
+  "run": "arab_luna",
+  "created": "2026-11-05T12:56:37.859-05:00",
+  "preset": "arab",
+  "provider": "openai",
+  "model_key": "luna",
+  "model_requested": "gpt-6-luna",
+  "settings": {
+    "reasoning_effort": "none",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "parallel_tool_calls": false,
+    "store": false,
+    "service_tier": null,
+    "max_output_tokens": 512
+  },
+  "mode": "sync",
+  "n_episodes": 3200,
+  "max_output_tokens": 512,
+  "git_commit": "d167cbc5080086c301f45db305d6bb38eb567581",
+  "episode_ids_sha256": "7ca640e6802bb3353f9e07655ceb9bd5cb09ec88e8fbd7292622f29fd1780167",
+  "ask_protocol": "v_followup_1",
+  "limit": null,
+  "tool_choice": "required"
+}

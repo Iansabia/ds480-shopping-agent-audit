@@ -1,0 +1,43 @@
+{
+  "run": "sasian_luna",
+  "created": "2026-11-05T13:30:49.215-05:00",
+  "preset": "sasian",
+  "provider": "openai",
+  "model_key": "luna",
+  "model_requested": "gpt-6-luna",
+  "settings": {
+    "reasoning_effort": "none",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "parallel_tool_calls": false,
+    "store": false,
+    "service_tier": null,
+    "max_output_tokens": 512
+  },
+  "mode": "sync",
+  "n_episodes": 2560,
+  "max_output_tokens": 512,
+  "git_commit": "d167cbc5080086c301f45db305d6bb38eb567581",
+  "episode_ids_sha256": "abec4b0dd272e44f1da16839014382f8be8afac668e196aec1440054899c73b3",
+  "ask_protocol": "v_followup_1",
+  "limit": null,
+  "tool_choice": "required",
+  "resumed_at": [
+    "2026-11-05T14:16:12.449-05:00"
+  ],
+  "resumes": [
+    {
+      "at": "2026-11-05T14:16:12.449-05:00",
+      "mode": "sync",
+      "settings": {
+        "reasoning_effort": "none",
+        "temperature": "not sent",
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "store": false,
+        "service_tier": null,
+        "max_output_tokens": 512
+      }
+    }
+  ]
+}

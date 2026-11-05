@@ -157,7 +157,12 @@ class Runner:
     def write_manifest(self) -> None:
         if self.manifest_path.exists():
             m = json.loads(self.manifest_path.read_text())
-            m.setdefault("resumed_at", []).append(now_iso())
+            t = now_iso()
+            m.setdefault("resumed_at", []).append(t)
+            # Mode and settings can change on a resume (D11: flex to standard tier);
+            # each turn record also carries its own mode and request_settings.
+            m.setdefault("resumes", []).append({"at": t, "mode": self.mode,
+                                                "settings": self.ad.request_settings()})
         else:
             m = {"run": self.run, "created": now_iso(), "preset": self.preset,
                  "provider": self.ad.provider, "model_key": self.ad.model_key,

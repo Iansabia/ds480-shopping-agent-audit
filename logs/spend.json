@@ -56,21 +56,21 @@
     "openai": {
       "by_model": {
         "luna": {
-          "calls": 51356,
-          "spent_usd": 4.0676147
+          "calls": 61078,
+          "spent_usd": 5.55563325
         }
       },
-      "calls": 51356,
+      "calls": 61078,
       "cap_usd": 10.0,
       "halted": false,
       "halted_at": "2026-11-04T15:10:33-0500",
       "halted_reason": null,
-      "input_tokens": 73818295,
-      "notional_usd": 4.0676147,
-      "output_tokens": 1464068,
+      "input_tokens": 87768583,
+      "notional_usd": 5.55563325,
+      "output_tokens": 1749912,
       "reservations": {},
-      "spent_usd": 4.0676147
+      "spent_usd": 5.55563325
     }
   },
-  "updated": "2026-11-05T10:41:16-0500"
+  "updated": "2026-11-05T14:30:57-0500"
 }

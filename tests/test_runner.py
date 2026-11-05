@@ -232,3 +232,18 @@ def test_cancel_open_batches_frees_reservation_and_reruns_in_sync(cat, tmp_path)
     assert out2["done"] == 4
     keys = [(x["episode_id"], x["turn"]) for x in read(tmp_path)]
     assert len(keys) == len(set(keys))
+
+
+def test_resume_in_other_mode_records_mode_per_turn_and_in_manifest(cat, tmp_path):
+    eps = some_eps(cat, 6, "S0")
+    r, _, _ = mk(cat, tmp_path, eps[:3], mode="flex")
+    r.run_sync()
+    r2, _, _ = mk(cat, tmp_path, eps, mode="sync")
+    out = r2.run_sync()
+    assert out["done"] == 6
+    modes = [x["mode"] for x in read(tmp_path)]
+    assert modes.count("flex") == 3 and modes.count("sync") == 3
+    m = json.loads((tmp_path / "t.manifest.json").read_text())
+    assert m["mode"] == "flex" and m["resumes"][-1]["mode"] == "sync"
+    rows = score_run("t", log_dir=tmp_path, write=False)
+    assert len(rows) == 6 and all(x["outcome"] == "bought" for x in rows)
