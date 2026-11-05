@@ -175,7 +175,7 @@ These use the pilot token counts. Haiku prices are batch, and Luna prices are ba
    - income and education guesses being sparse for Haiku because of refusals
 7. **Still open from the harness report:** Ian's 20-page label spot check, and product details cut off mid-word on store pages.
 
-## 7. Luna update (Wed 11/4, 7 to 8:45 pm ET, after $10 OpenAI credit)
+## 7. Luna update (Wed 11/4, 7 to 9:40 pm ET, after $10 OpenAI credit)
 
 **Name check, now on three models:**
 - Luna finished the race/gender prompt for all 64 main names (320 of 320 guesses answered, 0 refusals). It read 320 of 320 as intended. The income/education prompt was skipped for Luna (`--rg-only`), as for Gemini.
@@ -183,10 +183,43 @@ These use the pilot token counts. Haiku prices are batch, and Luna prices are ba
 - Harness bug fixed: in `src/name_check.py` the API error handler reused the variable `kind` (the prompt kind) for the error class. After a retried timeout the next reply crashed with `KeyError: 'transient'`. It now uses `ekind`, and error records keep the prompt kind. No logged record was affected.
 - Luna name check cost about $0.01 in all (all 64 names, today).
 
-**Pilot (`pilot` preset, Batch mode): not finished.**
-- One batch of 200 first turns (the projection wave) was submitted at 6:49 pm. At 8:41 pm OpenAI still showed it `in_progress` with 0 of 200 done. OpenAI allows up to 24 hours. The rest of the 1,152 episodes are not submitted yet, because the harness holds them until the first 200 are scored.
-- No Luna pilot numbers yet. To resume, rerun `.venv/bin/python src/run_agents.py run --model luna --preset pilot --mode batch` (add `--no-wait` to collect once and exit), then `score --run pilot_luna`.
-- OpenAI spend so far about $0.011 of the $10 cap. Open reservations: the live batch ($0.044, correct) and one name check call left by the stopped process ($0.0001; no harness command clears name check reservations, and it is too small to matter).
+**Pilot (`pilot` preset, 1,152 episodes): finished in Flex mode.**
+- **Mode change (owner approved).** The first Batch wave (200 turns, sent 6:49 pm) sat at 0 of 200 done for almost 2 hours. It was cancelled with the new `run_agents.py cancel-batches --run pilot_luna`. OpenAI returned the 200 requests as `batch_cancelled` (never executed, $0 billed). They stay in `logs/pilot_luna.turns.jsonl` as error records, and the same turns were rerun. The run then finished with `run --model luna --preset pilot --mode flex --workers 4 --min-interval-s 0.5` (8:55 to 9:38 pm). Flex uses batch prices.
+- **Pages.** This pilot ran on the pages after D3 and D3b (label fixes, committed by 8:16 pm). The Haiku pilot ran on the older pages, so the two pilots are not an exact match.
+- Pooled outcomes only. No group breakdown was computed, the same as for the Haiku pilot (PLAN 2: the pilot only sets the detectable gaps). Price by group was asked for but held back; it can be run in seconds if Ian says to.
+
+| | Luna full pilot (Flex) | Haiku full pilot (for comparison) |
+|---|---|---|
+| Episodes finished | 1,152 of 1,152 | 1,152 of 1,152 |
+| Bought | 1,152 | 1,037 |
+| No purchase | 0 | 111 |
+| Invalid product ID | 0 | 4 |
+| Refusal / no tool call / truncated / error (final) | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| Ask rate S0 / S1 / V | 0.3% (1) / 0% / 34% (132) | 33% / 14% / 54% |
+| Second ask in V (gets the D1 reply) | 15 of 384 (4%), all then bought | not in this protocol |
+| Fit rate when bought (S0, S1) | 100% (768 of 768) | 94% |
+| V: fits the hidden need | 132 of 132 after asking, 135 of 252 without asking | |
+| S1 over budget | 0% | 0.8% |
+| S0 price, pooled log(price / cheapest fit) | mean 0.54, SD 0.55 | |
+| Calls per episode | 1.13 | 1.34 |
+| Mean tokens per call in / out | 1,410 / 28 (0 reasoning tokens) | 2,741 / 91 |
+| Model ID returned | gpt-6-luna every time | claude-haiku-5-5 every time |
+| Bought position 1 / position 8 | 17% / 8% | 23% / 13% |
+
+- V asks were mostly on the shade tasks (24 of 24 on concealer deep shade, tint deep shade and tint light shade) and on the twin razor (18 of 24).
+- **Cost:** about $0.10 for the pilot (1,300 executed calls). OpenAI total spend is $0.11 of the $10 cap, with 0 open reservations. The ledger's call count (1,836) includes the 200 cancelled requests, which did no work.
+
+**Things that matter for the main run:**
+1. **Batch looks unreliable on this account.** The one Batch wave never started in 2 hours. Plan on Flex.
+2. **Flex speed.** Median latency 7 s (max 101 s). With 4 workers it did about 30 calls a minute. Luna's four main presets (41,120 episodes, about 46,500 calls at 1.13 per episode) would take about 26 hours at that pace. More workers are needed (for example 16 to 24, still far under the paid tier's 5,000 per minute), with `--min-interval-s 0.5` or lower. The default 6.5 s pacing in `config.py` is for free access and would take days.
+3. **Cost is fine.** At $0.10 per 1,152 episodes, all Luna presets come to about $3.60, under the $5.21 estimate and the $10 cap.
+4. **Luna rarely asks** outside V, and in V it asks less than Haiku and almost never asks twice. H4 (bought without asking in V) will have more data for Luna than for Haiku.
+5. No refusals, no invalid IDs and no unreadable replies.
+
+**Harness changes for this switch** (tests added, all pass):
+- `cancel-batches --run RUN` cancels a run's open batches. Results that already finished are collected. A batch that ended with none is logged as `abandoned` and its spend reservation is released.
+- `spend --clear-stale PROVIDER RUN` drops a dead process's call reservations for that run (older than 15 minutes). It was used to clear the $0.0001 `namecheck_luna` one.
+- `run --min-interval-s` overrides the sync pacing.
 
 ## Files
 

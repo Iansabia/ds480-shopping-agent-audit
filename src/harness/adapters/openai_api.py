@@ -152,6 +152,15 @@ class OpenAIAdapter(Adapter):
             return "failed"
         return "running"
 
+    def cancel_batch(self, batch_id: str) -> None:
+        try:
+            if self.client.batches.retrieve(batch_id).status in ("cancelling", "cancelled", "completed",
+                                                                 "expired", "failed"):
+                return  # already stopping or stopped
+            self.client.batches.cancel(batch_id)
+        except Exception as e:  # noqa: BLE001
+            raise self._map_error(e) from None
+
     def fetch_batch(self, batch_id: str, order: list[str] | None = None) -> dict[str, tuple[str, Any]]:
         out: dict[str, tuple[str, Any]] = {}
         try:

@@ -478,6 +478,37 @@ class Runner:
                                              "billed_usd_est": billed_sum})
         return running
 
+    def cancel_open_batches(self, max_polls: int = 60) -> dict:
+        """Cancel every open batch of this run (for example to switch a stuck run to
+        sync or flex). Results the provider already finished are collected and kept.
+        A batch that ended with no results is logged as 'abandoned' and its spend
+        reservation is released, so the pending turns run again on resume."""
+        out = {"cancelled": [], "collected": [], "abandoned": [], "still_running": []}
+        for bid, sub in self.open_batches().items():
+            self.ad.cancel_batch(bid)
+            out["cancelled"].append(bid)
+            st = "running"
+            for i in range(max_polls):
+                st = self.ad.poll_batch(bid)
+                if st != "running":
+                    break
+                self.sleep(min(self.poll_s, 10.0))
+            if st == "running":
+                out["still_running"].append(bid)
+                continue
+            results = self.ad.fetch_batch(bid) if st == "ended" else {}
+            if results:
+                out["collected"].append(bid)
+                continue  # collect() below records them and frees the reservation
+            if sub.get("reservation"):
+                self.guard.release(self.ad.provider, sub["reservation"])
+            self._append(self.batches_path, {"event": "abandoned", "batch_id": bid, "status": st,
+                                             "reason": "cancelled", "t": now_iso(), "n_results": 0})
+            out["abandoned"].append(bid)
+        if out["collected"]:
+            self.collect()
+        return out
+
     def submit(self, limit: int | None = None) -> list[str]:
         state = self.load_state()
         in_flight = set()

@@ -76,10 +76,15 @@ class FakeAdapter(Adapter):
     def poll_batch(self, batch_id: str) -> str:
         b = self._batches[batch_id]
         b["polls"] += 1
-        return "ended" if b["polls"] >= 2 else "running"
+        return "ended" if b["polls"] >= 2 or b.get("cancelled") else "running"
+
+    def cancel_batch(self, batch_id: str) -> None:
+        self._batches[batch_id]["cancelled"] = True
 
     def fetch_batch(self, batch_id: str, order: list[str] | None = None) -> dict[str, tuple[str, Any]]:
         out = {}
+        if self._batches[batch_id].get("cancelled"):
+            return out  # cancelled before any request ran
         for cid, p in self._batches[batch_id]["items"]:
             self.calls += 1
             out[cid] = ("ok", self._respond(p))

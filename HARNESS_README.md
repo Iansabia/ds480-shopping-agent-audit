@@ -53,6 +53,9 @@ In every preset, each name sees both hidden needs equally often (the tests check
 .venv/bin/python src/run_agents.py status --run pilot_haiku
 .venv/bin/python src/run_agents.py score  --run pilot_haiku     # -> logs/pilot_haiku.outcomes.csv
 .venv/bin/python src/run_agents.py spend                        # [--clear-halt openai]
+.venv/bin/python src/run_agents.py spend --clear-stale openai namecheck_luna   # drop a dead process's call reservations (>15 min old)
+.venv/bin/python src/run_agents.py cancel-batches --run pilot_luna   # cancel stuck batches, free their reservations, then rerun in flex/sync
+.venv/bin/python src/run_agents.py run --model luna --preset pilot --mode flex --workers 4 --min-interval-s 0.5   # paid tier: override the 6.5 s free pacing
 .venv/bin/python src/run_agents.py run --fake --model haiku --preset pilot --limit 30   # no network
 .venv/bin/python -m pytest -q tests
 ```

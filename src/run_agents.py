@@ -68,6 +68,8 @@ def cmd_run(a):
     else:
         ad = make_adapter(a.model, tool_choice=a.tool_choice,
                           service_tier="flex" if a.mode == "flex" else None)
+        if a.min_interval_s is not None and hasattr(ad, "min_interval_s"):
+            ad.min_interval_s = a.min_interval_s
         guard = SpendGuard()
     runner = Runner(cat, ad, run_name, eps, guard=guard, mode=a.mode, workers=a.workers,
                     batch_size=a.batch_size, poll_s=a.poll_s, allow_daytime_local=a.allow_daytime_local,
@@ -96,6 +98,12 @@ def _runner_from_manifest(run: str) -> Runner:
     return Runner(cat, ad, run, eps, guard=SpendGuard(), mode=m["mode"], preset=m["preset"])
 
 
+def cmd_cancel_batches(a):
+    config.load_env()
+    r = _runner_from_manifest(a.run)
+    print(json.dumps({"run": a.run, **r.cancel_open_batches()}, indent=2))
+
+
 def cmd_status(a):
     r = _runner_from_manifest(a.run)
     print(json.dumps({"run": a.run, **r.status(), "open_batches": list(r.open_batches())}, indent=2))
@@ -112,6 +120,9 @@ def cmd_spend(a):
     g = SpendGuard()
     if a.clear_halt:
         g.clear_halt(a.clear_halt)
+    if a.clear_stale:
+        # Only sync-call reservations of that run older than 15 minutes (a killed process).
+        g.clear_stale_reservations(a.clear_stale[0], run=a.clear_stale[1])
     snap = g.snapshot()
     for p, d in snap["providers"].items():
         print(f"{p:10s} spent ${d['spent_usd']:.4f} of ${d['cap_usd']:.2f} cap | notional ${d['notional_usd']:.4f} | "
@@ -145,11 +156,17 @@ def main(argv=None):
     p.add_argument("--allow-daytime-local", action="store_true",
                    help="override the 7pm-7am ET rule for OLMo. Only if Ian says so.")
     p.add_argument("--fake", action="store_true", help="use the fake model (no network, no cost)")
+    p.add_argument("--min-interval-s", type=float,
+                   help="override the model's sync pacing (Luna's 6.5 s is for free access)")
     p.set_defaults(func=cmd_run)
 
     p = sub.add_parser("status")
     p.add_argument("--run", required=True)
     p.set_defaults(func=cmd_status)
+
+    p = sub.add_parser("cancel-batches", help="cancel a run's open batches and free their reservations")
+    p.add_argument("--run", required=True)
+    p.set_defaults(func=cmd_cancel_batches)
 
     p = sub.add_parser("score")
     p.add_argument("--run", required=True)
@@ -157,6 +174,8 @@ def main(argv=None):
 
     p = sub.add_parser("spend")
     p.add_argument("--clear-halt", metavar="PROVIDER")
+    p.add_argument("--clear-stale", nargs=2, metavar=("PROVIDER", "RUN"),
+                   help="drop call reservations of RUN older than 15 min, e.g. openai namecheck_luna")
     p.set_defaults(func=cmd_spend)
 
     a = ap.parse_args(argv)

@@ -210,3 +210,25 @@ def test_logs_never_contain_secrets(cat, tmp_path, monkeypatch):
     for f in tmp_path.iterdir():
         if f.is_file():
             assert secret not in f.read_text(errors="ignore")
+
+
+def test_cancel_open_batches_frees_reservation_and_reruns_in_sync(cat, tmp_path):
+    eps = some_eps(cat, 4, "S0")
+    ad = FakeAdapter()
+    r, ad, guard = mk(cat, tmp_path, eps, ad=ad, mode="batch", projection_after=4)
+    out = r.run_batch(wait=False)
+    assert len(out["open_batches"]) == 1
+    snap = json.loads((tmp_path / "spend.json").read_text())
+    assert len(snap["providers"]["fake"]["reservations"]) == 1
+    res = r.cancel_open_batches()
+    assert res["abandoned"] == out["open_batches"] and not res["still_running"]
+    assert r.open_batches() == {}
+    snap = json.loads((tmp_path / "spend.json").read_text())
+    assert snap["providers"]["fake"]["reservations"] == {}
+    # the same run then finishes in sync mode, with no duplicate turns
+    r2 = Runner(cat, ad, "t", eps, guard=guard, log_dir=tmp_path, mode="sync", sleep=lambda s: None,
+                poll_s=0, workers=2)
+    out2 = r2.run_sync()
+    assert out2["done"] == 4
+    keys = [(x["episode_id"], x["turn"]) for x in read(tmp_path)]
+    assert len(keys) == len(set(keys))

@@ -168,6 +168,10 @@ class Adapter:
         """custom_id -> ("ok", raw_dict) or ("error", message)."""
         raise NotImplementedError
 
+    def cancel_batch(self, batch_id: str) -> None:
+        """Ask the provider to cancel a batch. poll_batch reports 'ended' once it has stopped."""
+        raise NotImplementedError
+
     # response side
     def normalize(self, raw: dict) -> Normalized:
         raise NotImplementedError
