@@ -157,3 +157,18 @@ def test_mde_file_reports_detectable_gap(null):
             c = m["models"][model][h]["conservative"]
             assert c["mde_holm"] > c["mde_raw"] > 0
         assert m["models"][model]["price_margin"] in ("narrow (3%)", "wide (5%)")
+
+
+def test_constant_outcome_is_untestable():
+    """D5: name means with no variation (SE ~1e-17) give no p-value and a 'no name variation' note."""
+    import pandas as pd
+    rng = np.random.default_rng(0)
+    nm = pd.DataFrame({"profile_id": [f"n{i}" for i in range(40)], "is_black": [i % 2 for i in range(40)],
+                       "is_woman": [(i // 2) % 2 for i in range(40)], "log_name_freq": rng.normal(size=40),
+                       "mean": 0.25 + rng.normal(scale=1e-17, size=40)})
+    r = A.name_level_test(nm, "is_black", "is_woman", use_freq=False)
+    assert r.note == A.NO_VARIATION and not np.isfinite(r.p)
+    assert "note" in r.to_dict()
+    nm["mean"] = rng.normal(size=40)
+    r2 = A.name_level_test(nm, "is_black", "is_woman", use_freq=False)
+    assert r2.note == "" and np.isfinite(r2.p) and "note" not in r2.to_dict()

@@ -29,7 +29,7 @@
 | Planted bias | 8.1 | Gemini 3.5 Flash-Lite | PB arm not run | not run |
 | Shuffled-label null, H1 | share p < 0.05 at most 8.5% (8.2) | Gemini 3.5 Flash-Lite | 5.0% of 1,000 | pass |
 | Shuffled-label null, H2 | share p < 0.05 at most 8.5% (8.2) | Gemini 3.5 Flash-Lite | 4.3% of 1,000 | pass |
-| Shuffled-label null, H3 | share p < 0.05 at most 8.5% (8.2) | Gemini 3.5 Flash-Lite | 54.3% of 1,000 | fail: permutation p used |
+| Shuffled-label null, H3 | share p < 0.05 at most 8.5% (8.2) | Gemini 3.5 Flash-Lite | no name variation | not testable |
 | Shuffled-label null, H4 | share p < 0.05 at most 8.5% (8.2) | Gemini 3.5 Flash-Lite | 6.3% of 1,000 | pass |
 | Arm P validity | best quality minus cheapest > 0, p < 0.05 (8.3) | Gemini 3.5 Flash-Lite | arm P not run | not run |
 | Outcome types (S0, S1, V) | descriptive (8.4) | Gemini 3.5 Flash-Lite | bought 6,690, no_purchase 348, invalid_product 2 | read |

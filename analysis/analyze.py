@@ -214,9 +214,28 @@ class TestResult:
     alt_est: float = float("nan")   # the other specification (with freq if primary has none, and vice versa)
     alt_se: float = float("nan")
     alt_p: float = float("nan")
+    note: str = ""   # "no name variation" when the test is untestable (D5); left out of to_dict when empty
 
     def to_dict(self):
-        return {k: (None if isinstance(v, float) and math.isnan(v) else v) for k, v in self.__dict__.items()}
+        return {k: (None if isinstance(v, float) and math.isnan(v) else v) for k, v in self.__dict__.items()
+                if not (k == "note" and not v)}
+
+
+NO_VARIATION = "no name variation"
+SE_FLOOR = 1e-10      # D5: below this an HC2 SE is floating-point noise, not sampling error
+SD_FLOOR = 1e-12      # D5: name means this close are identical up to rounding
+
+
+def no_name_variation(y, se: float | None = None) -> bool:
+    """D5 (PLAN Deviations): an outcome that does not vary across names has
+    nothing to test. Name means that are identical up to rounding give an HC2
+    SE near 1e-17 and a meaningless t; such a test is marked untestable (no p,
+    left out of any multiplicity family) instead."""
+    y = np.asarray(y, float)
+    y = y[np.isfinite(y)]
+    if len(y) < 2 or float(np.std(y)) < SD_FLOOR:
+        return True
+    return se is not None and np.isfinite(se) and se < SE_FLOOR
 
 
 FREQ_CORR_LIMIT = 0.5   # PLAN 5.3
@@ -263,6 +282,10 @@ def name_level_test(nm: pd.DataFrame, focal: str, other: str | None, n_perm: int
         return TestResult(*([float("nan")] * 7), int(a.sum()), int((~a).sum()))
     b, se, df = _hc2_ols(X, y)
     est, s = b[1], se[1]
+    if no_name_variation(y, s):
+        return TestResult(float(est), float("nan"), df, float("nan"), float("nan"), float("nan"), float("nan"),
+                          int(a.sum()), int((~a).sum()), mean_a=float(y[a.to_numpy()].mean()),
+                          mean_b=float(y[~a.to_numpy()].mean()), freq_corr=fcorr, note=NO_VARIATION)
     t = est / s if s > 0 else float("nan")
     p = 2 * stats.t.sf(abs(t), df) if s > 0 else float("nan")
     q = stats.t.ppf(1 - ALPHA / 2, df)
@@ -629,6 +652,8 @@ def shuffled_null(df: pd.DataFrame, model: str, h: str, n: int = N_SHUFFLE_NULL,
     nm = name_means(hyp_data(df, model, h), spec["y"]).dropna(subset=["mean"]).reset_index(drop=True)
     if len(nm) < 6:
         return {"ran": False}
+    if no_name_variation(nm["mean"]):
+        return {"ran": False, "note": NO_VARIATION}   # D5: every name has the same mean, nothing to shuffle
     rng = np.random.default_rng(seed)
     strata = nm[spec["other"]].to_numpy()
     lab = nm[spec["focal"]].to_numpy(float)
@@ -779,11 +804,15 @@ def _paired_name_diff(a: pd.DataFrame, b: pd.DataFrame, y: str) -> pd.DataFrame:
 
 def explore(df: pd.DataFrame, models: list[str]) -> dict:
     tests = []
+    untestable = []   # D5: outcomes with no variation across names; reported, never in the BH family
 
     def add(model, name, nm, focal, other, kind, use_freq="auto"):
         if nm is None or len(nm) < 4:
             return
         r = name_level_test(nm, focal, other, use_freq=use_freq)
+        if r.note == NO_VARIATION:
+            untestable.append({"model": model, "test": name, "kind": kind, **r.to_dict()})
+            return
         if not np.isfinite(r.p):
             return
         tests.append({"model": model, "test": name, "kind": kind, **r.to_dict()})
@@ -826,6 +855,10 @@ def explore(df: pd.DataFrame, models: list[str]) -> dict:
                 X = np.column_stack([np.ones(len(nm2)), nm2["is_black"], nm2["is_woman"],
                                      nm2["is_black"] * nm2["is_woman"]])
                 b, se, dfree = _hc2_ols(X, nm2["mean"].to_numpy(float))
+                if no_name_variation(nm2["mean"], se[3]):
+                    untestable.append({"model": model, "test": f"race x gender interaction, {arm} {y}", "kind": kind,
+                                       "est": float(b[3]), "note": NO_VARIATION})
+                    continue
                 t = b[3] / se[3]
                 p = float(2 * stats.t.sf(abs(t), dfree))
                 q = stats.t.ppf(0.975, dfree)
@@ -852,7 +885,10 @@ def explore(df: pd.DataFrame, models: list[str]) -> dict:
         if not d.empty:
             d = d.assign(_r=residualize(d, "logp"))
             piv = d.groupby(["profile_id", "birth_year"])["_r"].mean().unstack().dropna()
-            if piv.shape[1] == 2 and len(piv) > 3:
+            if piv.shape[1] == 2 and len(piv) > 3 and no_name_variation(piv.iloc[:, 1] - piv.iloc[:, 0]):
+                untestable.append({"model": model, "kind": "price", "note": NO_VARIATION,
+                                   "test": f"birth year {piv.columns[1]} minus {piv.columns[0]}, S0 log price"})
+            elif piv.shape[1] == 2 and len(piv) > 3:
                 diff = piv.iloc[:, 1] - piv.iloc[:, 0]
                 tt = stats.ttest_1samp(diff, 0)
                 se = float(diff.std(ddof=1) / math.sqrt(len(diff)))
@@ -879,7 +915,11 @@ def explore(df: pd.DataFrame, models: list[str]) -> dict:
                 t["gap_pct"] = 100 * (math.exp(t["est"]) - 1)
             elif t["kind"] == "rate":
                 t["gap_points"] = 100 * t["est"]
-    return {"n_tests": len(tests), "bh_q": BH_Q, "tests": tests}
+    for t in untestable:
+        t["q_bh"] = None
+        t["discovery_q10"] = False
+    return {"n_tests": len(tests), "bh_q": BH_Q, "tests": tests, "n_untestable": len(untestable),
+            "untestable": untestable}
 
 
 # ----------------------------------------------------------------------------- figures (PLAN 10)
@@ -1184,7 +1224,8 @@ def cmd_explore(args, df=None) -> dict:
     models = [m for m in sorted(df["model"].unique()) if (df[(df["model"] == m)]["arm"].isin(["S0", "S1", "V"])).any()]
     out = explore(df, models)
     write_json(Path(args.results) / "exploratory.json", out)
-    pd.DataFrame(out["tests"]).to_csv(Path(args.results) / "exploratory.csv", index=False)
+    # BH family first, then the untestable rows (D5: no name variation, no p, not in BH) labeled in "note"
+    pd.DataFrame(out["tests"] + out.get("untestable", [])).to_csv(Path(args.results) / "exploratory.csv", index=False)
     return out
 
 

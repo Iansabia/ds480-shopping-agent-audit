@@ -1139,7 +1139,7 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
              left=210, gap=96)
     S.footer(fig, foot)
     lab = {kind: letters[k] for k, (kind, _) in enumerate(panels)}
-    cap = ("Figure 5. Method checks, run before any group result was examined (PLAN 8). "
+    cap = ("Figure 5. Method checks, run before any group result was examined, as the pre-registered plan requires. "
            + (f"{lab['planted']}: a planted 'always buy the lowest-priced product that meets the request' preference "
               "for 5 names; each line is one planted name (colored by name group), clear request vs the same request "
               "with the saved preference, on the same tasks, wordings and orders; dotted line: their average. "
@@ -1148,7 +1148,7 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
               if "wait" in lab else "")
            + (f"{lab['recover']}: with the planted names' preference runs swapped into "
               "the clear-request data, the frozen H1 test's estimate and 95% CI vs the expected diluted gap (planted "
-              "shift x 5 / 20); PLAN 8.1 requires the CI to cover it, and detection only when the swapped data's own "
+              "shift x 5 / 20); the pre-registered rule requires the CI to cover it, and detection only when the swapped data's own "
               "detectable gap says it should be found. " if "recover" in lab else "")
            + (f"{lab['validity']}: 'best quality' minus 'cheapest that fits' per name (small marks) and on average "
               "(large mark). " if "validity" in lab else "")
@@ -1374,7 +1374,7 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
              left=LEFT_GROUPS, gap=78, right=56)
     S.footer(fig, foot)
     cap = ("Figure 6. Hair and skin tasks, by name group. A: share of vague-request runs (all tasks) where the agent "
-           "asked the buyer first; PLAN 4 puts the ask rate beside H4, which conditions on not asking. B and C: vague "
+           "asked the buyer first, shown beside H4 as pre-registered, since H4 counts only runs where the agent did not ask. B and C: vague "
            "requests where the buyer's need was hidden and the agent bought without asking; wrong-product (other "
            "need) rate split by the buyer's actual need, never pooled, since a guess from a name hurts buyers whose "
            "need does not match the guess and those errors cancel in a pooled number. D and E: clear requests that "
@@ -1386,8 +1386,7 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
            "the identity-linked pick when the need is stated, and H4 the same pick in the B and C runs, both names "
            "associated with Black minus White buyers" + (f"; H4's detectable gap after Holm (m = {HOLM_M}) is {h4m:.1f} "
                                                          "points" if h4m else "")
-           + ". These panels are PLAN 10 Figure 2 (A: panel A; B and C: panels B and C); D to F are added. The ask rate "
-           "for every request type is in Figure 7.")
+           + ". The ask rate for every request type is in Figure 7.")
     out.fig("fig6", fig, "fig6_hair_skin_fit", cap, pd.concat(tabs) if tabs else None)
 
 
@@ -1462,9 +1461,9 @@ def fig_ask(out: Out, df, models, bundle):
            + ("." if out.pilot else "; tests controlled at a 10% false discovery rate, and q is printed only where "
               "q < 0.10.") + " No "
            "purchase includes refusals, errors, invalid product IDs and no tool call. In vague requests the agent could "
-           "ask twice before a scripted 'choose one yourself' reply (Deviation D1); runs logged before D1 keep one "
-           "answered ask. Second-ask rates are in the CSV. The vague-request ask rate (PLAN 10 Figure 2 panel A) is "
-           "repeated beside H4 in Figure 6.")
+           "ask twice before a scripted 'choose one yourself' reply, a change logged before any main run (pilot "
+           "runs logged earlier keep one answered ask). Second-ask rates are in the CSV. The vague-request ask rate is repeated beside H4 in "
+           "Figure 6.")
     out.fig("fig7", fig, "fig7_ask_rates", cap, t)
 
 
@@ -1596,12 +1595,19 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
             ref = h1.iloc[0]["ref_usd"]
             ref_line = f"<br>= {f_usd_plain(mde / 100 * ref)} per purchase at the {f_usd_plain(ref)} average paid"
         luna = mde_for(mde_info, "luna", "H1", "mde_holm_pct")
+        # D6: mde.json holds the Haiku pilot only, so Luna has no pre-registered value; on main data show
+        # Luna's achieved detectable gap from confirmatory.json, labeled post hoc (never backfilled into mde.json)
+        lr = conf_row(bundle, "luna", "H1") if not out.pilot else None
+        lpost = lr.get("mde_achieved_raw_pct") if lr else None
+        luna_line = (f"GPT-6 Luna: {luna:.1f}%" if luna else
+                     "GPT-6 Luna: no detectable gap yet (pilot pending)" if out.pilot else
+                     f"GPT-6 Luna: none set in advance; post hoc {lpost:.1f}%<br>(this run's achieved gap, no Holm)"
+                     if lpost and finite(lpost) else "GPT-6 Luna: no pre-registered value")
         txt(fig, 69.4, 71, f"Flagged at least 80% of the time; about<br><b>${round(per_million(mde), -2):,.0f}</b> "
             f"per $1M of agent spend{ref_line}<br>"
-            + (f"GPT-6 Luna: {luna:.1f}%" if luna else ("GPT-6 Luna: no pre-registered value" if not out.pilot
-                                                          else "GPT-6 Luna: no detectable gap yet (pilot pending)"))
-            + ("<br>Set from the pilot before the main run<br>(a design number, not a result)." if out.pilot or h1.empty
-               else "<br>Set from the pilot before the main run."), S.BASE - 4, vanchor="top")
+            + ("Set from the pilot before the main run<br>(a design number, not a result).<br>" if out.pilot or h1.empty
+               else "Set from the Haiku pilot before the main run.<br>")
+            + luna_line, S.BASE - 4, vanchor="top")
     tile(0, 15, 100, 47.5, "Three proposed actions for a payments network" + (" (pending results)" if out.pilot or
                                                                              h1.empty else ""))
     acts = [("1  Audit gate (do now)", "An agent joins the network's agent program only after<br>passing this paired-name "
@@ -1622,7 +1628,9 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models):
     cap = ("Figure 1. Summary card. What was tested, the headline price result (names associated with Black minus White "
            "buyers, in dollars per purchase, per 1,000 purchases and per $1 million of agent spend), the smallest price "
            "gap the test can reliably detect (H1 on Claude Haiku 5.5, after Holm at m = 8; a design number fixed before "
-           "the main run) and three proposed actions for a payments network, marked pending until the main run. Audit cost is the pre-run batch estimate (COST_ESTIMATE.md).")
+           "the main run; GPT-6 Luna had none set in advance, so its achieved detectable gap from this run is shown and "
+           "labeled post hoc) and three proposed actions for a payments network. Audit cost is the pre-run batch "
+           "estimate (COST_ESTIMATE.md).")
     data = pd.DataFrame([{"mde_h1_pct": mde, "mde_per_1m_usd": per_million(mde) if mde else float("nan"),
                           "episodes_per_model": eps}])
     # one light stamp in the middle card, clear of the numbers in the side cards
@@ -1721,11 +1729,11 @@ def figA1_position(out: Out, df, models, bundle=None):
              "reversed product order. Dashed line: 12.5%, no position preference.", out.pilot,
              540 + S.footer_margin(foot) - 60, bottom=S.footer_margin(foot), left=80, right=52, gap=94)
     S.footer(fig, foot)
-    cap = ("Figure A1. Position bias (PLAN 10 Figure A1, same computation as analyze.py). Share of purchases at each "
+    cap = ("Figure A1. Position bias. Share of purchases at each "
            "displayed position, forward vs reversed product order, arms S0, S1 and V pooled, with 95% Wilson intervals; "
            "dashed line: 12.5%, no position preference. Panel titles give the number of purchases and tasks. The "
            "product order is part of every test cell, so position is held fixed by design. The paired position effect "
-           "on price (PLAN 5.2) is in the footer and Table A1.")
+           "on price is in the footer and Table A1.")
     out.fig("figA1", fig, "figA1_position_bias", cap, t)
 
 
@@ -1793,14 +1801,12 @@ def figA2_baseline(out: Out, df, models, mde_info, conf):
              out.pilot, 240 + 70 * len(groups) + S.footer_margin(foot), bottom=S.footer_margin(foot),
              left=LEFT_GROUPS, right=40, gap=90)
     S.footer(fig, foot)
-    cap = ("Figure A2. Price paid vs the no-name buyer, by name group and request type (this is PLAN 10 Figure 1, same "
-           "computation as analyze.py). Dots: group mean of name averages after removing task, wording and order "
+    cap = ("Figure A2. Price paid vs the no-name buyer, by name group and request type. Dots: group mean of name averages after removing task, wording and order "
            "effects, minus the no-name accounts' mean, as percent; bars: Welch 95% CI across names, which includes "
            "the no-name baseline's own uncertainty. Shaded band in the clear-request panel: the detectable Black vs "
-           "White gap (H1, Haiku, after Holm at m = 8), shown for scale as PLAN 10 asks; it is a different comparison "
+           "White gap (H1, Haiku, after Holm at m = 8), shown for scale; it is a different comparison "
            "and not a threshold for these points. A cell where every run bought the same item is marked 'not "
-           "estimable' instead of being drawn as a zero gap. Hispanic and Asian cells are exploratory. Paper figure "
-           "numbers differ from PLAN 10: PLAN Figure 1 is this figure, and PLAN Figure 2 is Figure 6 A to C.")
+           "estimable' instead of being drawn as a zero gap. Hispanic and Asian cells are exploratory.")
     out.fig("figA2", fig, "figA2_price_vs_no_name", cap, t)
 
 
@@ -1858,7 +1864,7 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
                     e = est_ex[(m, key)]
                     rows.append({"model": m, "outcome": key, "unit": unit, "est": f(clean0(e["est"])),
                                  "lo": f(clean0(e["ci_lo"])), "hi": f(clean0(e["ci_hi"])),
-                                 "verdict": "exploratory estimate, not tested", "p_adj": float("nan"),
+                                 "verdict": e.get("status", "exploratory estimate, not tested"), "p_adj": float("nan"),
                                  "family": "none (exploratory model)"})
             else:
                 e = next((e for e in bundle["exploratory"]["tests"] if e["model"] == m and e["test"] == key), None)
@@ -1985,7 +1991,7 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
     cap = ("Figure A4. Gaps by model and outcome (focal group minus comparison group, name level, 95% CI); price in "
            "percent on one shared scale, rates in percentage points on another. Blue ticks: detectable gap after Holm "
            f"(m = {HOLM_M}) where pre-registered. Claude Haiku 5.5 and GPT-6 Luna are confirmatory when they enter the "
-           "family (PLAN 3); Gemini 3.5 Flash-Lite and OLMo 3 7B are exploratory, shown as estimates only (open "
+           "pre-registered test family; Gemini 3.5 Flash-Lite and OLMo 3 7B are exploratory, shown as estimates only (open "
            "markers). A cell where every run gave the same result is labeled 'not estimable', never drawn as a zero "
            "gap. Rows with no scored runs are marked pending. The two right columns are exploratory tests "
            "(Benjamini-Hochberg, 10%). One model version per vendor on one date.")
@@ -2183,6 +2189,9 @@ def tableA1(out: Out, bundle, df, models):
                 rows.append({"Check": f"Shuffled-label null, {h}", "Rule (PLAN)": "share p < 0.05 at most 8.5% (8.2)",
                              "Model": S.label(m), "Value": f"{100 * sn['reject_rate']:.1f}% of {sn['shuffles']:,}",
                              "Result": "pass" if sn["pass"] else "fail: permutation p used"})
+            elif sn.get("note"):   # D5: every name has the same mean, so there is nothing to shuffle
+                rows.append({"Check": f"Shuffled-label null, {h}", "Rule (PLAN)": "share p < 0.05 at most 8.5% (8.2)",
+                             "Model": S.label(m), "Value": sn["note"], "Result": "not testable"})
         ap = ch["arm_p"].get(m, {})
         rows.append({"Check": "Arm P validity", "Rule (PLAN)": "best quality minus cheapest > 0, p < 0.05 (8.3)",
                      "Model": S.label(m),
@@ -2221,6 +2230,12 @@ def appendix_tables(out: Out, bundle):
         ex = ex.sort_values(["sort", "model"], kind="stable").drop(columns="sort")
         out.table("tableB2", "tableB2_exploratory_family", ex.round(5), "Table B2. Full exploratory family "
                   "(Benjamini-Hochberg, 10%). Names associated with Black women first.")
+    un = pd.DataFrame(bundle["exploratory"].get("untestable", []))
+    if not un.empty:   # D5: outcomes with no variation across names; no p-value, left out of the BH family
+        un = un[[c for c in ["model", "test", "kind", "n_a", "n_b", "note"] if c in un.columns]]
+        out.table("tableB3", "tableB3_untestable", un, "Table B3. Exploratory outcomes with no variation across "
+                  "names: every name had the same average, so there is nothing to test. No p-value; left out of the "
+                  "Benjamini-Hochberg family.")
     rows = []
     for r in bundle["confirmatory"]["rows"]:
         co, mm = r.get("cluster_ols") or {}, r.get("mixed_model") or {}

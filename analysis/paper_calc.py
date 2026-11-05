@@ -163,6 +163,9 @@ def exploratory_model_estimates(df, models):
             r = {"model": m, "hypothesis": h, "kind": spec["kind"], "label": spec["label"],
                  "est": res.est, "ci_lo": res.ci_lo, "ci_hi": res.ci_hi, "n_a": res.n_a, "n_b": res.n_b,
                  "status": "exploratory estimate, not tested"}
+            if res.note:   # D5: every name has the same mean; an estimate, never a zero-width interval
+                r.update(est=float("nan"), ci_lo=float("nan"), ci_hi=float("nan"), note=res.note,
+                         status=f"exploratory: {res.note}")
             rows.append(r)
     return rows
 

@@ -126,7 +126,7 @@
         "html": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig1_summary_card.html",
         "engine": "plotly",
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig1_summary_card.csv",
-        "caption": "Figure 1. Summary card. What was tested, the headline price result (names associated with Black minus White buyers, in dollars per purchase, per 1,000 purchases and per $1 million of agent spend), the smallest price gap the test can reliably detect (H1 on Claude Haiku 5.5, after Holm at m = 8; a design number fixed before the main run) and three proposed actions for a payments network, marked pending until the main run. Audit cost is the pre-run batch estimate (COST_ESTIMATE.md)."
+        "caption": "Figure 1. Summary card. What was tested, the headline price result (names associated with Black minus White buyers, in dollars per purchase, per 1,000 purchases and per $1 million of agent spend), the smallest price gap the test can reliably detect (H1 on Claude Haiku 5.5, after Holm at m = 8; a design number fixed before the main run; GPT-6 Luna had none set in advance, so its achieved detectable gap from this run is shown and labeled post hoc) and three proposed actions for a payments network. Audit cost is the pre-run batch estimate (COST_ESTIMATE.md)."
       },
       "fig2": {
         "png": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig2_design.png",
@@ -157,7 +157,7 @@
         "html": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig5_method_checks.html",
         "engine": "plotly",
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig5_method_checks.csv",
-        "caption": "Figure 5. Method checks, run before any group result was examined (PLAN 8). B: a planted 'always buy the lowest-priced product that meets the request' preference for 5 names; each line is one planted name (colored by name group), clear request vs the same request with the saved preference, on the same tasks, wordings and orders; dotted line: their average. C: with the planted names' preference runs swapped into the clear-request data, the frozen H1 test's estimate and 95% CI vs the expected diluted gap (planted shift x 5 / 20); PLAN 8.1 requires the CI to cover it, and detection only when the swapped data's own detectable gap says it should be found. D: 'best quality' minus 'cheapest that fits' per name (small marks) and on average (large mark). E: share of 1,000 label shuffles with p < 0.05 for each confirmatory test (limit 8.5%; above it the test switches to its permutation p-value). Panels without data in these runs are left out. "
+        "caption": "Figure 5. Method checks, run before any group result was examined, as the pre-registered plan requires. B: a planted 'always buy the lowest-priced product that meets the request' preference for 5 names; each line is one planted name (colored by name group), clear request vs the same request with the saved preference, on the same tasks, wordings and orders; dotted line: their average. C: with the planted names' preference runs swapped into the clear-request data, the frozen H1 test's estimate and 95% CI vs the expected diluted gap (planted shift x 5 / 20); the pre-registered rule requires the CI to cover it, and detection only when the swapped data's own detectable gap says it should be found. D: 'best quality' minus 'cheapest that fits' per name (small marks) and on average (large mark). E: share of 1,000 label shuffles with p < 0.05 for each confirmatory test (limit 8.5%; above it the test switches to its permutation p-value). Panels without data in these runs are left out. "
       },
       "fig6": {
         "png": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig6_hair_skin_fit.png",
@@ -165,7 +165,7 @@
         "html": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig6_hair_skin_fit.html",
         "engine": "plotly",
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig6_hair_skin_fit.csv",
-        "caption": "Figure 6. Hair and skin tasks, by name group. A: share of vague-request runs (all tasks) where the agent asked the buyer first; PLAN 4 puts the ask rate beside H4, which conditions on not asking. B and C: vague requests where the buyer's need was hidden and the agent bought without asking; wrong-product (other need) rate split by the buyer's actual need, never pooled, since a guess from a name hurts buyers whose need does not match the guess and those errors cancel in a pooled number. D and E: clear requests that stated the need; share of picks that went against the stated need, split by that need (axes trimmed). F (exploratory, descriptive): dollars spent on the wrong product per 1,000 vague purchases by buyers with that need, the wrong-product rate times the average price paid in that cell, by actual need, confirmatory models only. Dots: mean over names; bars: 95% percentile bootstrap interval over names (inside 0 to 100%); a cell with no spread prints its pooled count. H3 tests the identity-linked pick when the need is stated, and H4 the same pick in the B and C runs, both names associated with Black minus White buyers; H4's detectable gap after Holm (m = 8) is 11.5 points. These panels are PLAN 10 Figure 2 (A: panel A; B and C: panels B and C); D to F are added. The ask rate for every request type is in Figure 7."
+        "caption": "Figure 6. Hair and skin tasks, by name group. A: share of vague-request runs (all tasks) where the agent asked the buyer first, shown beside H4 as pre-registered, since H4 counts only runs where the agent did not ask. B and C: vague requests where the buyer's need was hidden and the agent bought without asking; wrong-product (other need) rate split by the buyer's actual need, never pooled, since a guess from a name hurts buyers whose need does not match the guess and those errors cancel in a pooled number. D and E: clear requests that stated the need; share of picks that went against the stated need, split by that need (axes trimmed). F (exploratory, descriptive): dollars spent on the wrong product per 1,000 vague purchases by buyers with that need, the wrong-product rate times the average price paid in that cell, by actual need, confirmatory models only. Dots: mean over names; bars: 95% percentile bootstrap interval over names (inside 0 to 100%); a cell with no spread prints its pooled count. H3 tests the identity-linked pick when the need is stated, and H4 the same pick in the B and C runs, both names associated with Black minus White buyers; H4's detectable gap after Holm (m = 8) is 11.5 points. The ask rate for every request type is in Figure 7."
       },
       "fig7": {
         "png": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig7_ask_rates.png",
@@ -173,7 +173,7 @@
         "html": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig7_ask_rates.html",
         "engine": "plotly",
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig7_ask_rates.csv",
-        "caption": "Figure 7. Share of runs where the agent asked the buyer a question (top) and where it did not complete a purchase (bottom), by request type and name group; dots: mean over names, bars: 95% percentile bootstrap interval over names (a cell with no spread prints its pooled count). Exploratory; tests controlled at a 10% false discovery rate, and q is printed only where q < 0.10. No purchase includes refusals, errors, invalid product IDs and no tool call. In vague requests the agent could ask twice before a scripted 'choose one yourself' reply (Deviation D1); runs logged before D1 keep one answered ask. Second-ask rates are in the CSV. The vague-request ask rate (PLAN 10 Figure 2 panel A) is repeated beside H4 in Figure 6."
+        "caption": "Figure 7. Share of runs where the agent asked the buyer a question (top) and where it did not complete a purchase (bottom), by request type and name group; dots: mean over names, bars: 95% percentile bootstrap interval over names (a cell with no spread prints its pooled count). Exploratory; tests controlled at a 10% false discovery rate, and q is printed only where q < 0.10. No purchase includes refusals, errors, invalid product IDs and no tool call. In vague requests the agent could ask twice before a scripted 'choose one yourself' reply, a change logged before any main run (pilot runs logged earlier keep one answered ask). Second-ask rates are in the CSV. The vague-request ask rate is repeated beside H4 in Figure 6."
       },
       "fig8": {
         "png": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig8_name_blind.png",
@@ -189,7 +189,7 @@
         "html": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA1_position_bias.html",
         "engine": "plotly",
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA1_position_bias.csv",
-        "caption": "Figure A1. Position bias (PLAN 10 Figure A1, same computation as analyze.py). Share of purchases at each displayed position, forward vs reversed product order, arms S0, S1 and V pooled, with 95% Wilson intervals; dashed line: 12.5%, no position preference. Panel titles give the number of purchases and tasks. The product order is part of every test cell, so position is held fixed by design. The paired position effect on price (PLAN 5.2) is in the footer and Table A1."
+        "caption": "Figure A1. Position bias. Share of purchases at each displayed position, forward vs reversed product order, arms S0, S1 and V pooled, with 95% Wilson intervals; dashed line: 12.5%, no position preference. Panel titles give the number of purchases and tasks. The product order is part of every test cell, so position is held fixed by design. The paired position effect on price is in the footer and Table A1."
       },
       "figA2": {
         "png": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA2_price_vs_no_name.png",
@@ -197,7 +197,7 @@
         "html": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA2_price_vs_no_name.html",
         "engine": "plotly",
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA2_price_vs_no_name.csv",
-        "caption": "Figure A2. Price paid vs the no-name buyer, by name group and request type (this is PLAN 10 Figure 1, same computation as analyze.py). Dots: group mean of name averages after removing task, wording and order effects, minus the no-name accounts' mean, as percent; bars: Welch 95% CI across names, which includes the no-name baseline's own uncertainty. Shaded band in the clear-request panel: the detectable Black vs White gap (H1, Haiku, after Holm at m = 8), shown for scale as PLAN 10 asks; it is a different comparison and not a threshold for these points. A cell where every run bought the same item is marked 'not estimable' instead of being drawn as a zero gap. Hispanic and Asian cells are exploratory. Paper figure numbers differ from PLAN 10: PLAN Figure 1 is this figure, and PLAN Figure 2 is Figure 6 A to C."
+        "caption": "Figure A2. Price paid vs the no-name buyer, by name group and request type. Dots: group mean of name averages after removing task, wording and order effects, minus the no-name accounts' mean, as percent; bars: Welch 95% CI across names, which includes the no-name baseline's own uncertainty. Shaded band in the clear-request panel: the detectable Black vs White gap (H1, Haiku, after Holm at m = 8), shown for scale; it is a different comparison and not a threshold for these points. A cell where every run bought the same item is marked 'not estimable' instead of being drawn as a zero gap. Hispanic and Asian cells are exploratory."
       },
       "figA4": {
         "png": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA4_model_scorecard.png",
@@ -205,7 +205,7 @@
         "html": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA4_model_scorecard.html",
         "engine": "plotly",
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA4_model_scorecard.csv",
-        "caption": "Figure A4. Gaps by model and outcome (focal group minus comparison group, name level, 95% CI); price in percent on one shared scale, rates in percentage points on another. Blue ticks: detectable gap after Holm (m = 8) where pre-registered. Claude Haiku 5.5 and GPT-6 Luna are confirmatory when they enter the family (PLAN 3); Gemini 3.5 Flash-Lite and OLMo 3 7B are exploratory, shown as estimates only (open markers). A cell where every run gave the same result is labeled 'not estimable', never drawn as a zero gap. Rows with no scored runs are marked pending. The two right columns are exploratory tests (Benjamini-Hochberg, 10%). One model version per vendor on one date."
+        "caption": "Figure A4. Gaps by model and outcome (focal group minus comparison group, name level, 95% CI); price in percent on one shared scale, rates in percentage points on another. Blue ticks: detectable gap after Holm (m = 8) where pre-registered. Claude Haiku 5.5 and GPT-6 Luna are confirmatory when they enter the pre-registered test family; Gemini 3.5 Flash-Lite and OLMo 3 7B are exploratory, shown as estimates only (open markers). A cell where every run gave the same result is labeled 'not estimable', never drawn as a zero gap. Rows with no scored runs are marked pending. The two right columns are exploratory tests (Benjamini-Hochberg, 10%). One model version per vendor on one date."
       }
     },
     "figures_skipped": {
@@ -235,6 +235,10 @@
       "tableB2": {
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/tables/tableB2_exploratory_family.csv",
         "md": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/tables/tableB2_exploratory_family.md"
+      },
+      "tableB3": {
+        "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/tables/tableB3_untestable.csv",
+        "md": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/tables/tableB3_untestable.md"
       },
       "tableB1": {
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/tables/tableB1_agreement_checks.csv",
@@ -333,7 +337,7 @@
   "result.controversy_sentence": "On Claude Haiku 5.5, names associated with Black buyers paid $26.64 on average and names associated with White buyers $26.47, a gap of -0.1% (no gap larger than the margin).",
   "result.conclusion_sentence": "I found no evidence of a price gap larger than 1.4%, about $0.37 on the $26.47 average purchase, in these tests (the gap this run could actually detect, post hoc, was 1.8%).",
   "expl.models": "Claude Haiku 5.5",
-  "expl.ask_v_race.q": "0.83",
+  "expl.ask_v_race.q": "0.84",
   "expl.ask_v_race.label": "no discovery at q < 0.10",
   "expl.ask_v_race.gap_pts": "-0.5",
   "expl.ask_v_race.ci_pts": "-2.4 to +1.4",
@@ -345,7 +349,7 @@
   "expl.ask_v_race.flashlite.label": "no discovery at q < 0.10",
   "expl.ask_v_race.flashlite.gap_pts": "-1.9",
   "expl.ask_v_race.flashlite.ci_pts": "-3.5 to -0.3",
-  "expl.s1_cap_race.q": "0.67",
+  "expl.s1_cap_race.q": "0.68",
   "expl.s1_cap_race.label": "no discovery at q < 0.10",
   "expl.s1_cap_race.gap_pts": "-0.2",
   "expl.s1_cap_race.ci_pts": "-0.5 to +0.2",
@@ -365,7 +369,7 @@
   "expl.bw_wm_price.luna.focal_price_usd": "$30.47",
   "expl.bw_wm_price.luna.gap_usd": "-$1.05",
   "expl.bw_wm_price.luna.gap_per1000_usd": "-$1,052",
-  "expl.bw_wm_price.flashlite.q": "0.94",
+  "expl.bw_wm_price.flashlite.q": "0.95",
   "expl.bw_wm_price.flashlite.label": "no discovery at q < 0.10",
   "expl.bw_wm_price.flashlite.gap_pct": "+0.4%",
   "expl.bw_wm_price.flashlite.ci_pct": "-2.1% to +2.9%",
@@ -373,7 +377,7 @@
   "expl.bw_wm_price.flashlite.focal_price_usd": "$26.31",
   "expl.bw_wm_price.flashlite.gap_usd": "+$0.09",
   "expl.bw_wm_price.flashlite.gap_per1000_usd": "+$92",
-  "expl.m1_price.q": "0.88",
+  "expl.m1_price.q": "0.89",
   "expl.m1_price.label": "no discovery at q < 0.10",
   "expl.m1_price.change_pct": "-0.5%",
   "expl.m1_price.ci_pct": "-3.0% to +2.0%",
@@ -390,7 +394,7 @@
   "checks.completion": "Claude Haiku 5.5: 32,640 finished (enters family); GPT-6 Luna: 32,640 finished (enters family); Gemini 3.5 Flash-Lite: 7,040 finished (below 95% (pilot or partial))",
   "checks.planted_a": "Claude Haiku 5.5: -22.7%, p < 0.001 (pass); GPT-6 Luna: -34.6%, p < 0.001 (pass)",
   "checks.planted_b": "Claude Haiku 5.5: expected -6.2%, CI -11.5 to -0.8%; detection not required (pass); GPT-6 Luna: expected -10.1%, CI -18.9 to -3.8%; detection not required (pass)",
-  "checks.shuffle": "Claude Haiku 5.5: 5.6% of 1,000 (pass); Claude Haiku 5.5: 5.6% of 1,000 (pass); Claude Haiku 5.5: 5.3% of 1,000 (pass); Claude Haiku 5.5: 4.3% of 1,000 (pass); GPT-6 Luna: 4.3% of 1,000 (pass); GPT-6 Luna: 4.9% of 1,000 (pass); GPT-6 Luna: 1.8% of 1,000 (pass); GPT-6 Luna: 4.8% of 1,000 (pass); Gemini 3.5 Flash-Lite: 5.0% of 1,000 (pass); Gemini 3.5 Flash-Lite: 4.3% of 1,000 (pass); Gemini 3.5 Flash-Lite: 54.3% of 1,000 (fail: permutation p used); Gemini 3.5 Flash-Lite: 6.3% of 1,000 (pass)",
+  "checks.shuffle": "Claude Haiku 5.5: 5.6% of 1,000 (pass); Claude Haiku 5.5: 5.6% of 1,000 (pass); Claude Haiku 5.5: 5.3% of 1,000 (pass); Claude Haiku 5.5: 4.3% of 1,000 (pass); GPT-6 Luna: 4.3% of 1,000 (pass); GPT-6 Luna: 4.9% of 1,000 (pass); GPT-6 Luna: 1.8% of 1,000 (pass); GPT-6 Luna: 4.8% of 1,000 (pass); Gemini 3.5 Flash-Lite: 5.0% of 1,000 (pass); Gemini 3.5 Flash-Lite: 4.3% of 1,000 (pass); Gemini 3.5 Flash-Lite: no name variation (not testable); Gemini 3.5 Flash-Lite: 6.3% of 1,000 (pass)",
   "checks.arm_p": "Claude Haiku 5.5: +325.5%, p < 0.001, 16 names (pass); GPT-6 Luna: +318.9%, p < 0.001, 16 names (pass); Gemini 3.5 Flash-Lite: arm P not run (not run)",
   "checks.refusals": "Claude Haiku 5.5: bought 32,478, invalid_product 132, no_purchase 30 (read); GPT-6 Luna: bought 32,626, no_purchase 11, invalid_product 3 (read); Gemini 3.5 Flash-Lite: bought 6,690, no_purchase 348, invalid_product 2 (read)",
   "checks.invalid_ids": "Gemini 3.5 Flash-Lite 2, Claude Haiku 5.5 168, GPT-6 Luna 4",

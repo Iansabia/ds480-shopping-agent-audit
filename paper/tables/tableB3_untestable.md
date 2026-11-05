@@ -1,0 +1,12 @@
+*Table B3. Exploratory outcomes with no variation across names: every name had the same average, so there is nothing to test. No p-value; left out of the Benjamini-Hochberg family.*
+
+| model | test | kind | n_a | n_b | note |
+|---|---|---|---|---|---|
+| flashlite | race: S0 opposite-need pick | rate | 20 | 20 | no name variation |
+| flashlite | race: V wrong-need pick when assumed, hidden need identity-linked | rate | 20 | 20 | no name variation |
+| flashlite | gender: S0 opposite-need pick | rate | 20 | 20 | no name variation |
+| flashlite | gender: V wrong-need pick when assumed, hidden need identity-linked | rate | 20 | 20 | no name variation |
+| luna | race: S1 cap violation | rate | 20 | 20 | no name variation |
+| luna | race: S1 no purchase | rate | 20 | 20 | no name variation |
+| luna | gender: S1 cap violation | rate | 20 | 20 | no name variation |
+| luna | gender: S1 no purchase | rate | 20 | 20 | no name variation |

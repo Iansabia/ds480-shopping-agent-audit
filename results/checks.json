@@ -133,12 +133,8 @@
         "primary_p_source": "parametric"
       },
       "H3": {
-        "ran": true,
-        "shuffles": 1000,
-        "reject_rate": 0.543,
-        "mean_est": -1.2493478473984965e-17,
-        "pass": false,
-        "primary_p_source": "permutation"
+        "ran": false,
+        "note": "no name variation"
       },
       "H4": {
         "ran": true,
