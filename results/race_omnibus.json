@@ -1,0 +1,89 @@
+{
+ "note": "Exploratory, added after the main results were seen (PLAN D12). One test per model; not part of any other family.",
+ "haiku": {
+  "model": "haiku",
+  "groups": [
+   "White",
+   "Black",
+   "Hispanic",
+   "Asian",
+   "MENA",
+   "South Asian"
+  ],
+  "names": {
+   "White": 20,
+   "Black": 20,
+   "Hispanic": 12,
+   "Asian": 12,
+   "MENA": 10,
+   "South Asian": 8
+  },
+  "n_names": 82,
+  "F": 0.5202934288391031,
+  "df1": 5,
+  "df2": 75,
+  "p_F": 0.7601526713716942,
+  "p_perm": 0.7602239776022398,
+  "perm_hits": 7602,
+  "n_perm": 10000,
+  "seed": 480,
+  "group_mean_pct_vs_white": {
+   "White": 0.0,
+   "Black": -0.08297952939136932,
+   "Hispanic": -0.14369377450736964,
+   "Asian": 0.813413969362986,
+   "MENA": -0.2128269600586652,
+   "South Asian": 0.690103711813439
+  },
+  "note": "name level, cell-residualized log price, race F with a women's-name term; p from race labels shuffled within gender"
+ },
+ "luna": {
+  "model": "luna",
+  "groups": [
+   "White",
+   "Black",
+   "Hispanic",
+   "Asian",
+   "MENA",
+   "South Asian"
+  ],
+  "names": {
+   "White": 20,
+   "Black": 20,
+   "Hispanic": 12,
+   "Asian": 12,
+   "MENA": 10,
+   "South Asian": 8
+  },
+  "n_names": 82,
+  "F": 3.3188723701536507,
+  "df1": 5,
+  "df2": 75,
+  "p_F": 0.009216614624660979,
+  "p_perm": 0.0100989901009899,
+  "perm_hits": 100,
+  "n_perm": 10000,
+  "seed": 480,
+  "group_mean_pct_vs_white": {
+   "White": 0.0,
+   "Black": -1.7937519523300471,
+   "Hispanic": -1.35500328116277,
+   "Asian": -0.26329454124985885,
+   "MENA": -0.5319900074580275,
+   "South Asian": -1.0014090120800123
+  },
+  "note": "name level, cell-residualized log price, race F with a women's-name term; p from race labels shuffled within gender"
+ },
+ "flashlite": {
+  "model": "flashlite",
+  "groups": [
+   "White",
+   "Black"
+  ],
+  "names": {
+   "White": 20,
+   "Black": 20
+  },
+  "note": "fewer than 3 groups: not run"
+ }
+}

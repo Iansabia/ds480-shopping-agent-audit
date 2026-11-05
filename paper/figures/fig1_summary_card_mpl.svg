@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-05T08:21:29.134407</dc:date>
+    <dc:date>2026-11-05T15:12:00.233206</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -40,7 +40,7 @@ Q 7.2 73.105116 7.2 77.910698
 L 7.2 233.062326 
 Q 7.2 237.867907 12.2688 237.867907 
 z
-" clip-path="url(#pce5bf45f32)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
+" clip-path="url(#p9942ad48e9)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 227.6928 237.867907 
@@ -53,7 +53,7 @@ Q 222.624 73.105116 222.624 77.910698
 L 222.624 233.062326 
 Q 222.624 237.867907 227.6928 237.867907 
 z
-" clip-path="url(#pce5bf45f32)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
+" clip-path="url(#p9942ad48e9)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 443.1168 237.867907 
@@ -66,7 +66,7 @@ Q 438.048 73.105116 438.048 77.910698
 L 438.048 233.062326 
 Q 438.048 237.867907 443.1168 237.867907 
 z
-" clip-path="url(#pce5bf45f32)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
+" clip-path="url(#p9942ad48e9)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 12.2688 358.007442 
@@ -79,7 +79,7 @@ Q 7.2 246.449302 7.2 251.254884
 L 7.2 353.20186 
 Q 7.2 358.007442 12.2688 358.007442 
 z
-" clip-path="url(#pce5bf45f32)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
+" clip-path="url(#p9942ad48e9)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="16.7904" y="90.63226" transform="rotate(-0 16.7904 90.63226)">WHAT WAS TESTED</text>
@@ -103,138 +103,147 @@ z
     <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="198.52627" transform="rotate(-0 16.7904 198.52627)">Only the account name changes.</text>
    </g>
    <g id="text_8">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="232.2144" y="90.63226" transform="rotate(-0 232.2144 90.63226)">HEADLINE RESULT (H1)</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="232.2144" y="90.63226" transform="rotate(-0 232.2144 90.63226)">HEADLINE RESULT</text>
    </g>
    <g id="text_9">
-    <text style="font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="232.2144" y="107.058977" transform="rotate(-0 232.2144 107.058977)">Price paid for the same request, names associated with</text>
+    <text style="font-weight: 700; font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="105.342698" transform="rotate(-0 232.2144 105.342698)">Six name groups</text>
    </g>
    <g id="text_10">
-    <text style="font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="232.2144" y="116.418977" transform="rotate(-0 232.2144 116.418977)">Black vs White buyers (Holm across 8 tests)</text>
+    <text style="font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="290.765025" y="105.342698" transform="rotate(-0 290.765025 105.342698)"> (Fig. 3; exploratory): does price</text>
    </g>
    <g id="text_11">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="141.434121" transform="rotate(-0 232.2144 141.434121)">Claude Haiku 5.5</text>
+    <text style="font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="114.702698" transform="rotate(-0 232.2144 114.702698)">differ across any group? Haiku p = 0.760, Luna p = 0.010</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="303.61185" y="141.434121" transform="rotate(-0 303.61185 141.434121)">: $26.64 vs $26.47</text>
+    <text style="font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="232.2144" y="127.31107" transform="rotate(-0 232.2144 127.31107)">Pre-registered: names associated with Black vs White</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="155.934921" transform="rotate(-0 232.2144 155.934921)">gap </text>
+    <text style="font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="232.2144" y="136.67107" transform="rotate(-0 232.2144 136.67107)">buyers (Holm across 8 tests)</text>
    </g>
    <g id="text_14">
-    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="248.596425" y="155.934921" transform="rotate(-0 248.596425 155.934921)">-0.1%</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="156.880633" transform="rotate(-0 232.2144 156.880633)">Claude Haiku 5.5</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="270.79965" y="155.934921" transform="rotate(-0 270.79965 155.934921)"> (-1.4% to +1.2%), -$0.02 per purchase</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="303.61185" y="156.880633" transform="rotate(-0 303.61185 156.880633)">: $26.44 vs $26.47</text>
    </g>
    <g id="text_16">
-    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="170.008409" transform="rotate(-0 232.2144 170.008409)">no gap larger than the margin</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="169.665153" transform="rotate(-0 232.2144 169.665153)">gap </text>
    </g>
    <g id="text_17">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="187.773656" transform="rotate(-0 232.2144 187.773656)">GPT-6 Luna</text>
+    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="248.596425" y="169.665153" transform="rotate(-0 248.596425 169.665153)">-0.1%</text>
    </g>
    <g id="text_18">
-    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="281.97135" y="187.773656" transform="rotate(-0 281.97135 187.773656)">: $30.78 vs $31.22</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="270.79965" y="169.665153" transform="rotate(-0 270.79965 169.665153)"> (-1.4% to +1.2%), -$0.02 per purchase</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="202.274456" transform="rotate(-0 232.2144 202.274456)">gap </text>
+    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="182.022363" transform="rotate(-0 232.2144 182.022363)">no gap larger than the margin</text>
    </g>
    <g id="text_20">
-    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="248.596425" y="202.274456" transform="rotate(-0 248.596425 202.274456)">-1.8%</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="196.698307" transform="rotate(-0 232.2144 196.698307)">GPT-6 Luna</text>
    </g>
    <g id="text_21">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="271.336725" y="202.274456" transform="rotate(-0 271.336725 202.274456)"> (-2.6% to -0.9%), -$0.56 per purchase</text>
+    <text style="font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="281.97135" y="196.698307" transform="rotate(-0 281.97135 196.698307)">: $30.66 vs $31.22</text>
    </g>
    <g id="text_22">
-    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="216.347944" transform="rotate(-0 232.2144 216.347944)">gap found, but inside the equivalence margin</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="209.482828" transform="rotate(-0 232.2144 209.482828)">gap </text>
    </g>
    <g id="text_23">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.6384" y="90.63226" transform="rotate(-0 447.6384 90.63226)">WHAT THE TEST CAN DETECT</text>
+    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="248.596425" y="209.482828" transform="rotate(-0 248.596425 209.482828)">-1.8%</text>
    </g>
    <g id="text_24">
-    <text style="font-weight: 700; font-size: 20.16px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="128.41853" transform="rotate(-0 447.6384 128.41853)">1.4%</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="271.336725" y="209.482828" transform="rotate(-0 271.336725 209.482828)"> (-2.6% to -0.9%), -$0.56 per purchase</text>
    </g>
    <g id="text_25">
-    <text style="font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.6384" y="151.213395" transform="rotate(-0 447.6384 151.213395)">H1 price gap, Claude Haiku 5.5, after Holm (m = 8)</text>
+    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="232.2144" y="221.840037" transform="rotate(-0 232.2144 221.840037)">gap found, but inside the equivalence margin</text>
    </g>
    <g id="text_26">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="174.503386" transform="rotate(-0 447.6384 174.503386)">Flagged at least 80% of the time; about</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.6384" y="90.63226" transform="rotate(-0 447.6384 90.63226)">WHAT THE TEST CAN DETECT</text>
    </g>
    <g id="text_27">
-    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="184.799386" transform="rotate(-0 447.6384 184.799386)">$14,100</text>
+    <text style="font-weight: 700; font-size: 20.16px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="128.41853" transform="rotate(-0 447.6384 128.41853)">1.4%</text>
    </g>
    <g id="text_28">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="477.354488" y="184.799386" transform="rotate(-0 477.354488 184.799386)"> per $1M of agent spend</text>
+    <text style="font-size: 7.2px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="447.6384" y="151.213395" transform="rotate(-0 447.6384 151.213395)">H1 price gap, Claude Haiku 5.5, after Holm (m = 8)</text>
    </g>
    <g id="text_29">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="195.095386" transform="rotate(-0 447.6384 195.095386)">= $0.37 per purchase at the $26.47 average paid</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="174.503386" transform="rotate(-0 447.6384 174.503386)">Flagged at least 80% of the time; about</text>
    </g>
    <g id="text_30">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="205.391386" transform="rotate(-0 447.6384 205.391386)">Set from the Haiku pilot before the main run.</text>
+    <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="184.799386" transform="rotate(-0 447.6384 184.799386)">$14,100</text>
    </g>
    <g id="text_31">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="215.687386" transform="rotate(-0 447.6384 215.687386)">GPT-6 Luna: none set in advance; post hoc 1.4%</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="477.354488" y="184.799386" transform="rotate(-0 477.354488 184.799386)"> per $1M of agent spend</text>
    </g>
    <g id="text_32">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="225.983386" transform="rotate(-0 447.6384 225.983386)">(this run's achieved gap, no Holm)</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="195.095386" transform="rotate(-0 447.6384 195.095386)">= $0.37 per purchase at the $26.47 average paid</text>
    </g>
    <g id="text_33">
-    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="16.7904" y="263.976447" transform="rotate(-0 16.7904 263.976447)">THREE PROPOSED ACTIONS FOR A PAYMENTS NETWORK</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="205.391386" transform="rotate(-0 447.6384 205.391386)">Set from the Haiku pilot before the main run.</text>
    </g>
    <g id="text_34">
-    <text style="font-weight: 700; font-size: 10.08px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="284.403684" transform="rotate(-0 16.7904 284.403684)">1  Audit gate (do now)</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="215.687386" transform="rotate(-0 447.6384 215.687386)">GPT-6 Luna: none set in advance; post hoc 1.4%</text>
    </g>
    <g id="text_35">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="303.224316" transform="rotate(-0 16.7904 303.224316)">An agent joins the network's agent program only after</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="447.6384" y="225.983386" transform="rotate(-0 447.6384 225.983386)">(this run's achieved gap, no Holm)</text>
    </g>
    <g id="text_36">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="313.520316" transform="rotate(-0 16.7904 313.520316)">passing this paired-name audit, and again after every</text>
+    <text style="font-weight: 700; font-size: 8.64px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="16.7904" y="263.976447" transform="rotate(-0 16.7904 263.976447)">THREE PROPOSED ACTIONS FOR A PAYMENTS NETWORK</text>
    </g>
    <g id="text_37">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="323.816316" transform="rotate(-0 16.7904 323.816316)">model update. Fail if a gap is found after correction;</text>
+    <text style="font-weight: 700; font-size: 10.08px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="284.403684" transform="rotate(-0 16.7904 284.403684)">1  Audit gate (do now)</text>
    </g>
    <g id="text_38">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="334.112316" transform="rotate(-0 16.7904 334.112316)">if inconclusive, re-run larger. Cost: about $10 per model</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="303.224316" transform="rotate(-0 16.7904 303.224316)">An agent joins the network's agent program only after</text>
    </g>
    <g id="text_39">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="344.408316" transform="rotate(-0 16.7904 344.408316)">at batch prices (pre-run estimate).</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="313.520316" transform="rotate(-0 16.7904 313.520316)">passing this paired-name audit, and again after every</text>
    </g>
    <g id="text_40">
-    <text style="font-weight: 700; font-size: 10.08px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="227.1456" y="284.403684" transform="rotate(-0 227.1456 284.403684)">2  Decision log field (do next)</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="323.816316" transform="rotate(-0 16.7904 323.816316)">model update. Fail if a gap is found after correction;</text>
    </g>
    <g id="text_41">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="227.1456" y="303.224316" transform="rotate(-0 227.1456 303.224316)">Every agent purchase logs the model version, the</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="334.112316" transform="rotate(-0 16.7904 334.112316)">if inconclusive, re-run larger. Cost: about $10 per model</text>
    </g>
    <g id="text_42">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="227.1456" y="313.520316" transform="rotate(-0 227.1456 313.520316)">identity fields the agent saw, products shown, the</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="344.408316" transform="rotate(-0 16.7904 344.408316)">at batch prices (pre-run estimate).</text>
    </g>
    <g id="text_43">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="227.1456" y="323.816316" transform="rotate(-0 227.1456 323.816316)">choice and the price, so a dispute can be checked.</text>
+    <text style="font-weight: 700; font-size: 10.08px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="227.1456" y="284.403684" transform="rotate(-0 227.1456 284.403684)">2  Decision log field (do next)</text>
    </g>
    <g id="text_44">
-    <text style="font-weight: 700; font-size: 10.08px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="284.403684" transform="rotate(-0 437.5008 284.403684)">3  A token, not the name (later)</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="227.1456" y="303.224316" transform="rotate(-0 227.1456 303.224316)">Every agent purchase logs the model version, the</text>
    </g>
    <g id="text_45">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="303.224316" transform="rotate(-0 437.5008 303.224316)">Pass the agent and merchant a payment token</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="227.1456" y="313.520316" transform="rotate(-0 227.1456 313.520316)">identity fields the agent saw, products shown, the</text>
    </g>
    <g id="text_46">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="313.520316" transform="rotate(-0 437.5008 313.520316)">in place of the display name unless shipping</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="227.1456" y="323.816316" transform="rotate(-0 227.1456 323.816316)">choice and the price, so a dispute can be checked.</text>
    </g>
    <g id="text_47">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="323.816316" transform="rotate(-0 437.5008 323.816316)">needs it. When a needed preference is missing,</text>
+    <text style="font-weight: 700; font-size: 10.08px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="284.403684" transform="rotate(-0 437.5008 284.403684)">3  A token, not the name (later)</text>
    </g>
    <g id="text_48">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="334.112316" transform="rotate(-0 437.5008 334.112316)">the agent asks.</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="303.224316" transform="rotate(-0 437.5008 303.224316)">Pass the agent and merchant a payment token</text>
    </g>
    <g id="text_49">
-    <text style="font-weight: 600; font-size: 15.84px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="36.8784" transform="rotate(-0 13.68 36.8784)">Same request, same result? A paired-name audit of AI shopping agents</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="313.520316" transform="rotate(-0 437.5008 313.520316)">in place of the display name unless shipping</text>
    </g>
    <g id="text_50">
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="323.816316" transform="rotate(-0 437.5008 323.816316)">needs it. When a needed preference is missing,</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="437.5008" y="334.112316" transform="rotate(-0 437.5008 334.112316)">the agent asks.</text>
+   </g>
+   <g id="text_52">
+    <text style="font-weight: 600; font-size: 15.84px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="36.8784" transform="rotate(-0 13.68 36.8784)">Same request, same result? A paired-name audit of AI shopping agents</text>
+   </g>
+   <g id="text_53">
     <text style="font-size: 10.8px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #6b6a63" x="13.68" y="53.82" transform="rotate(-0 13.68 53.82)">What was tested, what was found, the smallest gap the test can see, and what a card network can do.</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pce5bf45f32">
+  <clipPath id="p9942ad48e9">
    <rect x="0" y="0" width="648" height="368.64"/>
   </clipPath>
  </defs>

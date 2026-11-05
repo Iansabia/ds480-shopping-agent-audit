@@ -247,6 +247,19 @@ def dollar_translation(b: float, lo: float, hi: float, ref_usd: float) -> dict:
             "usd_per_1000": 1000 * usd[0], "usd_per_1000_ci": [1000 * usd[1], 1000 * usd[2]], "ref_usd": ref_usd}
 
 
+def unify_focal(ref: dict, tr: dict) -> dict:
+    """D12: one dollar definition. The focal group's average is the reference
+    group's cell-adjusted average moved by the tested percent gap, so focal
+    minus reference equals the dollars-per-purchase translation everywhere
+    (Table 1, Figures 1, 3 and 4). The group mean of cell-adjusted dollar
+    prices, which differs by a few cents because the test is on log price, is
+    kept as focal_usd_cellmean (Figure A8)."""
+    out = dict(ref)
+    out["focal_usd_cellmean"] = ref["focal_usd"]
+    out["focal_usd"] = ref["ref_usd"] + tr["usd_per_purchase"]
+    return out
+
+
 def rates(df, model, arm, y, tasks="all", extra=None, need_split=False):
     """analyze.rate_by_group, with the plain-language group label added."""
     rows = A.rate_by_group(df, model, arm, y, tasks=tasks, extra=extra, need_split=need_split)
