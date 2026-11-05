@@ -1,0 +1,12 @@
+{
+  "run": "test_olmo_fmt",
+  "episodes": 60,
+  "done": 60,
+  "error_final": 0,
+  "asked": 37,
+  "pending_turns": 0,
+  "stop_reason": null
+}
+real 278.21
+user 0.24
+sys 0.13
