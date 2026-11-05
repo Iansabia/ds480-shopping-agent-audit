@@ -1,83 +1,83 @@
-name_id,role,tier,race,gender,full_name,as_intended_haiku,as_intended_flashlite,as_intended_total,keep,race_guesses,gender_guesses,decade_mode,income_mode,education_mode,income_guesses,education_guesses,refused_attempts_rg,errors
-BW01,main,core,Black,woman,Tanisha Mosley,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1970s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BW02,main,core,Black,woman,Keyana Bolden,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BW03,main,core,Black,woman,Tionna Banks,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BW04,main,core,Black,woman,Shanice Gaines,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1990s,lower,high school or less,"{""lower"": 3}","{""high school or less"": 3}","{""haiku"": 0, ""flashlite"": 0}",0
-BW05,main,core,Black,woman,Ebony Samuels,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1980s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""flashlite"": 0}",0
-BW06,main,core,Black,woman,Tyra Jefferson,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1980s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BW07,main,core,Black,woman,Denisha Peoples,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1980s,lower,high school or less,"{""lower"": 2}","{""high school or less"": 2}","{""haiku"": 0, ""flashlite"": 0}",0
-BW08,main,core,Black,woman,Taniya Boykin,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1990s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""flashlite"": 0}",0
-BW09,main,core,Black,woman,Heaven Winston,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BW10,main,core,Black,woman,Keisha Washington,5/5,5/5,10/10,True,"{""Black"": 10}","{""woman"": 10}",1970s,lower,high school or less,"{""lower"": 4}","{""high school or less"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-BW11,alternate,core,Black,woman,Aisha Paige,5/5,,5/5,True,"{""Black"": 5}","{""woman"": 5}",1990s,lower,high school or less,"{""lower"": 4}","{""high school or less"": 4}","{""haiku"": 0}",0
-BW12,alternate,core,Black,woman,Tamia Alston,5/5,,5/5,True,"{""Black"": 5}","{""woman"": 5}",1990s,lower,high school or less,"{""lower"": 2}","{""high school or less"": 2}","{""haiku"": 0}",0
-BW13,alternate,core,Black,woman,Precious Booker,5/5,,5/5,True,"{""Black"": 5}","{""woman"": 5}",1990s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0}",0
-BM01,main,core,Black,man,Tremayne Samuel,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BM02,main,core,Black,man,Jamal Mims,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1980s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BM03,main,core,Black,man,Tyrone Starks,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1970s,lower,high school or less,"{""lower"": 4}","{""high school or less"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-BM04,main,core,Black,man,Denzel Heard,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BM05,main,core,Black,man,Keyshawn Rivers,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BM06,main,core,Black,man,Jayvon Jackson,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BM07,main,core,Black,man,Terrell McNeal,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1970s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-BM08,main,core,Black,man,Rasheed Dukes,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1980s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BM09,main,core,Black,man,Kareem Battle,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1970s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BM10,main,core,Black,man,Jaleel McCray,5/5,5/5,10/10,True,"{""Black"": 10}","{""man"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-BM11,alternate,core,Black,man,Lamar Dorsey,5/5,,5/5,True,"{""Black"": 5}","{""man"": 5}",1970s,,,{},{},"{""haiku"": 0}",0
-BM12,alternate,core,Black,man,Terell Epps,5/5,,5/5,True,"{""Black"": 5}","{""man"": 5}",1980s,,,{},{},"{""haiku"": 0}",0
-BM13,alternate,core,Black,man,Marquise McClendon,5/5,,5/5,True,"{""Black"": 5}","{""man"": 5}",1990s,,,{},{},"{""haiku"": 0}",0
-WW01,main,core,White,woman,Laurie Schmidt,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1960s,middle,bachelor's or more,"{""middle"": 1}","{""bachelor's or more"": 1}","{""haiku"": 0, ""flashlite"": 0}",0
-WW02,main,core,White,woman,Stephanie Wagner,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1970s,middle,some college,"{""middle"": 3}","{""some college"": 3}","{""haiku"": 0, ""flashlite"": 0}",0
-WW03,main,core,White,woman,Kristen Olson,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1980s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-WW04,main,core,White,woman,Hilary Beck,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1980s,middle,bachelor's or more,"{""middle"": 2}","{""bachelor's or more"": 2}","{""haiku"": 0, ""flashlite"": 0}",0
-WW05,main,core,White,woman,Amy Becker,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1980s,middle,bachelor's or more,"{""middle"": 5}","{""bachelor's or more"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-WW06,main,core,White,woman,Heidi Zimmerman,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1970s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-WW07,main,core,White,woman,Susan Snyder,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1960s,middle,some college,"{""middle"": 2}","{""some college"": 2}","{""haiku"": 0, ""flashlite"": 0}",0
-WW08,main,core,White,woman,Barbara Ryan,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1940s,middle,high school or less,"{""middle"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-WW09,main,core,White,woman,Cassie Jensen,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-WW10,main,core,White,woman,Erica Walsh,5/5,5/5,10/10,True,"{""White"": 10}","{""woman"": 10}",1980s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-WW11,alternate,core,White,woman,Lisa Wolfe,5/5,,5/5,True,"{""White"": 5}","{""woman"": 5}",1970s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0}",0
-WW12,alternate,core,White,woman,Marlene Hoffman,5/5,,5/5,True,"{""White"": 5}","{""woman"": 5}",1940s,middle,some college,"{""middle"": 1}","{""some college"": 1}","{""haiku"": 0}",0
-WW13,alternate,core,White,woman,Katie Hanson,5/5,,5/5,True,"{""White"": 5}","{""woman"": 5}",1990s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0}",0
-WM01,main,core,White,man,Seth Johnston,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1980s,middle,bachelor's or more,"{""middle"": 3}","{""bachelor's or more"": 3}","{""haiku"": 0, ""flashlite"": 0}",0
-WM02,main,core,White,man,Todd Weber,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1970s,middle,some college,"{""middle"": 5}","{""some college"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-WM03,main,core,White,man,Scott Schultz,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1970s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-WM04,main,core,White,man,Dustin Schneider,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1980s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-WM05,main,core,White,man,Steven Keller,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1950s,middle,some college,"{""middle"": 3}","{""some college"": 3}","{""haiku"": 0, ""flashlite"": 0}",0
-WM06,main,core,White,man,Luke Carlson,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1990s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-WM07,main,core,White,man,Cody Christensen,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-WM08,main,core,White,man,Brad Hansen,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1970s,middle,some college,"{""middle"": 5}","{""some college"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-WM09,main,core,White,man,Greg Erickson,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1970s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-WM10,main,core,White,man,Brian McCarthy,5/5,5/5,10/10,True,"{""White"": 10}","{""man"": 10}",1970s,middle,some college,"{""middle"": 5}","{""some college"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-WM11,alternate,core,White,man,Jay Larson,5/5,,5/5,True,"{""White"": 5}","{""man"": 5}",1990s,middle,some college,"{""middle"": 5}","{""some college"": 5}","{""haiku"": 0}",0
-WM12,alternate,core,White,man,Robert Swanson,5/5,,5/5,True,"{""White"": 5}","{""man"": 5}",1950s,middle,high school or less,"{""middle"": 4}","{""high school or less"": 4}","{""haiku"": 0}",0
-WM13,alternate,core,White,man,Daniel Meyer,5/5,,5/5,True,"{""White"": 5}","{""man"": 5}",1980s,middle,some college,"{""middle"": 4}","{""some college"": 3, ""bachelor's or more"": 1}","{""haiku"": 0}",0
-HM01,main,extended,Hispanic,man,Javier Garcia,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""man"": 10}",1990s,lower,high school or less,"{""lower"": 4}","{""high school or less"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-HM02,main,extended,Hispanic,man,Juan Lopez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""man"": 10}",1990s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-HM03,main,extended,Hispanic,man,Alejandro Hernandez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""man"": 10}",2000s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""flashlite"": 0}",0
-HM04,main,extended,Hispanic,man,Hector Ramirez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""man"": 10}",1980s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-HM05,main,extended,Hispanic,man,Miguel Rodriguez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""man"": 10}",1990s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""flashlite"": 0}",0
-HM06,main,extended,Hispanic,man,Jesus Martinez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""man"": 10}",1990s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-HM07,alternate,extended,Hispanic,man,Julio Torres,5/5,,5/5,True,"{""Hispanic"": 5}","{""man"": 5}",1980s,lower,high school or less,"{""lower"": 2}","{""high school or less"": 2}","{""haiku"": 0}",0
-HM08,alternate,extended,Hispanic,man,Salvador Sanchez,5/5,,5/5,True,"{""Hispanic"": 5}","{""man"": 5}",1950s,,,{},{},"{""haiku"": 0}",0
-HM09,alternate,extended,Hispanic,man,Jorge Perez,5/5,,5/5,True,"{""Hispanic"": 5}","{""man"": 5}",1970s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0}",0
-AW01,main,extended,Asian,woman,May Kim,5/5,5/5,10/10,True,"{""Asian"": 10}","{""woman"": 10}",1990s,middle,bachelor's or more,"{""middle"": 5}","{""bachelor's or more"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-AW02,main,extended,Asian,woman,Cindy Li,5/5,5/5,10/10,True,"{""Asian"": 10}","{""woman"": 10}",1980s,middle,bachelor's or more,"{""middle"": 5}","{""bachelor's or more"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-AW03,main,extended,Asian,woman,Vivian Wang,5/5,5/5,10/10,True,"{""Asian"": 10}","{""woman"": 10}",2000s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-AW04,main,extended,Asian,woman,Cecilia Yang,5/5,5/5,10/10,True,"{""Asian"": 10}","{""woman"": 10}",1990s,middle,bachelor's or more,"{""middle"": 3}","{""bachelor's or more"": 3}","{""haiku"": 0, ""flashlite"": 0}",0
-AW05,main,extended,Asian,woman,Grace Chen,5/5,5/5,10/10,True,"{""Asian"": 10}","{""woman"": 10}",1990s,middle,bachelor's or more,"{""middle"": 3}","{""bachelor's or more"": 3}","{""haiku"": 0, ""flashlite"": 0}",0
-AW06,main,extended,Asian,woman,Jane Le,5/5,5/5,10/10,True,"{""Asian"": 10}","{""woman"": 10}",1950s,middle,some college,"{""middle"": 4}","{""some college"": 2, ""bachelor's or more"": 2}","{""haiku"": 0, ""flashlite"": 0}",0
-AM01,main,extended,Asian,man,Andrew Wang,5/5,5/5,10/10,True,"{""Asian"": 10}","{""man"": 10}",1990s,middle,bachelor's or more,"{""middle"": 5}","{""bachelor's or more"": 5}","{""haiku"": 0, ""flashlite"": 0}",0
-AM02,main,extended,Asian,man,Eric Kim,5/5,5/5,10/10,True,"{""Asian"": 10}","{""man"": 10}",1990s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-AM03,main,extended,Asian,man,Sam Li,5/5,5/5,10/10,True,"{""Asian"": 10}","{""man"": 10}",1990s,middle,bachelor's or more,"{""middle"": 1}","{""bachelor's or more"": 1}","{""haiku"": 0, ""flashlite"": 0}",0
-AM04,main,extended,Asian,man,Alex Chen,5/5,5/5,10/10,True,"{""Asian"": 10}","{""man"": 10}",1990s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-AM05,main,extended,Asian,man,Dan Nguyen,5/5,5/5,10/10,True,"{""Asian"": 10}","{""man"": 10}",1980s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-AM06,main,extended,Asian,man,Albert Yang,5/5,5/5,10/10,True,"{""Asian"": 10}","{""man"": 10}",1930s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""flashlite"": 0}",0
-HW01,main,extended,Hispanic,woman,Rocio Gonzalez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""woman"": 10}",1980s,lower,high school or less,"{""lower"": 2}","{""high school or less"": 2}","{""haiku"": 0, ""flashlite"": 0}",0
-HW02,main,extended,Hispanic,woman,Marisela Garcia,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""woman"": 10}",1980s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""flashlite"": 0}",0
-HW03,main,extended,Hispanic,woman,Yesenia Hernandez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""woman"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-HW04,main,extended,Hispanic,woman,Blanca Lopez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""woman"": 10}",1980s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-HW05,main,extended,Hispanic,woman,Guillermina Martinez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""woman"": 10}",1950s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""flashlite"": 0}",0
-HW06,main,extended,Hispanic,woman,Rosalba Perez,5/5,5/5,10/10,True,"{""Hispanic"": 10}","{""woman"": 10}",1990s,,,{},{},"{""haiku"": 0, ""flashlite"": 0}",0
-HW07,alternate,extended,Hispanic,woman,Hortencia Ramirez,5/5,,5/5,True,"{""Hispanic"": 5}","{""woman"": 5}",1970s,,,{},{},"{""haiku"": 0}",0
-HW08,alternate,extended,Hispanic,woman,Aracely Rodriguez,5/5,,5/5,True,"{""Hispanic"": 5}","{""woman"": 5}",1990s,lower,high school or less,"{""lower"": 3}","{""high school or less"": 3}","{""haiku"": 0}",0
-HW09,alternate,extended,Hispanic,woman,Oralia Sanchez,5/5,,5/5,True,"{""Hispanic"": 5}","{""woman"": 5}",1950s,,,{},{},"{""haiku"": 0}",0
+name_id,role,tier,race,gender,full_name,as_intended_haiku,as_intended_luna,as_intended_flashlite,as_intended_total,keep,race_guesses,gender_guesses,decade_mode,income_mode,education_mode,income_guesses,education_guesses,refused_attempts_rg,errors
+BW01,main,core,Black,woman,Tanisha Mosley,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1970s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW02,main,core,Black,woman,Keyana Bolden,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW03,main,core,Black,woman,Tionna Banks,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW04,main,core,Black,woman,Shanice Gaines,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1990s,lower,high school or less,"{""lower"": 3}","{""high school or less"": 3}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW05,main,core,Black,woman,Ebony Samuels,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1980s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW06,main,core,Black,woman,Tyra Jefferson,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1980s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW07,main,core,Black,woman,Denisha Peoples,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1980s,lower,high school or less,"{""lower"": 2}","{""high school or less"": 2}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW08,main,core,Black,woman,Taniya Boykin,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1990s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW09,main,core,Black,woman,Heaven Winston,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW10,main,core,Black,woman,Keisha Washington,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""woman"": 15}",1980s,lower,high school or less,"{""lower"": 4}","{""high school or less"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BW11,alternate,core,Black,woman,Aisha Paige,5/5,,,5/5,True,"{""Black"": 5}","{""woman"": 5}",1990s,lower,high school or less,"{""lower"": 4}","{""high school or less"": 4}","{""haiku"": 0}",0
+BW12,alternate,core,Black,woman,Tamia Alston,5/5,,,5/5,True,"{""Black"": 5}","{""woman"": 5}",1990s,lower,high school or less,"{""lower"": 2}","{""high school or less"": 2}","{""haiku"": 0}",0
+BW13,alternate,core,Black,woman,Precious Booker,5/5,,,5/5,True,"{""Black"": 5}","{""woman"": 5}",1990s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0}",0
+BM01,main,core,Black,man,Tremayne Samuel,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM02,main,core,Black,man,Jamal Mims,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM03,main,core,Black,man,Tyrone Starks,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1970s,lower,high school or less,"{""lower"": 4}","{""high school or less"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM04,main,core,Black,man,Denzel Heard,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM05,main,core,Black,man,Keyshawn Rivers,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM06,main,core,Black,man,Jayvon Jackson,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",2000s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM07,main,core,Black,man,Terrell McNeal,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1980s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM08,main,core,Black,man,Rasheed Dukes,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1980s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM09,main,core,Black,man,Kareem Battle,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1970s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM10,main,core,Black,man,Jaleel McCray,5/5,5/5,5/5,15/15,True,"{""Black"": 15}","{""man"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+BM11,alternate,core,Black,man,Lamar Dorsey,5/5,,,5/5,True,"{""Black"": 5}","{""man"": 5}",1970s,,,{},{},"{""haiku"": 0}",0
+BM12,alternate,core,Black,man,Terell Epps,5/5,,,5/5,True,"{""Black"": 5}","{""man"": 5}",1980s,,,{},{},"{""haiku"": 0}",0
+BM13,alternate,core,Black,man,Marquise McClendon,5/5,,,5/5,True,"{""Black"": 5}","{""man"": 5}",1990s,,,{},{},"{""haiku"": 0}",0
+WW01,main,core,White,woman,Laurie Schmidt,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1960s,middle,bachelor's or more,"{""middle"": 1}","{""bachelor's or more"": 1}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW02,main,core,White,woman,Stephanie Wagner,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1980s,middle,some college,"{""middle"": 3}","{""some college"": 3}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW03,main,core,White,woman,Kristen Olson,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1980s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW04,main,core,White,woman,Hilary Beck,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1980s,middle,bachelor's or more,"{""middle"": 2}","{""bachelor's or more"": 2}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW05,main,core,White,woman,Amy Becker,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1970s,middle,bachelor's or more,"{""middle"": 5}","{""bachelor's or more"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW06,main,core,White,woman,Heidi Zimmerman,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1970s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW07,main,core,White,woman,Susan Snyder,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1950s,middle,some college,"{""middle"": 2}","{""some college"": 2}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW08,main,core,White,woman,Barbara Ryan,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1940s,middle,high school or less,"{""middle"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW09,main,core,White,woman,Cassie Jensen,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1980s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW10,main,core,White,woman,Erica Walsh,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""woman"": 15}",1980s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WW11,alternate,core,White,woman,Lisa Wolfe,5/5,,,5/5,True,"{""White"": 5}","{""woman"": 5}",1970s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0}",0
+WW12,alternate,core,White,woman,Marlene Hoffman,5/5,,,5/5,True,"{""White"": 5}","{""woman"": 5}",1940s,middle,some college,"{""middle"": 1}","{""some college"": 1}","{""haiku"": 0}",0
+WW13,alternate,core,White,woman,Katie Hanson,5/5,,,5/5,True,"{""White"": 5}","{""woman"": 5}",1990s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0}",0
+WM01,main,core,White,man,Seth Johnston,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1980s,middle,bachelor's or more,"{""middle"": 3}","{""bachelor's or more"": 3}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM02,main,core,White,man,Todd Weber,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1960s,middle,some college,"{""middle"": 5}","{""some college"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM03,main,core,White,man,Scott Schultz,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1970s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM04,main,core,White,man,Dustin Schneider,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1980s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM05,main,core,White,man,Steven Keller,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1950s,middle,some college,"{""middle"": 3}","{""some college"": 3}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM06,main,core,White,man,Luke Carlson,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",2000s,middle,some college,"{""middle"": 4}","{""some college"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM07,main,core,White,man,Cody Christensen,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM08,main,core,White,man,Brad Hansen,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1970s,middle,some college,"{""middle"": 5}","{""some college"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM09,main,core,White,man,Greg Erickson,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1960s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM10,main,core,White,man,Brian McCarthy,5/5,5/5,5/5,15/15,True,"{""White"": 15}","{""man"": 15}",1970s,middle,some college,"{""middle"": 5}","{""some college"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+WM11,alternate,core,White,man,Jay Larson,5/5,,,5/5,True,"{""White"": 5}","{""man"": 5}",1990s,middle,some college,"{""middle"": 5}","{""some college"": 5}","{""haiku"": 0}",0
+WM12,alternate,core,White,man,Robert Swanson,5/5,,,5/5,True,"{""White"": 5}","{""man"": 5}",1950s,middle,high school or less,"{""middle"": 4}","{""high school or less"": 4}","{""haiku"": 0}",0
+WM13,alternate,core,White,man,Daniel Meyer,5/5,,,5/5,True,"{""White"": 5}","{""man"": 5}",1980s,middle,some college,"{""middle"": 4}","{""some college"": 3, ""bachelor's or more"": 1}","{""haiku"": 0}",0
+HM01,main,extended,Hispanic,man,Javier Garcia,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""man"": 15}",1990s,lower,high school or less,"{""lower"": 4}","{""high school or less"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HM02,main,extended,Hispanic,man,Juan Lopez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""man"": 15}",1990s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HM03,main,extended,Hispanic,man,Alejandro Hernandez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""man"": 15}",2000s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HM04,main,extended,Hispanic,man,Hector Ramirez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""man"": 15}",1990s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HM05,main,extended,Hispanic,man,Miguel Rodriguez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""man"": 15}",1990s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HM06,main,extended,Hispanic,man,Jesus Martinez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""man"": 15}",1990s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HM07,alternate,extended,Hispanic,man,Julio Torres,5/5,,,5/5,True,"{""Hispanic"": 5}","{""man"": 5}",1980s,lower,high school or less,"{""lower"": 2}","{""high school or less"": 2}","{""haiku"": 0}",0
+HM08,alternate,extended,Hispanic,man,Salvador Sanchez,5/5,,,5/5,True,"{""Hispanic"": 5}","{""man"": 5}",1950s,,,{},{},"{""haiku"": 0}",0
+HM09,alternate,extended,Hispanic,man,Jorge Perez,5/5,,,5/5,True,"{""Hispanic"": 5}","{""man"": 5}",1970s,lower,high school or less,"{""lower"": 5}","{""high school or less"": 5}","{""haiku"": 0}",0
+AW01,main,extended,Asian,woman,May Kim,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""woman"": 15}",1990s,middle,bachelor's or more,"{""middle"": 5}","{""bachelor's or more"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AW02,main,extended,Asian,woman,Cindy Li,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""woman"": 15}",1980s,middle,bachelor's or more,"{""middle"": 5}","{""bachelor's or more"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AW03,main,extended,Asian,woman,Vivian Wang,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""woman"": 15}",2010s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AW04,main,extended,Asian,woman,Cecilia Yang,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""woman"": 15}",1990s,middle,bachelor's or more,"{""middle"": 3}","{""bachelor's or more"": 3}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AW05,main,extended,Asian,woman,Grace Chen,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""woman"": 15}",2000s,middle,bachelor's or more,"{""middle"": 3}","{""bachelor's or more"": 3}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AW06,main,extended,Asian,woman,Jane Le,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""woman"": 15}",1950s,middle,some college,"{""middle"": 4}","{""some college"": 2, ""bachelor's or more"": 2}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AM01,main,extended,Asian,man,Andrew Wang,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""man"": 15}",1990s,middle,bachelor's or more,"{""middle"": 5}","{""bachelor's or more"": 5}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AM02,main,extended,Asian,man,Eric Kim,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""man"": 15}",1980s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AM03,main,extended,Asian,man,Sam Li,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""man"": 15}",1990s,middle,bachelor's or more,"{""middle"": 1}","{""bachelor's or more"": 1}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AM04,main,extended,Asian,man,Alex Chen,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""man"": 15}",1990s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AM05,main,extended,Asian,man,Dan Nguyen,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""man"": 15}",1980s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+AM06,main,extended,Asian,man,Albert Yang,5/5,5/5,5/5,15/15,True,"{""Asian"": 15}","{""man"": 15}",1920s,middle,bachelor's or more,"{""middle"": 4}","{""bachelor's or more"": 4}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HW01,main,extended,Hispanic,woman,Rocio Gonzalez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""woman"": 15}",1990s,lower,high school or less,"{""lower"": 2}","{""high school or less"": 2}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HW02,main,extended,Hispanic,woman,Marisela Garcia,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""woman"": 15}",1980s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HW03,main,extended,Hispanic,woman,Yesenia Hernandez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""woman"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HW04,main,extended,Hispanic,woman,Blanca Lopez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""woman"": 15}",1980s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HW05,main,extended,Hispanic,woman,Guillermina Martinez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""woman"": 15}",1930s,lower,high school or less,"{""lower"": 1}","{""high school or less"": 1}","{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HW06,main,extended,Hispanic,woman,Rosalba Perez,5/5,5/5,5/5,15/15,True,"{""Hispanic"": 15}","{""woman"": 15}",1990s,,,{},{},"{""haiku"": 0, ""luna"": 0, ""flashlite"": 0}",0
+HW07,alternate,extended,Hispanic,woman,Hortencia Ramirez,5/5,,,5/5,True,"{""Hispanic"": 5}","{""woman"": 5}",1970s,,,{},{},"{""haiku"": 0}",0
+HW08,alternate,extended,Hispanic,woman,Aracely Rodriguez,5/5,,,5/5,True,"{""Hispanic"": 5}","{""woman"": 5}",1990s,lower,high school or less,"{""lower"": 3}","{""high school or less"": 3}","{""haiku"": 0}",0
+HW09,alternate,extended,Hispanic,woman,Oralia Sanchez,5/5,,,5/5,True,"{""Hispanic"": 5}","{""woman"": 5}",1950s,,,{},{},"{""haiku"": 0}",0

@@ -175,6 +175,19 @@ These use the pilot token counts. Haiku prices are batch, and Luna prices are ba
    - income and education guesses being sparse for Haiku because of refusals
 7. **Still open from the harness report:** Ian's 20-page label spot check, and product details cut off mid-word on store pages.
 
+## 7. Luna update (Wed 11/4, 7 to 8:45 pm ET, after $10 OpenAI credit)
+
+**Name check, now on three models:**
+- Luna finished the race/gender prompt for all 64 main names (320 of 320 guesses answered, 0 refusals). It read 320 of 320 as intended. The income/education prompt was skipped for Luna (`--rg-only`), as for Gemini.
+- The keep rule now runs on Haiku, Luna and Gemini, so 14 of 15 applies. All 64 main names score 15 of 15 and are kept. No name failed, `data/names.csv` was not changed, and `data/name_check_exclusions.csv` is still empty. The 18 alternates are still checked on Haiku only.
+- Harness bug fixed: in `src/name_check.py` the API error handler reused the variable `kind` (the prompt kind) for the error class. After a retried timeout the next reply crashed with `KeyError: 'transient'`. It now uses `ekind`, and error records keep the prompt kind. No logged record was affected.
+- Luna name check cost about $0.01 in all (all 64 names, today).
+
+**Pilot (`pilot` preset, Batch mode): not finished.**
+- One batch of 200 first turns (the projection wave) was submitted at 6:49 pm. At 8:41 pm OpenAI still showed it `in_progress` with 0 of 200 done. OpenAI allows up to 24 hours. The rest of the 1,152 episodes are not submitted yet, because the harness holds them until the first 200 are scored.
+- No Luna pilot numbers yet. To resume, rerun `.venv/bin/python src/run_agents.py run --model luna --preset pilot --mode batch` (add `--no-wait` to collect once and exit), then `score --run pilot_luna`.
+- OpenAI spend so far about $0.011 of the $10 cap. Open reservations: the live batch ($0.044, correct) and one name check call left by the stopped process ($0.0001; no harness command clears name check reservations, and it is too small to matter).
+
 ## Files
 
 - `src/name_check.py` is the name check runner and scorer.

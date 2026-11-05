@@ -1,0 +1,30 @@
+luna: 146 guesses to run (179 already done)
+Traceback (most recent call last):
+  File "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/src/name_check.py", line 396, in <module>
+    main()
+    ~~~~^^
+  File "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/src/name_check.py", line 392, in main
+    a.func(a)
+    ~~~~~~^^^
+  File "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/src/name_check.py", line 290, in cmd_run
+    list(ex.map(one, todo))
+    ~~~~^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/concurrent/futures/_base.py", line 672, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/concurrent/futures/_base.py", line 312, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/concurrent/futures/_base.py", line 454, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/concurrent/futures/_base.py", line 396, in __get_result
+    raise self._exception
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/concurrent/futures/thread.py", line 86, in run
+    result = ctx.run(self.task)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/concurrent/futures/thread.py", line 73, in run
+    return fn(*args, **kwargs)
+  File "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/src/name_check.py", line 271, in one
+    if parsed is not None and any(not parsed.get(f) or parsed.get(f) == "None" for f in REQUIRED[kind]):
+                                                                                        ~~~~~~~~^^^^^^
+KeyError: 'transient'

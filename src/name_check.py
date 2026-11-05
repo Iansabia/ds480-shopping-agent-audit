@@ -241,22 +241,22 @@ def cmd_run(a):
                 text, usage, mret, st = caller.call(prompt)
             except Exception as e:  # noqa: BLE001
                 guard.release(caller.provider, rid)
-                kind = classify_error(caller.provider, e)
-                if kind == "billing":
+                ekind = classify_error(caller.provider, e)  # not `kind`: that is the prompt kind
+                if ekind == "billing":
                     guard.halt(caller.provider, f"billing/credit error in name check: {str(e)[:300]}")
                     stop.set(); stats["billing"] += 1
                     print(f"BILLING ERROR on {caller.provider}; provider halted: {str(e)[:200]}")
                     return
-                if kind == "rate":
+                if ekind == "rate":
                     stats["rate_limited"] += 1
                     m = re.search(r"(?:retry(?:Delay| in)['\"]?\s*[:=]?\s*['\"]?|try again in )([\d.]+)s", str(e))
                     time.sleep(min(120, float(m.group(1)) + 1 if m else 20 * tries))
                     if tries < 8:
                         continue
-                if kind == "transient" and tries < 4:
+                if ekind == "transient" and tries < 4:
                     time.sleep(5 * tries); continue
                 rec = {"name_id": n["name_id"], "rep": rep, "kind": kind, "model_requested": caller.model,
-                       "status": "error",
+                       "status": "error", "error_kind": ekind,
                        "attempts": attempt_log,
                        "error": str(e)[:500], "t": time.strftime("%Y-%m-%dT%H:%M:%S%z")}
                 with wlock, open(lp, "a") as f:
