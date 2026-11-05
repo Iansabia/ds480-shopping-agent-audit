@@ -43,6 +43,9 @@ class StopRun(Exception):
     pass
 
 
+LOCAL_PAUSE_MSG = "Reached 7 am ET; local run paused. Resume tonight."
+
+
 # Ask protocol version, written to the manifest. Runs logged before 11/4 have no
 # such key and keep the old rule (one answered ask in every arm), so resuming or
 # rescoring an old pilot never adds turns or changes its outcomes.
@@ -292,9 +295,12 @@ class Runner:
         self._stop.set()
 
     # ------------------------------------------------------------ guards
+    def _local_window_closed(self) -> bool:
+        return self.ad.provider == "ollama" and not self.allow_daytime_local and not local_compute_allowed()
+
     def _preflight(self) -> None:
         self.guard.check(self.ad.provider)
-        if self.ad.provider == "ollama" and not self.allow_daytime_local and not local_compute_allowed():
+        if self._local_window_closed():
             raise StopRun("Local model runs are allowed only 7 pm to 7 am ET (fan noise rule). "
                           "Pass --allow-daytime-local only if Ian says so.")
 
@@ -327,6 +333,11 @@ class Runner:
     # ------------------------------------------------------------ sync
     def _one_call(self, ep: Episode, turn: int, state: dict, attempt: int):
         if self._stop.is_set():
+            return
+        if self._local_window_closed():
+            # Checked before every local call, so an OLMo run pauses within one
+            # call of 7 am ET, not only at the end of a chunk of up to 2,000 turns.
+            self._halt(LOCAL_PAUSE_MSG)
             return
         conv = self.conversation(ep, turn, state)
         payload = self.ad.build_request(conv)
@@ -409,8 +420,8 @@ class Runner:
                     futs.append(pool.submit(self._one_call, ep, turn, state, s["errors"] + 1))
                 for f in as_completed(futs):
                     f.result()
-            if self.ad.provider == "ollama" and not self.allow_daytime_local and not local_compute_allowed():
-                self._halt("Reached 7 am ET; local run paused. Resume tonight.")
+            if self._local_window_closed():
+                self._halt(LOCAL_PAUSE_MSG)
         out = self.status()
         out["stop_reason"] = self.stop_reason
         return out

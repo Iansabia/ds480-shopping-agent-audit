@@ -18,5 +18,6 @@ def make_adapter(model_key: str, tool_choice: str = "required", **kw) -> Adapter
         return GeminiAdapter(model_key, s, tool_choice=tool_choice)
     if p == "ollama":
         from .ollama_local import OllamaAdapter
-        return OllamaAdapter(model_key, s, tool_choice="auto")
+        # Forced by the format schema, not by a tool_choice setting (PLAN D4).
+        return OllamaAdapter(model_key, s, tool_choice="required")
     raise ValueError(p)
