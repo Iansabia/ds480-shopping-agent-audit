@@ -1,0 +1,24 @@
+{
+  "run": "reduced_flashlite",
+  "created": "2026-11-04T21:29:22.098-05:00",
+  "preset": "reduced",
+  "provider": "google",
+  "model_key": "flashlite",
+  "model_requested": "gemini-3.5-flash-lite",
+  "settings": {
+    "thinking": "model default",
+    "temperature": "not sent",
+    "tool_choice": "required",
+    "automatic_function_calling": "disabled",
+    "max_output_tokens": 512,
+    "tier": "free"
+  },
+  "mode": "batch",
+  "n_episodes": 7040,
+  "max_output_tokens": 512,
+  "git_commit": "bb3db5cb6c28150624260da58694f33f9b5cc582",
+  "episode_ids_sha256": "c1889904698bfba245a17ccc16cbdec2c6a15ade5099fffc767d77bca4e3893d",
+  "ask_protocol": "v_followup_1",
+  "limit": null,
+  "tool_choice": "required"
+}
