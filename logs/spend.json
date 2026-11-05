@@ -4,19 +4,19 @@
     "anthropic": {
       "by_model": {
         "haiku": {
-          "calls": 66829,
-          "spent_usd": 11.06478965
+          "calls": 80761,
+          "spent_usd": 13.3802956
         }
       },
-      "calls": 66829,
+      "calls": 80761,
       "cap_usd": 15.0,
       "halted": false,
       "halted_reason": null,
-      "input_tokens": 188204582,
-      "notional_usd": 11.06478965,
-      "output_tokens": 6233945,
+      "input_tokens": 227592276,
+      "notional_usd": 13.3802956,
+      "output_tokens": 7618430,
       "reservations": {},
-      "spent_usd": 11.06478965
+      "spent_usd": 13.3802956
     },
     "google": {
       "by_model": {
@@ -56,21 +56,47 @@
     "openai": {
       "by_model": {
         "luna": {
-          "calls": 50767,
-          "spent_usd": 4.0235404
+          "calls": 51152,
+          "spent_usd": 4.0526074
         }
       },
-      "calls": 50767,
+      "calls": 51152,
       "cap_usd": 10.0,
       "halted": false,
       "halted_at": "2026-11-04T15:10:33-0500",
       "halted_reason": null,
-      "input_tokens": 73021534,
-      "notional_usd": 4.0235404,
-      "output_tokens": 1447123,
-      "reservations": {},
-      "spent_usd": 4.0235404
+      "input_tokens": 73543584,
+      "notional_usd": 4.0526074,
+      "output_tokens": 1458981,
+      "reservations": {
+        "12512caa9dd6": {
+          "label": "call:neutral_luna",
+          "t": 1793890549.537958,
+          "usd": 0.00020395
+        },
+        "282bebb7447f": {
+          "label": "call:neutral_luna",
+          "t": 1793890534.503326,
+          "usd": 0.00021235
+        },
+        "730fdc9b9e90": {
+          "label": "call:neutral_luna",
+          "t": 1793890534.506589,
+          "usd": 0.00021585000000000002
+        },
+        "767c64725bc9": {
+          "label": "call:neutral_luna",
+          "t": 1793890546.065894,
+          "usd": 0.00021585000000000002
+        },
+        "f663794df17c": {
+          "label": "call:neutral_luna",
+          "t": 1793890534.48561,
+          "usd": 0.0002503
+        }
+      },
+      "spent_usd": 4.0526074
     }
   },
-  "updated": "2026-11-05T09:03:29-0500"
+  "updated": "2026-11-05T10:08:10-0500"
 }

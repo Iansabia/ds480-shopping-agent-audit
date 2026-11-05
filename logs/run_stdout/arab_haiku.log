@@ -1,0 +1,14 @@
+submitted 1 batch(es): msgbatch_01LXMqDx2EPBSZUtPY2Ep8KR
+submitted 1 batch(es): msgbatch_01NrxuqtEJFSW5ptftqxsdkg
+submitted 1 batch(es): msgbatch_01MMvkWTQyv1xTm4fRPP2PLF
+submitted 1 batch(es): msgbatch_01Vyvtzc7L8awyGkgczR6yzT
+{
+  "run": "arab_haiku",
+  "episodes": 3200,
+  "done": 3200,
+  "error_final": 0,
+  "asked": 1706,
+  "pending_turns": 0,
+  "open_batches": [],
+  "stop_reason": null
+}
