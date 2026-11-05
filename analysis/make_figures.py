@@ -1531,8 +1531,9 @@ def fig_m1(out: Out, df, models, bundle):
         panel_title(fig, 1, c, ttl)
     fig.update_yaxes(tickmode="array", tickvals=list(range(len(ms))), ticktext=[S.label(m) for m in ms],
                      range=[len(ms) - 0.4, -0.7])
-    foot = ("Gray (upper): without the line. Black (lower): with the name-blind line in the system prompt. Open marker: "
-            "exploratory model. Matched on task and run slot. Exploratory, 10% false discovery rate.")
+    open_note = (" Open marker: exploratory model." if any(m not in A.CONFIRM_MODELS_DEFAULT for m in ms) else "")
+    foot = ("Gray (upper): without the line. Black (lower): with the name-blind line in the system prompt."
+            + open_note + " Matched on task and run slot. Exploratory, 10% false discovery rate.")
     S.layout(fig, "Does telling the agent to ignore the name change the race gap?",
              "Race gap in price paid (clear request) and in asking (vague request), without and with a name-blind line.",
              out.pilot, 220 + 110 * len(ms) + S.footer_margin(foot), bottom=S.footer_margin(foot), left=150, gap=40)
@@ -1894,13 +1895,13 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
         d = A.subset(df, m, arms, tiers=("core",), tasks=tasks, extra=extra)
         d = d[d[y].notna()]
         if d.empty:
-            return "not estimable: no runs"
+            return "no name variation: no runs"
         nt = d["task_id"].nunique()
         tk = f"{nt} task{'s' if nt != 1 else ''}"
         if y == "price" and d["price"].nunique() == 1:
-            return f"not estimable: {tk}, every run<br>bought the same ${d['price'].iloc[0]:.2f} item"
-        return f"not estimable: {tk}, every<br>run had the same outcome" if d[y].nunique() == 1 else \
-            f"not estimable: {tk}, no<br>spread between names"
+            return f"no name variation: {tk}, every run<br>bought the same ${d['price'].iloc[0]:.2f} item"
+        return f"no name variation: {tk}, every<br>run had the same outcome" if d[y].nunique() == 1 else \
+            f"no name variation: {tk}, every<br>name had the same result"
     # one scale per unit, so bar lengths compare across columns of the same unit
     span_u = {}
     for unit in ("pct", "pts"):
@@ -1930,8 +1931,8 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
             if r.empty or flat(r.iloc[0]["lo"], r.iloc[0]["hi"], 1e-6) or not (finite(r.iloc[0]["lo"])
                                                                                and finite(r.iloc[0]["hi"])):
                 msg = reason(m, key)
-                flat_notes.append(f"{SHORTM.get(m, m)} {tp}: {msg[15:].replace('<br>', ' ')}")
-                fig.add_annotation(x=0, y=ys[i], xref=xr, yref=yr, showarrow=False, text="not<br>estimable",
+                flat_notes.append(f"{SHORTM.get(m, m)} {tp}: {msg.split(': ', 1)[1].replace('<br>', ' ')}")
+                fig.add_annotation(x=0, y=ys[i], xref=xr, yref=yr, showarrow=False, text="no name<br>variation",
                                    bgcolor="white", font=dict(size=S.BASE - 6, color=S.MUTED), align="center",
                                    hovertext=hover_prefix(out.pilot) + f"{S.label(m)}<br>{tp}<br>"
                                    + msg.replace("<br>", " "))
@@ -1978,13 +1979,13 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
                     " runs per name", " runs").replace(" to ", "-") + " (S0)</span>")
     fig.update_yaxes(tickmode="array", tickvals=ys, ticktext=[ylab(m) for m in rows_m], range=[ybot, -0.6])
     foot = ("Filled marker: confirmatory model in the tested family. Open marker: exploratory model, estimate only. "
-            f"Blue ticks: detectable gap after Holm (m = {HOLM_M}). 'Not estimable': every run in that cell gave the "
+            f"Blue ticks: detectable gap after Holm (m = {HOLM_M}). 'No name variation': every name in that cell had the "
             "same result, so no gap or interval exists (not a zero gap).<br>" + SIGN_NOTE
             + (f"<br>Not shown (no data in these runs): {', '.join(missing)}." if missing else "")
             + " Rows marked pending have no scored runs yet."
             + (" Small gray numbers under a dot: the estimate and its interval, where the interval is narrower than "
                "the dot." if narrow else "")
-            + ("<br>Not estimable: " + "; ".join(flat_notes) + "." if flat_notes else ""))
+            + ("<br>No name variation: " + "; ".join(flat_notes) + "." if flat_notes else ""))
     S.layout(fig, "Every model on every outcome, side by side", "Gap (focal minus comparison) with 95% interval. "
              "Price columns share one scale (%), rate columns share another (percentage points).", out.pilot,
              int(230 + 95 * (ybot + 0.6)) + S.footer_margin(foot), bottom=S.footer_margin(foot), left=230, gap=56)
@@ -1993,8 +1994,8 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
            "percent on one shared scale, rates in percentage points on another. Blue ticks: detectable gap after Holm "
            f"(m = {HOLM_M}) where pre-registered. Claude Haiku 5.5 and GPT-6 Luna are confirmatory when they enter the "
            "pre-registered test family; Gemini 3.5 Flash-Lite and OLMo 3 7B are exploratory, shown as estimates only (open "
-           "markers). A cell where every run gave the same result is labeled 'not estimable', never drawn as a zero "
-           "gap. Rows with no scored runs are marked pending. The two right columns are exploratory tests "
+           "markers). A cell where every name had the same result is labeled 'no name variation', never drawn as a "
+           "zero gap. Rows with no scored runs are marked pending. The two right columns are exploratory tests "
            "(Benjamini-Hochberg, 10%). One model version per vendor on one date.")
     out.fig("figA4", fig, "figA4_model_scorecard", cap, t, single_stamp=dict(x=0.5, y=0.5, size=34, angle=10,
                                                                               opacity=0.16))

@@ -246,7 +246,7 @@ Written by `analyze.py figures` to `results/figures/`, each with a CSV of the pl
 
 - **H3 2x2 table.** `paper/tables/h3_2x2.*` had a zero-width bootstrap interval for Luna's 0 of 1,600 cell. It is now made by a script (`analysis/h3_2x2.py`, same bootstrap and seed, which reproduces every old number) and every cell also gives the pooled count with a 95% Wilson interval (0 of 1,600: 0.00 to 0.24%).
 - **Figure 1.** The detect card put "Set from the pilot before the main run" under the Luna line, which read as if Luna had a pre-registered value. It now says the 1.4% comes from the Haiku pilot and gives Luna's post hoc value (D6). The caption no longer says the actions are "marked pending until the main run".
-- **Figure A4 and Table A1.** Gemini's H3 analog is shown as "not estimable" (no spread between names) and its shuffled-null row reads "no name variation, not testable" (D5), never as a zero gap or a failed check.
+- **Figure A4 and Table A1.** Gemini's H3 analog is shown as "no name variation" (every name had the same result) and its shuffled-null row reads "no name variation, not testable" (D5), never as a zero gap or a failed check. (Wording first read "not estimable" in Figure A4; made the same as the CSV and Table A1 on 11/5, see D9.)
 - **Captions.** Removed PLAN section numbers and deviation codes from the main figure captions (Figures 5, 6, 7, A1, A2, A4), in line with the figure text rule.
 - **Timing.** After the main results were seen. `analysis/make_figures.py` reads the frozen outputs and adds no inference.
 

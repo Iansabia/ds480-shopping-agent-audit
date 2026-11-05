@@ -1,0 +1,26 @@
+{
+ "pilot": false,
+ "engine": "plotly",
+ "watermark": "corner",
+ "numbers": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/tables/numbers.json",
+ "captions": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/CAPTIONS.md",
+ "figures": {
+  "fig1": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig1_summary_card.png",
+  "fig2": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig2_design.png",
+  "fig3": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig3_dollars_by_group.png",
+  "fig4": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig4_price_gap.png",
+  "fig5": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig5_method_checks.png",
+  "fig6": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig6_hair_skin_fit.png",
+  "fig7": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig7_ask_rates.png",
+  "fig8": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig8_name_blind.png",
+  "figA1": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA1_position_bias.png",
+  "figA2": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA2_price_vs_no_name.png",
+  "figA4": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA4_model_scorecard.png",
+  "figA5": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/figA5_random_split.png"
+ },
+ "watermark_variants": {},
+ "skipped_figures": {
+  "figA3": "needs data/name_freq.csv (infini-gram counts) and OLMo outcomes"
+ },
+ "skipped_runs": []
+}

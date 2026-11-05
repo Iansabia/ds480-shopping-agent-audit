@@ -184,7 +184,8 @@ def build_figure(res: dict):
     fig.update_layout(bargap=0, barmode="overlay")
     foot = ("Gray bars: the gap from the frozen primary model after the group label is shuffled across the 40 core "
             "names (within the other axis), 10,000 shuffles. Gray line: the gap between two random halves of names "
-            "from the same group, 2,000 splits. Blue line: the real gap. Same name averages as the confirmatory test; "
+            "from the same group, 2,000 splits (10 names per half, so conservative; the 20 vs 20 shuffle is the "
+            "like-for-like baseline). Blue line: the real gap. Same name averages as the confirmatory test; "
             "fixed seed. Descriptive; uses checks fixed in the plan, not a new test.")
     S.layout(fig, "GPT-6 Luna's price gaps are larger than almost every random split of the names",
              "Price gap for the same clear request when names are put into two random groups, vs the real gap.",
@@ -193,19 +194,26 @@ def build_figure(res: dict):
     return fig, pd.DataFrame(rows)
 
 
+def ratio(x: float) -> str:
+    """One decimal at 1 or above, two below 1 (so 0.145 prints 0.15, not 0.1)."""
+    return f"{x:.1f}" if abs(x) >= 1 else f"{x:.2f}"
+
+
 def caption(res: dict) -> str:
     def part(k):
         r = res[k]
         return (f"{S.label(k[0])} {k[1]}: real gap {r['real_gap_pct']:+.2f}%; {r['relabel_count_at_least_real']:,} of "
                 f"{r['relabel_draws']:,} random relabelings had a gap at least as large; typical random gap (SD) "
-                f"{r['relabel_sd_pct']:.2f}%, so the real gap is {r['relabel_ratio']:.1f} times it; same-group "
-                f"halves SD {r['floor_sd_pct']:.2f}% ({r['floor_ratio']:.1f} times)")
+                f"{r['relabel_sd_pct']:.2f}%, so the real gap is {ratio(r['relabel_ratio'])} times it; same-group "
+                f"halves SD {r['floor_sd_pct']:.2f}% ({ratio(r['floor_ratio'])} times)")
     parts = "; ".join(part(k) for k in PANELS + CONTRAST if k in res)
     return ("Figure A5. Is the GPT-6 Luna price gap more than chance? For the same clear request (S0, core names), "
             "the 40 name averages used in the confirmatory test are split into two random groups of 20 by shuffling "
             "the group label within the other axis, and the frozen primary model is refit (10,000 shuffles, fixed "
             "seed; gray bars). The gray line is the gap between two random halves of names from the same group "
-            "(2,000 splits). The blue line is the real gap. Both checks were set in the plan before the main run; "
+            "(2,000 splits); each half has only 10 names, so this spread is wider than a 20 vs 20 comparison and the "
+            "check is conservative. The random 20 vs 20 relabeling is the like-for-like baseline. The blue line is the "
+            "real gap. Both checks were set in the plan before the main run; "
             "this figure only draws them. " + parts + ". Claude Haiku 5.5 H1 is given for contrast and not drawn.")
 
 
