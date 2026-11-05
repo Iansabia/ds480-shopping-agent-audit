@@ -1,7 +1,8 @@
 scipy==1.18.1
 statsmodels==0.15.0
-matplotlib==3.11.2   # analyze.py frozen PLAN 10 figures only; paper figures use plotly
+matplotlib==3.11.2   # analyze.py frozen PLAN 10 figures, and the backup paper-figure engine (make_figures.py --engine matplotlib)
 pandas==3.1.1
 numpy==2.5.4
 plotly==7.1.0
 kaleido==1.5.0   # static PNG/SVG export for plotly; needs a local Chrome (plotly_get_chrome if missing)
+# Paper figure font: Inter 4.1 (SIL OFL), static TTFs from github.com/rsms/inter/releases installed in ~/Library/Fonts so kaleido and matplotlib both use it; falls back to Helvetica Neue

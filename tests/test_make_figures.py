@@ -204,3 +204,54 @@ def test_main_build_matches_frozen_outputs(world, monkeypatch):
     ignore = {"placeholder", "model", "group", "gap_usd", "gap_per1000_usd"}
     missing = [k for k in keys if k not in n and not k.startswith("genai.") and k not in ignore]
     assert not missing, missing
+
+
+# ----------------------------------------------------------------------------- engines and watermark styles
+
+def _small_fig():
+    import plotly.graph_objects as go
+    import figstyle as S
+    fig = go.Figure()
+    S.dots(fig, [20.1, 19.8], [0, 1], [18.7, 18.6], [21.5, 21.1], S.gcolor("Black woman"))
+    fig.add_trace(go.Bar(x=[1, 2], y=[3.0, 0.0], error_y=dict(type="data", array=[1.0, 2.0], arrayminus=[0.5, 0.0])))
+    S.layout(fig, "A takeaway title", "Method and n. Costs < 0.05 of the total.", True, 420, bottom=60, left=80)
+    S.footer(fig, "Footer note.")
+    return fig
+
+
+def test_plotly_and_matplotlib_engines(tmp_path):
+    import figstyle as S
+    from PIL import Image
+    fig = _small_fig()
+    before = fig.to_json()
+    p = S.save(fig, tmp_path, "demo", True, [], engine="plotly")
+    m = S.save(fig, tmp_path, "demo", True, [], engine="matplotlib")
+    assert fig.to_json() == before                                   # save never changes the figure passed in
+    assert Path(p["png"]).name == "demo_PILOT.png" and Path(p["html"]).exists()
+    assert Path(m["png"]).name == "demo_PILOT_mpl.png" and Path(m["svg"]).name == "demo_PILOT_mpl.svg"
+    assert m["html"] is None
+    a, b = Image.open(p["png"]), Image.open(m["png"])
+    assert a.size == b.size                                          # same canvas: 300 dpi = Plotly scale 3
+    assert round(b.info["dpi"][0]) == 300
+    svg = Path(m["svg"]).read_text()
+    assert P.WATERMARK in svg and "A takeaway title" in svg
+    assert "Costs &lt; 0.05" in svg                                  # "<" in text is text, not an HTML tag
+    assert "Click to enter" not in svg                               # no Plotly editor placeholders
+
+
+def test_watermark_styles(tmp_path):
+    import figstyle as S
+    fig = _small_fig()
+    for style in S.WM_STYLES:
+        r = S.save(fig, tmp_path, "demo", True, [], engine="matplotlib", wm_style=style, variant=f"_wm-{style}")
+        assert Path(r["png"]).name == f"demo_PILOT_wm-{style}_mpl.png"
+        assert P.WATERMARK in Path(r["svg"]).read_text()
+    corner = S.save(fig, tmp_path, "c", True, [], engine="plotly", wm_style="corner")
+    diag = S.save(fig, tmp_path, "d", True, [], engine="plotly", wm_style="diagonal")
+    ch, dh = Path(corner["html"]).read_text(), Path(diag["html"]).read_text()
+    assert '"pilot-mark"' in ch and '"pilot-stamp"' not in ch
+    assert '"pilot-stamp"' in dh and '"pilot-mark"' not in dh
+    with pytest.raises(ValueError):
+        S.save(fig, tmp_path, "x", True, [], wm_style="sideways")
+    main = S.save(fig, tmp_path, "m", False, [], engine="plotly")    # main data: no watermark at all
+    assert P.WATERMARK not in Path(main["html"]).read_text()

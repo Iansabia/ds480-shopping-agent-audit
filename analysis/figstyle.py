@@ -1,19 +1,33 @@
-"""Shared drawing rules for the paper figures (Plotly).
+"""Shared drawing rules for the paper figures (paper/STYLE_REF.md).
 
-Color means name group, the same hex in every figure. Model is shown by
+One look for every figure, borrowed from the clean charts in public model
+system cards: white canvas, light gridlines on the value axis only, no extra
+axis lines, a left-aligned title that states the takeaway, a gray subtitle
+with the method and n, direct labels instead of legends, thin dark error
+bars and one highlighted series against muted gray where that fits.
+
+Color means name group, the same hex in every figure. The core ramp
+(STYLE_REF section 4) splits names associated with Black and White buyers by
+hue (blue vs orange) and spaces the five groups about 16 L* apart, so they
+stay apart in grayscale print and for color-blind readers. Model is shown by
 panel or by marker shape, never by color. Text is always in ink colors.
-The group palette is the validated categorical order from the dataviz
-skill (adjacent CVD dE >= 9.1, normal-vision dE >= 19.6 on white); three
-hues sit below 3:1 contrast on white, so every colored mark also carries a
-visible text label (row label or direct label).
 
-Every figure built from pilot data gets the PILOT stamp: once in the title
-block and once, intact, inside every panel (or one large stamp for figures
-with many small panels and for cards). Files: PNG (scale 3) and SVG for
-the paper, plus an interactive HTML page with exact numbers on hover.
+Engines (--engine in make_figures.py):
+  plotly      PNG (scale 3), SVG and an interactive HTML page (default)
+  matplotlib  the same figure object drawn by analysis/mpl_render.py, saved as
+              <stem>_mpl.png (300 dpi) and <stem>_mpl.svg; it reads every
+              position, range and font from the Plotly figure, so both
+              engines give the same picture
+
+Pilot watermark (--watermark): "corner" (default) puts a small "PILOT DATA,
+NOT RESULTS" mark at the top right; "diagonal" puts a large light diagonal
+stamp in every panel (or one stamp on cards). Either way the subtitle says
+the figure is a pilot preview, and the file name and caption carry the
+pilot label.
 """
 from __future__ import annotations
 
+import copy
 import math
 import re
 from pathlib import Path
@@ -23,51 +37,89 @@ import plotly.io as pio
 
 from paper_calc import MODEL_LABEL, WATERMARK, group_label
 
-INK = "#1f1f1c"
-MUTED = "#5f5e57"
-FAINT = "#8a8981"
-AXIS = "#b5b4ad"
-GRID = "#ebeae5"
+# ----------------------------------------------------------------------------- tokens (STYLE_REF section 4)
+
+INK = "#1f1f1c"          # titles, data labels, error bars
+MUTED = "#6b6a63"        # subtitles, tick labels, notes
+FAINT = "#8a8983"        # pilot corner mark, quiet notes
+AXIS = "#b5b4ad"         # axis lines and ticks
+GRID = "#e6e5e0"         # value-axis gridlines
 SURFACE = "#ffffff"
-PANEL = "#f7f6f2"
-STAMP = "#8a8981"
-ALERT = "#a3261f"        # pilot banner text only (never a data color)
-FONT = "Helvetica Neue, Helvetica, Arial, sans-serif"
+PANEL = "#f7f6f2"        # card and diagram boxes
+BAND = "#efeee9"         # light band fill
+MUTED_SERIES = "#c9c7be"  # context series next to the highlighted one
+ACCENT = "#3365ad"       # the one highlighted series; detectable-gap ticks
+STAMP = AXIS             # diagonal pilot stamp
+ALERT = ACCENT           # kept for old imports; no red text any more
+FONT = "Inter, 'Source Sans 3', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+FONT_LIST = ["Inter", "Source Sans 3", "Helvetica Neue", "Helvetica", "Arial", "DejaVu Sans"]
 WIDTH = 900              # px; PNG export at scale 3 gives 2,700 px across
 SCALE = 3
-BASE = 15                # base font px (about 7.8 pt at 6.5 in print width)
+BASE = 15                # base font px
+TITLE_SIZE = BASE + 7    # 22 px, weight 600
+TITLE_WEIGHT = 600
+SUB_SIZE = BASE          # gray subtitle
 
+# Core name groups: STYLE_REF ramp. Exploratory groups: two more hues
+# (purple, green), dark and light, kept away from the core lightness steps.
 GROUP_COLORS = {
-    "Black woman": "#2a78d6", "Black man": "#eb6834", "White woman": "#1baf7a", "White man": "#eda100",
-    "Hispanic woman": "#e87ba4", "Hispanic man": "#008300", "Asian woman": "#6250d6", "Asian man": "#e34948",
-    "No name": "#8a8981",
+    "Black woman": "#1f3a5f", "White woman": "#9a4a1c", "Black man": "#5b8fd0", "White man": "#edb47a",
+    "Hispanic woman": "#5e3f86", "Hispanic man": "#a48cc8", "Asian woman": "#2e6b4f", "Asian man": "#86bf9f",
+    "No name": "#e4e2da",
 }
+# a very light fill needs a darker outline and interval line to be seen on white
+EDGE = {"#e4e2da": "#6b6a63"}
+LINEC = {"#e4e2da": "#9b9a93"}
 MODEL_SYMBOL = {"haiku": "circle", "luna": "square", "flashlite": "diamond", "olmo": "triangle-up",
                 "synth_a": "circle", "synth_b": "square"}
+
+# set by make_figures.build (command-line flags)
+ENGINE = "plotly"        # or "matplotlib"
+WM_STYLE = "corner"      # or "diagonal"
+ENGINES = ("plotly", "matplotlib")
+WM_STYLES = ("corner", "diagonal")
 
 try:                       # dollar signs are text, never LaTeX
     pio.defaults.mathjax = None
 except AttributeError:     # older plotly
     pio.kaleido.scope.mathjax = None
 
+_AX = dict(zeroline=False, showline=False, linecolor=AXIS, linewidth=1, ticks="", tickcolor=AXIS, ticklen=4,
+           tickwidth=1, gridcolor=GRID, gridwidth=1, automargin=False,
+           tickfont=dict(family=FONT, size=BASE - 2, color=MUTED),
+           title=dict(font=dict(family=FONT, size=BASE - 1, color=MUTED)))
 pio.templates["paper"] = go.layout.Template(
     layout=dict(
         font=dict(family=FONT, size=BASE, color=INK),
         paper_bgcolor=SURFACE, plot_bgcolor=SURFACE,
-        colorway=list(GROUP_COLORS.values()),
-        xaxis=dict(showgrid=True, gridcolor=GRID, zeroline=False, linecolor=AXIS, ticks="outside", tickcolor=AXIS,
-                   ticklen=4, tickfont=dict(size=BASE - 2, color=MUTED), title=dict(font=dict(size=BASE - 1, color=MUTED)),
-                   automargin=False),
-        yaxis=dict(showgrid=False, zeroline=False, linecolor=AXIS, ticks="", tickfont=dict(size=BASE - 2, color=INK),
-                   title=dict(font=dict(size=BASE - 1, color=MUTED)), automargin=False),
+        colorway=[ACCENT, MUTED_SERIES],
+        # dot charts here are horizontal: the value axis is x, so the grid is on x only
+        xaxis=dict(_AX, showgrid=True),
+        yaxis=dict(_AX, showgrid=False, ticklabelstandoff=6, tickfont=dict(family=FONT, size=BASE - 2, color=INK)),
+        bargap=0.28, bargroupgap=0.06, barmode="group",
         hoverlabel=dict(bgcolor="white", bordercolor=AXIS, font=dict(family=FONT, size=13, color=INK), align="left"),
-        legend=dict(font=dict(size=BASE - 2), bgcolor="rgba(0,0,0,0)"),
+        legend=dict(font=dict(size=BASE - 2), bgcolor="rgba(0,0,0,0)", title=dict(text="")),
+        annotationdefaults=dict(font=dict(family=FONT, color=INK), showarrow=False),
+        showlegend=False,
+    ),
+    data=dict(
+        bar=[go.Bar(marker=dict(line=dict(width=0)),
+                    error_y=dict(type="data", thickness=1.2, width=4, color=INK),
+                    textfont=dict(family=FONT, size=BASE - 3, color=INK), cliponaxis=False)],
+        scatter=[go.Scatter(cliponaxis=False, textfont=dict(family=FONT, size=BASE - 3, color=INK))],
     ))
 pio.templates.default = "plotly_white+paper"
 
 
 def gcolor(g):
     return GROUP_COLORS.get(g, INK)
+
+
+def gline(g):
+    """Line color for a group's interval or connecting line (the no-name fill is
+    too light to be a line)."""
+    c = gcolor(g)
+    return LINEC.get(c, c)
 
 
 def glabel(g, br=True):
@@ -102,39 +154,48 @@ def wrap(text, chars):
     return "<br>".join(out)
 
 
-def title_block(title, subtitle, pilot, width=WIDTH):
-    """Takeaway title, a muted subtitle (what is compared, on which data) and,
-    on pilot data, the stamp line. Returns (title dict, number of lines)."""
-    t_ = wrap(title, int((width - 40) / (0.56 * (BASE + 5))))
-    s_ = wrap(subtitle, int((width - 40) / (0.54 * BASE)))
-    t = f"<b>{t_}</b><br><span style='font-size:{BASE}px;color:{MUTED}'>{s_}</span>"
-    lines = t_.count("<br>") + 1 + s_.count("<br>") + 1
-    if pilot:
-        t += (f"<br><span style='font-size:{BASE - 1}px;color:{ALERT}'><b>{WATERMARK}</b>: built only to test the "
-              "figure code; not a finding</span>")
-        lines += 1
-    return dict(text=t, x=MARGIN_X / width, xanchor="left", xref="container", y=1, yanchor="top", yref="container",
-                font=dict(size=BASE + 5, color=INK), pad=dict(t=TITLE_TOP)), lines
-
-
-TITLE_TOP = 30           # px of clear space above the title's cap height
-
-
+TITLE_TOP = 28           # px above the title block; the corner mark sits in it
 MARGIN_X = 18
+LINE = 1.3               # Plotly line spacing (em)
+PILOT_NOTE = "Pilot preview: built only to test the figure code, not a finding."
+
+
+def title_block(title, subtitle, pilot, width=WIDTH):
+    """Takeaway title (semibold), then a gray subtitle with the method and n and,
+    on pilot data, a pilot note. Returns (title text, subtitle text, title
+    lines, subtitle lines)."""
+    t_ = wrap(title, int((width - 2 * MARGIN_X) / (0.56 * TITLE_SIZE)))
+    s_ = wrap(subtitle, int((width - 2 * MARGIN_X) / (0.53 * SUB_SIZE)))
+    if pilot:
+        s_ += "<br>" + PILOT_NOTE
+    return t_, s_, t_.count("<br>") + 1, s_.count("<br>") + 1
 
 
 def layout(fig, title, subtitle, pilot, height, top=None, bottom=70, left=None, right=30, width=WIDTH, gap=22):
-    tb, lines = title_block(title, subtitle, pilot, width)
-    tb["y"] = 1 - TITLE_TOP / height       # kaleido can drop title.pad, so place the title explicitly
-    tb["pad"] = dict(t=0)
-    top = top or (TITLE_TOP + 25 * lines + gap)
-    fig.update_layout(title=tb, width=width, height=height,
-                      margin=dict(t=top, b=bottom, l=left if left is not None else 20, r=right),
+    """Title band: TITLE_TOP clear px (corner mark), the title, the gray
+    subtitle, then `gap` px before the plot area. Title and subtitle are
+    left-aligned annotations (Plotly's own title shifts multi-line titles
+    upward), so both engines place them the same way. Margins are fixed (no
+    automargin), so the matplotlib engine can place everything from the same
+    numbers."""
+    t_, sub, tl, sl = title_block(title, subtitle, pilot, width)
+    sub_top = TITLE_TOP + LINE * TITLE_SIZE * tl + 2
+    top = top or int(sub_top + LINE * SUB_SIZE * sl + gap)
+    l_ = left if left is not None else 20
+    fig.update_layout(title=dict(text=""), width=width, height=height,
+                      margin=dict(t=top, b=bottom, l=l_, r=right),
                       showlegend=fig.layout.showlegend if fig.layout.showlegend is not None else False)
+    pw, ph = width - l_ - right, height - top - bottom
+    fig.add_annotation(text=t_, xref="paper", yref="paper", x=-(l_ - MARGIN_X) / pw, y=(height - TITLE_TOP - bottom) / ph,
+                       xanchor="left", yanchor="top", align="left", showarrow=False, name="title",
+                       font=dict(family=FONT, size=TITLE_SIZE, color=INK, weight=TITLE_WEIGHT))
+    fig.add_annotation(text=sub, xref="paper", yref="paper", x=-(l_ - MARGIN_X) / pw, y=(height - sub_top - bottom) / ph,
+                       xanchor="left", yanchor="top", align="left", showarrow=False, name="subtitle",
+                       font=dict(family=FONT, size=SUB_SIZE, color=MUTED))
     return fig
 
 
-FOOT_LINE = 16
+FOOT_LINE = LINE * (BASE - 3)
 
 
 def foot_chars(width=WIDTH):
@@ -143,7 +204,7 @@ def foot_chars(width=WIDTH):
 
 def footer_margin(text, axis_px=64, width=WIDTH):
     """Bottom margin that fits the x axis plus the wrapped footer lines."""
-    return axis_px + FOOT_LINE * (wrap(text, foot_chars(width)).count("<br>") + 1) + 12
+    return int(axis_px + FOOT_LINE * (wrap(text, foot_chars(width)).count("<br>") + 1) + 12)
 
 
 def footer(fig, text):
@@ -160,11 +221,11 @@ def footer(fig, text):
                        yshift=-(b - FOOT_LINE * lines - 10))
 
 
-GLYPH = {"circle": "\u25cf", "square": "\u25a0", "diamond": "\u25c6", "triangle-up": "\u25b2"}
+GLYPH = {"circle": "●", "square": "■", "diamond": "◆", "triangle-up": "▲"}
 
 
 def marker_key(models):
-    """'Marker: ● Claude Haiku 5.5  ◆ Gemini 3.5 Flash-Lite' for the footer."""
+    """'Marker shape = model: ● Claude Haiku 5.5  ◆ Gemini 3.5 Flash-Lite' for the footer."""
     if len(models) < 2:
         return ""
     return "Marker shape = model: " + "   ".join(f"{GLYPH.get(symbol(m), '?')} {label(m)}" for m in models) + "."
@@ -190,7 +251,7 @@ def hline(fig, y, row=None, col=None, **line):
 
 def dots(fig, x, y, lo, hi, color, sym="circle", htext=None, row=None, col=None, size=11, open_=False, text=None,
          textpos="middle right", horizontal=True):
-    """Dots with a 2 px 95% interval and a white ring. htext: one hover string
+    """Dots with a thin 95% interval and a white ring. htext: one hover string
     per point (exact numbers)."""
     def ok(v):
         return v is not None and not (isinstance(v, float) and not math.isfinite(v))
@@ -198,11 +259,15 @@ def dots(fig, x, y, lo, hi, color, sym="circle", htext=None, row=None, col=None,
     est = x if horizontal else y
     plus = [(h - e) if ok(h) and ok(e) else 0 for e, h in zip(est, hi)]
     minus = [(e - l_) if ok(l_) and ok(e) else 0 for e, l_ in zip(est, lo)]
-    err = dict(type="data", array=plus, arrayminus=minus, color=color, thickness=2.2, width=0, symmetric=False,
+    lc = LINEC.get(color, color)
+    edge = EDGE.get(color)
+    err = dict(type="data", array=plus, arrayminus=minus, color=lc, thickness=2, width=0, symmetric=False,
                visible=True)
-    kw = dict(x=x, y=y, mode="markers+text" if text else "markers", showlegend=False, cliponaxis=False,
-              marker=dict(symbol=sym + ("-open" if open_ else ""), size=size, color=color,
-                          line=dict(color=color if open_ else "white", width=2 if open_ else 1.4)))
+    if open_:
+        mk = dict(symbol=sym + "-open", size=size, color=edge or color, line=dict(color=edge or color, width=2))
+    else:
+        mk = dict(symbol=sym, size=size, color=color, line=dict(color=edge or "white", width=1.4 if not edge else 1.2))
+    kw = dict(x=x, y=y, mode="markers+text" if text else "markers", showlegend=False, cliponaxis=False, marker=mk)
     if htext is not None:
         kw.update(hovertext=htext, hovertemplate="%{hovertext}<extra></extra>")
     else:
@@ -217,17 +282,20 @@ def dots(fig, x, y, lo, hi, color, sym="circle", htext=None, row=None, col=None,
         fig.add_trace(tr)
 
 
+# ----------------------------------------------------------------------------- pilot watermark
+
 def stamp_once(fig, x=0.5, y=0.5, size=40, angle=14, opacity=0.2):
-    """One large stamp (paper coordinates) for figures with many small panels
-    or for cards, where a stamp per panel would sit on the text."""
+    """Diagonal style, one large stamp (paper coordinates) for figures with many
+    small panels or for cards, where a stamp per panel would sit on the text."""
     fig.add_annotation(text=f"<b>{WATERMARK}</b>", xref="paper", yref="paper", x=x, y=y, showarrow=False,
-                       textangle=-angle, opacity=opacity, font=dict(size=size, color=STAMP), xanchor="center",
-                       yanchor="middle")
+                       textangle=-angle, opacity=min(1.0, opacity * 1.6), font=dict(size=size, color=STAMP),
+                       xanchor="center", yanchor="middle", name="pilot-stamp")
 
 
 def stamp(fig, skip=()):
-    """One intact diagonal PILOT stamp centered in every panel (sized to the
-    panel so it is never clipped), behind the data."""
+    """Diagonal style: one intact light PILOT stamp centered in every panel
+    (sized to the panel so it is never clipped), drawn in a very light gray so
+    the data stays readable."""
     W = fig.layout.width or WIDTH
     H = fig.layout.height or 500
     m = fig.layout.margin
@@ -245,44 +313,87 @@ def stamp(fig, skip=()):
         yd = (yax.domain if yax is not None and yax.domain else (0, 1))
         wpx, hpx = (xd[1] - xd[0]) * pw, (yd[1] - yd[0]) * ph
         ang = 18 if wpx > 1.6 * hpx else 24
-        fs = max(9, min(34, 0.9 * wpx / (len(WATERMARK) * 0.62 * math.cos(math.radians(ang))),
+        fs = max(9, min(40, 0.9 * wpx / (len(WATERMARK) * 0.62 * math.cos(math.radians(ang))),
                         0.9 * hpx / (len(WATERMARK) * 0.62 * math.sin(math.radians(ang)) + 1.2)))
         fig.add_annotation(text=f"<b>{WATERMARK}</b>", xref="paper", yref="paper", x=(xd[0] + xd[1]) / 2,
-                           y=(yd[0] + yd[1]) / 2, showarrow=False, textangle=-ang, opacity=0.22,
-                           font=dict(size=fs, color=STAMP), xanchor="center", yanchor="middle")
+                           y=(yd[0] + yd[1]) / 2, showarrow=False, textangle=-ang, opacity=0.35,
+                           font=dict(size=fs, color=STAMP), xanchor="center", yanchor="middle", name="pilot-stamp")
         done += 1
     if not done:   # a card or diagram with hidden axes: one stamp across the page
         fig.add_annotation(text=f"<b>{WATERMARK}</b>", xref="paper", yref="paper", x=0.5, y=0.5, showarrow=False,
-                           textangle=-14, opacity=0.2, font=dict(size=max(16, min(46, pw / (len(WATERMARK) * 0.66))),
-                                                                 color=STAMP))
+                           textangle=-14, opacity=0.32, font=dict(size=max(16, min(46, pw / (len(WATERMARK) * 0.66))),
+                                                                  color=STAMP), name="pilot-stamp")
 
 
-def save(fig, outdir: Path, stem: str, pilot: bool, made: list, watermark: bool = True, skip_stamp=(),
-         single_stamp: dict | None = None) -> dict:
-    """PNG (scale 3) and SVG via kaleido, plus self-contained interactive HTML
-    (plotly.js from the CDN). Pilot: stamp every panel and suffix _PILOT."""
-    outdir.mkdir(parents=True, exist_ok=True)
+def corner_mark(fig):
+    """Corner style: a small 'PILOT DATA, NOT RESULTS' mark at the top right,
+    above the title row, so it never touches a mark or a tick label."""
+    W = fig.layout.width or WIDTH
+    H = fig.layout.height or 500
+    m = fig.layout.margin
+    l_, r, t, b = m.l or 0, m.r or 0, m.t or 0, m.b or 0
+    pw, ph = W - l_ - r, H - t - b
+    fig.add_annotation(text=WATERMARK, xref="paper", yref="paper", x=(W - MARGIN_X - l_) / pw, y=(H - 12 - b) / ph,
+                       xanchor="right", yanchor="top", showarrow=False, opacity=0.95, name="pilot-mark",
+                       font=dict(family=FONT, size=BASE - 3, color=FAINT, weight=600))
+
+
+def add_watermark(fig, style=None, skip_stamp=(), single_stamp=None):
+    style = style or WM_STYLE
+    if style not in WM_STYLES:
+        raise ValueError(f"unknown watermark style {style!r}")
+    if style == "diagonal":
+        if single_stamp is not None:
+            stamp_once(fig, **single_stamp)
+        else:
+            stamp(fig, skip_stamp)
+    else:
+        corner_mark(fig)
+
+
+# ----------------------------------------------------------------------------- export
+
+def _escape_dollars(fig):
     for a in fig.layout.annotations:          # a text with two "$" would be typeset as LaTeX
         if a.text and "$" in a.text:
             a.text = a.text.replace("$", "&#36;")
     for tr in fig.data:
         if getattr(tr, "text", None) is not None and not isinstance(tr.text, str):
             tr.text = [t.replace("$", "&#36;") if isinstance(t, str) else t for t in tr.text]
-    if fig.layout.title.text and "$" in fig.layout.title.text:
+    if fig.layout.title.text and "$" in fig.layout.title.text:   # figures that set their own layout title
         fig.layout.title.text = fig.layout.title.text.replace("$", "&#36;")
+
+
+def save(fig, outdir: Path, stem: str, pilot: bool, made: list, watermark: bool = True, skip_stamp=(),
+         single_stamp: dict | None = None, engine: str | None = None, wm_style: str | None = None,
+         variant: str = "") -> dict:
+    """Plotly: PNG (scale 3), SVG and self-contained interactive HTML (plotly.js
+    from the CDN). Matplotlib: <stem>_mpl.png at 300 dpi and <stem>_mpl.svg.
+    Pilot: watermark (corner or diagonal) and suffix _PILOT. The figure passed
+    in is not changed, so it can be saved again in another style."""
+    engine = engine or ENGINE
+    if engine not in ENGINES:
+        raise ValueError(f"unknown engine {engine!r}")
+    fig = go.Figure(copy.deepcopy(fig.to_dict()))
+    outdir.mkdir(parents=True, exist_ok=True)
+    _escape_dollars(fig)
     if pilot and watermark:
-        if single_stamp is not None:
-            stamp_once(fig, **single_stamp)
-        else:
-            stamp(fig, skip_stamp)
+        add_watermark(fig, wm_style, skip_stamp, single_stamp)
         stem = stem + "_PILOT"
-    png, svg, html = outdir / f"{stem}.png", outdir / f"{stem}.svg", outdir / f"{stem}.html"
-    fig.write_image(png, scale=SCALE)
-    fig.write_image(svg)
-    fig.write_html(html, include_plotlyjs="cdn", full_html=True,
-                   config={"displaylogo": False, "responsive": True,
-                           "toImageButtonOptions": {"format": "png", "scale": SCALE, "filename": stem}})
-    rec = {"png": str(png), "svg": str(svg), "html": str(html)}
+    stem += variant
+    if engine == "matplotlib":
+        import mpl_render
+        png, svg = outdir / f"{stem}_mpl.png", outdir / f"{stem}_mpl.svg"
+        mpl_render.render(fig, png, svg, dpi=100 * SCALE)
+        rec = {"png": str(png), "svg": str(svg), "html": None, "engine": engine}
+    else:
+        png, svg, html = outdir / f"{stem}.png", outdir / f"{stem}.svg", outdir / f"{stem}.html"
+        fig.write_image(png, scale=SCALE)
+        fig.write_image(svg)
+        fig.write_html(html, include_plotlyjs="cdn", full_html=True,
+                       config={"displaylogo": False, "responsive": True,
+                               "toImageButtonOptions": {"format": "png", "scale": SCALE, "filename": stem}})
+        rec = {"png": str(png), "svg": str(svg), "html": str(html), "engine": engine}
     made.append(rec)
     return rec
 
