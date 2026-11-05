@@ -27,11 +27,29 @@ answer counts as a miss. Logs: logs/name_check_addon_<model>.jsonl. Score writes
 data/name_check_results_addon.csv and data/name_check_exclusions_addon.csv, which
 the arab and sasian presets read (failed names are replaced by alternates).
 
+Gender-neutral names (PLAN.md D9 add-on A, exploratory, added after the main
+results were seen): `--set neutral` checks the 10 names of the neutral preset.
+Here the check confirms the opposite of the main check: that the name does NOT
+read as one gender. Prompt "rg_neutral" (version nc3n) is the main "rg" prompt
+with a third gender option, "neutral" (given to both about equally); race
+options are the main ones. Keep rule [Call, fixed 11/5 before any neutral check
+call]: a neutral name is kept if neither "woman" nor "man" is the answer in half
+or more of its valid guesses across the three models (with 15 valid guesses: at
+most 7 for each gender). Refusals and errors are handled as above (left out of
+the denominator). A name that fails is dropped from the neutral preset (there are
+no alternates). Also reported, descriptive only: whether a name would meet the
+main set's 14 of 15 bar for one gender, and the race guesses. Logs:
+logs/name_check_neutral_<model>.jsonl; score writes
+data/name_check_results_neutral.csv and adds failures to
+data/name_check_exclusions_addon.csv (each set rewrites only its own rows).
+
 Usage (from the project root):
   .venv/bin/python src/name_check.py run --model haiku [--ids BW01 BW02 ...] [--alternates]
   .venv/bin/python src/name_check.py score
   .venv/bin/python src/name_check.py run --set addon --model haiku     # then luna, flashlite
   .venv/bin/python src/name_check.py score --set addon
+  .venv/bin/python src/name_check.py run --set neutral --model haiku   # then luna, flashlite
+  .venv/bin/python src/name_check.py score --set neutral
 Logs: logs/name_check_<model>.jsonl (one line per guess, resumable).
 Keys come from .env and are never printed.
 """
@@ -86,21 +104,46 @@ assert PROMPTS["rg_addon"] != PROMPTS["rg"]
 PROMPT_VERSION_ADDON = "nc3a"
 ADDON_RACES = ("Middle Eastern or North African", "South Asian", "East Asian", "Black", "White", "Hispanic")
 ADDON_INTENDED = {"MENA": "Middle Eastern or North African", "South Asian": "South Asian"}
-REQUIRED = {"rg": ("race", "gender"), "ses": ("income", "education"), "rg_addon": ("race", "gender")}
+PROMPTS["rg_neutral"] = PROMPTS["rg"].replace(
+    'babies given this first name are mostly "woman" or "man"?',
+    'babies given this first name are mostly "woman" or "man", or "neutral" if it is given to both about equally?')
+assert PROMPTS["rg_neutral"] != PROMPTS["rg"]
+PROMPT_VERSION_NEUTRAL = "nc3n"
+NEUTRAL_MAX_SHARE = 0.5  # kept if each gender's share of valid guesses is under this
+REQUIRED = {"rg": ("race", "gender"), "ses": ("income", "education"), "rg_addon": ("race", "gender"),
+            "rg_neutral": ("race", "gender")}
 MAX_ATTEMPTS = 3  # [Call] a refused or unparseable guess is re-asked up to 3 times in all
 
 FIELDS = ["gender", "race", "income", "education", "birth_decade"]  # union over both prompts
 
 
 def log_path(model_key: str, name_set: str = "main") -> Path:
-    if name_set == "addon":
-        return config.LOGS / f"name_check_addon_{model_key}.jsonl"
+    if name_set in ("addon", "neutral"):
+        return config.LOGS / f"name_check_{name_set}_{model_key}.jsonl"
     return config.LOGS / f"name_check_{model_key}.jsonl"
 
 
 def load_addon_names() -> list[dict]:
     rows = list(csv.DictReader(open(config.DATA / "names_addon.csv")))
     return [r for r in rows if r["name_check"] == "rg_addon"]
+
+
+def load_neutral_names() -> list[dict]:
+    rows = list(csv.DictReader(open(config.DATA / "names_addon.csv")))
+    return [r for r in rows if r["set"] == "neutral"]
+
+
+def normalize_neutral_gender(g: str | None) -> str | None:
+    if not g:
+        return None
+    x = g.strip().lower()
+    if x in ("woman", "women", "female", "f"):
+        return "woman"
+    if x in ("man", "men", "male", "m"):
+        return "man"
+    if any(k in x for k in ("neutral", "both", "either", "equal", "unisex", "mixed")):
+        return "neutral"
+    return x
 
 
 def normalize_addon_race(r: str | None) -> str | None:
@@ -252,6 +295,7 @@ def cmd_run(a):
     caller = Caller(a.model)
     guard = SpendGuard()
     addon = a.set == "addon"
+    neutral = a.set == "neutral"
     lp = log_path(a.model, a.set)
     done = set()
     if lp.exists():
@@ -259,10 +303,11 @@ def cmd_run(a):
             rec = json.loads(line)
             if rec.get("status") in ("ok", "refusal"):
                 done.add((rec["name_id"], rec["rep"], rec["kind"]))
-    names = load_addon_names() if addon else load_names(a.alternates)
+    names = load_addon_names() if addon else load_neutral_names() if neutral else load_names(a.alternates)
     if a.ids:
         names = [n for n in names if n["name_id"] in set(a.ids)]
-    kinds = (["rg_addon"] if a.rg_only else ["rg_addon", "ses"]) if addon else (["rg"] if a.rg_only else ["rg", "ses"])
+    rgk = "rg_addon" if addon else "rg_neutral" if neutral else "rg"
+    kinds = [rgk] if a.rg_only else [rgk, "ses"]
     todo = [(n, rep, k) for n in names for rep in range(REPS) for k in kinds if (n["name_id"], rep, k) not in done]
     print(f"{a.model}: {len(todo)} guesses to run ({len(done)} already done)")
     stop = threading.Event()
@@ -319,20 +364,26 @@ def cmd_run(a):
                     parsed["race"] = normalize_addon_race(str(json.loads(m_.group(0)).get("race") or "") or None)
                 except Exception:  # noqa: BLE001
                     pass
+            if parsed is not None and kind == "rg_neutral":
+                m_ = re.search(r"\{.*\}", text, re.S)
+                try:
+                    parsed["gender"] = normalize_neutral_gender(str(json.loads(m_.group(0)).get("gender") or "") or None)
+                except Exception:  # noqa: BLE001
+                    pass
             if parsed is None and st == "ok" and re.search(r"\b(can't|cannot|won't|will not|not able)\b", text, re.I):
                 st = "refusal"  # declined in prose with no JSON
             if parsed is not None and any(not parsed.get(f) or parsed.get(f) == "None" for f in REQUIRED[kind]):
                 st = "refusal"  # partial refusal: answered some items but not race or gender
             attempt_log.append({"status": st if parsed is not None or st == "refusal" else "parse_error",
                                 "raw": text[:300]})
-            if (st == "refusal" or parsed is None) and tries < (MAX_ATTEMPTS if kind in ("rg", "rg_addon") else 1):
+            if (st == "refusal" or parsed is None) and tries < (MAX_ATTEMPTS if kind in ("rg", "rg_addon", "rg_neutral") else 1):
                 stats["reask"] += 1
                 continue
             rec = {"name_id": n["name_id"], "full_name": n["full_name"], "rep": rep, "kind": kind,
                    "model_requested": caller.model, "model_returned": mret, "status": st if parsed is not None or st == "refusal" else "parse_error",
                    "raw": text[:1000], "parsed": parsed, "attempts": attempt_log, "usage": usage, "cost_usd": billed, "notional_usd": notional,
                    "latency_s": round(time.time() - t0, 2), "settings": caller.settings(),
-                   "prompt_version": PROMPT_VERSION_ADDON if addon else PROMPT_VERSION,
+                   "prompt_version": PROMPT_VERSION_ADDON if addon else PROMPT_VERSION_NEUTRAL if neutral else PROMPT_VERSION,
                    "t": time.strftime("%Y-%m-%dT%H:%M:%S%z")}
             with wlock, open(lp, "a") as f:
                 f.write(json.dumps(rec) + "\n")
@@ -350,7 +401,7 @@ def cmd_run(a):
 # ---------------------------------------------------------------- scoring
 def latest_records(model_key: str, name_set: str = "main") -> dict:
     lp = log_path(model_key, name_set)
-    version = PROMPT_VERSION_ADDON if name_set == "addon" else PROMPT_VERSION
+    version = {"addon": PROMPT_VERSION_ADDON, "neutral": PROMPT_VERSION_NEUTRAL}.get(name_set, PROMPT_VERSION)
     out = {}
     if not lp.exists():
         return out
@@ -365,7 +416,90 @@ def latest_records(model_key: str, name_set: str = "main") -> dict:
     return out
 
 
+def write_addon_exclusions(name_ids: set[str], failed_rows: list[dict], reason: str) -> None:
+    """Rewrite this set's rows of data/name_check_exclusions_addon.csv, keeping
+    rows that belong to other add-on sets."""
+    path = config.DATA / "name_check_exclusions_addon.csv"
+    keep = []
+    if path.exists():
+        keep = [r for r in csv.DictReader(open(path)) if r["profile_id"] not in name_ids]
+    with open(path, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["profile_id", "full_name", "as_intended_total", "reason"])
+        for r in keep:
+            w.writerow([r["profile_id"], r["full_name"], r["as_intended_total"], r["reason"]])
+        for r in failed_rows:
+            w.writerow([r["name_id"], r["full_name"], r["as_intended_total"], reason])
+
+
+def neutral_keep(gender_counts: Counter, n_valid: int) -> bool:
+    """Add-on A rule: kept if neither gender is the answer in half or more of the valid guesses."""
+    if n_valid == 0:
+        return False
+    return max(gender_counts.get("woman", 0), gender_counts.get("man", 0)) < NEUTRAL_MAX_SHARE * n_valid
+
+
+def cmd_score_neutral(a):
+    names = {r["name_id"]: r for r in load_neutral_names()}
+    models = [m for m in (a.models or ["haiku", "luna", "flashlite"]) if log_path(m, "neutral").exists()]
+    recs = {m: latest_records(m, "neutral") for m in models}
+    rows = []
+    for nid, n in names.items():
+        per, gen_c, race_c, dec, inc, edu, refusals = {}, Counter(), Counter(), Counter(), Counter(), Counter(), Counter()
+        valid_all = errors = 0
+        for m in models:
+            got = [recs[m].get((nid, rep, "rg_neutral")) for rep in range(REPS)]
+            gc = Counter()
+            for r in got:
+                if r is None:
+                    continue
+                refusals[m] += sum(1 for x in r.get("attempts", []) if x["status"] == "refusal")
+                if r["status"] != "ok":
+                    errors += int(r["status"] != "refusal")
+                    continue
+                p = r["parsed"]
+                gc[p.get("gender")] += 1
+                race_c[p.get("race")] += 1
+                dec[p.get("birth_decade")] += 1
+            for rep in range(REPS):
+                r = recs[m].get((nid, rep, "ses"))
+                if r and r["status"] == "ok":
+                    inc[r["parsed"].get("income")] += 1
+                    edu[r["parsed"].get("education")] += 1
+            per[m] = f"w{gc['woman']}/m{gc['man']}/n{gc['neutral']}"
+            gen_c += gc
+            valid_all += sum(gc.values())
+        if valid_all == 0:
+            continue
+        top = max(gen_c.get("woman", 0), gen_c.get("man", 0))
+        n_models = sum(1 for m in models if any(recs[m].get((nid, rep, "rg_neutral")) for rep in range(REPS)))
+        share_need = 14 / 15 if n_models >= 3 else 9 / 10
+        rows.append({"name_id": nid, "full_name": n["full_name"], "ssa_female_share": n["ssa_female_share"],
+                     **{f"gender_{m}": per.get(m, "") for m in models},
+                     "woman": gen_c.get("woman", 0), "man": gen_c.get("man", 0), "neutral": gen_c.get("neutral", 0),
+                     "valid": valid_all, "as_intended_total": f"{valid_all - top}/{valid_all} not one gender",
+                     "keep": neutral_keep(gen_c, valid_all),
+                     "meets_main_14of15_for_one_gender": top >= share_need * valid_all - 1e-9,
+                     "race_guesses": dict(race_c), "decade_mode": dec.most_common(1)[0][0] if dec else "",
+                     "income_mode": inc.most_common(1)[0][0] if inc else "",
+                     "education_mode": edu.most_common(1)[0][0] if edu else "",
+                     "refused_attempts_rg": dict(refusals), "errors": errors})
+    out = config.DATA / "name_check_results_neutral.csv"
+    with open(out, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: (json.dumps(v) if isinstance(v, dict) else v) for k, v in r.items()})
+    print(f"{len(rows)} neutral names scored with models {models} -> {out}")
+    for r in rows:
+        print("KEEP" if r["keep"] else "FAIL", r["name_id"], r["full_name"], f"w{r['woman']} m{r['man']} n{r['neutral']}")
+    write_addon_exclusions(set(names), [r for r in rows if not r["keep"]],
+                           "read as one gender in half or more of the name check guesses (add-on A rule)")
+
+
 def cmd_score(a):
+    if a.set == "neutral":
+        return cmd_score_neutral(a)
     addon = a.set == "addon"
     if addon:
         names = {r["name_id"]: {**r, "race": ADDON_INTENDED[r["race"]]} for r in load_addon_names()}
@@ -434,13 +568,8 @@ def cmd_score(a):
             print("FAIL", r["name_id"], r["full_name"], r["as_intended_total"], r["race_guesses"], r["gender_guesses"])
     print("kept:", dict(Counter((r["role"], r["keep"]) for r in rows)))
     if addon:   # the arab and sasian presets read this file
-        with open(config.DATA / "name_check_exclusions_addon.csv", "w", newline="") as f:
-            w = csv.writer(f)
-            w.writerow(["profile_id", "full_name", "as_intended_total", "reason"])
-            for r in rows:
-                if not r["keep"]:
-                    w.writerow([r["name_id"], r["full_name"], r["as_intended_total"],
-                                "failed the name check (14 of 15 rule)"])
+        write_addon_exclusions(set(names), [r for r in rows if not r["keep"]],
+                               "failed the name check (14 of 15 rule)")
 
 
 def main():
@@ -452,11 +581,12 @@ def main():
     p.add_argument("--alternates", action="store_true")
     p.add_argument("--rg-only", action="store_true", help="skip the income/education prompt")
     p.add_argument("--workers", type=int, default=4)
-    p.add_argument("--set", choices=["main", "addon"], default="main", help="addon: PLAN D9 MENA and South Asian names")
+    p.add_argument("--set", choices=["main", "addon", "neutral"], default="main",
+                   help="addon: PLAN D9 MENA and South Asian names; neutral: D9 gender-neutral names")
     p.set_defaults(func=cmd_run)
     p = sub.add_parser("score")
     p.add_argument("--models", nargs="*", help="models that enter the keep rule (default: all with logs)")
-    p.add_argument("--set", choices=["main", "addon"], default="main")
+    p.add_argument("--set", choices=["main", "addon", "neutral"], default="main")
     p.set_defaults(func=cmd_score)
     a = ap.parse_args()
     a.func(a)

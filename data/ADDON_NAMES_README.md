@@ -53,8 +53,18 @@ Rules:
 
 Limits: the last three names lean one way (Dominique and Taylor 71 to 73% female, Jordan 28%), so
 the analysis should report the female share per name beside its result. Tzioumis shares come from
-mortgage applicants and lean White for most first names. These names get no model name check
-(the question is what the agent does with no clear gender cue).
+mortgage applicants and lean White for most first names.
+
+Model name check for A (rule fixed 11/5, before any neutral check call): the check here confirms
+that a name does NOT read as one gender. `src/name_check.py run --set neutral --model
+haiku|luna|flashlite`, then `score --set neutral`. Same three models, 5 guesses each, same
+refusal handling. Prompt version nc3n is the main prompt with a third gender option, "neutral"
+(given to both about equally); race options are the main ones. Keep rule: a name is kept if
+neither "woman" nor "man" is the answer in half or more of its valid guesses (with 15 valid
+guesses, at most 7 for each gender). A name that fails is dropped (no alternates) and listed in
+`data/name_check_exclusions_addon.csv`, which the `neutral` preset reads. Also reported,
+descriptive only: whether the name would meet the main set's 14 of 15 bar for one gender, and the
+race guesses. Results: `data/name_check_results_neutral.csv`.
 
 ## C. Middle Eastern or North African names (preset `arab`)
 

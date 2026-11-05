@@ -186,3 +186,35 @@ def test_name_check_addon_prompt_and_race_parsing():
     assert n("Asian") == "Asian" and n("White") == "White"
     assert nc.log_path("haiku", "addon").name == "name_check_addon_haiku.jsonl"
     assert nc.log_path("haiku").name == "name_check_haiku.jsonl"
+
+
+def test_name_check_neutral_prompt_rule_and_exclusions(tmp_path, monkeypatch):
+    import name_check as nc
+    from collections import Counter as C
+    assert '"neutral"' in nc.PROMPTS["rg_neutral"] and '"neutral"' not in nc.PROMPTS["rg"]
+    assert nc.PROMPTS["rg_neutral"].count('"Asian"') == 1           # main race options
+    assert nc.log_path("luna", "neutral").name == "name_check_neutral_luna.jsonl"
+    g = nc.normalize_neutral_gender
+    assert g("Neutral") == "neutral" and g("both about equally") == "neutral"
+    assert g("female") == "woman" and g("Man") == "man"
+    assert nc.neutral_keep(C(woman=7, man=0, neutral=8), 15)
+    assert not nc.neutral_keep(C(woman=8, neutral=7), 15)
+    assert nc.neutral_keep(C(woman=7, man=7, neutral=1), 15)       # split, no gender at half
+    assert not nc.neutral_keep(C(woman=7, man=7), 14)                # exactly half fails
+    assert not nc.neutral_keep(C(), 0)
+    # each set rewrites only its own exclusion rows
+    monkeypatch.setattr(nc.config, "DATA", tmp_path)
+    (tmp_path / "name_check_exclusions_addon.csv").write_text(
+        "profile_id,full_name,as_intended_total,reason\nMEM02,x,1/15,old\n")
+    nc.write_addon_exclusions({"GN09", "GN10"}, [{"name_id": "GN09", "full_name": "y", "as_intended_total": "0/15"}], "r")
+    rows = list(csv.DictReader(open(tmp_path / "name_check_exclusions_addon.csv")))
+    assert [r["profile_id"] for r in rows] == ["MEM02", "GN09"]
+
+
+def test_neutral_exclusion_drops_name_without_replacement(tmp_path):
+    for f in ("tasks.json", "pages.json", "products.json", "profiles.json", "profiles_addon.json"):
+        shutil.copy(DATA / f, tmp_path / f)
+    (tmp_path / "name_check_exclusions_addon.csv").write_text("profile_id,full_name,as_intended_total,reason\n"
+                                                             "GN09,x,0/15,test\n")
+    ids = Catalog(tmp_path).addon_set("neutral")
+    assert "GN09" not in ids and len(ids) == 9
