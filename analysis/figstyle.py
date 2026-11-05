@@ -8,7 +8,8 @@ hues sit below 3:1 contrast on white, so every colored mark also carries a
 visible text label (row label or direct label).
 
 Every figure built from pilot data gets the PILOT stamp: once in the title
-block and once, intact, inside every panel. Files: PNG (scale 3) and SVG for
+block and once, intact, inside every panel (or one large stamp for figures
+with many small panels and for cards). Files: PNG (scale 3) and SVG for
 the paper, plus an interactive HTML page with exact numbers on hover.
 """
 from __future__ import annotations
@@ -113,7 +114,10 @@ def title_block(title, subtitle, pilot, width=WIDTH):
               "figure code; not a finding</span>")
         lines += 1
     return dict(text=t, x=MARGIN_X / width, xanchor="left", xref="container", y=1, yanchor="top", yref="container",
-                font=dict(size=BASE + 5, color=INK), pad=dict(t=16)), lines
+                font=dict(size=BASE + 5, color=INK), pad=dict(t=TITLE_TOP)), lines
+
+
+TITLE_TOP = 30           # px of clear space above the title's cap height
 
 
 MARGIN_X = 18
@@ -121,7 +125,9 @@ MARGIN_X = 18
 
 def layout(fig, title, subtitle, pilot, height, top=None, bottom=70, left=None, right=30, width=WIDTH, gap=22):
     tb, lines = title_block(title, subtitle, pilot, width)
-    top = top or (16 + 25 * lines + gap)
+    tb["y"] = 1 - TITLE_TOP / height       # kaleido can drop title.pad, so place the title explicitly
+    tb["pad"] = dict(t=0)
+    top = top or (TITLE_TOP + 25 * lines + gap)
     fig.update_layout(title=tb, width=width, height=height,
                       margin=dict(t=top, b=bottom, l=left if left is not None else 20, r=right),
                       showlegend=fig.layout.showlegend if fig.layout.showlegend is not None else False)
@@ -211,6 +217,14 @@ def dots(fig, x, y, lo, hi, color, sym="circle", htext=None, row=None, col=None,
         fig.add_trace(tr)
 
 
+def stamp_once(fig, x=0.5, y=0.5, size=40, angle=14, opacity=0.2):
+    """One large stamp (paper coordinates) for figures with many small panels
+    or for cards, where a stamp per panel would sit on the text."""
+    fig.add_annotation(text=f"<b>{WATERMARK}</b>", xref="paper", yref="paper", x=x, y=y, showarrow=False,
+                       textangle=-angle, opacity=opacity, font=dict(size=size, color=STAMP), xanchor="center",
+                       yanchor="middle")
+
+
 def stamp(fig, skip=()):
     """One intact diagonal PILOT stamp centered in every panel (sized to the
     panel so it is never clipped), behind the data."""
@@ -243,7 +257,8 @@ def stamp(fig, skip=()):
                                                                  color=STAMP))
 
 
-def save(fig, outdir: Path, stem: str, pilot: bool, made: list, watermark: bool = True, skip_stamp=()) -> dict:
+def save(fig, outdir: Path, stem: str, pilot: bool, made: list, watermark: bool = True, skip_stamp=(),
+         single_stamp: dict | None = None) -> dict:
     """PNG (scale 3) and SVG via kaleido, plus self-contained interactive HTML
     (plotly.js from the CDN). Pilot: stamp every panel and suffix _PILOT."""
     outdir.mkdir(parents=True, exist_ok=True)
@@ -256,7 +271,10 @@ def save(fig, outdir: Path, stem: str, pilot: bool, made: list, watermark: bool 
     if fig.layout.title.text and "$" in fig.layout.title.text:
         fig.layout.title.text = fig.layout.title.text.replace("$", "&#36;")
     if pilot and watermark:
-        stamp(fig, skip_stamp)
+        if single_stamp is not None:
+            stamp_once(fig, **single_stamp)
+        else:
+            stamp(fig, skip_stamp)
         stem = stem + "_PILOT"
     png, svg, html = outdir / f"{stem}.png", outdir / f"{stem}.svg", outdir / f"{stem}.html"
     fig.write_image(png, scale=SCALE)
