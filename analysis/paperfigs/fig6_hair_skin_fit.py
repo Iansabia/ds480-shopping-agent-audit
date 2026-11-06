@@ -52,7 +52,7 @@ def make():
     ax.set_xlim(0, 13)
     ax.set_xticks([0, 4, 8, 12])
     ax.set_xticklabels(["$0", "$4k", "$8k", "$12k"])
-    ax.set_xlabel("Spent on wrong product per\n1,000 vague purchases")
+    ax.set_xlabel("Spent on wrong product,\nper 1,000 vague purchases")
     panel(ax, "f")
 
     group_legend(fig, y=0.965)

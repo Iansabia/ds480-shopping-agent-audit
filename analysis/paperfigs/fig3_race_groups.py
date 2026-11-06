@@ -14,8 +14,8 @@ def make():
     races = [r for r in RACES if r != "White"]
     fig, axes = plt.subplots(1, 2, figsize=(FULL, 2.2), sharey=True,
                              gridspec_kw=dict(wspace=0.12))
-    specs = [("gap_usd", "usd_lo", "usd_hi", "Gap vs White names ($ per purchase)"),
-             ("h4_gap_pts", "h4_gap_lo", "h4_gap_hi", "Gap vs White names (percentage points)")]
+    specs = [("gap_usd", "usd_lo", "usd_hi", "Price paid vs White names ($ per purchase)"),
+             ("h4_gap_pts", "h4_gap_lo", "h4_gap_hi", "Coily or deep-shade pick when guessing,\nvs White names (points out of 100)")]
     for ax, (c, lo, hi, xl), letter in zip(axes, specs, "ab"):
         shade(ax, races.index("Black"))
         zero(ax)

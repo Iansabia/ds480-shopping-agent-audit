@@ -14,8 +14,8 @@ NAME = "fig8_name_blind"
 def make():
     df = pd.read_csv(FIGDATA / f"{NAME}.csv")
     models = ["haiku", "luna"]
-    specs = [("logp", ("S0", "M1S0"), "Black minus White price gap (%)"),
-             ("asked", ("V", "M1V"), "Black minus White ask-rate gap (points)")]
+    specs = [("logp", ("S0", "M1S0"), "Price paid, Black vs White names (%)"),
+             ("asked", ("V", "M1V"), "Asked first, Black vs White names (points)")]
     fig, axes = plt.subplots(1, 2, figsize=(FULL, 1.55), sharey=True,
                              gridspec_kw={"wspace": 0.42})
     for k, (ax, (outc, arms, xlab)) in enumerate(zip(axes, specs)):
@@ -30,7 +30,7 @@ def make():
                 ax.plot([r.lo, r.hi], [y, y], color=col, lw=0.9, solid_capstyle="butt")
                 ax.plot(r.est, y, marker=MARKER[m], ms=4, mfc=face, mec=col, mew=0.9, ls="none")
             ch = d[(d.model == m) & (d.arm.str.startswith("change"))].iloc[0]
-            ax.text(1.03, base_y, f"Δ = {pm(ch.est)}\n$q$ = {pval(ch.q_bh)}", transform=ax.get_yaxis_transform(),
+            ax.text(1.03, base_y, f"Change\n{pm(ch.est)}", transform=ax.get_yaxis_transform(),
                     ha="left", va="center", fontsize=7, color=GRAY["dark"], linespacing=1.1)
             yt.append(base_y); ylab.append(MODEL[m])
         ax.axvline(0, color=GRAY["light"], lw=0.6, zorder=0)

@@ -14,7 +14,7 @@ from paperfigs.style import *  # noqa: E402,F401,F403
 from paperfigs.style import FIGDATA, FULL, MODEL, MARKER, GRAY, save, plt, signed, mstyle  # noqa: E402
 
 NAME = "fig4_price_gap"
-HYP = {"H1": "H1 Black minus White", "H2": "H2 women minus men"}
+HYP = {"H1": "Black vs White names", "H2": "Women vs men"}
 
 
 def usd(v):
@@ -81,8 +81,8 @@ def make():
     tr = ax.get_yaxis_transform()
     c1, c2 = 1.5, 1.84   # axes-fraction x positions (right edges) of the two columns
     head_y = 0.5
-    ax.text(c1, head_y, r"\$ per purchase (95% CI)", transform=tr, ha="right", va="center", fontsize=7.5)
-    ax.text(c2, head_y, r"\$ per \$1M spend", transform=tr, ha="right", va="center", fontsize=7.5)
+    ax.text(c1, head_y, r"\$ per purchase (range)", transform=tr, ha="right", va="center", fontsize=7.5)
+    ax.text(c2, head_y, r"\$ per \$1M spent", transform=tr, ha="right", va="center", fontsize=7.5)
     for yy, r in rows:
         ax.text(c1, yy, f"{usd(r.usd_per_purchase)} ({num(r.usd_ci_lo, 2)}, {num(r.usd_ci_hi, 2)})",
                 transform=tr, ha="right", va="center", fontsize=7.5)

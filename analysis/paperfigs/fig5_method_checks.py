@@ -27,7 +27,7 @@ def _planted(ax, d, m):
     ax.plot([0, 1], [mean["S0"], mean["PB"]], color="k", ls=":", lw=1.1, marker=MARKER[m], ms=4,
             zorder=5)
     ax.set_xlim(-0.3, 1.3)
-    ax.set_xticks([0, 1], ["Clear", "Cheapest\npreference"])
+    ax.set_xticks([0, 1], ["Normal", "Wants\ncheapest"])
     ax.set_ylim(0, 70)
     ax.set_yticks(range(0, 71, 20))
     ax.set_title(MODEL[m], fontsize=7.5, pad=3)
@@ -72,10 +72,10 @@ def make():
     axc.set_xlim(-22, 3)
     axc.set_xticks([-20, -15, -10, -5, 0])
     axc.xaxis.set_major_formatter(signed(0))
-    axc.set_xlabel("H1 gap, planted data (%)")
+    axc.set_xlabel("Price gap, Black vs White, with planted runs (%)")
     axc.legend([Line2D([], [], color=GRAY["dark"], marker="o", ms=3.5, lw=0.9),
                 Line2D([], [], marker="|", color=GRAY["mid"], ms=5, mew=1.2, ls="")],
-               ["Estimate, 95% CI", "Expected gap"], loc="lower left", bbox_to_anchor=(0.0, 1.0),
+               ["Measured gap", "Expected gap"], loc="lower left", bbox_to_anchor=(0.0, 1.0),
                fontsize=7, ncol=2, handlelength=1.5, columnspacing=1.2, borderaxespad=0.1)
     axc.spines["left"].set_visible(False)
     axc.tick_params(axis="y", length=0)
@@ -103,6 +103,7 @@ def make():
     # (e): shuffled labels, false positive rate
     e = d[d.panel == "E"]
     hyps = ["H1", "H2", "H3", "H4"]
+    HLAB = {"H1": "Price, race", "H2": "Price, gender", "H3": "Need stated", "H4": "Need guessed"}
     for j, m in enumerate(MODS):
         s = e[e.model == m].set_index("hypothesis")
         ys = [len(hyps) - 1 - k + (0.15 if j == 0 else -0.15) for k in range(len(hyps))]
@@ -110,13 +111,13 @@ def make():
                  ms=4, label=MODEL[m])
     axe.axvline(5, color="k", ls="--", lw=0.6)
     axe.axvline(8.5, color=GRAY["mid"], lw=0.8)
-    axe.text(5, 3.55, "5%", ha="center", va="bottom", fontsize=7)
-    axe.text(8.5, 3.55, "Limit 8.5%", ha="center", va="bottom", fontsize=7, color=GRAY["mid"])
-    axe.set_yticks(range(len(hyps)), hyps[::-1])
+    axe.text(5, 3.55, "Expected", ha="center", va="bottom", fontsize=7)
+    axe.text(8.5, 3.55, "Limit", ha="center", va="bottom", fontsize=7, color=GRAY["mid"])
+    axe.set_yticks(range(len(hyps)), [HLAB[h] for h in hyps[::-1]])
     axe.set_ylim(-0.5, 3.5)
     axe.set_xlim(0, 10)
     axe.set_xticks([0, 2, 4, 6, 8, 10])
-    axe.set_xlabel("Shuffles with p < 0.05 (%)")
+    axe.set_xlabel("False alarms, names shuffled (%)")
     axe.spines["left"].set_visible(False)
     axe.tick_params(axis="y", length=0)
     panel(axe, "c", x=-0.12)

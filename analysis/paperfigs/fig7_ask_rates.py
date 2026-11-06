@@ -48,7 +48,7 @@ def make():
                     ax.text(xmax / 2, yc[m], "not run", ha="center", va="center", fontsize=7,
                             color=GRAY["mid"], style="italic")
                 for kind, qq in q.get((m, a, y), []):
-                    ax.text(xmax * 0.6, yc[m], f"{kind} $q$ = {qq:.2f}".replace("0.", "."),
+                    ax.text(xmax * 0.6, yc[m], f"{kind} gap",
                             ha="left", va="center", fontsize=7, color=GRAY["dark"])
             if i == 0:
                 ax.set_title(title, fontsize=7.5, pad=3, va="bottom", linespacing=1.0)

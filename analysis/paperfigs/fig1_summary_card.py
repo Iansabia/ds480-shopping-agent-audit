@@ -16,8 +16,8 @@ from paperfigs.style import *  # noqa: E402,F401,F403
 from paperfigs.style import FIGDATA, RESULTS, FULL, MODEL, MARKER, GRAY, panel, save, plt, signed, mstyle  # noqa: E402
 
 NAME = "fig1_summary_card"
-HYP = {"H1": "H1 race, price", "H2": "H2 gender, price",
-       "H3": "H3 race, stated need", "H4": "H4 race, guessed need"}
+HYP = {"H1": "Price, Black vs White", "H2": "Price, women vs men",
+       "H3": "Need stated, Black vs White", "H4": "Need guessed, Black vs White"}
 MODELS = ["haiku", "luna"]
 
 
@@ -80,7 +80,7 @@ def make():
     fig, (a, b) = plt.subplots(1, 2, figsize=(FULL, 1.9))
     fig.subplots_adjust(left=0.2, right=0.99, wspace=0.62, bottom=0.24, top=0.9)
     draw(a, d[d.h.isin(["H1", "H2"])], "Gap in price paid (%)", 5.6, [-4, -2, 0, 2, 4])
-    draw(b, d[d.h.isin(["H3", "H4"])], "Gap in identity-linked pick (points)", 12.5, [-10, -5, 0, 5, 10])
+    draw(b, d[d.h.isin(["H3", "H4"])], "Gap in coily or deep-shade pick (points)", 12.5, [-10, -5, 0, 5, 10])
     panel(a, "a", x=-0.2)
     panel(b, "b", x=-0.2)
     return save(fig, NAME)
