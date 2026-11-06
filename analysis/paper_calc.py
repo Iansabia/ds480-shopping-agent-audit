@@ -38,6 +38,19 @@ MODEL_ORDER = ["haiku", "luna", "flashlite", "olmo"]
 MODEL_LABEL = {"haiku": "Claude Haiku 5.5", "luna": "GPT-6 Luna", "flashlite": "Gemini 3.5 Flash-Lite",
                "olmo": "OLMo 3 7B", "synth_a": "Synthetic A", "synth_b": "Synthetic B"}
 CORE_GROUPS = ["Black woman", "Black man", "White woman", "White man", "No name"]
+# D14: OLMo's run finished after the main results were seen, so it never joins the frozen
+# results/ files (checks, confirmatory, exploratory). Its runs are left out of the input-hash
+# match below and get their own exploratory block (analysis/olmo_analysis.py).
+LATE_MODELS = ("olmo",)
+
+
+def is_late_run(csv_path: Path) -> bool:
+    """A run of a model that arrived after the frozen analysis (D14)."""
+    man = run_manifest(Path(csv_path))
+    key = man.get("model_key")
+    if key is None:          # no manifest: fall back to the file name (reduced_olmo.outcomes.csv)
+        key = Path(csv_path).name.split(".")[0].rsplit("_", 1)[-1]
+    return key in LATE_MODELS
 REF_GROUP = {"H1": ("is_black", 0.0, "names associated with White buyers"),
              "H2": ("is_woman", 0.0, "names associated with men")}
 
@@ -130,7 +143,8 @@ def analysis_bundle(paths, df, mde_info, pilot, confirm_models, results_dir: Pat
     """Main data: read results/{checks,confirmatory,exploratory}.json written
     by analyze.py for these exact input files (refuses otherwise). Pilot: rebuild
     them in memory with the same functions, never writing to results/."""
-    hashes = A.file_hashes([str(p) for p in paths])
+    late = [p for p in paths if is_late_run(p)]
+    hashes = A.file_hashes([str(p) for p in paths if p not in late])
     if not pilot:
         got = {}
         for name in ("checks", "confirmatory", "exploratory"):
@@ -141,7 +155,7 @@ def analysis_bundle(paths, df, mde_info, pilot, confirm_models, results_dir: Pat
             if name != "exploratory" and j.get("inputs") != hashes:
                 raise SystemExit(f"{f} was made from different input files; rerun analyze.py all")
             got[name] = j
-        return {"source": "results/ (analyze.py)", **got}
+        return {"source": "results/ (analyze.py)", "late_runs": [Path(p).name for p in late], **got}
     checks = run_checks(df, mde_info, shuffles)          # PLAN 8: checks before any group result
     conf = preview_confirm(df, mde_info, checks, confirm_models, n_perm)
     models = [m for m in model_sort(df["model"].unique()) if df[df["model"] == m]["arm"].isin(["S0", "S1", "V"]).any()]

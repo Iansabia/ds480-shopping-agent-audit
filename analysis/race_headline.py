@@ -201,14 +201,33 @@ def omnibus_text(om: dict, label=S.label, part: str | None = None) -> str:
 # ----------------------------------------------------------------------------- Figure 3
 
 def _p(p):
-    return "< .001" if p < 0.001 else f"{p:.3f}".lstrip("0")
+    return "<.001" if p < 0.001 else f"{p:.3f}".lstrip("0")
 
 
-def _side(t: pd.DataFrame, m: str) -> str:
-    """'below' or 'above' when every other group's price estimate for model m sits on that side of White names,
-    else ''. Only the sign of the estimates, never a finding about any one group."""
-    g = t[(t.model == m) & (t.race != "White")].dropna(subset=["gap_pct"])
-    return "below" if len(g) and (g["gap_pct"] < 0).all() else "above" if len(g) and (g["gap_pct"] > 0).all() else ""
+def _peq(p):
+    """'p = .217' or 'p < .001' (one p format across the figures)."""
+    return "p < .001" if p < 0.001 else f"p = {_p(p)}"
+
+
+def usd_gap(x):
+    """A dollar gap per purchase, to a tenth of a cent under 10 cents (-$0.025, not -$0.02), as in Table 1."""
+    if x is None or x != x:
+        return "n/a"
+    if abs(x) >= 0.1:
+        return S.fmt_usd(x)
+    s = "+" if x > 0 else ("-" if x < 0 else "")
+    return f"{s}${abs(x):,.3f}"
+
+
+def _led(om: dict, m: str) -> str:
+    """What carries a model's six-group price result, from the sensitivity test without names associated with
+    Black buyers (D13). Empty when that test did not run."""
+    w = (om.get(m) or {}).get("without_black") or {}
+    if w.get("p_perm") is None:
+        return ""
+    if w["p_perm"] >= 0.05:
+        return f"led by the Black vs White gap (without names associated with Black buyers: {_peq(w['p_perm'])})"
+    return f"also without names associated with Black buyers ({_peq(w['p_perm'])})"
 
 
 def _split(om: dict) -> tuple[list[str], list[str]]:
@@ -218,20 +237,19 @@ def _split(om: dict) -> tuple[list[str], list[str]]:
 
 
 def headline_title(t: pd.DataFrame, om: dict) -> str:
-    """Takeaway title from the omnibus results (and, for a model with a price difference, the side every group's
-    estimate falls on, as estimates). Never claims a gap the omnibus does not support, and never states a null as
-    an absence."""
+    """Takeaway title from the omnibus results. For a model whose six-group test is significant, it adds which gap
+    leads it (the Black vs White gap, with the without-Black sensitivity p). Never claims a gap the omnibus does not
+    support, and never states a null as an absence."""
     yes, no = _split(om)
     if not yes and not no:
         return "Price paid and identity-linked picks for six name groups, same request"
-    nulls = " or ".join(f"{SHORT[m]} (p = {_p(om[m]['p_perm'])})" for m in no)
+    nulls = " or ".join(f"{SHORT[m]} ({_peq(om[m]['p_perm'])})" for m in no)
     if not yes:
         return "Exploratory six-group test: no evidence of a price difference across the name groups on " + nulls
     bits = []
     for m in yes:
-        side = _side(t, m)
-        bits.append(f"{SHORT[m]} (p = {_p(om[m]['p_perm'])}"
-                    + (f"; every group's estimate is {side} White names" if side else "") + ")")
+        led = _led(om, m)
+        bits.append(f"{SHORT[m]} ({_peq(om[m]['p_perm'])})" + (f", {led}" if led else ""))
     title = "Exploratory six-group test: price differs across the name groups on " + " and ".join(bits)
     if no:
         title += ", with no evidence of a difference on " + nulls
@@ -239,21 +257,21 @@ def headline_title(t: pd.DataFrame, om: dict) -> str:
 
 
 def six_group_sentence(t: pd.DataFrame, om: dict) -> str:
-    """Lead sentence for the paper (numbers.json result.six_group_sentence): the omnibus result per model, then
-    the side every exploratory estimate falls on (as estimates) when a model's price differs. Exploratory, D12."""
+    """Lead sentence for the paper (numbers.json result.six_group_sentence): the omnibus result per model and, when
+    a model's test is significant, the led-by-Black-vs-White clause with the without-Black sensitivity p.
+    Exploratory, D12."""
     yes, no = _split(om)
     if not yes and not no:
         return "Six name groups: not run."
     head = "Across six name groups (Figure 3, exploratory), "
     if not yes:
         return (head + "there was no evidence of a price difference for "
-                + " or ".join(f"{S.label(m)} (p = {_p(om[m]['p_perm'])})" for m in no) + ".")
+                + " or ".join(f"{S.label(m)} ({_peq(om[m]['p_perm'])})" for m in no) + ".")
     bits = []
     for m in yes:
-        side = _side(t, m)
-        bits.append(f"{S.label(m)}'s prices differed (p = {_p(om[m]['p_perm'])})"
-                    + (f", with every group's estimate {side} White names" if side else ""))
-    bits += [f"for {S.label(m)} there was no evidence of a difference (p = {_p(om[m]['p_perm'])})" for m in no]
+        led = _led(om, m)
+        bits.append(f"{S.label(m)}'s prices differed ({_peq(om[m]['p_perm'])})" + (f", {led}" if led else ""))
+    bits += [f"for {S.label(m)} there was no evidence of a difference ({_peq(om[m]['p_perm'])})" for m in no]
     return head + "; ".join(bits) + "."
 
 
@@ -305,7 +323,7 @@ def figure(t: pd.DataFrame, om: dict):
             if pd.notna(r.get("gap_usd")) and r["race"] != "White":
                 lo, hi = r.get("usd_lo"), r.get("usd_hi")
                 ht = (f"{S.label(m)}<br>{NAMES_OF[r['race']]} names minus White names: "
-                      f"{S.fmt_usd(r['gap_usd'])} per purchase ({r['gap_pct']:+.2f}%"
+                      f"{usd_gap(r['gap_usd'])} per purchase ({r['gap_pct']:+.2f}%"
                       + (f", 95% CI {r['gap_lo']:+.2f} to {r['gap_hi']:+.2f}%" if pd.notna(lo) else "")
                       + f")<br>at the White names' average of ${r['ref_usd_white']:,.2f}"
                       + (f"<br>{r['price_source']}, {r['price_adj']}" if r["race"] != "White" else ""))
@@ -441,7 +459,7 @@ def write_table(t: pd.DataFrame, om: dict, tabdir: Path = TAB):
                 pg = f"reference (${r['ref_usd_white']:,.2f})"
             elif pd.notna(r.get("gap_pct")):
                 pg = (f"{r['gap_pct']:+.2f}% [{r['gap_lo']:+.2f}, {r['gap_hi']:+.2f}], "
-                      f"{S.fmt_usd(r['gap_usd'])} per purchase")
+                      f"{usd_gap(r['gap_usd'])} per purchase")
             else:
                 pg = "not run"
             h4 = (f"{r['h4_rate']:.1f}% [{r['h4_lo']:.1f}, {r['h4_hi']:.1f}] ({int(r['h4_k'])}/{int(r['h4_n'])})"
@@ -452,15 +470,15 @@ def write_table(t: pd.DataFrame, om: dict, tabdir: Path = TAB):
                          f"{r.get('price_adj', '') if isinstance(r.get('price_adj'), str) else ''} | {hg} | {h4} |")
         o = om.get(m)
         if o and "F" in o:
-            lines += ["", f"Omnibus (exploratory): F({o['df1']}, {o['df2']}) = {o['F']:.2f}, permutation p = "
-                      f"{o['p_perm']:.4f} ({o['perm_hits']:,} of {o['n_perm']:,} shuffles at least as large), "
-                      f"classical F p = {o['p_F']:.4f}; {o['n_names']} names."]
+            lines += ["", f"Omnibus (exploratory): F({o['df1']}, {o['df2']}) = {o['F']:.2f}, permutation "
+                      f"{_peq(o['p_perm'])} ({o['perm_hits']:,} of {o['n_perm']:,} shuffles at least as large), "
+                      f"classical F {_peq(o['p_F'])}; {o['n_names']} names."]
             w = o.get("without_black")
             if w and "F" in w:
                 lines += ["", f"Sensitivity, same test with names associated with Black buyers left out: "
-                          f"F({w['df1']}, {w['df2']}) = {w['F']:.2f}, permutation p = {w['p_perm']:.4f} "
-                          f"({w['perm_hits']:,} of {w['n_perm']:,} shuffles at least as large), classical F p = "
-                          f"{w['p_F']:.4f}; {w['n_names']} names."]
+                          f"F({w['df1']}, {w['df2']}) = {w['F']:.2f}, permutation {_peq(w['p_perm'])} "
+                          f"({w['perm_hits']:,} of {w['n_perm']:,} shuffles at least as large), classical F "
+                          f"{_peq(w['p_F'])}; {w['n_names']} names."]
         elif o:
             lines += ["", f"Omnibus: {o['note']}."]
         lines.append("")

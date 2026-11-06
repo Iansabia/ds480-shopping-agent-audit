@@ -755,11 +755,12 @@ def _panel_title(fig, i, text, col=1):
 
 
 # Figure A7: two gap panels on top (the tested outcomes), two share panels below
-A7_PANELS = [((1, 1), "price", "Price paid, clear request (S0):<br>gap vs White names"),
-             ((1, 2), "h3", "Identity-linked pick, need stated (S0):<br>gap vs White names"),
+A7_PANELS = [((1, 1), "price", "Price paid, clear request (S0): gap vs<br>names associated with White buyers"),
+             ((1, 2), "h3", "Identity-linked pick, need stated (S0): gap<br>vs names associated with White buyers"),
              ((2, 1), "h4", "Identity-linked pick when the<br>agent guessed (V)"),
              ((2, 2), "ask", "Agent asked a question<br>(V, vague request)")]
-A7_GAP_AXIS = {"price": ("%", "Price gap (percent)"), "h3": ("", "Gap (percentage points)")}
+A7_GAP_AXIS = {"price": ("%", "Price gap, percent (below 0 = paid less)"),
+               "h3": ("", "Gap, points (above 0 = picked more often)")}
 A7_RATE_AXIS = {"h4": "Share of guessed purchases", "ask": "Share of runs"}
 A7_WORD = {"price": "price", "h3": "identity-linked pick with the need stated",
            "h4": "identity-linked pick when guessing", "ask": "ask rate"}

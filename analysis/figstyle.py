@@ -6,11 +6,14 @@ axis lines, a left-aligned title that states the takeaway, a gray subtitle
 with the method and n, direct labels instead of legends, thin dark error
 bars and one highlighted series against muted gray where that fits.
 
-Color means name group, the same hex in every figure. The core ramp
-(STYLE_REF section 4) splits names associated with Black and White buyers by
-hue (blue vs orange) and spaces the five groups about 16 L* apart, so they
-stay apart in grayscale print and for color-blind readers. Model is shown by
-panel or by marker shape, never by color. Text is always in ink colors.
+Color means name group in the figures that use color, the same hex in each
+of them (Ian approved these colors). Figures 3, A6 and A7 use ink markers
+only, with name groups shown by position and label (PLAN D13), so color is
+never the only cue for a group. The core ramp (STYLE_REF section 4) splits
+names associated with Black and White buyers by hue (blue vs orange) and
+spaces the five groups about 16 L* apart, so they stay apart in grayscale
+print and for color-blind readers. Model is shown by panel or by marker
+shape, never by color. Text is always in ink colors.
 
 Engines (--engine in make_figures.py):
   plotly      PNG (scale 3), SVG and an interactive HTML page (default)

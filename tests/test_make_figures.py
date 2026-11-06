@@ -71,7 +71,8 @@ def test_formatting():
     assert "-0.0" not in MF.f_range(-1e-15, 1e-15, "pts")
     assert MF.f_usd(-0.3449) == "-$0.34"
     assert MF.f_usd(335.2, 0) == "+$335"
-    assert MF.f_p(0.0004) == "< 0.001"
+    assert MF.f_p(0.0004) == "<.001" and MF.f_p(0.3791) == ".379" and MF.f_p(1.0) == "1.000"
+    assert MF.f_peq(0.0004) == "p < .001" and MF.f_peq(0.003) == "p = .003"
     assert MF.f_usd(float("nan")) == "n/a"
 
 
@@ -171,7 +172,7 @@ def test_pilot_build_is_watermarked(world, monkeypatch):
     for h in (tmp / "pilot_fig").glob("*.html"):
         body = h.read_text()
         assert not re.search(r"PLAN \d|analyze\.py|Deviation D\d|sn_p80|mde\.json", body), h.name
-        assert not re.search(r"\bp 0\.\d|Holm p:", body), h.name
+        assert not re.search(r"\bp 0\.\d|\bp = \.\d|\bp < \.0|Holm p:|Holm p [=<]", body), h.name
 
 
 def test_main_build_matches_frozen_outputs(world, monkeypatch):
@@ -235,7 +236,8 @@ def test_main_build_matches_frozen_outputs(world, monkeypatch):
     draft = (ROOT / "paper" / "DRAFT.md").read_text()
     keys = set(re.findall(r"\{\{([^}]*)\}\}", draft))
     ignore = {"placeholder", "model", "group", "gap_usd", "gap_per1000_usd"}
-    missing = [k for k in keys if k not in n and not k.startswith("genai.") and k not in ignore]
+    missing = [k for k in keys if k not in n and not k.startswith("genai.") and k not in ignore
+               and "*" not in k]        # "{{olmo.*}}" in an editor's note names a key family, not a key
     assert not missing, missing
 
 

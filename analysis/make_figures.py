@@ -43,9 +43,10 @@ Display rules (visual QA, 11/4): rates get a percentile bootstrap interval
 over names (always inside 0 to 100%); a cell with no spread gets no bar and
 prints its count ("0 of 12") or "not estimable" instead; every panel states
 its n; models with no scored runs get a "pending" row. Color = name group in
-every figure (the PLAN 10 per-model colors are used only by analyze.py's
-frozen figures); marker shape = model; an open marker means only "exploratory
-model, estimate only". Figure text is plain English: no PLAN section numbers,
+the figures that use color (one hex per group everywhere); Figures 3, A6 and
+A7 use ink markers only, with groups shown by position and label (D13). The
+PLAN 10 per-model colors are used only by analyze.py's frozen figures. Marker
+shape = model; an open marker means only "exploratory model, estimate only". Figure text is plain English: no PLAN section numbers,
 file names or deviation codes (those stay in the captions file and the code).
 
 Pilot vs main is decided from the run manifests: any run whose preset is not
@@ -77,6 +78,7 @@ import paper_calc as P  # noqa: E402
 import figstyle as S  # noqa: E402
 from fig_a5_random_split import figA5_random_split  # noqa: E402
 import race_headline as RH  # noqa: E402
+import olmo_analysis as OL  # noqa: E402
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
@@ -86,7 +88,7 @@ ARM_PLAIN = {"S0": "Clear request", "S1": "Clear request + budget", "V": "Vague 
 PREVIEW = "PILOT PREVIEW, NOT A RESULT"
 SIGN_NOTE = "Every gap is focal group minus comparison group: a negative gap means the focal group paid less."
 PILOT_DROP = ("verdict", "p_primary", "p_holm", "tost_p_holm", "p_adj", "q_bh")
-COLOR_NOTE = "Color = name group, the same in every figure."
+COLOR_NOTE = "Color = name group, the same colors in every figure that uses color."
 HOLM_M = 8          # results/mde.json family_size: the planned Haiku + Luna family (PLAN 3)
 PILOT_N = "pilot: 5 names per group, 16 runs per name; main run: 10 names per group, 160 runs per name"
 BOOT_SEED, BOOT_B = 480, 4000
@@ -135,9 +137,16 @@ def f_gap_usd(x):
 
 
 def f_p(p):
+    """One p format in every figure and table: '.379', '<.001' (as in Figure 3)."""
     if p is None or not np.isfinite(p):
         return "n/a"
-    return "< 0.001" if p < 0.001 else f"{p:.3f}"
+    return "<.001" if p < 0.001 else f"{p:.3f}".lstrip("0")
+
+
+def f_peq(p):
+    """'p = .379' or 'p < .001' for a table cell or a sentence."""
+    v = f_p(p)
+    return "p n/a" if v == "n/a" else ("p < .001" if v.startswith("<") else f"p = {v}")
 
 
 def f_range(lo, hi, kind):
@@ -242,6 +251,8 @@ def verdict_lines(v, width):
     return S.wrap(v, width).split("<br>")
 
 
+# Figure 4 row labels: groups are named as names, never as people
+FIG4_ROW = {"H1": "Names associated with<br>Black vs White buyers", "H2": "Names associated with<br>women vs men"}
 SHORT = {"H1": ("Black vs White names", "names associated with Black buyers", "names associated with White buyers"),
          "H2": ("women vs men", "names associated with women", "names associated with men"),
          "H3": ("stated need overridden", "", ""), "H4": ("need guessed from the name", "", "")}
@@ -352,7 +363,10 @@ def pct_ticks(lim):
     return v, [("0%" if abs(x) < 1e-12 else f"{x:+g}%") for x in v]
 
 
-def offsets(n, step=0.22):
+def offsets(n, step=0.22, span=None):
+    """Row offsets for n items in one row. span caps the total width (plot_group_rows passes 0.72, so a fourth
+    model (OLMo) does not run into the next group's row; three or fewer models keep the given step)."""
+    step = min(step, span / (n - 1)) if span and n > 1 else step
     return [(j - (n - 1) / 2) * step for j in range(n)]
 
 
@@ -402,7 +416,7 @@ def plot_group_rows(fig, t, models, groups, est, lo, hi, row, col, scale=1.0, un
     joined to its dot by a thin dotted line; ghost_key=(tick word, dot word)
     labels both on the first row. text_fmt: the dot's value, printed in an
     aligned column just right of the panel (never at an interval end)."""
-    offs = offsets(len(models), 0.32) if len(models) > 1 else [0.0]
+    offs = offsets(len(models), 0.32, span=0.72) if len(models) > 1 else [0.0]
     xr, yr = S._refs(fig, row, col)
     for j, m in enumerate(models):
         sub = t[t["model"] == m]
@@ -837,7 +851,7 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
                + ("" if out.pilot else
                   f"<br>per purchase: {f_gap_usd(r['usd_per_purchase'])} ({f_range(*r['usd_ci'], 'usd')})"
                   f"<br>per 1,000 purchases: {f_usd(r['usd_per_1000'], 0)}<br>per $1M of agent spend: "
-                  f"{f_usd(r['usd_per_1m'], 0)}<br>Holm p: {f_p(r['p_holm'])}; verdict: {verdict_plain(r['verdict'])}")
+                  f"{f_usd(r['usd_per_1m'], 0)}<br>Holm {f_peq(r['p_holm'])}; verdict: {verdict_plain(r['verdict'])}")
                + f"<br>names: {int(r['names_focal'])} focal, {int(r['names_ref'])} comparison"
                + (f"<br>detectable gap: ±{mde:.2f}% (Holm, m = {HOLM_M})" if mde else ""))
         S.dots(fig, [r["gap_pct"]], [ys[i]], [lo], [hi], S.INK, S.symbol(m), htext=[hov], size=12)
@@ -887,7 +901,7 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
     note = (f"<b>●</b> dot = pilot estimate    <b>—</b> bar = unadjusted 95% interval    "
             f"<span style='color:{S.ACCENT}'><b>|</b></span> blue ticks = detectable gap"
             if out.pilot else
-            "<b>H1, Black vs White names.</b> "
+            "<b>H1, names associated with Black vs White buyers:</b><br>"
             + "<br>".join(h1_note(q) for _, q in pr[pr.hypothesis == "H1"].iterrows()))
     # ticks on 0 and on each dotted margin line (no gridlines, which would hide the dotted lines)
     tv = sorted([0.0] + mlines) if mlines else pct_ticks(lim)[0]
@@ -895,7 +909,7 @@ def fig_price_gap(out: Out, pr: pd.DataFrame, mde_info, conf, family_m, pending=
                      "(focal minus comparison)", zeroline=False, showgrid=not mlines, tickmode="array", tickvals=tv,
                      ticktext=[("0%" if abs(x) < 1e-12 else f"{x:+.1f}%" if mlines else f"{x:+g}%") for x in tv])
     fig.update_yaxes(tickmode="array", tickvals=ys,
-                     ticktext=[f"<b>{h}</b> {SHORT[h][0]}<br><span style='color:{S.MUTED}'>{S.label(m)}</span>"
+                     ticktext=[f"<b>{h}</b> {FIG4_ROW[h]}<br><span style='color:{S.MUTED}'>{S.label(m)}</span>"
                                for h, m in rows_all], range=[ybot, -1.0])
     if out.pilot:
         title = "Price gap by name group, next to the smallest gap the test can detect"
@@ -1053,7 +1067,7 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
             word = ("caught" if ok else "not caught")
             # pilot: no p-value and no pass or fail word, even for a method check (too few runs to judge)
             shift_txt = (f"average shift {sh:+.1f}%: too few runs to judge" if out.pilot else
-                         f"average shift {sh:+.1f}%, p {f_p(pl['own_shift_p'])}: <b>{word}</b>")
+                         f"average shift {sh:+.1f}%, {f_peq(pl['own_shift_p'])}: <b>{word}</b>")
             ytop = max(45, d["pct_over_cheapest"].max() * 1.25)
             ytv = [v for v in range(0, int(ytop) + 1, 10)]
             fig.update_yaxes(title_text="% paid above cheapest fitting", showgrid=True, gridcolor=S.GRID,
@@ -1130,7 +1144,7 @@ def fig_checks(out: Out, df, models, conf, bundle, shuffles):
                 ap = ch["arm_p"][mm]
                 results.append(("arm P " + S.label(mm), ap.get("pass", False)))
                 S.dots(fig, [ap["pct"]], [j], [None], [None], S.INK, S.symbol(mm), size=14,
-                       htext=[pre + f"<b>{S.label(mm)}</b><br>average: {ap['pct']:+.1f}%, p {f_p(ap['p'])}, "
+                       htext=[pre + f"<b>{S.label(mm)}</b><br>average: {ap['pct']:+.1f}%, {f_peq(ap['p'])}, "
                               f"{ap['names']} names"], row=row, col=col,
                        text=[f"  {ap['pct']:+.0f}% ({'PASS' if ap.get('pass') else 'FAIL'})"])
                 rowsc += [{"model": mm, "panel": L, "profile_id": pid, "pq_minus_pc_pct": v} for pid, v in diff.items()]
@@ -1272,8 +1286,9 @@ SHORTM = {"haiku": "Haiku", "luna": "Luna", "flashlite": "Gemini", "olmo": "OLMo
 
 
 def n_compact(df, models, arms, tasks="all", extra=None, y=None, split=None, split_col="need_identity_linked",
-              sep=", "):
-    """'n: Haiku 5x3-9, Gemini 4-5x1-2' (names per group x runs per name) for a panel subtitle."""
+              sep=", ", wrap=None):
+    """'n: Haiku 5x3-9, Gemini 4-5x1-2' (names per group x runs per name) for a panel subtitle.
+    wrap=k starts a new line after every k models (four models do not fit one panel width)."""
     parts = []
     for m in models:
         d = A.subset(df, m, arms, tiers=("core",), tasks=tasks, extra=extra)
@@ -1289,7 +1304,11 @@ def n_compact(df, models, arms, tasks="all", extra=None, y=None, split=None, spl
         r = d.groupby("profile_id").size()
         rng = lambda s_: f"{s_.min()}" if s_.min() == s_.max() else f"{s_.min()}-{s_.max()}"  # noqa: E731
         parts.append(f"{SHORTM.get(m, m)} {rng(g)}x{rng(r)}")
-    return "n: " + sep.join(parts) if parts else "n: no runs"
+    if not parts:
+        return "n: no runs"
+    if wrap and len(parts) > wrap:
+        return "n: " + (sep.rstrip() + "<br>").join(sep.join(parts[i:i + wrap]) for i in range(0, len(parts), wrap))
+    return "n: " + sep.join(parts)
 
 
 def nice_upper(v, choices=(10, 20, 25, 50, 100)):
@@ -1323,19 +1342,21 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
             pf.append(dict(r, need=need, est=r["est"] * k, lo=r["lo"] * k if finite(r["lo"]) else float("nan"),
                            hi=r["hi"] * k if finite(r["hi"]) else float("nan")))
     vid = dict(tasks="identity", extra=assumed)
+    nw = dict(wrap=2) if len(ms) > 3 else {}
     panels = [("A. Asked the buyer first", "vague request, all tasks", pa, "asked",
-               n_compact(df, ms, ["V"], y="asked")),
+               n_compact(df, ms, ["V"], y="asked", **nw)),
               ("B. Wrong product: buyer needed", "coily hair or deep shade (vague)", pb, "opposite_need_pick",
-               n_compact(df, ms, ["V"], y="opposite_need_pick", split=True, **vid)),
+               n_compact(df, ms, ["V"], y="opposite_need_pick", split=True, **vid, **nw)),
               ("C. Wrong product: buyer needed", "fine hair or light shade (vague)", pc, "opposite_need_pick",
-               n_compact(df, ms, ["V"], y="opposite_need_pick", split=False, **vid)),
+               n_compact(df, ms, ["V"], y="opposite_need_pick", split=False, **vid, **nw)),
               ("D. Ignored the stated need:", "stated coily or deep shade (clear)", pd_, "opposite_need_pick",
                n_compact(df, ms, ["S0", "S1"], "identity", y="opposite_need_pick", split=True,
-                         split_col="stated_identity_linked")),
+                         split_col="stated_identity_linked", **nw)),
               ("E. Ignored the stated need:", "stated fine or light shade (clear)", pe, "opposite_need_pick",
                n_compact(df, ms, ["S0", "S1"], "identity", y="opposite_need_pick", split=False,
-                         split_col="stated_identity_linked"))]
-    fig = make_subplots(rows=2, cols=3, shared_yaxes=True, horizontal_spacing=0.08, vertical_spacing=0.17)
+                         split_col="stated_identity_linked", **nw))]
+    fig = make_subplots(rows=2, cols=3, shared_yaxes=True, horizontal_spacing=0.08,
+                        vertical_spacing=0.2 if nw else 0.17)
     tabs = []
     # one scale per row: the top row (A to C) runs 0 to 100%; D and E share one trimmed scale (stated-need
     # picks sit near 0%), and F is in dollars
@@ -1420,7 +1441,7 @@ def fig_fit(out: Out, df, models, conf, bundle, mde_info):
                 r = conf_row(bundle, m, h)
                 if r:
                     notes.append(f"{S.label(m)} {h} ({SHORT[h][0]}, Black minus White names): {f_pts(r['gap_points'])} "
-                                 f"(95% CI {f_range(*r['ci_points'], 'pts')}), Holm p {f_p(r['p_holm'])}; "
+                                 f"(95% CI {f_range(*r['ci_points'], 'pts')}), Holm {f_peq(r['p_holm'])}; "
                                  f"{verdict_plain(r['verdict'])}")
     h4m = mde_value(mde_info, conf, ("H4",), "mde_holm_points")
     foot = ("B and C are split by the buyer's actual need and never pooled: a guess from a name hurts the "
@@ -1639,7 +1660,7 @@ CARD_MIN = 229      # px: height of the top cards in the pilot preview layout (t
 ACT_H = 155         # px: height of the actions card
 
 
-def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models, statuses=()):
+def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models, statuses=(), df=None):
     """Figure 1, the summary card. Positions are in px (y counts up from the bottom of the plot area), so each
     text block sits under the one above it by its real line height and the top cards grow to fit their text."""
     fig = go.Figure()
@@ -1678,8 +1699,16 @@ def fig_summary(out: Out, pr, bundle, mde_info, conf, design, scale, models, sta
         expl = [m for m in models if m not in conf]
         pre = {s.get("model_key"): s.get("preset") for s in statuses if s.get("preset") in ("main", "reduced", "olmo")}
         mg = bundle["checks"].get("main_grid", {})
-        ex = [f"{S.label(m)} ({mg.get(m, {}).get('main_episodes_finished', 0):,} runs"
-              + (", reduced grid)" if pre.get(m) in REDUCED_PRESETS else ")") for m in expl]
+        exp_n = {s.get("model_key"): s.get("episodes_expected") for s in statuses}
+
+        def n_runs(m):   # a late model (OLMo, D14) is not in the frozen checks: count from its scored rows
+            if m in mg:
+                return f"{mg[m].get('main_episodes_finished', 0):,} runs"
+            fin = int(df[(df["model"] == m)]["finished"].sum()) if df is not None else 0
+            e = exp_n.get(m)
+            return f"{fin:,} runs" if not e or fin >= e else f"{fin:,} of {e:,} runs so far"
+        ex = [f"{S.label(m)} ({n_runs(m)}" + (", reduced grid)" if pre.get(m) in REDUCED_PRESETS else ")")
+              for m in expl]
         pend = [S.label(m) for m in P.MODEL_ORDER if m not in models]
         n_main = design.get("n_main_profiles", 68) - design.get("n_baseline", 4)
         n6 = max([o.get("n_names", 0) for o in RH.load_omnibus().values() if isinstance(o, dict)] or [0])
@@ -2001,44 +2030,96 @@ def figA2_baseline(out: Out, df, models, mde_info, conf):
 
 
 def figA3_training(out: Out, df):
-    nf = A.DATA / "name_freq.csv"
-    if not nf.exists() or not (df["model"] == "olmo").any():
-        return out.skip("figA3", "needs data/name_freq.csv (infini-gram counts) and OLMo outcomes")
-    names = A.load_names()
-    nm = A.name_means(A.subset(df, "olmo", ["S0"]), "logp").merge(names[["profile_id", "log_name_freq"]],
-                                                                  on="profile_id", suffixes=("", "_c"))
-    if len(nm) < 6:
-        return out.skip("figA3", "too few OLMo names")
-    nm["gap_pct"] = 100 * (np.exp(nm["mean"] - nm["mean"].mean()) - 1)
-    nm["grp"] = nm["race"].fillna("") + " " + nm["gender"].fillna("")
-    rho, p = stats.spearmanr(nm["log_name_freq"], nm["gap_pct"])
+    """OLMo only: log count of each core first name in OLMo 3 pretraining data (shared base, via Ai2's 32B
+    Instruct infini-gram index, data/olmo_name_counts.csv) vs that name's S0 price relative to the average name.
+    Spearman rho over the core names, plus two sensitivities (D14). Exploratory; traced, correlation only."""
+    link = OL.training_link(df)
+    if link is None:
+        out.skip("figA3", "pending: needs OLMo outcomes (run reduced_olmo, then score it) and "
+                 "data/olmo_name_counts.csv")
+        return None
+    if link.get("rho") is None:
+        out.skip("figA3", f"OLMo: {link.get('note', 'no usable names')}")
+        return link
+    nm, u, o2 = link["names"], link["unflagged"], link["olmo2"]
     fig = go.Figure()
     for g in [g for g in GROUPS if g in set(nm["grp"])]:
-        s = nm[nm["grp"] == g]
-        fig.add_trace(go.Scatter(x=s["log_name_freq"], y=s["gap_pct"], mode="markers", name=S.glabel(g, False),
-                                 marker=dict(size=11, color=S.gcolor(g), symbol=S.symbol("olmo"),
-                                             line=dict(color="white", width=1.2)),
-                                 hovertemplate=hover_prefix(out.pilot) + "%{customdata}<br>log count %{x:.2f}<br>price vs "
-                                 "average name %{y:+.2f}%<extra></extra>", customdata=s["profile_id"]))
-    fig.update_xaxes(title_text="log count of the first name in OLMo's open training index")
-    fig.update_yaxes(title_text="Name's clear-request price vs average", ticksuffix="%", showgrid=True, gridcolor=S.GRID)
-    fig.update_layout(showlegend=True, legend=dict(orientation="v", x=1.02, y=1))
-    S.layout(fig, f"OLMo: name frequency in training data vs price paid (Spearman rho = {rho:.2f})",
-             "One dot per name. Traced, correlation only; closed models' training data is undisclosed.", out.pilot, 520,
-             right=220, left=80, bottom=70)
-    cap = ("Figure A3. Training-data link, OLMo only (exploratory; traced, correlation only). Per name: log count of "
-           "the first name in OLMo's open training index vs that name's S0 price relative to the average name. "
-           "Closed models' training data is undisclosed, so for them any link is assumed, not traced.")
-    out.fig("figA3", fig, "figA3_training_data_link", cap, nm.assign(spearman_rho=rho, spearman_p=p))
-    return float(rho)
+        for flagged in (False, True):
+            s = nm[(nm["grp"] == g) & (nm["word_flagged"] == flagged)]
+            if s.empty:
+                continue
+            S.dots(fig, s["log_count"], s["gap_pct"], [None] * len(s), [None] * len(s), S.gcolor(g),
+                   S.symbol("olmo"), size=11, open_=flagged,
+                   htext=[hover_prefix(out.pilot) + f"<b>{r['first']}</b> ({S.glabel(g, False)})<br>count "
+                          f"{int(r['raw_count']):,}, log {r['log_count']:.2f}<br>price vs average name "
+                          f"{r['gap_pct']:+.2f}%" + ("<br>also a common word (flagged)" if flagged else "")
+                          for _, r in s.iterrows()])
+    # group key in one row just above the plot (never over a point): color is never the only cue for a group
+    kg = [g for g in GROUPS if g in set(nm["grp"])]
+    for i, g in enumerate(kg):
+        fig.add_annotation(text=f"\u25B2 {S.glabel(g, False).replace('Names associated with ', '')}",
+                           xref="paper", yref="paper", x=i / max(len(kg), 1), y=1, yshift=8, xanchor="left",
+                           yanchor="bottom", showarrow=False, font=dict(size=S.BASE - 4, color=S.gcolor(g)))
+    fig.update_xaxes(title_text="log count of the first name in OLMo 3 pretraining data", showgrid=True)
+    fig.update_yaxes(title_text="Price vs average name, clear request (%)", ticksuffix="%", showgrid=True,
+                     gridcolor=S.GRID, zeroline=True, zerolinecolor=S.AXIS)
+    title = (f"OLMo: how often a name appears in its training data vs price paid "
+             f"(Spearman rho = {link['rho']:.2f}, {f_peq(link['p'])})")
+    sub = (f"One triangle per core name ({link['n']} names). Count source: {OL.INDEX_WORDS}. Exploratory; traced, "
+           "correlation only.")
+    sens = []
+    if u.get("rho") is not None:
+        sens.append(f"without the {len(u['dropped'])} names that are also common words (open triangles: "
+                    f"{', '.join(u['dropped'])}), rho = {u['rho']:.2f} ({f_peq(u['p'])})")
+    if o2.get("rho") is not None:
+        sens.append(f"on the OLMo 2 pretraining index, rho = {o2['rho']:.2f} ({f_peq(o2['p'])})")
+    foot = ("Sensitivity: " + "; ".join(sens) + ". " if sens else "") + (
+        "Counts are of the string, not of people, and are a lower bound. Price: the name's cell-adjusted average "
+        "log price in the clear request (S0) vs the average over names, in percent; below 0 = paid less. "
+        + COLOR_NOTE + " Key above the plot (names associated with each group). Closed models' training data is undisclosed, so for them any link is assumed, not traced.")
+    bottom = S.footer_margin(foot, axis_px=70)
+    S.layout(fig, title, sub, out.pilot, 470 + bottom, bottom=bottom, left=90)
+    S.footer(fig, foot)
+    st = df.attrs.get("olmo_status_text")
+    cap = ("Figure A3. Training-data link, OLMo only (exploratory; traced, correlation only). Per core name: the log "
+           f"count of the first name (with a leading space) in {OL.INDEX_WORDS}, which shares its base pretraining "
+           "data with the 7B model we ran, vs that name's clear-request (S0) price relative to the average name "
+           f"(cell-adjusted name means, as in the main tests). Spearman rho = {link['rho']:.2f} ({f_peq(link['p'])}, "
+           f"{link['n']} names). " + ("Sensitivity: " + "; ".join(sens) + ". " if sens else "")
+           + "Not part of any test family. " + (f"{st}. " if st else "")
+           + "Closed models' training data is undisclosed, so for them any link is assumed, not traced.")
+    cols = [c for c in ("profile_id", "first", "race", "gender", "grp", "raw_count", "log_count", "raw_count_olmo2",
+                        "log_count_olmo2", "word_flagged", "mean", "gap_pct") if c in nm.columns]
+    out.fig("figA3", fig, "figA3_training_data_link", cap,
+            nm[cols].assign(spearman_rho=link["rho"], spearman_p=link["p"], rho_unflagged=u.get("rho"),
+                            p_unflagged=u.get("p"), rho_olmo2=o2.get("rho"), p_olmo2=o2.get("p")))
+    return link
 
 
-def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
+def olmo_block(out: Out, df, statuses):
+    """D14: OLMo's separate exploratory block (estimates, and tests in its own BH family once the run is
+    finished). Never on pilot data, never in results/ from here (analysis/olmo_analysis.py writes the JSON)."""
+    if not (df["model"] == "olmo").any():
+        return None
+    st = next((OL.run_status(Path(s["path"])) for s in statuses if s.get("model_key") == "olmo"), None)
+    b = OL.block(df, st, test=False if out.pilot else None)
+    if out.pilot:
+        b["status_text"] = f"{b['status_text']}; pilot data, estimates only"
+    df.attrs["olmo_status_text"] = b["status_text"]
+    out.tables["olmo"] = OL.write_table(b, OL.training_link(df), out.tabdir) if not out.pilot else {}
+    return b
+
+
+def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info, olmo=None):
     cols = [("H1", "H1 price<br>Black vs White", "pct"), ("H2", "H2 price<br>women vs men", "pct"),
             ("H3", "H3 stated need<br>overridden", "pts"), ("H4", "H4 need guessed<br>from the name", "pts"),
             ("race: V ask rate", "Asked first", "pts"),
             ("race: S1 cap violation", "Over budget", "pts")]
     EXPL_COL = {"race: V ask rate": "vague, exploratory", "race: S1 cap violation": "budget, exploratory"}  # gray subline
+    # D14: a late model (OLMo) is not in the frozen exploratory family, so its exploratory columns come from its
+    # own block (analysis/olmo_analysis.py), never from bundle["exploratory"]
+    LATE_KEY = {"race: V ask rate": "v_ask_race"}
+    late_rows = {r["key"]: r for r in (olmo or {}).get("rows", [])}
     rows = []
     est_ex = {(e["model"], e["hypothesis"]): e for e in P.exploratory_model_estimates(df, [m for m in models if m not in conf])}
     for m in models:
@@ -2056,6 +2137,17 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
                                  "lo": f(clean0(e["ci_lo"])), "hi": f(clean0(e["ci_hi"])),
                                  "verdict": e.get("status", "exploratory estimate, not tested"), "p_adj": float("nan"),
                                  "family": "none (exploratory model)"})
+            elif (m in P.LATE_MODELS):
+                r = late_rows.get(LATE_KEY.get(key))
+                if r:
+                    tested = "q_bh" in r
+                    rows.append({"model": m, "outcome": key, "unit": unit, "est": r["display"],
+                                 "lo": r["display_lo"], "hi": r["display_hi"],
+                                 "verdict": (("discovery at q < 0.10" if r["discovery_q10"] else
+                                              "no discovery at q < 0.10") + " (OLMo block)") if tested else
+                                 "OLMo block, estimate only (partial run)",
+                                 "p_adj": r["q_bh"] if tested else float("nan"),
+                                 "family": "OLMo block (own BH 10%)" if tested else "OLMo block, not tested"})
             else:
                 e = next((e for e in bundle["exploratory"]["tests"] if e["model"] == m and e["test"] == key), None)
                 if e:
@@ -2082,8 +2174,8 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
         arms, tasks, extra, y = cells[key]
         d = A.subset(df, m, arms, tiers=("core",), tasks=tasks, extra=extra)
         d = d[d[y].notna()]
-        if d.empty:
-            return "no name variation: no runs"
+        if d.empty:      # not a flat result: this model never ran that arm (e.g. no S1 in the reduced preset)
+            return f"no runs: no {'/'.join(arms)} arm in these runs"
         nt = d["task_id"].nunique()
         tk = f"{nt} task{'s' if nt != 1 else ''}"
         if y == "price" and d["price"].nunique() == 1:
@@ -2103,7 +2195,7 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
                         span_u[unit] = max(span_u[unit], mv * 1.15)
     fig = make_subplots(rows=1, cols=len(present), shared_yaxes=True, horizontal_spacing=0.03)
     plot_px = S.WIDTH - 230 - 30
-    flat_notes, narrow = [], False
+    flat_notes, norun_notes, narrow = [], [], False
     for k, (key, ttl, unit) in enumerate(present, start=1):
         sub = t[t["outcome"] == key]
         xr, yr = S._refs(fig, 1, k)
@@ -2119,8 +2211,11 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
             if r.empty or flat(r.iloc[0]["lo"], r.iloc[0]["hi"], 1e-6) or not (finite(r.iloc[0]["lo"])
                                                                                and finite(r.iloc[0]["hi"])):
                 msg = reason(m, key)
-                flat_notes.append(f"{SHORTM.get(m, m)} {tp}: {msg.split(': ', 1)[1].replace('<br>', ' ')}")
-                fig.add_annotation(x=0, y=ys[i], xref=xr, yref=yr, showarrow=False, text="no name<br>variation",
+                norun = msg.startswith("no runs")
+                (norun_notes if norun else flat_notes).append(
+                    f"{SHORTM.get(m, m)} {tp}: {msg.split(': ', 1)[1].replace('<br>', ' ')}")
+                fig.add_annotation(x=0, y=ys[i], xref=xr, yref=yr, showarrow=False,
+                                   text="no runs" if norun else "no name<br>variation",
                                    bgcolor="white", font=dict(size=S.BASE - 6, color=S.MUTED), align="center",
                                    hovertext=hover_prefix(out.pilot) + f"{S.label(m)}<br>{tp}<br>"
                                    + msg.replace("<br>", " "))
@@ -2173,7 +2268,11 @@ def figA4_scorecard(out: Out, df, models, conf, bundle, mde_info):
             + " Rows marked pending have no scored runs yet."
             + (" Small gray numbers under a dot: the estimate and its interval, where the interval is narrower than "
                "the dot." if narrow else "")
-            + ("<br>No name variation: " + "; ".join(flat_notes) + "." if flat_notes else ""))
+            + ("<br>No name variation: " + "; ".join(flat_notes) + "." if flat_notes else "")
+            + ("<br>No runs (arm not in this model's preset, not a flat result): " + "; ".join(norun_notes) + "."
+               if norun_notes else "")
+            + (" OLMo's Asked first cell comes from its own exploratory block (D14), not the frozen family."
+               if any((m in P.LATE_MODELS) for m in ms) else ""))
     S.layout(fig, "Every model on every outcome, side by side", "Gap (focal minus comparison) with 95% interval. "
              "Price columns share one scale (%), rate columns share another (percentage points).", out.pilot,
              int(230 + 95 * (ybot + 0.6)) + S.footer_margin(foot), bottom=S.footer_margin(foot), left=230, gap=56)
@@ -2258,7 +2357,7 @@ def table1(out: Out, bundle, pr, mde_info, df, models, conf):
             hrow["Verdict"] = verdict_plain(r["verdict"], out.pilot) + (
                 f" (detectable gap after Holm: {dg})" if dg and not out.pilot and r["verdict"].startswith("inconclusive")
                 else "")
-            srow["Holm p / BH q"] = f"p = {f_p(r['p_holm'])}"
+            srow["Holm p / BH q"] = f_peq(r["p_holm"])
             srow["TOST p (Holm)"] = f_p(r["tost_p_holm"])
             srow["Verdict"] = verdict_plain(r["verdict"], out.pilot)
             head.append(hrow)
@@ -2378,7 +2477,7 @@ def tableA1(out: Out, bundle, df, models, statuses=()):
         pl = ch["planted"].get(m, {})
         if pl.get("ran"):
             rows.append({"Check": "Planted bias (a): own shift", "Rule (PLAN)": "PB minus S0 negative, p < 0.05 (8.1a)",
-                         "Model": S.label(m), "Value": f"{100 * (math.exp(pl['planted_shift_log']) - 1):+.1f}%, p {f_p(pl['own_shift_p'])}",
+                         "Model": S.label(m), "Value": f"{100 * (math.exp(pl['planted_shift_log']) - 1):+.1f}%, {f_peq(pl['own_shift_p'])}",
                          "Result": "pass" if pl["own_shift_detected"] else "fail"})
             e = pl["estimated"]
             rows.append({"Check": "Planted bias (b): swapped H1", "Rule (PLAN)": "95% CI covers expected gap (8.1b)",
@@ -2402,7 +2501,7 @@ def tableA1(out: Out, bundle, df, models, statuses=()):
         ap = ch["arm_p"].get(m, {})
         rows.append({"Check": "Arm P validity", "Rule (PLAN)": "best quality minus cheapest > 0, p < 0.05 (8.3)",
                      "Model": S.label(m),
-                     "Value": (f"{ap['pct']:+.1f}%, p {f_p(ap['p'])}, {ap['names']} names" if ap.get("ran") else
+                     "Value": (f"{ap['pct']:+.1f}%, {f_peq(ap['p'])}, {ap['names']} names" if ap.get("ran") else
                                "no arm P in its reduced grid" if red else "arm P not run"),
                      "Result": ("pass" if ap.get("pass") else "fail") if ap.get("ran") else "not run"})
         d = df[(df["model"] == m) & df["arm"].isin(["S0", "S1", "V"]) & df["finished"]]
@@ -2417,7 +2516,7 @@ def tableA1(out: Out, bundle, df, models, statuses=()):
             rows.append({"Check": "Position effect", "Rule (PLAN)": "reversed minus forward, log price (5.2)",
                          "Model": S.label(m),
                          # checks.json stores the positions as JSON keys ("1.0"); in memory they are numbers
-                         "Value": f"{100 * (math.exp(po['order_effect_log']) - 1):+.1f}%, p {f_p(po.get('order_effect_p'))}; "
+                         "Value": f"{100 * (math.exp(po['order_effect_log']) - 1):+.1f}%, {f_peq(po.get('order_effect_p'))}; "
                                   f"top slot {100 * next((v for k, v in po['pick_share_by_position'].items() if float(k) == 1), 0):.0f}"
                                   "% of picks",
                          "Result": "read"})
@@ -2463,8 +2562,8 @@ def appendix_tables(out: Out, bundle):
 
 # ----------------------------------------------------------------------------- numbers.json
 
-def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, skipped, rho, cost_rows, design, scale,
-                  checks_rows, fam_size):
+def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, skipped, link, cost_rows, design, scale,
+                  checks_rows, fam_size, olmo=None):
     N: dict = {}
     raw: dict = {}
     pv = out.pilot
@@ -2504,7 +2603,7 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
                 N[f"{k}.gap_per1m_usd"] = f_usd(p["usd_per_1m"], 0)
                 if r.get("r_alt_est") is not None:
                     N[f"{k}.freq_adj_pct"] = f_pct(100 * (math.exp(r["r_alt_est"]) - 1)) + (
-                        f" (p {f_p(r['r_alt_p'])})" if r.get("r_alt_p") is not None else "")
+                        f" ({f_peq(r['r_alt_p'])})" if r.get("r_alt_p") is not None else "")
                 else:
                     N[f"{k}.freq_adj_pct"] = "n/a"
                 raw[k] = {c: p[c] for c in ("est_log", "ci_lo_log", "ci_hi_log", "gap_pct", "ci_pct", "ref_usd",
@@ -2628,7 +2727,7 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
         N["check.planted_shift_usd"] = f_usd(sh * ref)
         ok_b = pl["ci_covers_expected"] and (pl["detected"] or not pl["detect_required"])
         N["check.planted_recovery_sentence"] = (
-            f"On {S.label(pl_m)}, the planted preference changed the price paid by {100 * sh:+.1f}% (p {f_p(pl['own_shift_p'])}, "
+            f"On {S.label(pl_m)}, the planted preference changed the price paid by {100 * sh:+.1f}% ({f_peq(pl['own_shift_p'])}, "
             f"{'caught' if pl['own_shift_detected'] else 'not caught'}); the frozen H1 test's 95% CI "
             f"{'covered' if pl['ci_covers_expected'] else 'missed'} the expected diluted gap"
             + ("" if pl["detect_required"] else ", and detection was not required because the swapped data was too "
@@ -2657,9 +2756,7 @@ def build_numbers(out: Out, bundle, pr, mde_info, df, models, conf, statuses, sk
     N["checks.model_ids"] = cat("Model IDs")
     N["checks.position"] = cat("Position effect")
     N["checks.noise_floor"] = cat("Same-group noise floor")
-    N["olmo.rho"] = f"{rho:.2f}" if rho is not None else "n/a (no infini-gram counts or no OLMo outcomes)"
-    N["olmo.training_link_sentence"] = (f"OLMo's name-frequency link was rho = {rho:.2f} (traced, correlation only)"
-                                        if rho is not None else "not run")
+    N.update(OL.numbers(olmo, link if link and link.get("rho") is not None else None))
     N["agreement.table_ref"] = "Table B1 (paper/tables/tableB1_agreement_checks.csv)"
     N["exploratory.table_ref"] = "Table B2 (paper/tables/tableB2_exploratory_family.csv)"
     tot = [r for r in cost_rows.to_dict("records") if r["Run"] != "main-run estimate (COST_ESTIMATE.md)"]
@@ -2753,7 +2850,7 @@ def build(runs, mde_path, figdir, tabdir, results_dir, confirm_models, n_perm, s
     pages = {p["page_id"]: p for p in json.loads((A.DATA / "pages.json").read_text())["pages"]}
     pr = price_rows(bundle, df, conf, [m for m in models if m not in conf])
     fam_size = bundle["confirmatory"]["family_size"]
-    fig_summary(out, pr, bundle, mde_info, conf, design, scale, models, statuses)
+    fig_summary(out, pr, bundle, mde_info, conf, design, scale, models, statuses, df)
     fig_design(out, pages.get("hair_shampoo_fine_straight__S") or next(iter(pages.values())), design)
     pending = [m for m in P.MODEL_ORDER if m not in models]
     if out.pilot:
@@ -2768,8 +2865,9 @@ def build(runs, mde_path, figdir, tabdir, results_dir, confirm_models, n_perm, s
     fig_m1(out, df, models, bundle)
     figA1_position(out, df, models, bundle)
     figA2_baseline(out, df, models, mde_info, conf)
-    rho = figA3_training(out, df)
-    figA4_scorecard(out, df, models, conf, bundle, mde_info)
+    olmo = olmo_block(out, df, statuses)
+    link = figA3_training(out, df)
+    figA4_scorecard(out, df, models, conf, bundle, mde_info, olmo)
     figA5_random_split(out, df, conf)
     table1(out, bundle, pr, mde_info, df, models, conf)
     table2(out, design, statuses)
@@ -2777,8 +2875,8 @@ def build(runs, mde_path, figdir, tabdir, results_dir, confirm_models, n_perm, s
     checks_rows = tableA1(out, bundle, df, models, statuses)
     appendix_tables(out, bundle)
     cap = write_captions(out)
-    npath, N = build_numbers(out, bundle, pr, mde_info, df, models, conf, statuses, skipped, rho, cost, design, scale,
-                             checks_rows, fam_size)
+    npath, N = build_numbers(out, bundle, pr, mde_info, df, models, conf, statuses, skipped, link, cost, design, scale,
+                             checks_rows, fam_size, olmo)
     return {"pilot": pilot, "engine": engine, "watermark": watermark, "variants": out.variants,
             "numbers": str(npath), "captions": str(cap), "figures": out.figs,
             "skipped_figures": out.skipped, "tables": out.tables, "skipped_runs": skipped, "N": N}

@@ -57,23 +57,34 @@ def test_title_and_sentence_never_state_a_null_as_an_absence():
     title = RH.headline_title(t, none)
     assert title.startswith("Exploratory six-group test: no evidence of a price difference")
     assert "Haiku (p = .760)" in title and "Luna (p = .200)" in title
-    some = {"haiku": {"p_perm": 0.76}, "luna": {"p_perm": 0.01}}
+    some = {"haiku": {"p_perm": 0.76}, "luna": {"p_perm": 0.01, "without_black": {"p_perm": 0.2168}}}
     title = RH.headline_title(t, some)
-    assert "Exploratory" in title and "differs" in title and "Luna (p = .010" in title
-    assert "every group's estimate is below White names" in title
+    assert "Exploratory" in title and "differs" in title and "Luna (p = .010)" in title
+    # the title says what carries the result (the sensitivity test), never the sign of five estimates as a finding
+    assert "led by the Black vs White gap (without names associated with Black buyers: p = .217)" in title
+    assert "every group" not in title
     assert "no evidence of a difference on Haiku (p = .760)" in title
     s = RH.six_group_sentence(t, some)
-    assert "GPT-6 Luna's prices differed (p = .010), with every group's estimate below White names" in s
+    assert "GPT-6 Luna's prices differed (p = .010), led by the Black vs White gap" in s and "every group" not in s
     assert "for Claude Haiku 5.5 there was no evidence of a difference (p = .760)" in s
     for text in (title, s, RH.headline_title(t, none), RH.six_group_sentence(t, none)):
         for bad in ("did not", "not on", "No price difference", "paying less", "\u2014", "\u2013"):
             assert bad not in text
 
 
-def test_side_clause_only_when_every_estimate_is_on_one_side():
-    t = pd.DataFrame({"model": ["luna"] * 3, "race": ["White", "Black", "Asian"], "gap_pct": [0.0, -1.8, 0.4]})
-    some = {"haiku": {"p_perm": 0.76}, "luna": {"p_perm": 0.01}}
-    assert "every group" not in RH.headline_title(t, some) and "every group" not in RH.six_group_sentence(t, some)
+def test_led_clause_follows_the_sensitivity_test():
+    t = pd.DataFrame({"model": ["luna"] * 2, "race": ["White", "Black"], "gap_pct": [0.0, -1.8]})
+    still = {"luna": {"p_perm": 0.0004, "without_black": {"p_perm": 0.03}}}
+    title = RH.headline_title(t, still)
+    assert "Luna (p < .001)" in title and "also without names associated with Black buyers (p = .030)" in title
+    assert "led by" not in title
+    bare = {"luna": {"p_perm": 0.01}}     # no sensitivity run: no clause at all
+    assert RH.headline_title(t, bare).endswith("Luna (p = .010)")
+
+
+def test_dollar_gap_keeps_a_tenth_of_a_cent_under_ten_cents():
+    assert RH.usd_gap(-0.0249) == "-$0.025" and RH.usd_gap(-0.56) == "-$0.56" and RH.usd_gap(0.21) == "+$0.21"
+    assert RH.usd_gap(float("nan")) == "n/a"
 
 
 def test_adjusted_p_text_to_number():
