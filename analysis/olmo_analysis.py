@@ -64,6 +64,9 @@ COUNTS = A.DATA / "olmo_name_counts.csv"
 INDEX_PRIMARY = "olmo-3-0625-32b-instruct"
 INDEX_OLMO2 = "v4_olmo-mix-1124_llama"
 INDEX_WORDS = ("OLMo 3 pretraining data (shared base, via Ai2's 32B Instruct index)")
+INDEX_WORDS_TABLE = ("OLMo 3 pretraining data (via Ai2's OLMo 3 32B Instruct index, which shares its base pretraining "
+                     "data with the 7B model but not all of its data; counts are lower bounds, "
+                     "data/OLMO_NAME_COUNTS_README.md)")
 INDEX_OLMO2_WORDS = "OLMo 2 pretraining mix"
 TAG = "Exploratory, added after the main results were seen (OLMo's run finished later)."
 BH_Q = 0.10
@@ -238,7 +241,7 @@ def link_sentence(link: dict | None) -> str:
     if not link or link.get("rho") is None:
         return "not run"
     u, o2 = link["unflagged"], link["olmo2"]
-    s = (f"across the {link['n']} core names, a name's count in {INDEX_WORDS} and its clear-request price gap had "
+    s = (f"across the {link['n']} core names, a name's count in {INDEX_WORDS_TABLE} and its clear-request price gap had "
          f"Spearman rho = {link['rho']:.2f} ({_peq(link['p'])}; exploratory, traced, correlation only)")
     if u.get("rho") is not None:
         s += (f". Without the {len(u['dropped'])} names that are also common words, rho = {u['rho']:.2f} "

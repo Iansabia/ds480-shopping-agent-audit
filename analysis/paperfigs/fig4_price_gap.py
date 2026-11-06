@@ -95,7 +95,7 @@ def make():
     ax.set_xticks(ticks)
     ax.xaxis.set_major_formatter(signed(0))
     ax.set_ylim(min(ys) - 0.6, 0.5)
-    ax.set_xlabel("Gap in price paid (%)\nbelow 0 = Black or women's names paid less")
+    ax.set_xlabel("Gap in price paid (%)\nleft of 0 = Black or women's names paid less")
     ax.text(-0.4, 1.17, "(a) Gap in percent", transform=ax.transAxes, ha="left", va="bottom", fontsize=8.5)
 
     # dollar table, aligned to the forest rows via the axes' y transform
@@ -115,14 +115,14 @@ def make():
                 transform=tr, ha="right", va="center", fontsize=7.5)
         ax.text(c2, yy, usd(r.usd_per_1m), transform=tr, ha="right", va="center", fontsize=7.5)
 
-    star = StarKey([], [], ls="none", label="Real gap (holds after correcting\nfor running several tests)")
+    star = StarKey([], [], ls="none", label="Star: gap detected (unlikely to be chance\nafter correcting for the 8 tests)")
     zero = Line2D([], [], color=GRAY["mid"], lw=0.6, label="Solid line: no gap")
     tick = Line2D([], [], ls="none", marker="|", ms=5, mew=1.0, color=GRAY["mid"],
                   label="Gray tick pair (\u00b11.4%), drawn just above the Haiku\nrows: smallest gap that test could reliably catch\n(none was set in advance for Luna)")
     key(fig, [Line2D([], [], ls="none", label="Claude Haiku 5.5", **{**mstyle("haiku"), "color": None}),
               Line2D([], [], ls="none", label="GPT-6 Luna", **{**mstyle("luna"), "color": None}),
               ci_handle("Whisker: 95% interval"), zero,
-              dotted_handle("Dotted line pair: largest gap still counted as\nsmall, set in advance (Haiku within \u00b13%,\nLuna within \u00b15%)"),
+              dotted_handle("Dotted lines: gap size set in advance as large\n(Haiku \u00b13%, Luna \u00b15%)"),
               star,
               tick], ncol=2)
     return save(fig, NAME)

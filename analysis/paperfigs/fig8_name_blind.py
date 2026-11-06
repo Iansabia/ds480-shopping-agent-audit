@@ -19,9 +19,9 @@ def make():
     df = pd.read_csv(FIGDATA / f"{NAME}.csv")
     models = ["haiku", "luna"]
     specs = [("logp", ("S0", "M1S0"), "(a) Price paid", "%",
-              "Gap in price paid, Black vs White names (%)\nbelow 0 = Black names paid less"),
+              "Gap in price paid, Black vs White names (%)\nleft of 0 = Black names paid less"),
              ("asked", ("V", "M1V"), "(b) Asked a question before buying", " pts",
-              "Gap in share of runs that asked (percentage points, pts)\nbelow 0 = agent asked fewer questions for Black names")]
+              "Gap in share of runs that asked (percentage points, pts)\nleft of 0 = agent asked fewer questions for Black names")]
     fig, axes = plt.subplots(1, 2, figsize=(FULL, 2.05), sharey=False,
                              gridspec_kw={"wspace": 0.95})
     fig.subplots_adjust(bottom=0.33, top=0.88, left=0.16, right=0.92)

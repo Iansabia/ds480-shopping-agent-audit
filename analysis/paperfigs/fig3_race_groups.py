@@ -16,10 +16,10 @@ def make():
     fig, axes = plt.subplots(1, 2, figsize=(FULL, 3.0), sharey=True,
                              gridspec_kw=dict(wspace=0.12))
     specs = [("gap_usd", "usd_lo", "usd_hi",
-              "Price gap vs White names\n($ per purchase)\nbelow 0 = this group paid less",
+              "Price gap vs White names\n($ per purchase)\nleft of 0 = this group paid less",
               "(a) Price paid"),
              ("h4_gap_pts", "h4_gap_lo", "h4_gap_hi",
-              "Coily or deep-shade pick, gap vs White names\n(percentage points of picks)\nabove 0 = picked more for this group",
+              "Coily or deep-shade pick, gap vs White names\n(percentage points of picks)\nright of 0 = picked more for this group",
               "(b) Product picked when the shopper did not\nstate hair type or shade (agent guessed)")]
     for ax, (c, lo, hi, xl, title), letter in zip(axes, specs, "ab"):
         shade(ax, races.index("Black"))

@@ -14,7 +14,7 @@ MODELS = ["haiku", "luna", "flashlite", "olmo"]
 CONFIRM = {"haiku", "luna"}
 COLS = [("H1", "(a) Test H1:\nprice, Black\nminus White", "pct"),
         ("H2", "(b) Test H2:\nprice, women\nminus men", "pct"),
-        ("H3", "(c) Test H3: stated\nneed overridden,\nBlack minus White", "pts"),
+        ("H3", "(c) Test H3: coily\nor deep-shade pick,\nneed stated,\nBlack minus White", "pts"),
         ("H4", "(d) Test H4: need\nguessed from name,\nBlack minus White", "pts"),
         ("race: V ask rate", "(e) Asked first\n(vague request),\nBlack minus White", "pts"),
         ("race: S1 cap violation", "(f) Over budget\n(budget request),\nBlack minus White", "pts")]
@@ -79,11 +79,11 @@ def make():
         ax.spines["left"].set_visible(False)
     axes[0].set_yticks([ys[m] for m in MODELS], [MODEL[m] for m in MODELS])
     fig.text(0.5 * (axes[0].get_position().x0 + axes[1].get_position().x1), -0.04,
-             "Gap in price paid (%)\nbelow 0 = Black or\nwomen's names paid less",
+             "Gap in price paid (%)\nleft of 0 = Black or\nwomen's names paid less",
              ha="center", va="top", fontsize=8.5, linespacing=1.15)
     fig.text(0.5 * (axes[2].get_position().x0 + axes[5].get_position().x1), -0.04,
              "Gap in how often the panel's outcome happened (percentage points)\n"
-             "above 0 = that outcome happened more often for Black names",
+             "right of 0 = that outcome happened more often for Black names",
              ha="center", va="top", fontsize=8.5, linespacing=1.15)
     def mk(m, label):
         # marker plus a short line in the model's own color, as drawn in the panels
@@ -100,7 +100,7 @@ def make():
                Line2D([], [], color=GRAY["dark"], lw=0.9,
                       label="Line through a mark: 95% interval\n(gray for exploratory models)"),
                Line2D([], [], label="Mark with no line: interval\nnarrower than the mark", **text_only),
-               star_handle("Star: real gap, beyond chance"),
+               star_handle("Star: gap detected (unlikely to be\nchance after correcting for\nmultiple tests)"),
                Line2D([], [], color=GRAY["light"], lw=0.9, label="Light gray line: no gap (0)"),
                bracket,
                Line2D([], [], label="H1 to H4: the paper's main tests;\n(e), (f): extra checks", **text_only),

@@ -17,10 +17,10 @@ def signed(nd, suffix=""):
 def make():
     d = pd.read_csv(FIGDATA / f"{NAME}.csv")
     panels = [("price gap vs White (%)",
-               "Gap in price paid vs White names (%)\nbelow 0 = paid less than White names", True,
+               "Gap in price paid vs White names (%)\nleft of 0 = paid less than White names", True,
                "Price paid, clear request"),
               ("h3 gap vs White (points)",
-               "Gap in coily or deep-shade pick (percentage points)\nabove 0 = picked more than for White names",
+               "Gap in coily or deep-shade pick (percentage points)\nright of 0 = picked more than for White names",
                True, "Coily or deep-shade pick, need stated"),
               ("h4", "Share of guessed buys that were\ncoily or deep-shade (%)", False,
                "Coily or deep-shade pick, agent guessed"),

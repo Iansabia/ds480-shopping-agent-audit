@@ -13,9 +13,9 @@ from paperfigs.style import FIGDATA, FULL, GRAY, key, patch_handle, save, pm, pl
 
 NAME = "figA5_random_split"
 PANELS = [("H1", "(a) GPT-6 Luna: Black vs White names",
-           "Price gap, Black minus White names (%)\nbelow 0 = Black names paid less"),
+           "Price gap, Black minus White names (%)\nleft of 0 = Black names paid less"),
           ("H2", "(b) GPT-6 Luna: women's vs men's names",
-           "Price gap, women's minus men's names (%)\nbelow 0 = women's names paid less")]
+           "Price gap, women's minus men's names (%)\nleft of 0 = women's names paid less")]
 
 
 def make():

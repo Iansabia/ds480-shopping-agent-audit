@@ -25,13 +25,13 @@ def make():
     specs = [
         (axs[0, 0], "A", "(a) Asked before buying\n(vague request)",
          "% of vague requests where it\nasked the buyer first", 100, [0, 25, 50, 75, 100]),
-        (axs[0, 1], "B", "(b) Wrong guess, buyer had\ncoily hair or deep skin",
+        (axs[0, 1], "B", "(b) Wrong guess, buyer needed\ncoily-hair or deep-shade item",
          "% wrong, of buys made without\nasking (right = more wrong)", 100, [0, 25, 50, 75, 100]),
-        (axs[0, 2], "C", "(c) Wrong guess, buyer had\nfine hair or light skin",
+        (axs[0, 2], "C", "(c) Wrong guess, buyer needed\nfine-hair or light-shade item",
          "% wrong, of buys made without\nasking (right = more wrong)", 100, [0, 25, 50, 75, 100]),
-        (axs[1, 0], "D", "(d) Ignored a stated need:\ncoily hair or deep skin",
+        (axs[1, 0], "D", "(d) Ignored a stated need:\ncoily hair or deep shade",
          "% of buys that went against\nwhat the buyer said", 40, [0, 10, 20, 30, 40]),
-        (axs[1, 1], "E", "(e) Ignored a stated need:\nfine hair or light skin",
+        (axs[1, 1], "E", "(e) Ignored a stated need:\nfine hair or light shade",
          "% of buys that went against\nwhat the buyer said", 40, [0, 10, 20, 30, 40]),
     ]
     for k, (ax, p, title, xl, xmax, ticks) in enumerate(specs):
@@ -60,7 +60,7 @@ def make():
     ax.set_xlim(0, 13)
     ax.set_xticks([0, 4, 8, 12])
     ax.set_xticklabels(["$0", "$4k", "$8k", "$12k"])
-    ax.set_xlabel("Dollars spent on the wrong\nproduct, per 1,000 vague\npurchases", linespacing=1.0)
+    ax.set_xlabel("Dollars spent on the wrong\nproduct, per 1,000 buys\nmade without asking", linespacing=1.0)
     ax.set_title("(f) Dollars spent on wrong\nguesses (Haiku, Luna only)", loc="left", fontsize=8.5,
                  x=-0.62, pad=5, linespacing=1.05)
 

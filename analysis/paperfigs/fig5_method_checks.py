@@ -74,7 +74,7 @@ def make():
     axc.set_xlim(-22, 3)
     axc.set_xticks([-20, -15, -10, -5, 0])
     axc.xaxis.set_major_formatter(signed(0))
-    axc.set_xlabel("Price gap, Black vs White names (%)\nbelow 0 = Black names paid less")
+    axc.set_xlabel("Price gap, Black vs White names (%)\nleft of 0 = Black names paid less")
     axc.spines["left"].set_visible(False)
     axc.tick_params(axis="y", length=0)
     title(axc, "(d) Does the main price test catch\nthe planted gap from (a, b)?", -0.42)
@@ -108,7 +108,7 @@ def make():
         # Haiku a little above the label's line, Luna a little below, so close values stay apart
         ys = [len(hyps) - 1 - k + (0.13 if m == "haiku" else -0.13) for k in range(len(hyps))]
         axe.plot(s.loc[hyps, "share_p_lt_05_pct"], ys, marker=MARKER[m], color=MCOL[m], ls="",
-                 ms=3.6, mec="white", mew=0.4, zorder=4, label=MODEL[m])
+                 ms=4.0, mec="white", mew=0.4, zorder=4, label=MODEL[m])
     axe.axvline(5, color="k", ls="--", lw=0.6, ymax=4.0 / 4.5, zorder=1)
     axe.axvline(8.5, color=GRAY["mid"], lw=0.8, ymax=4.0 / 4.5, zorder=1)
     axe.text(5, 3.55, "Expected", ha="center", va="bottom", fontsize=7)
@@ -140,7 +140,7 @@ def make():
         both(ls="none", color=GRAY["dark"], ms=4.5),
         ci_handle("(d) Bar: 95% interval"),
         Line2D([], [], ls="none", marker="|", color=GRAY["mid"], ms=6, mew=1.2,
-               label="(d) Gray tick: gap expected from\nthe mixed-in (a, b) runs"),
+               label="(d) Gray tick: gap it should find\nonce the (a, b) runs are swapped in"),
         Line2D([], [], color=GRAY["light"], lw=0.6, label="(d) Light line: no gap"),
         Line2D([], [], ls="none", marker="o", ms=2.2, color=GRAY["light"],
                label="(e) Gray dot: one name"),

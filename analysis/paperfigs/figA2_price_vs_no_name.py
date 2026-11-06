@@ -56,23 +56,23 @@ def make():
     axes[0].set_ylim(-0.6, len(GROUPS) - 0.4)
     axes[0].set_ylabel("Buyer name group (the name signals race and gender)", labelpad=4)
     axes[1].set_xlabel("Price paid vs the no-name buyer (%)\n"
-                       "above 0 = group paid more than the no-name buyer")
+                       "right of 0 = group paid more than the no-name buyer")
     labels = {"haiku": "Claude Haiku 5.5 (filled, dark = main model)",
               "luna": "GPT-6 Luna (filled, dark = main model)",
               "flashlite": "Gemini 3.5 Flash-Lite (open, gray = exploratory)",
               "olmo": "OLMo 3 7B (open, gray = exploratory)"}
-    mh = [Line2D([], [], ls="none", label="Each marker = that group's average price gap")]
+    mh = [Line2D([], [], ls="none", label="Each marker = that group's average gap vs the no-name buyer")]
     mh += [Line2D([], [], color=MCOL[m], marker=MARKER[m], ls="none", ms=3.5, mew=0.7,
                  mfc=MCOL[m] if m in CONFIRM else "white", label=labels[m]) for m in MODS]
     mh.append(Line2D([], [], ls="none", label="Gemini and OLMo: Black and White names only, no budget arm"))
     lines = [Line2D([], [], color=MCOL["haiku"], lw=0.7, label="Dark bar: 95% interval, main model"),
              Line2D([], [], color=MCOL["flashlite"], lw=0.7, label="Gray bar: 95% interval, exploratory model"),
              Line2D([], [], color=ZERO_C, lw=0.9, ls=(0, (1, 1.2)),
-                    label="Dotted line at 0: no gap (same price as no-name buyer)"),
+                    label="Dotted line at 0: no gap (same price as the no-name buyer)"),
              Line2D([], [], color=DASH_C, lw=0.7, ls=(0, (5, 2.5)),
-                    label=f"Dashed, (a) only: ±{mde:.1f}%, a size reference only. The smallest\n"
-                          "Black vs White gap Haiku's main test could detect, a\n"
-                          "different comparison. Not a cutoff for these markers"),
+                    label=f"Dashed, (a) only: ±{mde:.1f}%, the smallest Black vs White\n"
+                          "gap Haiku's main test could detect. A size reference\n"
+                          "for a different comparison, not a cutoff for these markers"),
              Line2D([], [], color=SEP_C, lw=0.6,
                     label="Thin solid gray line: only separates race groups")]
     h = mh + lines  # key fills by column: models left, lines right

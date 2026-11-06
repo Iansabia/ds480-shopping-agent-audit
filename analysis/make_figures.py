@@ -255,7 +255,7 @@ def verdict_lines(v, width):
 FIG4_ROW = {"H1": "Names associated with<br>Black vs White buyers", "H2": "Names associated with<br>women vs men"}
 SHORT = {"H1": ("Black vs White names", "names associated with Black buyers", "names associated with White buyers"),
          "H2": ("women vs men", "names associated with women", "names associated with men"),
-         "H3": ("stated need overridden", "", ""), "H4": ("need guessed from the name", "", "")}
+         "H3": ("coily or deep-shade pick, need stated", "", ""), "H4": ("need guessed from the name", "", "")}
 
 
 # ----------------------------------------------------------------------------- run selection
@@ -586,7 +586,7 @@ def fig_design(out: Out, page: dict, design: dict):
         y = 50.8 - 9.2 * k
         txt(fig, 27.8, y, f"<b>{arm}</b>", S.BASE - 3)
         txt(fig, 27.8, y - 1.4, s, S.BASE - 4, S.MUTED, vanchor="top")
-    txt(fig, 27.8, bot + 1.0, "Plus check arms (Table 2)", S.BASE - 5, S.FAINT, vanchor="bottom")
+    txt(fig, 27.8, bot + 1.0, "Plus control versions of the request (Technical Appendix, Table A2)", S.BASE - 5, S.FAINT, vanchor="bottom")
     # 3 store page
     panel(52.6, 24.6, "3  One page, 8 real products")
     slot_txt = {"fit_low": "fits, low price", "fit_mid": "fits, mid", "fit_high": "fits, high",
@@ -2406,10 +2406,10 @@ def table2(out: Out, design, statuses):
             ("V", "Vague request, need revealed only if asked", "vague", "core + extended + no name", "H4, ask rate",
              "confirmatory"),
             ("PB", "Clear request plus saved preference: lowest-priced product that meets the request", "specified",
-             "5 core names", "planted bias check", "check"),
+             "5 core names associated with Black buyers", "planted bias check", "check"),
             ("PC / PQ", "'cheapest that fits' vs 'best quality'", "specified", "16 core names", "price validity",
              "check"),
-            ("M1S0 / M1V", "Clear or vague request plus a name-blind instruction", "specified / vague", "core names",
+            ("M1S0 / M1V", "Clear or vague request plus a name-blind instruction", "specified / vague", "core names + no name",
              "M1 fix", "exploratory")]
     main = design.get("main", {}).get("by_arm", {})
     pre = {"PB": design.get("planted", {}).get("episodes"), "PC / PQ": design.get("validity", {}).get("episodes"),
@@ -2425,7 +2425,7 @@ def table2(out: Out, design, statuses):
         rows.append({"Arm": f"Run: {s['run']}", "Request": f"preset {s['preset']}, model {S.label(s['model_key'])}",
                      "Page": "", "Accounts": "", "Tests": f"ask protocol: {s['ask_protocol']}", "Status": "used here",
                      "Episodes per model (design)": f"{s['finished']:,} of {s['episodes_expected'] or s['rows']:,} finished"})
-    out.table("table2", "table2_design", pd.DataFrame(rows), "Table 2. Study design: arms, requests and episodes.",
+    out.table("table2", "table2_design", pd.DataFrame(rows), "Table A2. Full study design: arms, requests, accounts, tests and runs per model",
               "Design counts come from the catalog grids (no API calls). Run rows list the outcome files used for "
               "these figures.")
 
@@ -2460,8 +2460,8 @@ def table3(out: Out, paths):
 
 def tableA1(out: Out, bundle, df, models, statuses=()):
     ch = bundle["checks"]
-    rows = [{"Check": "Name check", "Rule (PLAN)": "read as intended in 9 of 10 guesses (design 5.10)", "Model": "all",
-             "Value": "64 of 64 main names kept (PILOT_REPORT.md)", "Result": "pass"}]
+    rows = [{"Check": "Name check", "Rule (PLAN)": "read as intended in at least 14 of 15 guesses across Haiku, Luna and Gemini (design 5.10)", "Model": "all",
+             "Value": "64 of 64 main names kept, all at 15 of 15 (data/name_check_results.csv)", "Result": "pass"}]
     # an exploratory model that ran only its reduced grid (PLAN 3): no PB or P arm, and never in the family
     reduced = {s.get("model_key"): s for s in statuses if s.get("preset") in REDUCED_PRESETS}
     full = {s.get("model_key") for s in statuses if s.get("preset") == "main"}

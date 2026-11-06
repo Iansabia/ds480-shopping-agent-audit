@@ -2,7 +2,7 @@
 
 | Check | Rule (PLAN) | Model | Value | Result |
 |---|---|---|---|---|
-| Name check | read as intended in 9 of 10 guesses (design 5.10) | all | 64 of 64 main names kept (PILOT_REPORT.md) | pass |
+| Name check | read as intended in at least 14 of 15 guesses across Haiku, Luna and Gemini (design 5.10) | all | 64 of 64 main names kept, all at 15 of 15 (data/name_check_results.csv) | pass |
 | Main-grid completion | at least 95% of 32,640 (PLAN 3) | Claude Haiku 5.5 | 32,640 finished | enters family |
 | Planted bias (a): own shift | PB minus S0 negative, p < 0.05 (8.1a) | Claude Haiku 5.5 | -22.7%, p < .001 | pass |
 | Planted bias (b): swapped H1 | 95% CI covers expected gap (8.1b) | Claude Haiku 5.5 | expected -6.2%, CI -11.5 to -0.8%; detection not required | pass |
@@ -39,7 +39,7 @@
 | Planted bias | 8.1 | OLMo 3 7B | no PB arm in its reduced grid | not run |
 | Arm P validity | best quality minus cheapest > 0, p < 0.05 (8.3) | OLMo 3 7B | no arm P in its reduced grid | not run |
 | Outcome types (S0, S1, V) | descriptive (8.4) | OLMo 3 7B | bought 6,878, no_purchase 148, invalid_product 14 | read |
-| Model IDs returned | descriptive (8.4) | OLMo 3 7B |  | read |
+| Model IDs returned | descriptive (8.4) | OLMo 3 7B | olmo-3:7b-instruct (7,040) | read |
 | Same-group noise floor, H1 | SD of within-group half splits (5.2) | Claude Haiku 5.5 | 0.90 (x100 log price) vs gap -0.09 | read |
 | Same-group noise floor, H2 | SD of within-group half splits (5.2) | Claude Haiku 5.5 | 0.88 (x100 log price) vs gap -0.27 | read |
 | Same-group noise floor, H3 | SD of within-group half splits (5.2) | Claude Haiku 5.5 | 0.29 pts vs gap -0.12 | read |

@@ -2,7 +2,7 @@
 
 (a) price gaps in percent (H1, H2); (b) rate gaps in percentage points (H3, H4).
 Asterisk: gap detected after Holm (p_holm < 0.05). Filled markers: confirmatory models.
-Faint dotted segments: each test's equivalence margin. Numbers come straight from
+Faint dotted segments: each test's equivalence margin (the gap size set in advance as large). Numbers come straight from
 paper/figures/fig4_price_gap.csv (price) and results/confirmatory.json (rates).
 """
 import json
@@ -79,18 +79,18 @@ def make():
     d = load()
     fig, (a, b) = plt.subplots(1, 2, figsize=(FULL, 1.9))
     fig.subplots_adjust(left=0.2, right=0.99, wspace=0.62, bottom=0.3, top=0.88)
-    draw(a, d[d.h.isin(["H1", "H2"])], "Gap in price paid (%)\nbelow 0 = Black or women's names paid less", 5.6, [-4, -2, 0, 2, 4])
-    draw(b, d[d.h.isin(["H3", "H4"])], "Gap in coily or deep-shade pick (points)\nabove 0 = picked more often for Black names", 12.5, [-10, -5, 0, 5, 10])
+    draw(a, d[d.h.isin(["H1", "H2"])], "Gap in price paid (%)\nleft of 0 = Black or women's names paid less", 5.6, [-4, -2, 0, 2, 4])
+    draw(b, d[d.h.isin(["H3", "H4"])], "Gap in coily or deep-shade pick (points)\nright of 0 = picked more often for Black names", 12.5, [-10, -5, 0, 5, 10])
     a.set_title("(a) Price paid", loc="left", fontsize=8.5, x=-0.55, pad=6)
-    b.set_title("(b) Fit of the product picked", loc="left", fontsize=8.5, x=-0.62, pad=6)
+    b.set_title("(b) Coily-hair or deep-shade product picked", loc="left", fontsize=8.5, x=-0.62, pad=6)
     from matplotlib.lines import Line2D
     zero = Line2D([], [], color=GRAY["mid"], lw=0.6, label="Solid line: no gap")
     key(fig, [Line2D([], [], ls="none", label="Claude Haiku 5.5", **{**mstyle("haiku"), "color": None}),
               Line2D([], [], ls="none", label="GPT-6 Luna", **{**mstyle("luna"), "color": None}),
               ci_handle("Bar: 95% interval"), zero,
-              dotted_handle("Between dotted lines: too small to matter"),
+              dotted_handle("Dotted lines: gap size set in advance as large"),
               Line2D([], [], ls="none", marker="$*$", ms=6, color=GRAY["dark"],
-                     label="*: real gap, beyond chance")], ncol=3)
+                     label="*: gap detected (unlikely to be chance\nafter correcting for the 8 tests)")], ncol=3)
     return save(fig, NAME)
 
 

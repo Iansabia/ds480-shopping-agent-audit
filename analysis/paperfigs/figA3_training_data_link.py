@@ -22,19 +22,21 @@ KEYLAB = {lab: lab.replace("women", "women's").replace(" men", " men's") + " nam
 
 def make():
     df = pd.read_csv(FIGDATA / f"{NAME}.csv")
-    fig, ax = plt.subplots(figsize=(HALF + 0.9, 2.9))
+    fig, ax = plt.subplots(figsize=(HALF + 0.9, 3.4))
     ax.axhline(0, color=GRAY["light"], lw=0.6, zorder=0)
     for g, lab in GRP.items():
         d = df[df.grp == g]
         c = GROUP[lab]
         n = d[~d.word_flagged.astype(bool)]
         f = d[d.word_flagged.astype(bool)]
-        # filled diamonds get a thin white rim so touching names stay separate; open diamonds
-        # are hollow and drawn underneath, so no filled mark is ever hidden by an open one
+        # filled diamonds get a thin white rim so touching names stay separate. Open diamonds
+        # are hollow, so they are drawn ON TOP: a filled mark still shows through the hole, and
+        # no white rim can cut an open outline (Jamal at 14.94, -1.09% and Hilary at 15.00,
+        # -1.31% touch). No point is moved or jittered; every mark sits at its exact value.
         ax.scatter(n.log_count, n.gap_pct, s=10, marker="D", facecolor=c, edgecolor="white",
                    lw=0.45, label=lab, zorder=4)
         ax.scatter(f.log_count, f.gap_pct, s=12, marker="D", facecolor="none", edgecolor=c,
-                   lw=0.8, zorder=3)
+                   lw=0.8, zorder=5)
     rho, p = df.spearman_rho.iloc[0], df.spearman_p.iloc[0]
     ax.text(0.03, 0.97,
             f"Rank correlation, all names = {rho:.2f}".replace("-", "−")
@@ -62,7 +64,7 @@ def make():
     h.append(Line2D([], [], color=GRAY["light"], lw=0.8, label="Gray line: average name"))
     leg = key(fig, h, ncol=3, title="Each diamond = one first name, priced by OLMo 3 7B (diamond = OLMo, as in other figures)")
     leg._legend_box.align = "center"
-    fig.subplots_adjust(bottom=0.215)
+    fig.subplots_adjust(bottom=0.185)
     return save(fig, NAME)
 
 
