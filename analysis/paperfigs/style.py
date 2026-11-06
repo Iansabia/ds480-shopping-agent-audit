@@ -84,6 +84,37 @@ def model_handles(models, lw=0.8):
     return [Line2D([], [], ls="-", lw=lw, label=MODEL[m], **mstyle(m)) for m in models]
 
 
+# Keys (Ian 11/6: "each visual has some sort of identifying key"). Every mark a reader sees
+# (marker shape, fill, whisker, star, dotted line, color, shading) gets one entry, so a quick
+# look explains the figure without the caption. The key sits in one row under the figure.
+def ci_handle(label="Line: 95% interval"):
+    from matplotlib.lines import Line2D
+    return Line2D([], [], color=GRAY["dark"], lw=0.9, label=label)
+
+
+def star_handle(label="* real gap (survives correction)"):
+    from matplotlib.lines import Line2D
+    return Line2D([], [], ls="none", marker="$*$", ms=5, color=GRAY["dark"], label=label)
+
+
+def dotted_handle(label, color=None):
+    from matplotlib.lines import Line2D
+    return Line2D([], [], ls=(0, (1, 1.5)), lw=0.8, color=color or GRAY["mid"], label=label)
+
+
+def patch_handle(color, label, hatch=None, edge=None):
+    from matplotlib.patches import Patch
+    return Patch(facecolor=color, edgecolor=edge or color, hatch=hatch, lw=0.6, label=label)
+
+
+def key(fig, handles, ncol=None, title=None):
+    """One shared key row centred under the whole figure (below the x labels)."""
+    return fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 0.0),
+                      ncol=ncol or len(handles), frameon=False, handlelength=1.8,
+                      columnspacing=1.4, handletextpad=0.5, title=title,
+                      title_fontsize=7.5, fontsize=7.5, borderaxespad=0.2)
+
+
 def panel(ax, letter, x=None, y=None):
     """Mark a panel '(a)'. Placed at save time: left edge of the panel's tick labels, just above
     the axes (or level with the panel title), so every figure uses the same position.

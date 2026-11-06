@@ -8,8 +8,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import numpy as np
 import pandas as pd
 from matplotlib.lines import Line2D
+from matplotlib.legend_handler import HandlerTuple
 from paperfigs.style import *  # noqa: F401,F403
-from paperfigs.style import FIGDATA, RESULTS, FULL, MODEL, MARKER, GRAY, GROUP, panel, save, plt, signed
+from paperfigs.style import FIGDATA, RESULTS, FULL, MODEL, MARKER, GRAY, GROUP, save, plt, signed, mstyle, key, ci_handle
 
 NAME = "fig5_method_checks"
 MODS = ["haiku", "luna"]
@@ -27,16 +28,21 @@ def _planted(ax, d, m):
     ax.plot([0, 1], [mean["S0"], mean["PB"]], color="k", ls=":", lw=1.1, marker=MARKER[m], ms=4,
             zorder=5)
     ax.set_xlim(-0.3, 1.3)
-    ax.set_xticks([0, 1], ["Normal", "Wants\ncheapest"])
+    ax.set_xticks([0, 1], ["Normal\nprompt", "Told to buy\ncheapest"])
     ax.set_ylim(0, 70)
     ax.set_yticks(range(0, 71, 20))
-    ax.set_title(MODEL[m], fontsize=7.5, pad=3)
+
+
+def title(ax, text, x):
+    """Panel letter plus a plain-words title, left aligned like Figure 1."""
+    ax.set_title(text, loc="left", fontsize=8.5, x=x, pad=6, linespacing=1.1)
 
 
 def make():
     d = pd.read_csv(FIGDATA / f"{NAME}.csv")
-    fig = plt.figure(figsize=(FULL, 3.7))
-    gs = fig.add_gridspec(2, 6, height_ratios=[1.25, 0.75], hspace=0.7, wspace=1.3)
+    fig = plt.figure(figsize=(FULL, 4.5))
+    gs = fig.add_gridspec(2, 6, height_ratios=[1.25, 0.75], hspace=1.0, wspace=1.3,
+                          bottom=0.15, top=0.93)
     axa = fig.add_subplot(gs[0, 0:2])
     axb = fig.add_subplot(gs[0, 2:4], sharey=axa)
     axe = fig.add_subplot(gs[0, 4:6])
@@ -48,12 +54,8 @@ def make():
     _planted(axb, d[d.panel == "B"], "luna")
     axa.set_ylabel("Paid above cheapest\nfitting product (%)")
     plt.setp(axb.get_yticklabels(), visible=False)
-    h = [Line2D([], [], color=GROUP[g], lw=0.9) for g in ("Black women", "Black men")]
-    h.append(Line2D([], [], color="k", ls=":", lw=1.1))
-    axb.legend(h, ["Black women", "Black men", "Mean"], loc="upper right", fontsize=7,
-               handlelength=1.6, borderaxespad=0.1, labelspacing=0.25)
-    panel(axa, "a", x=-0.32)
-    panel(axb, "b", x=-0.08)
+    title(axa, "(a) Haiku: 5 names told\nto buy the cheapest", -0.42)
+    title(axb, "(b) Luna: the\nsame test", -0.1)
 
     # (c): recovery by the frozen H1 test
     c = d[d.panel == "C"].set_index("model")
@@ -72,14 +74,10 @@ def make():
     axc.set_xlim(-22, 3)
     axc.set_xticks([-20, -15, -10, -5, 0])
     axc.xaxis.set_major_formatter(signed(0))
-    axc.set_xlabel("Price gap, Black vs White, with planted runs (%)")
-    axc.legend([Line2D([], [], color=GRAY["dark"], marker="o", ms=3.5, lw=0.9),
-                Line2D([], [], marker="|", color=GRAY["mid"], ms=5, mew=1.2, ls="")],
-               ["Measured gap", "Expected gap"], loc="lower left", bbox_to_anchor=(0.0, 1.0),
-               fontsize=7, ncol=2, handlelength=1.5, columnspacing=1.2, borderaxespad=0.1)
+    axc.set_xlabel("Price gap, Black vs White names (%)\nbelow 0 = Black names paid less")
     axc.spines["left"].set_visible(False)
     axc.tick_params(axis="y", length=0)
-    panel(axc, "d", x=-0.36)
+    title(axc, "(d) Does the main price test catch\nthe planted gap from (a, b)?", -0.42)
 
     # (d): best quality minus cheapest that fits
     dd = d[d.panel == "D"]
@@ -95,32 +93,73 @@ def make():
     axd.set_xlim(250, 400)
     axd.set_xticks([250, 300, 350, 400])
     axd.xaxis.set_major_formatter(signed(0))
-    axd.set_xlabel("Best quality minus cheapest that fits (%)")
+    axd.set_xlabel("Extra paid for “best quality” over\n“cheapest that fits” (%)")
     axd.spines["left"].set_visible(False)
     axd.tick_params(axis="y", length=0)
-    panel(axd, "e", x=-0.04)
+    title(axd, "(e) Price follows what the buyer asked for", -0.04)
 
     # (e): shuffled labels, false positive rate
     e = d[d.panel == "E"]
     hyps = ["H1", "H2", "H3", "H4"]
-    HLAB = {"H1": "Price, race", "H2": "Price, gender", "H3": "Need stated", "H4": "Need guessed"}
+    HLAB = {"H1": "Price, race", "H2": "Price, gender", "H3": "Need stated\nin prompt",
+            "H4": "Need guessed\nfrom name"}
     for j, m in enumerate(MODS):
         s = e[e.model == m].set_index("hypothesis")
-        ys = [len(hyps) - 1 - k + (0.15 if j == 0 else -0.15) for k in range(len(hyps))]
+        # Haiku a little above the label's line, Luna a little below, so close values stay apart
+        ys = [len(hyps) - 1 - k + (0.13 if m == "haiku" else -0.13) for k in range(len(hyps))]
         axe.plot(s.loc[hyps, "share_p_lt_05_pct"], ys, marker=MARKER[m], color=MCOL[m], ls="",
-                 ms=4, label=MODEL[m])
-    axe.axvline(5, color="k", ls="--", lw=0.6)
-    axe.axvline(8.5, color=GRAY["mid"], lw=0.8)
+                 ms=3.6, mec="white", mew=0.4, zorder=4, label=MODEL[m])
+    axe.axvline(5, color="k", ls="--", lw=0.6, ymax=4.0 / 4.5, zorder=1)
+    axe.axvline(8.5, color=GRAY["mid"], lw=0.8, ymax=4.0 / 4.5, zorder=1)
     axe.text(5, 3.55, "Expected", ha="center", va="bottom", fontsize=7)
     axe.text(8.5, 3.55, "Limit", ha="center", va="bottom", fontsize=7, color=GRAY["mid"])
     axe.set_yticks(range(len(hyps)), [HLAB[h] for h in hyps[::-1]])
-    axe.set_ylim(-0.5, 3.5)
+    axe.set_ylim(-0.5, 4.0)
     axe.set_xlim(0, 10)
     axe.set_xticks([0, 2, 4, 6, 8, 10])
-    axe.set_xlabel("False alarms, names shuffled (%)")
+    axe.set_xlabel("Tests that found a gap by chance (%)\nmust stay left of the limit")
     axe.spines["left"].set_visible(False)
     axe.tick_params(axis="y", length=0)
-    panel(axe, "c", x=-0.12)
+    title(axe, "(c) False alarms when names\nare shuffled at random", -0.62)
+
+    # One key naming every mark (Ian 11/6).
+    nomk = dict(ls="none", color=None)
+
+    def both(**kw):
+        """Two swatches side by side: circle as drawn in (a), square as drawn in (b)."""
+        return (Line2D([], [], marker="o", **kw), Line2D([], [], marker="s", **kw))
+
+    entries = [
+        Line2D([], [], label="Claude Haiku 5.5", **{**mstyle("haiku"), **nomk}),
+        Line2D([], [], label="GPT-6 Luna", **{**mstyle("luna"), **nomk}),
+        both(color=GROUP["Black women"], lw=0.7, ms=2.5),
+        both(color=GROUP["Black men"], lw=0.7, ms=2.5),
+        both(color="k", ls=":", lw=1.1, ms=4),
+        Line2D([], [], color="k", ls="--", lw=0.6, label="(c) Dashed: expected by chance, 5%"),
+        Line2D([], [], color=GRAY["mid"], lw=0.8, label="(c) Gray line: limit, 8.5%"),
+        both(ls="none", color=GRAY["dark"], ms=4.5),
+        ci_handle("(d) Bar: 95% interval"),
+        Line2D([], [], ls="none", marker="|", color=GRAY["mid"], ms=6, mew=1.2,
+               label="(d) Gray tick: gap expected from\nthe mixed-in (a, b) runs"),
+        Line2D([], [], color=GRAY["light"], lw=0.6, label="(d) Light line: no gap"),
+        Line2D([], [], ls="none", marker="o", ms=2.2, color=GRAY["light"],
+               label="(e) Gray dot: one name"),
+        both(ls="none", color=GRAY["dark"], ms=4.5),
+    ]
+    labels = [h.get_label() for h in entries[:2]] + [
+        "(a, b) One Black woman's name\n(small circle in a, square in b)",
+        "(a, b) One Black man's name\n(small circle in a, square in b)",
+        "(a, b) Dotted line, large black circle (a)\nor square (b): average of the 5 names",
+    ] + [h.get_label() for h in entries[5:7]] + [
+        "(d) Large circle (Haiku) or\nsquare (Luna): measured gap",
+    ] + [h.get_label() for h in entries[8:12]] + [
+        "(e) Large circle (Haiku) or\nsquare (Luna): model overall",
+    ]
+    # Same look as style.key(), plus a tuple handler so (a) and (b) markers sit side by side.
+    fig.legend(entries, labels, loc="upper center", bbox_to_anchor=(0.5, 0.0), ncol=3,
+               frameon=False, handlelength=2.6, columnspacing=1.4, handletextpad=0.5,
+               fontsize=7.5, borderaxespad=0.2,
+               handler_map={tuple: HandlerTuple(ndivide=None, pad=0.4)})
     return save(fig, NAME)
 
 

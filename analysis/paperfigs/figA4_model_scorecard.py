@@ -5,17 +5,25 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import pandas as pd
-from paperfigs.style import FIGDATA, RESULTS, FULL, MODEL, MARKER, GRAY, mstyle, panel, save, plt, signed
+from matplotlib.lines import Line2D
+from matplotlib.legend_handler import HandlerLine2D
+from paperfigs.style import FIGDATA, RESULTS, FULL, MODEL, MARKER, GRAY, mstyle, panel, save, plt, signed, star_handle
 
 NAME = "figA4_model_scorecard"
 MODELS = ["haiku", "luna", "flashlite", "olmo"]
 CONFIRM = {"haiku", "luna"}
-COLS = [("H1", "H1 price,\nBlack minus\nWhite", "pct"),
-        ("H2", "H2 price,\nwomen minus\nmen", "pct"),
-        ("H3", "H3 stated need\noverridden", "pts"),
-        ("H4", "H4 need guessed\nfrom name", "pts"),
-        ("race: V ask rate", "Asked first\n(vague request)", "pts"),
-        ("race: S1 cap violation", "Over budget\n(budget request)", "pts")]
+COLS = [("H1", "(a) Test H1:\nprice, Black\nminus White", "pct"),
+        ("H2", "(b) Test H2:\nprice, women\nminus men", "pct"),
+        ("H3", "(c) Test H3: stated\nneed overridden,\nBlack minus White", "pts"),
+        ("H4", "(d) Test H4: need\nguessed from name,\nBlack minus White", "pts"),
+        ("race: V ask rate", "(e) Asked first\n(vague request),\nBlack minus White", "pts"),
+        ("race: S1 cap violation", "(f) Over budget\n(budget request),\nBlack minus White", "pts")]
+
+
+def detected(verdict):
+    """Star a cell only when the data's own verdict says a gap was found (never computed here)."""
+    v = str(verdict)
+    return v.startswith("gap detected") or v.startswith("discovery at q")
 
 
 def mde(m, h, key):
@@ -51,9 +59,13 @@ def make():
             ax.plot(r.est, y, ls="none", zorder=3, **{**st, "color": None})
             v = mde(m, out, "mde_holm_pct" if unit == "pct" else "mde_holm_points")
             if v:
-                for s in (-1, 1):
-                    ax.plot([s * v] * 2, [y + 0.18, y + 0.4], color=GRAY["mid"], lw=1.0,
-                            solid_capstyle="butt", zorder=2)
+                # one bracket per row, raised clear of the mark: |----| from -v to +v
+                ax.plot([-v, v], [y + 0.34] * 2, color=GRAY["mid"], lw=0.6, zorder=2,
+                        marker="|", ms=4.5, mew=0.9, markevery=[0, 1])
+            if detected(r.verdict):
+                # same glyph as the key's star entry, just above the mark
+                ax.plot(r.est, y + 0.3, ls="none", marker="$*$", ms=5,
+                        color=GRAY["dark"], zorder=3)
         if unit == "pct":
             ax.set_xlim(-3.2, 3.2)
             ax.set_xticks([-2, 0, 2])
@@ -61,15 +73,46 @@ def make():
             ax.set_xlim(-13, 13)
             ax.set_xticks([-10, 0, 10])
         ax.xaxis.set_major_formatter(signed(0))
-        ax.set_title(title, fontsize=7.5, pad=4, linespacing=1.05)
+        ax.set_title(title, fontsize=7, pad=4, linespacing=1.05)
         ax.set_ylim(-0.6, len(MODELS) - 0.4)
         ax.tick_params(axis="y", length=0)
         ax.spines["left"].set_visible(False)
     axes[0].set_yticks([ys[m] for m in MODELS], [MODEL[m] for m in MODELS])
-    fig.text(0.5 * (axes[0].get_position().x0 + axes[1].get_position().x1), -0.04, "Gap (%)",
-             ha="center", va="top", fontsize=8.5)
+    fig.text(0.5 * (axes[0].get_position().x0 + axes[1].get_position().x1), -0.04,
+             "Gap in price paid (%)\nbelow 0 = Black or\nwomen's names paid less",
+             ha="center", va="top", fontsize=8.5, linespacing=1.15)
     fig.text(0.5 * (axes[2].get_position().x0 + axes[5].get_position().x1), -0.04,
-             "Gap (percentage points)", ha="center", va="top", fontsize=8.5)
+             "Gap in how often the panel's outcome happened (percentage points)\n"
+             "above 0 = that outcome happened more often for Black names",
+             ha="center", va="top", fontsize=8.5, linespacing=1.15)
+    def mk(m, label):
+        # marker plus a short line in the model's own color, as drawn in the panels
+        return Line2D([], [], ls="-", lw=0.8, label=label, **mstyle(m))
+
+    bracket = Line2D([], [], color=GRAY["mid"], lw=0.6, marker="|", ms=4.5, mew=0.9,
+                     label="Gray bracket: smallest gap that\n"
+                           "Claude Haiku's main test could find")
+    text_only = dict(ls="none", marker="none")
+    handles = [mk("haiku", "Claude Haiku 5.5 (filled = main model)"),
+               mk("luna", "GPT-6 Luna (filled = main model)"),
+               mk("flashlite", "Gemini 3.5 Flash-Lite (open = exploratory)"),
+               mk("olmo", "OLMo 3 7B (open = exploratory)"),
+               Line2D([], [], color=GRAY["dark"], lw=0.9,
+                      label="Line through a mark: 95% interval\n(gray for exploratory models)"),
+               Line2D([], [], label="Mark with no line: interval\nnarrower than the mark", **text_only),
+               star_handle("Star: real gap, beyond chance"),
+               Line2D([], [], color=GRAY["light"], lw=0.9, label="Light gray line: no gap (0)"),
+               bracket,
+               Line2D([], [], label="H1 to H4: the paper's main tests;\n(e), (f): extra checks", **text_only),
+               Line2D([], [], label="Gray words: no gap\ncan be computed", **text_only)]
+    # local copy of style.key() so the bracket entry can show both end ticks
+    leg = fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.31),
+                     bbox_transform=fig.transFigure, ncol=3, frameon=False, handlelength=1.8,
+                     columnspacing=0.8, handletextpad=0.5, fontsize=7.5, borderaxespad=0.2,
+                     labelspacing=0.55, handler_map={bracket: HandlerLine2D(numpoints=2)})
+    for t, h in zip(leg.get_texts(), handles):
+        if h.get_label().startswith("Gray words"):
+            t.set_color(GRAY["mid"])
     return save(fig, NAME)
 
 
