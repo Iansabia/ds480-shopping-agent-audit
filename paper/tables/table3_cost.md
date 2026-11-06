@@ -11,6 +11,7 @@
 | planted_luna | GPT-6 Luna | 800 | 800 | 1.17 | 0.019 | $0.06 | $0.08 | 0.4 |
 | validity_luna | GPT-6 Luna | 640 | 644 | 0.96 | 0.016 | $0.05 | $0.08 | 0.5 |
 | reduced_flashlite | Gemini 3.5 Flash-Lite | 7,040 | 10,877 | 16.72 | 0.557 | $0.00 | $0.00 | 0.2 |
+| reduced_olmo | OLMo 3 7B | 7,040 | 11,600 | 17.68 | 0.476 | $0.00 | $0.00 | 12.5 |
 | main-run estimate (COST_ESTIMATE.md) | Claude Haiku 5.5 |  | 59,893 |  |  | $9.70 (batch, expected) |  |  |
 | main-run estimate (COST_ESTIMATE.md) | GPT-6 Luna |  | 59,893 |  |  | $5.21 (batch, expected) |  |  |
 | main-run estimate (COST_ESTIMATE.md) | Gemini 3.5 Flash-Lite |  | 7,702 |  |  | $2.04 (batch, expected) |  |  |

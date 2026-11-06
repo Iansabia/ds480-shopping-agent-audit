@@ -35,6 +35,11 @@
 | Outcome types (S0, S1, V) | descriptive (8.4) | Gemini 3.5 Flash-Lite | bought 6,690, no_purchase 348, invalid_product 2 | read |
 | Model IDs returned | descriptive (8.4) | Gemini 3.5 Flash-Lite | gemini-3.5-flash-lite (7,040) | read |
 | Position effect | reversed minus forward, log price (5.2) | Gemini 3.5 Flash-Lite | -4.6%, p < .001; top slot 32% of picks | read |
+| Main-grid completion | at least 95% of 32,640 (PLAN 3) | OLMo 3 7B | 7,040 of 7,040 reduced-grid runs finished | exploratory, not in the family |
+| Planted bias | 8.1 | OLMo 3 7B | no PB arm in its reduced grid | not run |
+| Arm P validity | best quality minus cheapest > 0, p < 0.05 (8.3) | OLMo 3 7B | no arm P in its reduced grid | not run |
+| Outcome types (S0, S1, V) | descriptive (8.4) | OLMo 3 7B | bought 6,878, no_purchase 148, invalid_product 14 | read |
+| Model IDs returned | descriptive (8.4) | OLMo 3 7B |  | read |
 | Same-group noise floor, H1 | SD of within-group half splits (5.2) | Claude Haiku 5.5 | 0.90 (x100 log price) vs gap -0.09 | read |
 | Same-group noise floor, H2 | SD of within-group half splits (5.2) | Claude Haiku 5.5 | 0.88 (x100 log price) vs gap -0.27 | read |
 | Same-group noise floor, H3 | SD of within-group half splits (5.2) | Claude Haiku 5.5 | 0.29 pts vs gap -0.12 | read |

@@ -309,7 +309,7 @@ def write_table(b: dict, link: dict | None, tabdir: Path) -> dict:
     t = table_frame(b)
     csv, md = tabdir / "olmo_exploratory.csv", tabdir / "olmo_exploratory.md"
     t.to_csv(csv, index=False)
-    lines = ["*Table B4. OLMo 3 7B, separate exploratory block*", ""]
+    lines = ["*Table B7. OLMo 3 7B, separate exploratory block*", ""]
     cols = list(t.columns)
     lines.append("| " + " | ".join(cols) + " |")
     lines.append("|" + "---|" * len(cols))

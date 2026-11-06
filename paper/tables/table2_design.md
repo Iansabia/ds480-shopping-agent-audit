@@ -18,5 +18,6 @@
 | Run: planted_luna | preset planted, model GPT-6 Luna |  |  | ask protocol: v_followup_1 | used here | 800 of 800 finished |
 | Run: validity_luna | preset validity, model GPT-6 Luna |  |  | ask protocol: v_followup_1 | used here | 640 of 640 finished |
 | Run: reduced_flashlite | preset reduced, model Gemini 3.5 Flash-Lite |  |  | ask protocol: v_followup_1 | used here | 7,040 of 7,040 finished |
+| Run: reduced_olmo | preset reduced, model OLMo 3 7B |  |  | ask protocol: v_followup_1 | used here | 7,040 of 7,040 finished |
 
 Design counts come from the catalog grids (no API calls). Run rows list the outcome files used for these figures.

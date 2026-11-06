@@ -15,3 +15,8 @@ flashlite,H2,pct,-0.6248983307245437,-2.214973495554451,0.9910329300761855,"expl
 flashlite,H3,pts,,,,exploratory: no name variation,,none (exploratory model)
 flashlite,H4,pts,0.7239395758302875,-2.3529107673516294,3.800789919012204,"exploratory estimate, not tested",,none (exploratory model)
 flashlite,race: V ask rate,pts,-1.9375000000000309,-3.543129470419503,-0.3318705295805586,no discovery at q < 0.10,0.13444864074435373,exploratory (BH 10%)
+olmo,H1,pct,-0.14927440381062862,-1.688167882583591,1.4137076621446143,"exploratory estimate, not tested",,none (exploratory model)
+olmo,H2,pct,0.10961990598437055,-1.4323111014391987,1.6756719134864095,"exploratory estimate, not tested",,none (exploratory model)
+olmo,H3,pts,2.181913813717807,-0.45788350439109404,4.821711131826708,"exploratory estimate, not tested",,none (exploratory model)
+olmo,H4,pts,,,,exploratory: no name variation,,none (exploratory model)
+olmo,race: V ask rate,pts,-1.5625000000000258,-9.125615800746504,6.000615800746451,no discovery at q < 0.10 (OLMo block),0.9314963015445639,OLMo block (own BH 10%)

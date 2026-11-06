@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-05T17:03:30.846181</dc:date>
+    <dc:date>2026-11-06T05:50:39.566450</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -40,7 +40,7 @@ Q 7.2 73.44 7.2 78.48
 L 7.2 333.432 
 Q 7.2 338.472 12.2688 338.472 
 z
-" clip-path="url(#p635a298b71)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
+" clip-path="url(#p75ea35b7a7)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 208.6848 338.472 
@@ -53,7 +53,7 @@ Q 203.616 73.44 203.616 78.48
 L 203.616 333.432 
 Q 203.616 338.472 208.6848 338.472 
 z
-" clip-path="url(#p635a298b71)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
+" clip-path="url(#p75ea35b7a7)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 474.7968 338.472 
@@ -66,7 +66,7 @@ Q 469.728 73.44 469.728 78.48
 L 469.728 333.432 
 Q 469.728 338.472 474.7968 338.472 
 z
-" clip-path="url(#p635a298b71)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
+" clip-path="url(#p75ea35b7a7)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 12.2688 459.36 
@@ -79,7 +79,7 @@ Q 7.2 347.76 7.2 352.8
 L 7.2 454.32 
 Q 7.2 459.36 12.2688 459.36 
 z
-" clip-path="url(#p635a298b71)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
+" clip-path="url(#p75ea35b7a7)" style="fill: #f7f6f2; stroke: #b5b4ad; stroke-width: 0.72; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 600; font-size: 15.84px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="13.68" y="36.8784" transform="rotate(-0 13.68 36.8784)">Same request, same result? A paired-name audit of AI shopping agents</text>
@@ -115,16 +115,16 @@ z
     <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="204.2712" transform="rotate(-0 16.7904 204.2712)">Gemini 3.5 Flash-Lite (7,040 runs,</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="214.5672" transform="rotate(-0 16.7904 214.5672)">reduced grid); OLMo 3 7B pending. 64</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="214.5672" transform="rotate(-0 16.7904 214.5672)">reduced grid), OLMo 3 7B (7,040 runs,</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="224.8632" transform="rotate(-0 16.7904 224.8632)">names and 4 no-name accounts in the main</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="224.8632" transform="rotate(-0 16.7904 224.8632)">reduced grid). 64 names and 4 no-name</text>
    </g>
    <g id="text_14">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="235.1592" transform="rotate(-0 16.7904 235.1592)">runs, 18 more names in the six-group</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="235.1592" transform="rotate(-0 16.7904 235.1592)">accounts in the main runs, 18 more names</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="245.4552" transform="rotate(-0 16.7904 245.4552)">add-on.</text>
+    <text style="font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="245.4552" transform="rotate(-0 16.7904 245.4552)">in the six-group add-on.</text>
    </g>
    <g id="text_16">
     <text style="font-weight: 700; font-size: 7.92px; font-family: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'DejaVu Sans'; text-anchor: start; fill: #1f1f1c" x="16.7904" y="257.9112" transform="rotate(-0 16.7904 257.9112)">Only the account name changes.</text>
@@ -300,7 +300,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p635a298b71">
+  <clipPath id="p75ea35b7a7">
    <rect x="0" y="0" width="648" height="470.16"/>
   </clipPath>
  </defs>

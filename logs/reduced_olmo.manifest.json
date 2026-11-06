@@ -1,0 +1,27 @@
+{
+  "run": "reduced_olmo",
+  "created": "2026-11-05T17:19:36.167-05:00",
+  "preset": "reduced",
+  "provider": "ollama",
+  "model_key": "olmo",
+  "model_requested": "olmo-3:7b-instruct",
+  "settings": {
+    "options": {
+      "temperature": 0,
+      "seed": 480,
+      "num_ctx": 16384,
+      "num_predict": 512
+    },
+    "tool_choice": "required, via format (Ollama has no tool_choice)",
+    "format": "one_action_json_schema_v1",
+    "format_sha256": "62071a94e2f3b5d68947e3f25e1145512a5563607f1ce02a50251df28048d403"
+  },
+  "mode": "sync",
+  "n_episodes": 7040,
+  "max_output_tokens": 512,
+  "git_commit": "1305772648727e7dc5537b33d6a3d7d6f3ba0ca1",
+  "episode_ids_sha256": "c1889904698bfba245a17ccc16cbdec2c6a15ade5099fffc767d77bca4e3893d",
+  "ask_protocol": "v_followup_1",
+  "limit": null,
+  "tool_choice": "required"
+}
