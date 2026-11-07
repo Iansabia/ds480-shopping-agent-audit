@@ -87,10 +87,10 @@ def make():
     zero = Line2D([], [], color=GRAY["mid"], lw=0.6, label="Solid line: no gap")
     key(fig, [Line2D([], [], ls="none", label="Claude Haiku 5.5", **{**mstyle("haiku"), "color": None}),
               Line2D([], [], ls="none", label="GPT-6 Luna", **{**mstyle("luna"), "color": None}),
-              ci_handle("Bar: 95% interval"), zero,
+              ci_handle("Bar: likely range of the gap"), zero,
               dotted_handle("Dotted lines: gap size set in advance as large"),
               Line2D([], [], ls="none", marker="$*$", ms=6, color=GRAY["dark"],
-                     label="*: gap detected (unlikely to be chance\nafter correcting for the 8 tests)")], ncol=3)
+                     label="*: gap unlikely to be chance")], ncol=3)
     return save(fig, NAME)
 
 
