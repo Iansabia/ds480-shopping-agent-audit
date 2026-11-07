@@ -95,7 +95,7 @@ def make():
     stack_keys(fig, blocks, [
         "Line through a marker = 95% interval.   name-blind = agent told to ignore the name.   "
         "not run = model not tested on this request.",
-        "race gap = Black and White names got different rates, beyond chance (a further look, not a planned test)."])
+        "race gap = Black and White names got different rates, unlikely to be chance (a further look, not a planned test)."])
     return save(fig, NAME)
 
 
