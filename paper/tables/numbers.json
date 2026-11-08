@@ -168,7 +168,7 @@
         "html": null,
         "engine": "matplotlib",
         "csv": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig4_price_gap.csv",
-        "caption": "Figure 4. Confirmatory price tests (Holm correction across 8 tests). Dots: gap in price paid for the same request, focal group minus comparison group: names associated with Black minus White buyers (H1) and women minus men (H2), name-level OLS with HC2 errors; bars: unadjusted 95% CI (a gap counts only if its Holm-adjusted p < 0.05). Blue ticks: the detectable gap fixed before the main run, after Holm at m = 8 (the planned Haiku + Luna family), 1.41% for H1 on Haiku: a true gap this size would be flagged at least 80% of the time. Dotted lines: equivalence margins (3% for Claude Haiku 5.5 and 5% for GPT-6 Luna), symmetric on log price, so the lower lines sit at -2.9% and -4.8%. Right: the same gap in dollars per purchase, per 1,000 purchases (at the comparison group's average price paid) and per $1 million of agent spend; these translate the percent gap and are not separate tests."
+        "caption": "Figure 4. Confirmatory price tests (Holm correction across 8 tests). Dots: gap in price paid for the same request, focal group minus comparison group: names associated with Black minus White buyers (H1) and women minus men (H2), name-level OLS with HC2 errors; bars: unadjusted 95% CI (a gap counts only if its Holm-adjusted p < 0.05). Blue ticks: the detectable gap fixed before the main run, after Holm at m = 8 (the planned Haiku + Luna family), 1.41% for H1 on Haiku: a true gap this size would be flagged at least 80% of the time. Dotted lines: equivalence margins (3% for Claude Haiku 5.5 and GPT-6 Luna), symmetric on log price, so the lower lines sit at -2.9%. Right: the same gap in dollars per purchase, per 1,000 purchases (at the comparison group's average price paid) and per $1 million of agent spend; these translate the percent gap and are not separate tests."
       },
       "fig5": {
         "png": "/Users/iansabia/Desktop/fall 26/DS480/paper2-agent-audit/paper/figures/fig5_method_checks_mpl.png",
@@ -510,7 +510,7 @@
         315.6488973909025
       ],
       "p_holm": 1.0,
-      "tost_p_holm": 0.00011839780748607623
+      "tost_p_holm": 0.00017759671122911434
     },
     "h1.luna": {
       "est_log": -0.01811474270381933,
@@ -534,7 +534,7 @@
         -294.3644087562011
       ],
       "p_holm": 0.0009786019970278287,
-      "tost_p_holm": 3.928119756509507e-08
+      "tost_p_holm": 0.01624973223244068
     },
     "h2.haiku": {
       "est_log": -0.0027230784232916867,
@@ -558,7 +558,7 @@
         270.26772672676924
       ],
       "p_holm": 1.0,
-      "tost_p_holm": 0.00022563450466937834
+      "tost_p_holm": 0.00037605750778229723
     },
     "h2.luna": {
       "est_log": -0.016116235577101325,
@@ -582,7 +582,7 @@
         -236.26819933362535
       ],
       "p_holm": 0.0029431498775821345,
-      "tost_p_holm": 9.908970021019487e-09
+      "tost_p_holm": 0.0057901991022760255
     },
     "h3.haiku": {
       "est": -0.0012218372414001706,

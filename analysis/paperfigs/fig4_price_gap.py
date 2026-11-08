@@ -122,7 +122,7 @@ def make():
     key(fig, [Line2D([], [], ls="none", label="Claude Haiku 5.5", **{**mstyle("haiku"), "color": None}),
               Line2D([], [], ls="none", label="GPT-6 Luna", **{**mstyle("luna"), "color": None}),
               ci_handle("Whisker: 95% interval"), zero,
-              dotted_handle("Dotted lines: gap size set in advance as large\n(Haiku \u00b13%, Luna \u00b15%)"),
+              dotted_handle("Dotted lines: gap size set in advance as large\n(\u00b13%, both models)"),
               star,
               tick], ncol=2)
     return save(fig, NAME)
