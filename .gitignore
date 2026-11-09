@@ -9,3 +9,5 @@ logs/*.tmp
 logs/*.stdout
 logs/ollama_*.log
 .DS_Store
+logs/main_haiku.turns.jsonl
+logs/main_luna.turns.jsonl
