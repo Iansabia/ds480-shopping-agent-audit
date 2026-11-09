@@ -1,0 +1,25 @@
+{
+  "run": "pilot_olmo",
+  "created": "2026-11-04T19:00:00.066-05:00",
+  "preset": "pilot",
+  "provider": "ollama",
+  "model_key": "olmo",
+  "model_requested": "olmo-3:7b-instruct",
+  "settings": {
+    "options": {
+      "temperature": 0,
+      "seed": 480,
+      "num_ctx": 16384,
+      "num_predict": 512
+    },
+    "tool_choice": "auto (Ollama cannot force tools)"
+  },
+  "mode": "sync",
+  "n_episodes": 1152,
+  "max_output_tokens": 512,
+  "git_commit": "5a5c1da10c98d4ab497857220a3c441c723658b2",
+  "episode_ids_sha256": "272e3f48eb2b0ea0a7cd967d810bf87c7e0016b81b890edf1143a981bd6b0d36",
+  "ask_protocol": "v_followup_1",
+  "limit": null,
+  "tool_choice": "required"
+}

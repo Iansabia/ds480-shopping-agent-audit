@@ -1,0 +1,9 @@
+{
+  "run": "planted_luna",
+  "episodes": 800,
+  "done": 800,
+  "error_final": 0,
+  "asked": 0,
+  "pending_turns": 0,
+  "stop_reason": null
+}

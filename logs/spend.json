@@ -39,17 +39,17 @@
     "ollama": {
       "by_model": {
         "olmo": {
-          "calls": 1152,
+          "calls": 12752,
           "spent_usd": 0.0
         }
       },
-      "calls": 1152,
+      "calls": 12752,
       "cap_usd": 0.0,
       "halted": false,
       "halted_reason": null,
-      "input_tokens": 1640628,
+      "input_tokens": 19319870,
       "notional_usd": 0.0,
-      "output_tokens": 146630,
+      "output_tokens": 622271,
       "reservations": {},
       "spent_usd": 0.0
     },
@@ -72,5 +72,5 @@
       "spent_usd": 5.55563325
     }
   },
-  "updated": "2026-11-05T14:30:57-0500"
+  "updated": "2026-11-06T05:47:45-0500"
 }

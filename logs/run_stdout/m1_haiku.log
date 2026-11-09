@@ -1,0 +1,14 @@
+submitted 1 batch(es): msgbatch_01QaPaWVhrKyXKpTZrBKwE4U
+submitted 2 batch(es): msgbatch_013pqmXGf4adY5TwEgvvMSro, msgbatch_01Y7faku1mdZSqPwGShYYi3X
+submitted 1 batch(es): msgbatch_01VbyXnDH9VMCgNTWwesygs5
+submitted 1 batch(es): msgbatch_012k2mFvDyVYanM2XSiCmavU
+{
+  "run": "m1_haiku",
+  "episodes": 7040,
+  "done": 7040,
+  "error_final": 0,
+  "asked": 3949,
+  "pending_turns": 0,
+  "open_batches": [],
+  "stop_reason": null
+}

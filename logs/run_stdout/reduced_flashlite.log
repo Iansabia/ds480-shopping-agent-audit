@@ -1,0 +1,14 @@
+submitted 1 batch(es): batches/wj2ozxog0ckt3jk31bvpdydtd63r8fmbii6r
+submitted 2 batch(es): batches/xcm91w2lptgm8cuzh6sq8ggmata67jh4os8q, batches/k8nwcxilockqhv8chynbpsespilzjx1z6gmy
+submitted 1 batch(es): batches/v3k7cbf8h6wll3z9cf1ljwxna4fz3opg7att
+submitted 1 batch(es): batches/rqj8maaaao77741iu6fsu6wcpedesqk3qxt8
+{
+  "run": "reduced_flashlite",
+  "episodes": 7040,
+  "done": 7040,
+  "error_final": 0,
+  "asked": 3064,
+  "pending_turns": 0,
+  "open_batches": [],
+  "stop_reason": null
+}

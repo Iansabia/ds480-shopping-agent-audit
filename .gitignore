@@ -8,3 +8,4 @@ logs/*.lock
 logs/*.tmp
 logs/*.stdout
 logs/ollama_*.log
+.DS_Store
