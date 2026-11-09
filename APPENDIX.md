@@ -59,10 +59,10 @@ Gaps are focal minus comparison group at the name level with 95% CIs. "Detected"
 | Paper says | Evidence here | Files |
 |---|---|---|
 | Luna paid less for Black-associated and women's names; Haiku showed no gap (Table 1, Figure 1) | [B1](#b1), [Table B1](#table-b1) | `results/confirmatory.json`, `paper/tables/tableB0_statistics.md` |
-| Both agents saw every name's intended race and gender (A4) | [A4](#a4) | `data/name_check_results.csv` |
+| Haiku and Luna saw identical information (Figure A5) | [Figure A5](#figure-a5), [A5](#a5) | `logs/main_haiku.turns.jsonl.gz`, `logs/main_luna.turns.jsonl.gz`, `paper/figures/figA10_same_inputs.csv` |
 | Each dot is one of the 40 name averages the test compares (Figure 2, A6) | [A6](#a6), [B1 Figure 2(c)](#b1-fig2c) | `analysis/analyze.py` |
 | The price test caught a planted bias (Figure 3) | [Table A1](#table-a1), [B1 Figure 3](#b1-fig3) | `paper/tables/tableA1_checks.md` |
-| The race gap held up after rarity, age and "ignore the name"; with a stated budget it was no longer detected (B2) | [B2](#b2), [Figure A1](#figure-a1) | `paper/tables/tableB2_exploratory_family.md` (budget, ignore the name), `paper/tables/tableB0_statistics.md` (rarity), `analysis/birthyear_check.py` (birth year) |
+| The race gap held up after rarity, age and "ignore the name"; with a stated budget it faded (B2) | [B2](#b2), [Figure A1](#figure-a1) | `paper/tables/tableB2_exploratory_family.md` (budget, ignore the name), `paper/tables/tableB0_statistics.md` (rarity), `analysis/birthyear_check.py` (birth year) |
 | Men's names got the \$44 fragrance about twice as often (B3) | [B3](#b3) | `paper/tables/harm_evidence.md` |
 | When Luna bought without asking, the name shifted who got the wrong product (Figure 4) | [B1 Figure 4](#b1-fig4), [B4](#b4) | `paper/tables/tableB2_exploratory_family.md` |
 | Asking fit nearly everyone; Luna asked on 47% of vague requests (B4) | [B4](#b4) | `logs/main_luna.outcomes.csv` |
@@ -202,6 +202,11 @@ The two planned models were fixed before any run as low-cost models from two com
 
 - Paid runs used discounted tiers (Anthropic batch for Haiku, OpenAI flex for Luna), about half the standard price ([`results/cost_estimate.json`](results/cost_estimate.json)). Some Luna add-ons ran on OpenAI's standard tier (D11).
 - Gemini shows \$0.00 because the cost code records Google as free tier; all Gemini calls come to about \$3.34 at list prices. OLMo ran locally.
+
+<a id="figure-a5"></a>
+<p align="center"><img src="paper/figures/paper/figA10_same_inputs.png" width="720" alt="Figure A5. Haiku and Luna were sent the same text in every main run"></p>
+
+**Figure A5. Haiku and Luna were sent the same text in every main run** (descriptive; added 11/9 after the main results were seen). (a) The start of the first request of one run, a clear request on the keyboard task. The harness logs a SHA-256 fingerprint of the full request text (system text, buyer message and store page; [`src/harness/runner.py`](src/harness/runner.py)), and the two models' logs hold the same fingerprint for this run. (b) Matching the two logs run by run (same request type, account, task, wording and product order), the fingerprints are equal in all 32,640 main runs. Both models also get the same two tools from one file ([`src/harness/prompts.py`](src/harness/prompts.py)), and the scripted replies to a question come from the task file, so they do not depend on the model. Within a run, then, the two agents differ only in the model and its provider settings (table above). Script: [`analysis/paperfigs/figA10_same_inputs.py`](analysis/paperfigs/figA10_same_inputs.py); counts in [`paper/figures/figA10_same_inputs.csv`](paper/figures/figA10_same_inputs.csv).
 
 <a id="a6"></a>
 ### A6. The frozen plan and its deviations
@@ -643,6 +648,7 @@ Commands from [`HARNESS_README.md`](HARNESS_README.md):
 | Add-on and OLMo analysis | [`analysis/addon_analysis.py`](analysis/addon_analysis.py), [`analysis/olmo_analysis.py`](analysis/olmo_analysis.py) | [`paper/tables/`](paper/tables) |
 | Cheaper-pick evidence | [`analysis/harm_evidence.py`](analysis/harm_evidence.py) | [`paper/tables/harm_evidence.md`](paper/tables/harm_evidence.md) |
 | Birth-year check ([B2](#b2)) | [`analysis/birthyear_check.py`](analysis/birthyear_check.py) | prints the result; input [`data/derived/core_name_mean_birth_year.csv`](data/derived/core_name_mean_birth_year.csv) |
+| Same-inputs check ([Figure A5](#figure-a5)) | [`analysis/paperfigs/figA10_same_inputs.py`](analysis/paperfigs/figA10_same_inputs.py) | [`paper/figures/figA10_same_inputs.csv`](paper/figures/figA10_same_inputs.csv), `paper/figures/paper/figA10_same_inputs.png` |
 | Figures | [`analysis/paperfigs/build_all.py`](analysis/paperfigs/build_all.py) | [`paper/figures/paper/`](paper/figures/paper) |
 
 The full turn logs of the main runs are gzipped (`logs/main_haiku.turns.jsonl.gz`, `logs/main_luna.turns.jsonl.gz`); run `gunzip -k` on them before rebuilding the cost table. Raw Amazon review dumps are not included.
