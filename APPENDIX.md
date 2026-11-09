@@ -2,7 +2,7 @@
 
 **A paired-name audit of two AI shopping agents.** Ian Sabia · DS480 Data, Society, and AI Ethics · Boston University · Fall 2026
 
-[Paper (PDF)](Sabia_Ian_DS480_Paper2.pdf) · [Frozen plan](PLAN.md) · [Harness](HARNESS_README.md) · [Pilot report](PILOT_REPORT.md)
+[Paper (PDF)](https://iansabia.github.io/audit/Sabia_Ian_DS480_Paper2.pdf) · [Frozen plan](PLAN.md) · [Harness](HARNESS_README.md) · [Pilot report](PILOT_REPORT.md)
 
 > [!NOTE]
 > **How to read this.** The paper cites this appendix by section label: "(B4)" or "(Technical Appendix, B2)" means Section [B4](#b4) or [B2](#b2) below. Figures and tables have their own numbers, so Figure A3 is not Section A3. The ethical analysis is in the paper; this page documents how the study was built and run, and gives its full results.
