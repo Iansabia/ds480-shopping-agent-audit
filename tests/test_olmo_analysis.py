@@ -81,7 +81,7 @@ def test_outputs_go_only_where_asked_and_numbers_fill(olmo, tmp_path):
     for k, *_ in OL.TESTS:
         assert N[f"olmo.{k}.est"] and N[f"olmo.{k}.q"] != "n/a" or N[f"olmo.{k}.est"] == A.NO_VARIATION
     assert N["olmo.rho"] == f"{link['rho']:.2f}" and "traced, correlation only" in N["olmo.training_link_sentence"]
-    assert "Ai2's 32B Instruct index" in N["olmo.training_link_sentence"]
+    assert "Ai2's OLMo 3 32B Instruct index" in N["olmo.training_link_sentence"]
     for v in N.values():
         assert "\u2014" not in v and "\u2013" not in v
 
