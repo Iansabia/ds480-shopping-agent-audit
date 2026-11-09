@@ -30,10 +30,10 @@ Arm codes are S0, S1, V, PB (planted bias), PC and PQ (arm P), M1S0 and M1V. The
 | pilot | 1,152 | 24 profiles (5 per core cell + 4 baseline) x 16 tasks x {S0, S1, V} x 1 slot |
 | vfollowup | 144 | the pilot's V episodes on the 6 tasks with the most second asks (24 profiles x 6 tasks), to check deviation D1. Added 11/4 |
 | pilotsmall | 160 | the 24 pilot profiles x 6 fixed cells (S0, S1, V x 2 tasks, one slot each) + PB on the 2 S0 cells for the 5 planted names (and S0 for those outside the pilot set). Added 11/4, see PILOT_REPORT.md |
-| neutral | 640 | add-on A (PLAN D9, exploratory): 10 gender-neutral names (`data/ADDON_NAMES_README.md`) x 8 twin tasks x {S0, V} x 4 slots. Added 11/5 |
+| neutral | 320 | add-on A (PLAN D9, exploratory): 5 gender-neutral names (10 planned, 5 dropped by the name check; `data/ADDON_NAMES_README.md`) x 8 twin tasks x {S0, V} x 4 slots. Added 11/5 |
 | stated | 2,560 | add-on B: 40 core names x 8 twin tasks x {STM, STW} x 4 slots. STM/STW = S0 on the S page with the "either line is fine" sentence replaced by "I want the men's/women's version."; S0 reply; fit = the stated line only. Added 11/5 |
 | arab | 3,200 | add-on C: 10 Middle Eastern or North African names x 40 tasks x {S0, V} x 4 slots; names failing `name_check.py --set addon` are replaced by alternates. Added 11/5 |
-| sasian | 3,200 | add-on C: 10 South Asian names, same shape as arab. Added 11/5 |
+| sasian | 2,560 | add-on C: 8 South Asian names (10 planned, 2 dropped by the name check), same shape as arab. Added 11/5 |
 
 In every preset, each name sees both hidden needs equally often (the tests check this). Episodes are shuffled with a fixed seed, so names, arms and tasks mix within every batch and over time.
 
@@ -55,7 +55,7 @@ In every preset, each name sees both hidden needs equally often (the tests check
 .venv/bin/python src/run_agents.py run --model flashlite --preset reduced --mode sync --workers 1
 .venv/bin/python src/run_agents.py run --model olmo --preset reduced --mode sync --workers 1   # after 7 pm ET; run name reduced_olmo (D4)
 .venv/bin/python src/run_agents.py status --run pilot_haiku
-.venv/bin/python src/run_agents.py score  --run pilot_haiku     # -> logs/pilot_haiku.outcomes.csv
+.venv/bin/python src/run_agents.py score  --run planted_haiku   # -> logs/planted_haiku.outcomes.csv
 .venv/bin/python src/run_agents.py spend                        # [--clear-halt openai]
 .venv/bin/python src/run_agents.py spend --clear-stale openai namecheck_luna   # drop a dead process's call reservations (>15 min old)
 .venv/bin/python src/run_agents.py cancel-batches --run pilot_luna   # cancel stuck batches, free their reservations, then rerun in flex/sync
@@ -89,9 +89,9 @@ In every preset, each name sees both hidden needs equally often (the tests check
 
 ## Spend guard (`logs/spend.json`)
 
-- **Caps:** Anthropic $15, OpenAI $10, Google $0 paid.
+- **Caps:** Anthropic $15, OpenAI $10, Google $2.40.
 - **Before each call or batch:** the guard reserves the worst case (estimated input plus the full 512 output tokens) and refuses anything that would pass the cap.
 - **Costs:** every call is priced from the tokens it actually used. These are estimates; the provider consoles are the source of truth.
 - **Billing or credit errors:** the provider is halted until `spend --clear-halt PROVIDER` is run.
 - **After the first 200 calls of a run:** the guard projects the rest of the run and stops it if the projection would pass the cap. In batch mode, the first wave is held to 200 turns so this projection happens before the big grid is sent.
-- **Google:** free tier, so nothing is billed. A notional cost is still tracked.
+- **Google:** the cost code treats Gemini as free tier, so it logs $0.00 billed and tracks a notional cost. The account in fact ran on prepaid credits (about $3.34 at list prices; APPENDIX.md A5).

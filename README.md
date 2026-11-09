@@ -8,6 +8,20 @@ Code, data and results for a paired-name audit of two AI shopping agents, Claude
 - **Test harness:** [`HARNESS_README.md`](HARNESS_README.md)
 - **Pilot and cost:** [`PILOT_REPORT.md`](PILOT_REPORT.md), [`COST_ESTIMATE.md`](COST_ESTIMATE.md)
 
+## Setup
+
+Python 3.12 or newer.
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r analysis/requirements.txt pytest google-genai
+.venv/bin/python -m pytest -q tests
+```
+
+The tests and the analysis never call a model. The figure tests need a local Chrome for kaleido (see `analysis/requirements.txt`). Live agent runs also need `anthropic`, `openai` and `requests`, plus API keys in the environment (or in a `.env` file, read with `python-dotenv`).
+
+This repository holds the study's code, data and results; the paper's own draft files are not part of it. For that reason commit hashes after `94dff45` (11/4) differ from the ones quoted in `logs/*.manifest.json`, `PLAN.md` and `PILOT_REPORT.md`, which come from my private working copy. Match those by commit date.
+
 ## Layout
 
 | Folder | Contents |

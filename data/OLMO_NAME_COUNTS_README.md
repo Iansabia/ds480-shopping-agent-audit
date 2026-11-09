@@ -79,6 +79,8 @@ not OLMo 3's data.
 
 ## Reproduce
 
+The fetch script and its cached replies sit under `data/raw/`, which is not part of this repository. With a local copy:
+
 `.venv/bin/python data/raw/infini_gram/fetch_name_counts.py` (add `--skip-probe` to skip the public
 OLMo 3 attempts). Requests go one at a time with a 1.5 second pause and up to 6 tries with backoff.
 Every raw reply is cached in `raw/infini_gram/responses.jsonl`, so a rerun only asks for what is

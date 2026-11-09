@@ -14,7 +14,7 @@ Built 2026-11-04 by `src/catalog/build.py` (seed 480). Rebuild with:
 |---|---|
 | `tasks.json` | 40 tasks: need, opposite need, identity axis, two specified wordings, two vague wordings, S1 budget, hidden needs with scripted replies, pool sizes. `meta` holds the arm replies, the S1 budget sentences and the hidden-need schedule. |
 | `pages.json` | 80 pages (one specified page and one vague page per task), 8 products each, every product labeled, plus `order_forward` and `order_reversed`. Specified pages also carry `budget_s1` and the cheapest fitting price for S0 and S1. |
-| `products.json` | Display data for the 329 products used: ASIN, title, brand, price, rating, rating count, up to 3 feature bullets (hair items also show the seller's "Hair type" field). No review text. |
+| `products.json` | Display data for the 330 products used: ASIN, title, brand, price, rating, rating count, up to 3 feature bullets (hair items also show the seller's "Hair type" field). No review text. |
 | `spotcheck_20.md` | 20 pages (seeded, 5 per group) in readable tables for Ian's label check. |
 | `build_gaps.json` | Every fallback the builder used (listed below too). |
 | `../src/catalog/overrides.json` | 57 products dropped by hand after reading titles, each with a reason (B0BRGRDLZQ added 11/4: brand matches test names, see PLAN.md Deviations). |
@@ -29,7 +29,7 @@ Amazon Reviews 2023 item metadata (McAuley Lab, UCSD), downloaded 2026-11-04 fro
 
 Prices, ratings and rating counts are the values frozen in that snapshot. The snapshot's price date is not stated per item (unverified); treat prices as "Amazon list prices in the 2023 snapshot," not current prices. Nothing was checked against live Amazon pages.
 
-Licensing: the dataset page states no license. Use is research only with citation (Hou et al. 2024, "Bridging Language and Items for Retrieval and Recommendation"). Review text is never used. A public release should ship ASINs and labels plus the rebuild script, not `products.json`.
+Licensing: the dataset page states no license. Use is research only with citation (Hou et al. 2024, "Bridging Language and Items for Retrieval and Recommendation"). Review text is never used. This repository ships `products.json` (display metadata only, no review text) so the runs can be re-rendered and re-scored.
 
 ## What a task and a page look like
 
