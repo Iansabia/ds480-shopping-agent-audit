@@ -33,12 +33,3 @@ This repository holds the study's code, data and results; the paper's own draft 
 | `results/`, `paper/tables/` | Test results and the tables behind every number |
 | `paper/figures/` | Figures |
 | `tests/` | Harness and analysis tests |
-
-## The course submission zip
-
-`Sabia_Ian_DS480_Paper2_Code.zip`, submitted on Blackboard, is this repository at one commit with the large files left out so it stays small:
-
-- **Included:** all code, tests, data, results and tables, the outcome file of every run (`logs/*.outcomes.csv`, with `logs/*.manifest.json` and `logs/spend.json`), the final figures (`paper/figures/paper/`), the data behind each figure (`paper/figures/*.csv`), and these documents.
-- **Left out:** the raw turn-by-turn logs (`logs/*.jsonl`, `logs/*.turns.jsonl.gz`, `logs/run_stdout/`) and the draft and alternate versions of the figures in `paper/figures/`.
-
-Everything left out is in the full repository: https://github.com/Iansabia/ds480-shopping-agent-audit. The tests and the analysis run on the zip alone. Three things need the raw turn logs from the full repository: re-scoring a run from scratch (`src/harness/score.py`), recounting tokens for the cost table, and `analysis/paperfigs/figA10_same_inputs.py` (Appendix Figure A5). Their outputs are included (`logs/*.outcomes.csv`, `paper/tables/table3_cost.md`, `paper/figures/figA10_same_inputs.csv`).
